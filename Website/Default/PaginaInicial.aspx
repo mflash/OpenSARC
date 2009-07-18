@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Master/Master.master" 
-CodeFile="PaginaInicial.aspx.cs" Inherits="Default_PaginaInicial"  Title="Sistema de Alocação de Recursos - FACIN"%>
+CodeFile="PaginaInicial.aspx.cs" Inherits="Default_PaginaInicial"  Title="Sistema de Alocação de Recursos"%>
 
 <asp:Content ID="Content2" runat="server" ContentPlaceHolderID="cphTitulo">
 

@@ -113,7 +113,7 @@ namespace BusinessData.Entities
                 {
                     if (!(horario[0] < horario[1] && horario[1] - horario[0] <= 1))
                     {
-                        throw new FormatException("Horário inválido para o formato FACIN.");
+                        throw new FormatException("Horário inválido.");
                     }
                 }
             }

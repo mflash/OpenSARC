@@ -53,7 +53,7 @@ color:#000000;
 }
 .ms-wikieditthird
 {
-background-image: url('deployment_server_url/facin/_layouts/images/TOOLGRAD.GIF');
+background-image: url('deployment_server_url/opensarc/_layouts/images/TOOLGRAD.GIF');
 padding-left:3px;
 }
 </style>

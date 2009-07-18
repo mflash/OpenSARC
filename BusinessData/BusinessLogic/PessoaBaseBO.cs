@@ -50,8 +50,8 @@ namespace BusinessData.BusinessLogic
 
             MailMessage message = new MailMessage(from, to);
             message.Subject = "Alocação de Recursos";
-            message.Body = "Sistema de Alocação de Recursos Computacionais FACIN \n\n" +
-                           "Você está cadastrado(a) no Sistema de Alocação de Recursos da Faculdade de Informática. \n" +
+            message.Body = "Sistema de Alocação de Recursos Computacionais  \n\n" +
+                           "Você está cadastrado(a) no Sistema de Alocação de Recursos . \n" +
                            "Suas credenciais são: \n" +
                            "Login: " + pessoa.UserName + "\n" +
                            "Senha: " + password + "\n\n" +
@@ -67,8 +67,8 @@ namespace BusinessData.BusinessLogic
             string from = ConfigurationManager.AppSettings["MailMessageFrom"];
 
             MailMessage message = new MailMessage(from, to);
-            message.Subject = "Sistema de Alocação de Recursos Computacionais FACIN - Alteração de senha";
-            message.Body = "Sistema de Alocação de Recursos Computacionais FACIN \n" +
+            message.Subject = "Sistema de Alocação de Recursos Computacionais  - Alteração de senha";
+            message.Body = "Sistema de Alocação de Recursos Computacionais  \n" +
                            ConfigurationManager.AppSettings["AppURL"] + "\n\n" +
                            "Sua senha foi resetada pelo administrador do sistema." +
                            " \n A nova senha é: " + password;

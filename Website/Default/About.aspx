@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" 
-CodeFile="About.aspx.cs" Inherits="Default_About" Title="Sistema de Alocação de Recursos - FACIN" %>
+CodeFile="About.aspx.cs" Inherits="Default_About" Title="Sistema de Alocação de Recursos" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" Runat="Server">   
   <div align="left" class="ms-menutoolbar" style="width: 100%; height: 14px">
         <asp:Label ID="lblLogin" runat="server" CssClass="ms-WPTitle" Text="SOBRE"></asp:Label></div>

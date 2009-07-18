@@ -20,7 +20,7 @@ namespace BusinessData.DataAccess
         {
             try
             {
-                baseDados = DatabaseFactory.CreateDatabase("SARCFACINcs");
+                baseDados = DatabaseFactory.CreateDatabase("SARCcs");
             }
             catch (SqlException ex)
             {

@@ -1,6 +1,6 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeFile="TrocarRecurso.aspx.cs"
  Inherits="Secretarios_TrocarRecurso" 
- Title="Sistema de Alocação de Recursos - FACIN" %>
+ Title="Sistema de Alocação de Recursos" %>
 <%@ import Namespace="BusinessData.Entities" %>
 <%@ Register Src="../Default/Aguarde.ascx" TagName="Aguarde" TagPrefix="uc1" %>
 

@@ -21,7 +21,7 @@ namespace BusinessData.Reports {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("SARCFACINDataSet")]
+    [global::System.Xml.Serialization.XmlRootAttribute("SARCDataSet")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class SARCFACINDataSet : global::System.Data.DataSet {
         
@@ -185,9 +185,9 @@ namespace BusinessData.Reports {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         private void InitClass() {
-            this.DataSetName = "SARCFACINDataSet";
+            this.DataSetName = "SARCDataSet";
             this.Prefix = "";
-            this.Namespace = "http://tempuri.org/SARCFACINDataSet.xsd";
+            this.Namespace = "http://tempuri.org/SARCDataSet.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
             this.tableCriaRelatorioAtividades = new CriaRelatorioAtividadesDataTable();

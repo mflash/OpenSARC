@@ -12,7 +12,7 @@
     
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
-    <title>Sistema de Alocação de Recursos Computacionais - FACIN</title>
+    <title>Sistema de Alocação de Recursos Computacionais</title>
     <style type="text/css">
         @import url("~/CORE.CSS")
     </style>

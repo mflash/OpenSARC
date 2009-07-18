@@ -29,7 +29,7 @@ namespace BusinessData.Properties {
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=servername;Initial Catalog=databasename;Integrated Security=True")]
         public string SARCFACINConnectionString {
             get {
-                return ((string)(this["SARCFACINConnectionString"]));
+                return ((string)(this["SARCConnectionString"]));
             }
         }
     }

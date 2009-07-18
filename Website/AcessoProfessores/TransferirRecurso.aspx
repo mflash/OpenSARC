@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 
 <head runat="server">
-    <title>Sistema de Alocação de Recursos - FACIN</title>
+    <title>Sistema de Alocação de Recursos</title>
     <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
 </head>
 

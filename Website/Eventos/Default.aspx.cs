@@ -385,7 +385,7 @@ public partial class Eventos_Default : System.Web.UI.Page
         string de = ConfigurationManager.AppSettings["MailMessageFrom"];
         MailMessage email = new MailMessage(de, para);
         email.Subject = "Alocação de Recursos";
-        email.Body = "Sistema de Alocação de Recursos Computacionais FACIN \n\n" +
+        email.Body = "Sistema de Alocação de Recursos Computacionais  \n\n" +
                "Um novo evento foi cadastrado por " + pessoa + "." +
                "\nDescrição: " + descricaoEvento +
                "\nData do evento: " + data.ToShortDateString() +
@@ -401,7 +401,7 @@ public partial class Eventos_Default : System.Web.UI.Page
         string de = ConfigurationManager.AppSettings["MailMessageFrom"];
         MailMessage email = new MailMessage(de, para);
         email.Subject = "Alocação de Recursos";
-        email.Body = "Sistema de Alocação de Recursos Computacionais FACIN \n\n" +
+        email.Body = "Sistema de Alocação de Recursos Computacionais  \n\n" +
                "Um novo evento foi cadastrado por " + pessoa + "." +
                "\nDescrição: " + descricaoEvento +
                "\nData inicial do evento: " + dataInicial.ToShortDateString() +

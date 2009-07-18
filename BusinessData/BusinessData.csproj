@@ -33,6 +33,7 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -112,6 +113,11 @@
     <Compile Include="DataAccess\AcessosDAO.cs" />
     <Compile Include="DataAccess\ConfigDAO.cs" />
     <Compile Include="DataAccess\HorariosEventoDAO.cs" />
+    <Compile Include="DataAccess\OpenSarcDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OpenSarcDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\SecretarioDAO.cs" />
     <Compile Include="DataAccess\TransferenciaDAO.cs" />
     <Compile Include="DataAccess\TrocaDAO.cs" />
@@ -209,6 +215,17 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="CreateUsers.cd" />
+    <None Include="DataAccess\OpenSarcDataSet.xsc">
+      <DependentUpon>OpenSarcDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="DataAccess\OpenSarcDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>OpenSarcDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DataAccess\OpenSarcDataSet.xss">
+      <DependentUpon>OpenSarcDataSet.xsd</DependentUpon>
+    </None>
     <None Include="Entities\Alocacao.cd" />
     <None Include="Entities\ClassDiagram1.cd" />
     <None Include="bin\Debug\BusinessData.dll.config" />
@@ -237,6 +254,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DataAccess\FACIN.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataAccess\OpenSarc.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

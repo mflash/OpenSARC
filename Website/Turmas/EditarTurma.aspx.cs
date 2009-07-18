@@ -55,13 +55,13 @@ public partial class Pagina6 : System.Web.UI.Page
                         ddlCurso.DataBind();
 
                     }
-                    catch(FormatException ex)
+                    catch(FormatException )
                     {
                         Response.Redirect("~/Turmas/ListaTurmas.aspx");
                     }
 
                 }
-                catch (BusinessData.DataAccess.DataAccessException ex)
+                catch (BusinessData.DataAccess.DataAccessException )
                 {
                     Response.Redirect("~/Turmas/ListaTurmas.aspx");
                 }

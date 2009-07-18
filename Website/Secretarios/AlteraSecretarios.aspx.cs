@@ -31,7 +31,7 @@ public partial class Secretarios_AlteraSecretarios : System.Web.UI.Page
                         SetBtnLockUnlockText();
 
                     }
-                    catch (FormatException ex)
+                    catch (FormatException )
                     {
                         Response.Redirect("~/Secretarios/ListaSecretarios.aspx");
                     }
@@ -65,7 +65,7 @@ public partial class Secretarios_AlteraSecretarios : System.Web.UI.Page
         {
             Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
         }
-        catch (Exception ex)
+        catch (Exception )
         {
             ScriptManager.RegisterClientScriptBlock(this, GetType(), "Erro", "alert('Impossível resetar senha. Verifique se o usuário não está bloqueado');", true);
         }

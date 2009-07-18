@@ -37,7 +37,7 @@ public partial class Recursos_Disciplina : System.Web.UI.Page
             ddlCalendario.DataValueField = "Id";
             ddlCalendario.DataBind();
         }
-        catch (BusinessData.DataAccess.DataAccessException ex)
+        catch (BusinessData.DataAccess.DataAccessException )
         {
             ddlCalendario.Text = "Problema ao carregar esta lista";
         }

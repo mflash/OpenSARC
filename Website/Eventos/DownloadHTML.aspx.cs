@@ -41,7 +41,7 @@ public partial class Eventos_DownloadHTML : System.Web.UI.Page
                     dgEvento.RenderControl(txtSaida);
                     txtSaida.Write("\n</body>\n</html>");
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     Response.Redirect("~/Default/Erro.aspx");
                 }

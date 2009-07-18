@@ -39,8 +39,10 @@ public partial class Pagina6 : System.Web.UI.Page
             ddlCategoria.DataValueField = "Id";
             ddlCategoria.DataBind();
         }
-        catch (BusinessData.DataAccess.DataAccessException ex)
-        { }
+        catch (BusinessData.DataAccess.DataAccessException )
+        { 
+        //TODO
+        }
     }
 
     public void populaVinculo()
@@ -52,8 +54,10 @@ public partial class Pagina6 : System.Web.UI.Page
             ddlVinculo.DataValueField = "Id";
             ddlVinculo.DataBind();
         }
-        catch (BusinessData.DataAccess.DataAccessException ex)
-        { }
+        catch (BusinessData.DataAccess.DataAccessException )
+        { 
+        //TODO
+        }
     }
 
     protected void btnConfirmar_Click(object sender, EventArgs e)

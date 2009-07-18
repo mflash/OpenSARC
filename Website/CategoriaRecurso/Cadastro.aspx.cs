@@ -21,7 +21,7 @@ public partial class CategoriaRecurso_Cadastro : System.Web.UI.Page
     }
     protected void btnConfirmar_Click(object sender, EventArgs e)
     {
-        bool achou = false;
+        //bool achou = false;
         CategoriaRecurso r = CategoriaRecurso.NewCategoriaRecurso(txtDescricao.Text);
         CategoriaRecursoBO categoriaRecurso = new CategoriaRecursoBO();
         try

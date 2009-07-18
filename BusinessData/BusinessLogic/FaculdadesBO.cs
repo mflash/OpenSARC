@@ -22,7 +22,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao = new BusinessData.DataAccess.FaculdadesDAO();
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -45,7 +45,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -73,7 +73,7 @@ namespace BusinessData.BusinessLogic
                         log.MachineName = Dns.GetHostName();
                         Logger.Write(log);
                     }
-                    catch (DataAccess.DataAccessException ex)
+                    catch (DataAccess.DataAccessException )
                     {
                         throw;
                     }
@@ -101,7 +101,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -118,7 +118,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetFaculdade(id);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -127,14 +127,9 @@ namespace BusinessData.BusinessLogic
         
         public List<Entities.Faculdade> GetFaculdades()
         {
-            try
-            {
+
                 return dao.GetFaculdades();
-            }
-            catch (DataAccess.DataAccessException ex)
-            {
-                throw;
-            }
+
         }
     }
 }

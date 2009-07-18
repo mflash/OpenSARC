@@ -38,7 +38,7 @@ public partial class Cursos_Edit : System.Web.UI.Page
                         txtNome.Text = curso.Nome;
                         ddlFaculdade.SelectedValue = curso.Vinculo.Id.ToString();
                     }
-                    catch (FormatException ex)
+                    catch (FormatException )
                     {
                         Response.Redirect("~/Cursos/List.aspx");
                     }

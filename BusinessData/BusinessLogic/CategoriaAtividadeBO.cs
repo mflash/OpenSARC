@@ -23,7 +23,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao = new CategoriaAtividadeDAO();
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -46,7 +46,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -74,7 +74,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -101,7 +101,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -114,26 +114,16 @@ namespace BusinessData.BusinessLogic
 
         public CategoriaAtividade GetCategoriaAtividadeById(Guid id)
         {
-            try
-            {
+
                 return dao.GetCategoriaAtividadeById(id);
-            }
-            catch (DataAccessException ex)
-            {
-                throw;
-            }
+
         }
 
         public List<CategoriaAtividade> GetCategoriaAtividade()
         {
-            try
-            {
+
                 return dao.GetCategoriaAtividade();
-            }
-            catch (DataAccessException ex)
-            {
-                throw;
-            }
+
         }
     }
 }

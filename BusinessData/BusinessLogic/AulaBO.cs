@@ -21,14 +21,9 @@ namespace BusinessData.BusinessLogic
 
         public AulaBO()
         {
-            try
-            {
+
                 dao = new BusinessData.DataAccess.AulasDAO();
-            }
-            catch (DataAccess.DataAccessException ex)
-            {
-                throw;
-            }
+
             usr = new Usuario();
         }
 
@@ -52,7 +47,7 @@ namespace BusinessData.BusinessLogic
                 }
                 catch (DataAccess.DataAccessException ex)
                 {
-                    throw;
+                    throw ex;
                 }
         }
 
@@ -60,14 +55,9 @@ namespace BusinessData.BusinessLogic
         {
             if (usr.IsAdmin())
             {
-                try
-                {
+
                     dao.RemoveAula(id);
-                }
-                catch (DataAccessException ex)
-                {
-                    throw;
-                }
+
             }
             else
             {
@@ -80,14 +70,9 @@ namespace BusinessData.BusinessLogic
 
             if (usr.IsAdmin())
             {
-                try
-                {
+
                     dao.InsereAula(aula);
-                }
-                catch (DataAccessException ex)
-                {
-                    throw;
-                }
+
             }
             else
             {
@@ -97,14 +82,9 @@ namespace BusinessData.BusinessLogic
 
         public Aula GetAulaById(Guid id)
         {
-            try
-            {
+
                 return dao.GetAula(id);
-            }
-            catch (DataAccessException ex)
-            {
-                throw;
-            }
+
 
         }
         public void CriarAulas(Calendario cal, Turma t)

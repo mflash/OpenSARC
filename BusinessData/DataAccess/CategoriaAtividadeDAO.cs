@@ -121,7 +121,7 @@ namespace BusinessData.DataAccess
             {
                 throw new DataAccessException(ErroMessages.GetErrorMessage(ex.Number), ex);
             }
-            catch (Exception exc)
+            catch (Exception )
             {
                 return null;
             }

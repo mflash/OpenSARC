@@ -31,7 +31,7 @@ public partial class CategoriaRecurso_Edit: System.Web.UI.Page
                         CategoriaRecurso cat = boCategoriaRecurso.GetCategoriaRecursoById(new Guid(Request.QueryString["GUID"]));
                         txtDescricao.Text = cat.Descricao;
                     }
-                    catch (FormatException ex)
+                    catch (FormatException )
                     {
                         Response.Redirect("~/CategoriaRecurso/List.aspx");
                     }

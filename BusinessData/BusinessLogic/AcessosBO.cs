@@ -26,7 +26,7 @@ namespace BusinessData.BusinessLogic
             }
             catch (DataAccessException ex)
             {
-                throw;
+                throw ex;
             }
         }
 

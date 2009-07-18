@@ -65,7 +65,7 @@ namespace BusinessData.BusinessLogic
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -100,7 +100,7 @@ namespace BusinessData.BusinessLogic
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -122,7 +122,7 @@ namespace BusinessData.BusinessLogic
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
         /// <summary>
@@ -147,7 +147,7 @@ namespace BusinessData.BusinessLogic
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -186,7 +186,7 @@ namespace BusinessData.BusinessLogic
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 

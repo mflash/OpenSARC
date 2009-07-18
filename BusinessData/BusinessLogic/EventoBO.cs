@@ -20,14 +20,9 @@ namespace BusinessData.BusinessLogic
 
         public EventoBO()
         {
-            try
-            {
+
                 dao = new BusinessData.DataAccess.EventoDAO();
-            }
-            catch (DataAccess.DataAccessException ex)
-            {
-                throw;
-            }
+
             usr = new Usuario();
         }
 
@@ -49,7 +44,7 @@ namespace BusinessData.BusinessLogic
                 //guarda log no banco
                 Logger.Write(log);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -74,7 +69,7 @@ namespace BusinessData.BusinessLogic
                 //guarda log no banco
                 Logger.Write(log);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -98,7 +93,7 @@ namespace BusinessData.BusinessLogic
                 //guarda log no banco
                 Logger.Write(log);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -106,76 +101,46 @@ namespace BusinessData.BusinessLogic
 
         public Evento GetEventoById(Guid id)
         {
-            try
-            {
+
                 return dao.GetEvento(id);
-            }
-            catch (DataAccessException ex)
-            {
-                throw;
-            }
+
 
         }
 
         public List<Evento> GetEventos()
         {
-            try
-            {
+
                 return dao.GetEventos();
-            }
-            catch (DataAccessException ex)
-            {
-                throw;
-            }
+
         }
 
         public List<Evento> GetEventos(Guid autorId, DateTime data, string hora)
         {
-            try
-            {
+
                 return dao.GetEventos(autorId, data, hora);
-            }
-            catch (DataAccessException ex)
-            {
-                throw;
-            }
+
         }
 
         public List<Evento> GetEventosByCal(Guid id)
         {
-            try
-            {
+
                 return dao.GetEventosByCal(id);
-            }
-            catch (DataAccessException ex)
-            {
-                throw;
-            }
+
         }
 
         public List<Evento> GetEventos(Guid autorId, Calendario cal)
         {
-            try
-            {
+
                 return dao.GetEventos(autorId, cal);
-            }
-            catch (DataAccessException ex)
-            {
-                throw;
-            }
+
 
         }
 
         public List<Evento> GetEventosNaoOcorridos(Guid calId)
         {
-            try
-            {
+
                 return dao.GetEventosNaoOcorridos(calId);
-            }
-            catch (DataAccessException ex)
-            {
-                throw;
-            }
+
         }
     }
 }

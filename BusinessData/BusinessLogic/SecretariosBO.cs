@@ -23,15 +23,7 @@ namespace BusinessData.BusinessLogic
 
         public SecretariosBO()
         {
-            try
-            {
-                dao = new SecretarioDAO();
-            }
-            catch (DataAccessException ex)
-            {
-                throw;
-            }
-
+            dao = new SecretarioDAO();
             usr = new Usuario();
         }
 
@@ -63,7 +55,7 @@ namespace BusinessData.BusinessLogic
                     throw new DataAccessException("Erro ao deletar secretário", ex);
                 }
 
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -114,7 +106,7 @@ namespace BusinessData.BusinessLogic
                     {
                         this.SendNewPessoa(muser, senha);
                     }
-                    catch (Exception ex)
+                    catch (Exception )
                     {
                         string logs = ConfigurationManager.AppSettings["PahtLog"] + "\\" + String.Format("{0:dd-mm-yyyy}.log", DateTime.Now);
                         try
@@ -129,7 +121,7 @@ namespace BusinessData.BusinessLogic
                         }
                     }
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -181,7 +173,7 @@ namespace BusinessData.BusinessLogic
                     {
                         this.SendNewPessoa(muser, senha);
                     }
-                    catch (Exception ex)
+                    catch (Exception )
                     {
                         string logs = ConfigurationManager.AppSettings["PahtLog"] + "\\" + String.Format("{0:dd-mm-yyyy}.log", DateTime.Now);
                         try
@@ -196,7 +188,7 @@ namespace BusinessData.BusinessLogic
                         }
                     }
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -214,7 +206,7 @@ namespace BusinessData.BusinessLogic
                 return dao.GetSecretario(id);
             }
 
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -226,7 +218,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetSecretarios();
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }

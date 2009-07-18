@@ -24,7 +24,7 @@ namespace BusinessData.BusinessLogic
             }
             catch (DataAccess.DataAccessException ex)
             {
-                throw;
+                throw ex;
             }
             usr = new Usuario();
         }
@@ -47,7 +47,7 @@ namespace BusinessData.BusinessLogic
                 }
                 catch (DataAccess.DataAccessException ex)
                 {
-                    throw;
+                    throw ex;
                 }
             }
             else
@@ -75,7 +75,7 @@ namespace BusinessData.BusinessLogic
                 }
                 catch (DataAccess.DataAccessException ex)
                 {
-                    throw;
+                    throw ex;
                 }
             }
             else
@@ -103,7 +103,7 @@ namespace BusinessData.BusinessLogic
                 }
                 catch (DataAccess.DataAccessException ex)
                 {
-                    throw;
+                    throw ex;
                 }
             }
             else
@@ -120,7 +120,7 @@ namespace BusinessData.BusinessLogic
             }
             catch (DataAccess.DataAccessException ex)
             {
-                throw;
+                throw ex;
             }
 
         }

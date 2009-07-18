@@ -18,7 +18,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao = new BusinessData.DataAccess.RequisicaoDAO();
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -26,124 +26,74 @@ namespace BusinessData.BusinessLogic
 
         public void DeletaRequisicao(Guid id)
         {
-                try
-                {
+
                     dao.DeleteRequisicao(id);
-                }
-                catch (DataAccess.DataAccessException ex)
-                {
-                    throw;
-                }
+
             
         }
 
         public void InsereRequisicao(IRequisicao requisicao)
         {
-                try
-                {
+
                     dao.InsertRequisicao(requisicao);
-                }
-                catch (DataAccess.DataAccessException ex)
-                {
-                    throw;
-                }
+
         }
         
         public List<Requisicao> GetRequisicaoByAulaAndPrioridade(Guid aulaId, Calendario cal, int prioridade)
         {
-            try
-            {
+
                 return dao.GetRequisicaoByAulaAndPrioridade(aulaId, cal, prioridade);
-            }
-            catch (DataAccess.DataAccessException ex)
-            {
-                throw;
-            }
+
         }
 
         public Requisicao GetRequisicaoByAulaPrioridadeAndCategoria(Guid aulaId, Calendario cal, int prioridade, Guid catrecursoId)
         {
-            try
-            {
+
                 return dao.GetRequisicaoByAulaPrioridadeAndCategoria(aulaId, cal, prioridade, catrecursoId);
-            }
-            catch (DataAccess.DataAccessException ex)
-            {
-                throw;
-            }
+
         }
 
         public List<Requisicao> GetRequisicoesPorAula(Guid? aulaId, Calendario cal)
         {
-            try
-            {
+
                 return dao.GetRequisicoesPorAula(aulaId, cal);
-            }
-            catch (DataAccess.DataAccessException ex)
-            {
-                throw;
-            }
+
         }
 
         public IList<Requisicao> GetRequisicoesPorCalendario(Calendario cal)
         {
-            try
-            {
+
                 return dao.GetRequisicoesByCalendario(cal);
-            }
-            catch (DataAccess.DataAccessException)
-            {
-                throw;
-            }
+
         }
         
         public IList<Requisicao> GetRequisicoesPorCalendario(Calendario cal,CategoriaRecurso categoriaRecurso)
         {
-            try
-            {
+
                 return dao.GetRequisicoesByCalendario(cal,categoriaRecurso);
-            }
-            catch(DataAccess.DataAccessException)
-            {
-                throw;
-            }
+
         }
     
         public Requisicao GetRequisicaoByAula(Turma turma, Entities.Calendario cal)
         {
-            try
-            {
+
                 return dao.GetRequisicaoByTurma(turma, cal);
-            }
-            catch (DataAccessException ex)
-            {
-                throw;
-            }
+
 
         }
 
         public void SetAtendida(Guid reqId)
         {
-            try
-            {
+
                 dao.SetAtendida(reqId);
-            }
-            catch (DataAccessException e)
-            {
-                throw;
-            }
+
         }
 
         public void UpdateRequisicoes(IRequisicao req)
         {
-            try
-            {
+
                 dao.UpdateRequisicoes(req);
-            }
-            catch (DataAccessException e)
-            {
-                throw;
-            }
+
         }
     }
 }

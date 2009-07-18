@@ -51,5 +51,7 @@ namespace BusinessData.Entities
         {
             return this.Matricula.Equals(other.Matricula);
         }
+
+        public override int GetHashCode() { return Matricula.GetHashCode(); }
     }
 }

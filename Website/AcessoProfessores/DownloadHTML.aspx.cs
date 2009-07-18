@@ -43,7 +43,7 @@ public partial class AcessoProfessores_DownloadHTML : System.Web.UI.Page
                     dgAulas.RenderControl(txtSaida);
                     txtSaida.Write("\n</body>\n</html>");
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     Response.Redirect("~/Default/Erro.aspx");
                 }

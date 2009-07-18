@@ -19,14 +19,9 @@ namespace BusinessData.BusinessLogic
 
         public CategoriaDisciplinaBO()
         {
-            try
-            {
+
                 dao = new CategoriaDisciplinaDAO();
-            }
-            catch (DataAccessException ex)
-            {
-                throw;
-            }
+
             usr = new Usuario();
         }
 
@@ -47,7 +42,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -75,7 +70,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -103,7 +98,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -120,7 +115,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetCategoriaDisciplina(id);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }

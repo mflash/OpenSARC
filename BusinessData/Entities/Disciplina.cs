@@ -137,7 +137,7 @@ namespace BusinessData.Entities
         {
             return this.cod.ToUpper().Equals(((Disciplina)obj).Cod.ToUpper());
         }
-
+        public override int GetHashCode() { return cod.GetHashCode(); }
         #region IEquatable<Disciplina> Members
 
         public bool Equals(Disciplina other)

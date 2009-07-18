@@ -60,7 +60,7 @@ namespace BusinessData.Entities
             return this.Nome.ToUpper().Equals(((Faculdade)obj).Nome.ToUpper());
         }
 
-
+        public override int GetHashCode() { return nome.GetHashCode(); }
 
 
         #region IEquatable<Faculdade> Members

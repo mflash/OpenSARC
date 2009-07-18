@@ -52,7 +52,7 @@ public partial class Recursos_Disciplina : System.Web.UI.Page
             ddlCategoria.DataValueField = "Id";
             ddlCategoria.DataBind();
         }
-        catch (BusinessData.DataAccess.DataAccessException ex)
+        catch (BusinessData.DataAccess.DataAccessException )
         {
             ddlCategoria.Text = "Problema ao carregar esta lista";
         }

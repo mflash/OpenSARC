@@ -22,7 +22,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao = new BusinessData.DataAccess.RecursosDAO();
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -50,7 +50,7 @@ namespace BusinessData.BusinessLogic
                     //guarda log no banco
                     Logger.Write(log);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -83,7 +83,7 @@ namespace BusinessData.BusinessLogic
                     //guarda log no banco
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -123,7 +123,7 @@ namespace BusinessData.BusinessLogic
                         aloc.PreencheCalendarioDeAlocacoes(cal, recurso, false);
                     }
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -140,7 +140,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetRecurso(id);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -153,7 +153,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetRecursos();
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -167,7 +167,7 @@ namespace BusinessData.BusinessLogic
                 {
                     return dao.GetRecursosDisponiveis(data,hora);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -186,7 +186,7 @@ namespace BusinessData.BusinessLogic
                 {
                     return dao.GetRecursosAlocados();
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -220,7 +220,7 @@ namespace BusinessData.BusinessLogic
                     //guarda log no banco
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -255,7 +255,7 @@ namespace BusinessData.BusinessLogic
                     Logger.Write(log);
 
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -289,7 +289,7 @@ namespace BusinessData.BusinessLogic
                     //guarda log no banco
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -309,7 +309,7 @@ namespace BusinessData.BusinessLogic
                 {
                     return dao.GetHorarioBloqueadoByRecurso(recursoId);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -326,7 +326,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetRecursosDisponiveis(data, horarioPUCRS, categoriaRecursoId);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }

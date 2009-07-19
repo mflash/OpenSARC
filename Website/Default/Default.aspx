@@ -7,7 +7,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" Title="Sistema de Alocação de Rec
     <table style="width: 100%">
         <tr>
             <td align="center" class="ms-toolbar" style="font-size: 42px;" valign="top">
-                Bem-Vindo</td>
+                Benvindo</td>
         </tr>
         <tr>
             <td align="center" class="ms-toolbar" style="font-size: 42px" valign="top">

@@ -26,10 +26,11 @@ namespace BusinessData.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=aldebaran;Initial Catalog=SARCFACIN;Integrated Security=True")]
-        public string SARCFACINConnectionString {
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=MARCOMANGAN97E4\\SQLEXPRESS;Initial Catalog=opensarc;Integrated Securi" +
+            "ty=True")]
+        public string SARCConnectionString {
             get {
-                return ((string)(this["SARCFACINConnectionString"]));
+                return ((string)(this["SARCConnectionString"]));
             }
         }
         

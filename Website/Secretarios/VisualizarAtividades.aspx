@@ -29,13 +29,13 @@
         <LocalReport ReportPath="Secretarios\Report.rdlc">
             <DataSources>
                 <rsweb:ReportDataSource DataSourceId="ObjectDataSource2" 
-                    Name="SARCFACINDataSet_CriaRelatorioAtividades" />
+                    Name="SARCDataSet_CriaRelatorioAtividades" />
             </DataSources>
         </LocalReport>
     </rsweb:ReportViewer>
     <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" 
         OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" 
-        TypeName="BusinessData.Reports.SARCFACINDataSetTableAdapters.CriaRelatorioAtividadesTableAdapter">
+        TypeName="BusinessData.Reports.SARCDataSetTableAdapters.CriaRelatorioAtividadesTableAdapter">
         <SelectParameters>
             <asp:ControlParameter ControlID="hdfIdsSelecionados" Name="IDsCategorias" 
                 PropertyName="Value" Type="String" />

@@ -41,7 +41,7 @@
             <HeaderStyle BackColor="#6B696B" Font-Bold="True" ForeColor="White" />
             <AlternatingRowStyle BackColor="White" />
         </asp:GridView>
-        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SARCFACINcs %>"
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SARCcs %>"
             SelectCommand="SELECT * FROM [Eventos]"></asp:SqlDataSource>
         &nbsp;
     </div>

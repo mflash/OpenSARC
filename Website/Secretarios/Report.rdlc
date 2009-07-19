@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <DataSources>
-    <DataSource Name="SARCFACINConnectionString">
+    <DataSource Name="SARCConnectionString">
       <rd:DataSourceID>70540d02-b6ee-4f98-8a22-af5ddbbc2860</rd:DataSourceID>
       <ConnectionProperties>
         <DataProvider>
@@ -31,7 +31,7 @@ GQaLOKSuVI/8q8rxTCjFVfRMQ62+2cE7M5pxushllnI9KqfJA2SrdJLVKD2x2la3Vh8SqCPMrtrsZY61
   </EmbeddedImages>
   <PageWidth>21cm</PageWidth>
   <DataSets>
-    <DataSet Name="SARCFACINDataSet_CriaRelatorioAtividades">
+    <DataSet Name="SARCDataSet_CriaRelatorioAtividades">
       <Fields>
         <Field Name="Categoria_de_Atividade">
           <DataField>Categoria de Atividade</DataField>
@@ -71,12 +71,12 @@ GQaLOKSuVI/8q8rxTCjFVfRMQ62+2cE7M5pxushllnI9KqfJA2SrdJLVKD2x2la3Vh8SqCPMrtrsZY61
         </Field>
       </Fields>
       <Query>
-        <DataSourceName>SARCFACINConnectionString</DataSourceName>
+        <DataSourceName>SARCConnectionString</DataSourceName>
         <CommandText>dbo.CriaRelatorioAtividades</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <rd:DataSetInfo>
-        <rd:DataSetName>SARCFACINDataSet</rd:DataSetName>
+        <rd:DataSetName>SARCDataSet</rd:DataSetName>
         <rd:TableName>CriaRelatorioAtividades</rd:TableName>
         <rd:TableAdapterName>
         </rd:TableAdapterName>
@@ -153,7 +153,7 @@ GQaLOKSuVI/8q8rxTCjFVfRMQ62+2cE7M5pxushllnI9KqfJA2SrdJLVKD2x2la3Vh8SqCPMrtrsZY61
         <Value>Relatório de Atividades</Value>
       </Textbox>
       <Table Name="table1">
-        <DataSetName>SARCFACINDataSet_CriaRelatorioAtividades</DataSetName>
+        <DataSetName>SARCDataSet_CriaRelatorioAtividades</DataSetName>
         <Top>2.25cm</Top>
         <TableGroups>
           <TableGroup>

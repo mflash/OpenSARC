@@ -6,7 +6,7 @@ CodeFile="About.aspx.cs" Inherits="Default_About" Title="Sistema de Alocação de 
     <table style="width: 760px" align="left">
     
         <tr>
-        <td align="left" class="ms-toolbar">Versão 1.5 - 29/10/2007</td>
+        <td align="left" class="ms-toolbar">Versão 1.6 - 18/09/2009</td>
         <td style="width: 200px"></td>
         <td ></td>
         

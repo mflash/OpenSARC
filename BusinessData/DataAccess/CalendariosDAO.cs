@@ -21,7 +21,7 @@ namespace BusinessData.DataAccess
         {
             try
             {
-                baseDados = DatabaseFactory.CreateDatabase("SARCcs");
+                baseDados = DatabaseFactory.CreateDatabase("opensarc");
             }
             catch (SqlException ex)
             {

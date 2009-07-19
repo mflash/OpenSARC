@@ -844,7 +844,7 @@ namespace BusinessData.Reports.SARCDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::BusinessData.Properties.Settings.Default.SARCConnectionString;
+            this._connection.ConnectionString = global::BusinessData.Properties.Settings.Default.OpenSarcConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

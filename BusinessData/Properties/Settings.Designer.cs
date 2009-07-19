@@ -28,17 +28,6 @@ namespace BusinessData.Properties {
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=MARCOMANGAN97E4\\SQLEXPRESS;Initial Catalog=opensarc;Integrated Securi" +
             "ty=True")]
-        public string SARCConnectionString {
-            get {
-                return ((string)(this["SARCConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\\DataAccess\\OpenSarc." +
-            "mdb;Persist Security Info=True")]
         public string OpenSarcConnectionString {
             get {
                 return ((string)(this["OpenSarcConnectionString"]));

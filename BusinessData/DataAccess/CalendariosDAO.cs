@@ -21,7 +21,7 @@ namespace BusinessData.DataAccess
         {
             try
             {
-                baseDados = DatabaseFactory.CreateDatabase("opensarc");
+                baseDados = DatabaseFactory.CreateDatabase("OpenSarcConnectionString");
             }
             catch (SqlException ex)
             {

@@ -26,8 +26,7 @@ namespace BusinessData.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=MARCOMANGAN97E4\\SQLEXPRESS;Initial Catalog=opensarc;Integrated Securi" +
-            "ty=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=opensarc;Integrated Security=True")]
         public string OpenSarcConnectionString {
             get {
                 return ((string)(this["OpenSarcConnectionString"]));

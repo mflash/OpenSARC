@@ -201,14 +201,15 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Reports\SARCFACINDataSet.cs">
-      <DependentUpon>SARCFACINDataSet.xsd</DependentUpon>
+    <Compile Include="Reports\OpenSarcDataSet.cs">
+      <DependentUpon>OpenSarcDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Reports\SARCFACINDataSet.Designer.cs">
+    <Compile Include="Reports\OpenSarcDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SARCFACINDataSet.xsd</DependentUpon>
+      <DependentUpon>OpenSarcDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="Util\DataHelper.cs" />
     <Compile Include="Util\RecursosEventArgs.cs" />
   </ItemGroup>
@@ -240,16 +241,16 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Reports\SARCFACINDataSet.xsc">
-      <DependentUpon>SARCFACINDataSet.xsd</DependentUpon>
+    <None Include="Reports\OpenSarcDataSet.xsc">
+      <DependentUpon>OpenSarcDataSet.xsd</DependentUpon>
     </None>
-    <None Include="Reports\SARCFACINDataSet.xsd">
+    <None Include="Reports\OpenSarcDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SARCFACINDataSet.Designer.cs</LastGenOutput>
+      <LastGenOutput>OpenSarcDataSet.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Reports\SARCFACINDataSet.xss">
-      <DependentUpon>SARCFACINDataSet.xsd</DependentUpon>
+    <None Include="Reports\OpenSarcDataSet.xss">
+      <DependentUpon>OpenSarcDataSet.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

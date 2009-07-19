@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BusinessData.Entities;
 
+using Microsoft.Practices.EnterpriseLibrary.Data;
+
 namespace BusinessDataTest
 {
     
@@ -70,6 +72,8 @@ namespace BusinessDataTest
         [TestMethod()]
         public void GetCalendarioByAnoSemestreTest()
         {
+            //ConfigurationManager.ConnectionStrings;
+
             CalendariosBO target = new CalendariosBO(); // TODO: Initialize to an appropriate value
             int ano = 2008; // TODO: Initialize to an appropriate value
             int semestre = 2; // TODO: Initialize to an appropriate value

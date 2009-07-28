@@ -1,0 +1,144 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Master.master.cs" Inherits="Master_MasterFacin" %>
+<%@ Register Src="../Default/SelecionaCalendario.ascx" TagName="SelecionaCalendario" TagPrefix="uc3" %>
+<%@ Register Src="../Default/MenuProfessor.ascx" TagName="MenuProfessor" TagPrefix="uc2" %>
+<%@ Register Src="../Default/MenuAdmin.ascx" TagName="MenuAdmin" TagPrefix="uc1" %>
+<%@ Register Assembly="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+    Namespace="System.Web.UI" TagPrefix="asp" %>
+    
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Sistema de Alocação de Recursos Computacionais - FACIN</title>
+    <style type="text/css">
+        @import url("~/CORE.CSS")
+    </style>
+    <style type="text/css">
+        @import url("~/datepicker.css")
+    </style>
+    <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
+    <link href="../datepicker.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<script  type="text/javascript" language="javascript">
+function confirm_delete()
+{
+  if (confirm("Confirma a exclusão?")==true)
+    return true;
+  else
+    return false;
+}
+</script>
+  <form id="Form1" runat="server">
+
+  <table class="ms-main" cellpadding="0" cellspacing="0" border="0" width="100%" style="height: 100%">
+    <tr style="height:100%">
+	    <td style="height: 100%">
+	        <table width="100%" cellspacing="0" cellpadding="0" style="height: 100%">
+	            <tr>
+                    <td class="ms-titleareaframe" colspan="2" style="height: 20px">
+                        <img alt="" src="../_layouts/images/facinTopo.gif" style="left: 39px; position: absolute; top: 7px"/>
+                    </td>
+	                <td valign="top" id="onetidPageTitleAreaFrame" class='ms-pagetitleareaframe' nowrap style="height: 20px; width: 669px;">
+	                    <table id="onetidPageTitleAreaTable" cellpadding="0" cellspacing="0" width="100%" border="0" style="height: 12px">
+    	                    <tr>
+	    	                    <td valign="top" class="ms-titlearea" style="height: 21px">
+		    	                    &nbsp;
+		                        </td>
+	                        </tr>
+	                        <tr>
+		                        <td valign="top" id="onetidPageTitle" class="ms-pagetitle" style="height: 100%">
+		                            <h2 class="ms-pagetitle">Sistema de Alocação de Recursos Computacionais</h2>
+		                        </td>
+	                        </tr>
+	                    </table>
+                    </td>
+	                <td class="ms-titlearearight" style="width: 31px; height: 20px;">
+		                <div class="ms-titleareaframe" style='height:100%'></div>
+		            </td>
+	            </tr>
+	            <tr>
+	                <td class="ms-leftareacell" valign="top" id="LeftNavigationAreaCell" style="width: 118px; height: 100%">
+	                    <table class="ms-nav" width="100%" style="height: 100%" cellpadding="0" cellspacing="0">
+		                    <tr>
+		                        <td style="width: 132px">
+		                            <table style="height: 100%" class="ms-navframe" cellpadding="0" cellspacing="0" border="0">
+		                                <tr valign="top">
+			                                <td style="height: 86px; width: 4px;"></td>
+			                                    <td valign="top" style="height: 86px; width: 90%;">
+                                                    &nbsp;<br />
+                                                          <br />
+                                                 <asp:PlaceHolder ID="phMenu" runat="server"></asp:PlaceHolder>
+			                                    </td>
+		                                 </tr>
+		                                 <tr>
+		                                    <td colspan="2" align="center" valign="bottom">
+                                            <div style="background-color:white; border:3px #A8CEFE solid">
+			                                    <br/>
+			                                        <img alt="" src="../_layouts/images/facinTopo.gif" width="70" height="80"/><br/>
+			                                    <br/>
+                                                    &nbsp;<img alt="Centro de Inovação" src="../_layouts/images/logoci_135x58.gif" width="135" height="54"/><br/>
+				                            </div>
+ 
+                                            <img src="/_layouts/images/blank.gif" width="138" height="1" alt=""/></td></tr>
+		                            </table>
+		                        </td>
+		                        <td></td>
+		                    </tr>
+	                    </table>
+	                </td>
+	            <td style="width: 12px">
+	                <div class="ms-pagemargin">
+	                <img src="/_layouts/images/blank.gif" width="10" height="1" alt=""/></div>
+		        </td>
+               <td class='ms-bodyareacell' valign="top" style="width: 100%px">
+        		<table id="MSO_ContentTable" width="100%" style="height: 100%" border="0" cellspacing="0" cellpadding="0" class="ms-propertysheet">
+		            <tr>
+			            <td class='ms-bodyareaframe' valign="top" style="width: 100%; height: 100%">
+                        <div style="text-align: justify"> 
+                            <div  style="width: 100%; height: 64px; text-align:justify" id="DIV1" onclick="return DIV1_onclick()">
+                                <table style="width: 100%; height: 50px;">
+                                    <tr>
+                                        <td style="width: 100%; height: 20px;">
+                                            <asp:PlaceHolder ID="phCalendario" runat="server"></asp:PlaceHolder>
+                                        </td>
+                                        <td style="width: 3px; height: 20px;">
+                                            <asp:LoginStatus ID="lsLogin" runat="server" OnLoggedOut="lsLogin_LoggedOut" CssClass="ms-toolbar"/> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 100%; height: 20px">
+                                        </td>
+                                        <td style="width: 3px; height: 20px;">
+                                            <a href="../Default/About.aspx" class="ms-toolbar">About</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <asp:ContentPlaceHolder ID="cphTitulo" runat="server">
+                            <asp:ScriptManager ID="ScriptManager1" runat="server">
+                            </asp:ScriptManager>
+                            </asp:ContentPlaceHolder>
+                            <br />
+                        </div>
+			            </td>
+		            </tr>
+		        </table>
+       	    </td>
+	            <td class="ms-rightareacell" style="width: 31px"><div class="ms-pagemargin">
+	            <img src="/_layouts/images/blank.gif" width="10" height="1" alt=""/></div>
+		        </td>
+	        </tr>
+            <tr>
+	            <td class="ms-pagebottommarginleft" style="width: 118px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
+	            <td class="ms-pagebottommargin" style="width: 12px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
+	            <td class="ms-bodyareapagemargin" style="height: 11px; width: 669px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
+	            <td class="ms-pagebottommarginright" style="width: 31px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
+            </tr>
+	     </table>
+	    </td>
+	</tr>
+  </table>
+  </form>
+</body>
+
+</html>

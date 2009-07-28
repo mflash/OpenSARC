@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>Sistema de Alocação de Recursos - FACIN</title>
+<style type="text/css">
+.ms-toolbar,.ms-viewtoolbar,.ms-formtoolbar,.ms-toolbarContainer{
+font-family:verdana;
+font-size:8pt;
+text-decoration:none;
+color:#003399;
+}
+.ms-toolbar-togglebutton-on{
+border:1px solid #2353b2;
+background-color:#fffacc;
+}
+table.ms-toolbar,table.ms-viewtoolbar,.ms-toolbarContainer{
+background-image:url('toolgrad.gif');
+background-repeat:repeat-x;
+background-color:#d6e8ff;
+}
+table.ms-toolbar,.ms-toolbarContainer{
+border:1px solid #83b0ec;
+border-collapse:collapse;
+}
+.ms-toolbarContainer{
+padding:2px;
+}
+.ms-toolbarItem{
+display:inline;
+white-space:nowrap;
+}
+.ms-menutoolbar td td.ms-viewselector,.ms-menutoolbar td td.ms-viewselectorhover,.ms-toolbar td td.ms-viewselector,.ms-toolbar td td.ms-viewselectorhover,.ms-authoringcontrols td td.ms-viewselector,.ms-authoringcontrols td td.ms-viewselectorhover,td.ms-viewselector{
+border:solid 1px #d2b47a;
+background-image:url('selectednav.gif');
+background-repeat:repeat-x;
+background-color:#ffe6a0;
+font-weight:bold;
+padding:0px;
+}
+.ms-menutoolbar td td.ms-viewselectorhover,.ms-toolbar td td.ms-viewselectorhover,.ms-authoringcontrols td td.ms-viewselectorhover{
+background-image:url('menubuttonhover.gif');
+background-color:#ffbb47;
+}
+.ms-SPZone td.ms-toolbar table,.ms-SPZoneSelected td.ms-toolbar table{
+background-color:transparent;
+}
+.ms-wikitoolbar a.ms-toolbar{
+color:#124890;
+}
+.ms-wikitoolbar a:hover.ms-toolbar
+{
+text-decoration:underline;
+color:#000000;
+}
+.ms-wikieditthird
+{
+background-image: url('monaco.inf.pucrs.br/facin/_layouts/images/TOOLGRAD.GIF');
+padding-left:3px;
+}
+</style>
+</head>
+<body>

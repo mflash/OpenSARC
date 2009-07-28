@@ -1,0 +1,124 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5CF4A93B-C3BB-4FD0-A6E9-F4B0077C3C03}"
+	ProjectSection(SolutionItems) = preProject
+		FACIN.vsd = FACIN.vsd
+		FACIN.vsmdi = FACIN.vsmdi
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		UNLV.IAP.WebControls.HtmlColorDropDown.dll = UNLV.IAP.WebControls.HtmlColorDropDown.dll
+		UNLV.IAP.WebControls.HtmlColorDropDown.dll.refresh = UNLV.IAP.WebControls.HtmlColorDropDown.dll.refresh
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessData", "BusinessData\BusinessData.csproj", "{E76561B0-EBA4-4A78-A3ED-4D02218900F9}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Facin", "..\WebSites\Facin\", "{E659BEAE-966B-4F4B-9ECC-11EB7A19996C}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFramework = "2.0"
+		Debug.AspNetCompiler.VirtualPath = "/Facin"
+		Debug.AspNetCompiler.PhysicalPath = "..\WebSites\Facin\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Facin\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/Facin"
+		Release.AspNetCompiler.PhysicalPath = "..\WebSites\Facin\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Facin\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "1364"
+	EndProjectSection
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SARC Setup", "SARC Setup\SARC Setup.vdproj", "{C8BF546F-A517-43DD-924B-F36C356EB640}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domingo", "Domingo\Domingo.csproj", "{6E693EFC-D21D-4595-8D23-EFB6948DF5EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessDataTest", "BusinessDataTest\BusinessDataTest.csproj", "{B7E2AA48-380C-4734-8849-0BBA59DEEBDF}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = FACIN.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|.NET = Debug|.NET
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Release|.NET = Release|.NET
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E76561B0-EBA4-4A78-A3ED-4D02218900F9}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{E76561B0-EBA4-4A78-A3ED-4D02218900F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E76561B0-EBA4-4A78-A3ED-4D02218900F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E76561B0-EBA4-4A78-A3ED-4D02218900F9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E76561B0-EBA4-4A78-A3ED-4D02218900F9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E76561B0-EBA4-4A78-A3ED-4D02218900F9}.Release|.NET.ActiveCfg = Release|Any CPU
+		{E76561B0-EBA4-4A78-A3ED-4D02218900F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E76561B0-EBA4-4A78-A3ED-4D02218900F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E76561B0-EBA4-4A78-A3ED-4D02218900F9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E76561B0-EBA4-4A78-A3ED-4D02218900F9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E659BEAE-966B-4F4B-9ECC-11EB7A19996C}.Debug|.NET.ActiveCfg = Debug|.NET
+		{E659BEAE-966B-4F4B-9ECC-11EB7A19996C}.Debug|.NET.Build.0 = Debug|.NET
+		{E659BEAE-966B-4F4B-9ECC-11EB7A19996C}.Debug|Any CPU.ActiveCfg = Debug|.NET
+		{E659BEAE-966B-4F4B-9ECC-11EB7A19996C}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
+		{E659BEAE-966B-4F4B-9ECC-11EB7A19996C}.Debug|Mixed Platforms.Build.0 = Debug|.NET
+		{E659BEAE-966B-4F4B-9ECC-11EB7A19996C}.Release|.NET.ActiveCfg = Debug|.NET
+		{E659BEAE-966B-4F4B-9ECC-11EB7A19996C}.Release|.NET.Build.0 = Debug|.NET
+		{E659BEAE-966B-4F4B-9ECC-11EB7A19996C}.Release|Any CPU.ActiveCfg = Debug|.NET
+		{E659BEAE-966B-4F4B-9ECC-11EB7A19996C}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
+		{E659BEAE-966B-4F4B-9ECC-11EB7A19996C}.Release|Mixed Platforms.Build.0 = Debug|.NET
+		{C8BF546F-A517-43DD-924B-F36C356EB640}.Debug|.NET.ActiveCfg = Debug
+		{C8BF546F-A517-43DD-924B-F36C356EB640}.Debug|Any CPU.ActiveCfg = Debug
+		{C8BF546F-A517-43DD-924B-F36C356EB640}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{C8BF546F-A517-43DD-924B-F36C356EB640}.Release|.NET.ActiveCfg = Release
+		{C8BF546F-A517-43DD-924B-F36C356EB640}.Release|Any CPU.ActiveCfg = Release
+		{C8BF546F-A517-43DD-924B-F36C356EB640}.Release|Mixed Platforms.ActiveCfg = Release
+		{6E693EFC-D21D-4595-8D23-EFB6948DF5EF}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{6E693EFC-D21D-4595-8D23-EFB6948DF5EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E693EFC-D21D-4595-8D23-EFB6948DF5EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E693EFC-D21D-4595-8D23-EFB6948DF5EF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6E693EFC-D21D-4595-8D23-EFB6948DF5EF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6E693EFC-D21D-4595-8D23-EFB6948DF5EF}.Release|.NET.ActiveCfg = Release|Any CPU
+		{6E693EFC-D21D-4595-8D23-EFB6948DF5EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E693EFC-D21D-4595-8D23-EFB6948DF5EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E693EFC-D21D-4595-8D23-EFB6948DF5EF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6E693EFC-D21D-4595-8D23-EFB6948DF5EF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B7E2AA48-380C-4734-8849-0BBA59DEEBDF}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{B7E2AA48-380C-4734-8849-0BBA59DEEBDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7E2AA48-380C-4734-8849-0BBA59DEEBDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7E2AA48-380C-4734-8849-0BBA59DEEBDF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B7E2AA48-380C-4734-8849-0BBA59DEEBDF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B7E2AA48-380C-4734-8849-0BBA59DEEBDF}.Release|.NET.ActiveCfg = Release|Any CPU
+		{B7E2AA48-380C-4734-8849-0BBA59DEEBDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7E2AA48-380C-4734-8849-0BBA59DEEBDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7E2AA48-380C-4734-8849-0BBA59DEEBDF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B7E2AA48-380C-4734-8849-0BBA59DEEBDF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://aldebaran:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = BusinessData\\BusinessData.csproj
+		SccProjectName1 = BusinessData
+		SccLocalPath1 = BusinessData
+		SccProjectUniqueName2 = SARC\u0020Setup\\SARC\u0020Setup.vdproj
+		SccProjectName2 = SARC\u0020Setup
+		SccLocalPath2 = SARC\u0020Setup
+		SccProjectUniqueName3 = Domingo\\Domingo.csproj
+		SccProjectName3 = Domingo
+		SccLocalPath3 = Domingo
+		SccWebProject4 = true
+		SccProjectUniqueName4 = ..\\..\\WebSites\\Facin
+		SccProjectName4 = Facin
+		SccLocalPath4 = C:\\Documents\u0020and\u0020Settings\\urighi\\My\u0020Documents\\Visual\u0020Studio\u00202005\\WebSites\\Facin\\
+		SccProjectEnlistmentChoice4 = 2
+	EndGlobalSection
+EndGlobal

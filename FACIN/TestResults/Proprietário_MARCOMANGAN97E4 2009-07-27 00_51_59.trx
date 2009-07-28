@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="570dcb21-2302-441a-9020-0e02e0fb36d4" name="Proprietário@MARCOMANGAN97E4 2009-07-27 00:51:59" runUser="MARCOMANGAN97E4\Proprietário" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2006">
+  <TestRunConfiguration name="Local Test Run" id="eb17da83-72f2-4f1d-8e7d-74be3ece55af">
+    <Description>This is a default test run configuration for a local test run.</Description>
+    <Deployment runDeploymentRoot="C:\ProjetoFACIN\FACIN\TestResults\Proprietário_MARCOMANGAN97E4 2009-07-27 00_51_59">
+      <DeploymentItem filename="C:\ProjetoFACIN\FACIN\BusinessData\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
+      <DeploymentItem filename="C:\ProjetoFACIN\FACIN\BusinessData\bin\Debug\BusinessData.dll" />
+      <DeploymentItem filename="C:\ProjetoFACIN\FACIN\BusinessData\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll" />
+      <DeploymentItem filename="C:\ProjetoFACIN\FACIN\UNLV.IAP.WebControls.HtmlColorDropDown.dll" />
+      <DeploymentItem filename="C:\ProjetoFACIN\FACIN\BusinessData\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll" />
+      <DeploymentItem filename="C:\ProjetoFACIN\FACIN\BusinessData\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll" />
+    </Deployment>
+    <TestTypeSpecific />
+  </TestRunConfiguration>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" error="0" failed="1" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" passed="0" completed="0" inProgress="0" pending="0" />
+    <RunInfos>
+      <RunInfo computerName="MARCOMANGAN97E4" outcome="Warning" timestamp="2009-07-27T00:52:05.5625000-03:00">
+        <Text>Warning: Test Run deployment issue: The assembly or module 'Microsoft.Practices.ObjectBuilder' directly or indirectly referenced by the test container 'c:\projetofacin\facin\businessdatatest\bin\debug\businessdatatest.dll' was not found.</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+  <Times creation="2009-07-27T00:51:59.8437500-03:00" queuing="2009-07-27T00:52:12.0781250-03:00" start="2009-07-27T00:52:12.4062500-03:00" finish="2009-07-27T00:52:14.4843750-03:00" />
+  <TestDefinitions>
+    <UnitTest name="GetCalendarioByAnoSemestreTest" storage="c:\projetofacin\facin\businessdatatest\bin\debug\businessdatatest.dll" id="855139cf-9f9b-9a9f-fe7f-8016f609aa7c">
+      <Css projectStructure="" iteration="" />
+      <Owners>
+        <Owner name="" />
+      </Owners>
+      <Execution id="60fd7dce-664c-4057-ae3b-aadeeea7f507" />
+      <TestMethod codeBase="C:\ProjetoFACIN\FACIN\BusinessDataTest\bin\Debug\BusinessDataTest.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="BusinessDataTest.CalendariosDAOTest, BusinessDataTest" name="GetCalendarioByAnoSemestreTest" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="855139cf-9f9b-9a9f-fe7f-8016f609aa7c" executionId="60fd7dce-664c-4057-ae3b-aadeeea7f507" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="60fd7dce-664c-4057-ae3b-aadeeea7f507" testId="855139cf-9f9b-9a9f-fe7f-8016f609aa7c" testName="GetCalendarioByAnoSemestreTest" computerName="MARCOMANGAN97E4" duration="00:00:01.0184185" startTime="2009-07-27T00:52:12.5625000-03:00" endTime="2009-07-27T00:52:14.1406250-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d">
+      <Output>
+        <ErrorInfo>
+          <Message>Test method BusinessDataTest.CalendariosDAOTest.GetCalendarioByAnoSemestreTest threw exception:  System.TypeInitializationException: The type initializer for 'Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder.EnterpriseLibraryFactory' threw an exception. ---&gt;  System.IO.FileNotFoundException: Could not load file or assembly 'Microsoft.Practices.ObjectBuilder, Version=1.0.51205.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. O sistema não pode encontrar o arquivo especificado.=== Pre-bind state information ===
+LOG: User = MARCOMANGAN97E4\Proprietário
+LOG: DisplayName = Microsoft.Practices.ObjectBuilder, Version=1.0.51205.0, Culture=neutral, PublicKeyToken=null
+ (Fully-specified)
+LOG: Appbase = file:///C:/Arquivos de programas/Microsoft Visual Studio 9.0/Common7/IDE/
+LOG: Initial PrivatePath = PublicAssemblies;PrivateAssemblies
+Calling assembly : Microsoft.Practices.EnterpriseLibrary.Common, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null.
+===
+LOG: This bind starts in LoadFrom load context.
+WRN: Native image will not be probed in LoadFrom context. Native image will only be probed in default load context, like with Assembly.Load().
+LOG: Using application configuration file: C:\Arquivos de programas\Microsoft Visual Studio 9.0\Common7\IDE\vstesthost.exe.Config
+LOG: Using machine configuration file from c:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\config\machine.config.
+LOG: Policy not being applied to reference at this time (private, custom, partial, or location-based assembly bind).
+LOG: Attempting download of new URL file:///C:/Arquivos de programas/Microsoft Visual Studio 9.0/Common7/IDE/Microsoft.Practices.ObjectBuilder.DLL.
+LOG: Attempting download of new URL file:///C:/Arquivos de programas/Microsoft Visual Studio 9.0/Common7/IDE/Microsoft.Practices.ObjectBuilder/Microsoft.Practices.ObjectBuilder.DLL.
+LOG: Attempting download of new URL file:///C:/Arquivos de programas/Microsoft Visual Studio 9.0/Common7/IDE/PublicAssemblies/Microsoft.Practices.ObjectBuilder.DLL.
+LOG: Attempting download of new URL file:///C:/Arquivos de programas/Microsoft Visual Studio 9.0/Common7/IDE/PublicAssemblies/Microsoft.Practices.ObjectBuilder/Microsoft.Practices.ObjectBuilder.DLL.
+LOG: Attempting download of new URL file:///C:/Arquivos de programas/Microsoft Visual Studio 9.0/Common7/IDE/PrivateAssemblies/Microsoft.Practices.ObjectBuilder.DLL.
+LOG: Attempting download of new URL file:///C:/Arquivos de programas/Microsoft Visual Studio 9.0/Common7/IDE/PrivateAssemblies/Microsoft.Practices.ObjectBuilder/Microsoft.Practices.ObjectBuilder.DLL.
+LOG: Attempting download of new URL file:///C:/Arquivos de programas/Microsoft Visual Studio 9.0/Common7/IDE/Microsoft.Practices.ObjectBuilder.EXE.
+LOG: Attempting download of new URL file:///C:/Arquivos de programas/Microsoft Visual Studio 9.0/Common7/IDE/Microsoft.Practices.ObjectBuilder/Microsoft.Practices.ObjectBuilder.EXE.
+LOG: Attempting download of new URL file:///C:/Arquivos de programas/Microsoft Visual Studio 9.0/Common7/IDE/PublicAssemblies/Microsoft.Practices.ObjectBuilder.EXE.
+LOG: Attempting download of new URL file:///C:/Arquivos de programas/Microsoft Visual Studio 9.0/Common7/IDE/PublicAssemblies/Microsoft.Practices.ObjectBuilder/Microsoft.Practices.ObjectBuilder.EXE.
+LOG: Attempting download of new URL file:///C:/Arquivos de programas/Microsoft Visual Studio 9.0/Common7/IDE/PrivateAssemblies/Microsoft.Practices.ObjectBuilder.EXE.
+LOG: Attempting download of new URL file:///C:/Arquivos de programas/Microsoft Visual Studio 9.0/Common7/IDE/PrivateAssemblies/Microsoft.Practices.ObjectBuilder/Microsoft.Practices.ObjectBuilder.EXE.
+LOG: Attempting download of new URL file:///C:/ProjetoFACIN/FACIN/TestResults/Proprietário_MARCOMANGAN97E4 2009-07-27 00_51_59/Out/Microsoft.Practices.ObjectBuilder.DLL.
+LOG: Attempting download of new URL file:///C:/ProjetoFACIN/FACIN/TestResults/Proprietário_MARCOMANGAN97E4 2009-07-27 00_51_59/Out/Microsoft.Practices.ObjectBuilder/Microsoft.Practices.ObjectBuilder.DLL.
+LOG: Attempting download of new URL file:///C:/ProjetoFACIN/FACIN/TestResults/Proprietário_MARCOMANGAN97E4 2009-07-27 00_51_59/Out/Microsoft.Practices.ObjectBuilder.EXE.
+LOG: Attempting download of new URL file:///C:/ProjetoFACIN/FACIN/TestResults/Proprietário_MARCOMANGAN97E4 2009-07-27 00_51_59/Out/Microsoft.Practices.ObjectBuilder/Microsoft.Practices.ObjectBuilder.EXE.
+.</Message>
+          <StackTrace>    at Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder.EnterpriseLibraryFactory..cctor()
+ --- End of inner exception stack trace ---
+    at Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder.EnterpriseLibraryFactory.BuildUp[T](String id, IConfigurationSource configurationSource)
+   at Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder.NameTypeFactoryBase`1.Create(String name)
+   at Microsoft.Practices.EnterpriseLibrary.Data.DatabaseFactory.CreateDatabase(String name)
+   at BusinessData.DataAccess.CalendariosDAO..ctor() in C:\ProjetoFACIN\FACIN\BusinessData\DataAccess\CalendariosDAO.cs:line 24
+   at BusinessDataTest.CalendariosDAOTest.GetCalendarioByAnoSemestreTest() in C:\ProjetoFACIN\FACIN\BusinessDataTest\CalendariosDAOTest.cs:line 73
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+</TestRun>

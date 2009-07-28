@@ -1,0 +1,43 @@
+C:\FACIN 2008\FACIN\Domingo\obj\Debug\ResolveAssemblyReference.cache
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\DataAccess\FACIN.mdb
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\Domingo.exe.config
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\Domingo.exe
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\Domingo.pdb
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\BusinessData.dll
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\Microsoft.Practices.ObjectBuilder.dll
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.xml
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.xml
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.xml
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\BusinessData.pdb
+C:\FACIN 2008\FACIN\Domingo\bin\Debug\Microsoft.Practices.ObjectBuilder.xml
+C:\FACIN 2008\FACIN\Domingo\obj\Debug\Domingo.exe
+C:\FACIN 2008\FACIN\Domingo\obj\Debug\Domingo.pdb
+C:\FACIN\Domingo\obj\Debug\ResolveAssemblyReference.cache
+C:\FACIN\Domingo\obj\Debug\Domingo.pdb
+C:\ProjetoFACIN\FACIN\Domingo\bin\Debug\DataAccess\FACIN.mdb
+C:\ProjetoFACIN\FACIN\Domingo\bin\Debug\Domingo.exe.config
+C:\ProjetoFACIN\FACIN\Domingo\bin\Debug\Domingo.exe
+C:\ProjetoFACIN\FACIN\Domingo\bin\Debug\Domingo.pdb
+C:\ProjetoFACIN\FACIN\Domingo\bin\Debug\BusinessData.dll
+C:\ProjetoFACIN\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\ProjetoFACIN\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+C:\ProjetoFACIN\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+C:\ProjetoFACIN\FACIN\Domingo\bin\Debug\BusinessData.pdb
+C:\ProjetoFACIN\FACIN\Domingo\obj\Debug\ResolveAssemblyReference.cache
+C:\ProjetoFACIN\FACIN\Domingo\obj\Debug\Domingo.exe
+C:\ProjetoFACIN\FACIN\Domingo\obj\Debug\Domingo.pdb
+C:\OpenSarc\FACIN\Domingo\bin\Debug\DataAccess\FACIN.mdb
+C:\OpenSarc\FACIN\Domingo\bin\Debug\Domingo.exe.config
+C:\OpenSarc\FACIN\Domingo\bin\Debug\Domingo.exe
+C:\OpenSarc\FACIN\Domingo\bin\Debug\Domingo.pdb
+C:\OpenSarc\FACIN\Domingo\bin\Debug\BusinessData.dll
+C:\OpenSarc\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\OpenSarc\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+C:\OpenSarc\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+C:\OpenSarc\FACIN\Domingo\bin\Debug\BusinessData.pdb
+C:\OpenSarc\FACIN\Domingo\obj\Debug\ResolveAssemblyReference.cache
+C:\OpenSarc\FACIN\Domingo\obj\Debug\Domingo.exe
+C:\OpenSarc\FACIN\Domingo\obj\Debug\Domingo.pdb

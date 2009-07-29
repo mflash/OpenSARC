@@ -35,11 +35,3 @@ C:\ProjetoFACIN\FACIN\BusinessData\bin\Debug\UNLV.IAP.WebControls.HtmlColorDropD
 C:\ProjetoFACIN\FACIN\BusinessData\obj\Debug\ResolveAssemblyReference.cache
 C:\ProjetoFACIN\FACIN\BusinessData\obj\Debug\BusinessData.dll
 C:\ProjetoFACIN\FACIN\BusinessData\obj\Debug\BusinessData.pdb
-C:\OpenSarc\FACIN\BusinessData\bin\Debug\DataAccess\FACIN.mdb
-C:\OpenSarc\FACIN\BusinessData\bin\Debug\BusinessData.dll.config
-C:\OpenSarc\FACIN\BusinessData\bin\Debug\BusinessData.dll
-C:\OpenSarc\FACIN\BusinessData\bin\Debug\BusinessData.pdb
-C:\OpenSarc\FACIN\BusinessData\bin\Debug\UNLV.IAP.WebControls.HtmlColorDropDown.dll
-C:\OpenSarc\FACIN\BusinessData\obj\Debug\ResolveAssemblyReference.cache
-C:\OpenSarc\FACIN\BusinessData\obj\Debug\BusinessData.dll
-C:\OpenSarc\FACIN\BusinessData\obj\Debug\BusinessData.pdb

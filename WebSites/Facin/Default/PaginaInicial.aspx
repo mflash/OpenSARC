@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Master/Master.master" 
-CodeFile="PaginaInicial.aspx.cs" Inherits="Default_PaginaInicial"  Title="Sistema de Alocação de Recursos - FACIN"%>
+CodeFile="PaginaInicial.aspx.cs" Inherits="Default_PaginaInicial"  %>
 
 <asp:Content ID="Content2" runat="server" ContentPlaceHolderID="cphTitulo">
 
@@ -14,10 +14,7 @@ CodeFile="PaginaInicial.aspx.cs" Inherits="Default_PaginaInicial"  Title="Sistem
                 <td align="center">
                     <img src="../_layouts/images/logo_facin2.GIF" /></td>
             </tr>
-            <tr>
-                <td align="center" class="ms-toolbar" style="height: 20px">
-                    Versão 1.5 - 29/10/2007</td>
-            </tr>
+            
         </table>
         &nbsp;</div>
 

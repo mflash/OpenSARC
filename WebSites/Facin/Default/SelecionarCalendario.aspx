@@ -20,7 +20,7 @@
                 <table style="width: 100%">
             <tr>
                 <td align="center" class="ms-toolbar" style="font-size: 42px" valign="top">
-                    Bem-Vindo</td>
+                    Calendário</td>
             </tr>
             <tr>
                 <td class="ms-toolbar"> Selecione o calendário que deseja utilizar:

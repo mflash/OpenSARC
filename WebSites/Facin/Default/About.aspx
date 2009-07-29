@@ -3,12 +3,12 @@ CodeFile="About.aspx.cs" Inherits="Default_About"  %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" Runat="Server">   
     <div align="left" class="ms-menutoolbar" style="width: 100%; height: 14px">
         <asp:Label ID="lblLogin" runat="server" CssClass="ms-WPTitle" Text="SOBRE"></asp:Label></div>
-    <table style="width: 760px" align="left">
+    <table  align="left">
     
         <tr>
-        <td align="left" class="ms-toolbar">$Id$</td>
-        <td style="width: 200px"></td>
-        <td ></td>
+        <td align="left" colspan="3" class="ms-toolbar">$Id$</td>
+        
+       
         
         </tr>
     <tr>

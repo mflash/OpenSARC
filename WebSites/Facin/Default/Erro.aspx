@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true"
- CodeFile="Erro.aspx.cs" Inherits="Erro" Title="Sistema de Alocação de Recursos - FACIN" %>
+ CodeFile="Erro.aspx.cs" Inherits="Erro" %>
 
 <%-- Add content controls here --%>
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphTitulo">

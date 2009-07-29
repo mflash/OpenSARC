@@ -41,4 +41,8 @@ public partial class _Default : System.Web.UI.Page
             }
         
     }
+    protected void loginEntrada_Authenticate(object sender, AuthenticateEventArgs e)
+    {
+
+    }
 }

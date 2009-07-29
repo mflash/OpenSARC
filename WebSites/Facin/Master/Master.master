@@ -7,7 +7,7 @@
     
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Sistema de Alocação de Recursos Computacionais - FACIN</title>
+    <title>Open SARC</title>
     <style type="text/css">
         @import url("~/CORE.CSS")
     </style>
@@ -16,6 +16,7 @@
     </style>
     <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
     <link href="../datepicker.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="../_layouts/logo/favicon.ico" >
 </head>
 
 <body>
@@ -36,7 +37,7 @@ function confirm_delete()
 	        <table width="100%" cellspacing="0" cellpadding="0" style="height: 100%">
 	            <tr>
                     <td class="ms-titleareaframe" colspan="2" style="height: 20px">
-                        <img alt="" src="../_layouts/images/facinTopo.gif" style="left: 39px; position: absolute; top: 7px"/>
+                        <img alt="" src="../_layouts/logo/opensarc-logo.gif" style="left: 3px; position: absolute; top: 3px"/>
                     </td>
 	                <td valign="top" id="onetidPageTitleAreaFrame" class='ms-pagetitleareaframe' nowrap style="height: 20px; width: 669px;">
 	                    <table id="onetidPageTitleAreaTable" cellpadding="0" cellspacing="0" width="100%" border="0" style="height: 12px">
@@ -45,11 +46,7 @@ function confirm_delete()
 		    	                    &nbsp;
 		                        </td>
 	                        </tr>
-	                        <tr>
-		                        <td valign="top" id="onetidPageTitle" class="ms-pagetitle" style="height: 100%">
-		                            <h2 class="ms-pagetitle">Sistema de Alocação de Recursos Computacionais</h2>
-		                        </td>
-	                        </tr>
+	                    
 	                    </table>
                     </td>
 	                <td class="ms-titlearearight" style="width: 31px; height: 20px;">
@@ -72,12 +69,7 @@ function confirm_delete()
 		                                 </tr>
 		                                 <tr>
 		                                    <td colspan="2" align="center" valign="bottom">
-                                            <div style="background-color:white; border:3px #A8CEFE solid">
-			                                    <br/>
-			                                        <img alt="" src="../_layouts/images/facinTopo.gif" width="70" height="80"/><br/>
-			                                    <br/>
-                                                    &nbsp;<img alt="Centro de Inovação" src="../_layouts/images/logoci_135x58.gif" width="135" height="54"/><br/>
-				                            </div>
+                                            
  
                                             <img src="/_layouts/images/blank.gif" width="138" height="1" alt=""/></td></tr>
 		                            </table>

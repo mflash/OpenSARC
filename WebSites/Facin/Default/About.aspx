@@ -1,19 +1,19 @@
 <%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" 
-CodeFile="About.aspx.cs" Inherits="Default_About" Title="Sistema de Alocação de Recursos - FACIN" %>
+CodeFile="About.aspx.cs" Inherits="Default_About"  %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" Runat="Server">   
-  <div align="left" class="ms-menutoolbar" style="width: 100%; height: 14px">
+    <div align="left" class="ms-menutoolbar" style="width: 100%; height: 14px">
         <asp:Label ID="lblLogin" runat="server" CssClass="ms-WPTitle" Text="SOBRE"></asp:Label></div>
     <table style="width: 760px" align="left">
     
         <tr>
-        <td align="left" class="ms-toolbar">Versão 1.5 - 29/10/2007</td>
+        <td align="left" class="ms-toolbar">$Id$</td>
         <td style="width: 200px"></td>
         <td ></td>
         
         </tr>
     <tr>
-        <td align="center" colspan="3" class="ms-toolbar" style="font-size: 36pt">
-            Equipe</td>
+        <td align="center" colspan="3" class="ms-toolbar" style="font-size: 20pt">
+            Equipe original do SARC (2007-2009)</td>
     </tr>
     <tr>
        <td style="width: 260px; font-size: 18pt;" class="ms-toolbar">

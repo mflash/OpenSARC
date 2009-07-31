@@ -12,21 +12,23 @@ using System.IO;
 using System.Drawing;
 using System.Text;
 
-public partial class Eventos_DownloadHTML : System.Web.UI.Page
+public partial class Docentes_DownloadHTML : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["DownHtml"] == null)
         {
-            Server.Transfer("~/AcessoProfessores/ListaEventos.aspx");
+            Server.Transfer("~/Docentes/SelecionaTurma.aspx");
         }
         else
         {
-            dgEvento.DataSource = Session["DownHtml"] as DataTable;
-            dgEvento.DataBind();
+            
+            dgAulas.ItemDataBound += new DataGridItemEventHandler(dgAux_ItemDataBound);
+            dgAulas.DataSource = Session["DownHtml"] as DataTable;
+            dgAulas.DataBind();
 
             MemoryStream ms = new MemoryStream();
-            StreamWriter sw = new StreamWriter(ms, Encoding.UTF8);
+            StreamWriter sw = new StreamWriter(ms,Encoding.UTF8);
             HtmlTextWriter txtSaida = new HtmlTextWriter(sw);
             try
             {
@@ -38,7 +40,7 @@ public partial class Eventos_DownloadHTML : System.Web.UI.Page
 
 
                     txtSaida.Write(sr.ReadToEnd());
-                    dgEvento.RenderControl(txtSaida);
+                    dgAulas.RenderControl(txtSaida);
                     txtSaida.Write("\n</body>\n</html>");
                 }
                 catch (Exception ex)
@@ -49,7 +51,7 @@ public partial class Eventos_DownloadHTML : System.Web.UI.Page
                 {
                     sr.Dispose();
                 }
-
+             
             }
             catch (System.IO.IOException)
             {
@@ -61,7 +63,7 @@ public partial class Eventos_DownloadHTML : System.Web.UI.Page
             }
 
             Response.AddHeader("Content-disposition",
-                  "attachment; filename=Eventos.html");
+                  "attachment; filename=Horarios.html");
             Response.ContentType = "application/octet-stream";
 
             try
@@ -74,5 +76,14 @@ public partial class Eventos_DownloadHTML : System.Web.UI.Page
                 ms.Close();
             }
         }
+    }
+
+    void dgAux_ItemDataBound(object sender, DataGridItemEventArgs e)
+    {
+         if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
+         {
+             Label lblAux = (Label)e.Item.FindControl("lblCorDaData");
+             e.Item.BackColor = Color.FromName(lblAux.Text);
+         }
     }
 }

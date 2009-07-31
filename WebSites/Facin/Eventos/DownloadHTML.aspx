@@ -1,6 +1,7 @@
 <%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="DownloadHTML.aspx.cs" Inherits="Eventos_DownloadHTML" Title="Untitled Page"%>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" Runat="Server">
-    <asp:DataGrid ID="dgEvento" runat="server" AutoGenerateColumns="False">
+    <asp:DataGrid ID="dgEvento" runat="server" AutoGenerateColumns="False" 
+        onselectedindexchanged="dgEvento_SelectedIndexChanged">
         <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
         <HeaderStyle BackColor="AliceBlue" CssClass="ms-toolbar" Font-Bold="True" Height="25px"
             HorizontalAlign="Center" />

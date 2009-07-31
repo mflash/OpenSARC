@@ -11,3 +11,16 @@ C:\ProjetoFACIN\FACIN\BusinessDataTest\bin\Debug\BusinessData.pdb
 C:\ProjetoFACIN\FACIN\BusinessDataTest\obj\Debug\ResolveAssemblyReference.cache
 C:\ProjetoFACIN\FACIN\BusinessDataTest\obj\Debug\BusinessDataTest.dll
 C:\ProjetoFACIN\FACIN\BusinessDataTest\obj\Debug\BusinessDataTest.pdb
+C:\OpenSarc\FACIN\BusinessDataTest\bin\Debug\DataAccess\FACIN.mdb
+C:\OpenSarc\FACIN\BusinessDataTest\bin\Debug\BusinessDataTest.dll
+C:\OpenSarc\FACIN\BusinessDataTest\bin\Debug\BusinessDataTest.pdb
+C:\OpenSarc\FACIN\BusinessDataTest\bin\Debug\BusinessData.dll
+C:\OpenSarc\FACIN\BusinessDataTest\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\OpenSarc\FACIN\BusinessDataTest\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+C:\OpenSarc\FACIN\BusinessDataTest\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
+C:\OpenSarc\FACIN\BusinessDataTest\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+C:\OpenSarc\FACIN\BusinessDataTest\bin\Debug\UNLV.IAP.WebControls.HtmlColorDropDown.dll
+C:\OpenSarc\FACIN\BusinessDataTest\bin\Debug\BusinessData.pdb
+C:\OpenSarc\FACIN\BusinessDataTest\obj\Debug\ResolveAssemblyReference.cache
+C:\OpenSarc\FACIN\BusinessDataTest\obj\Debug\BusinessDataTest.dll
+C:\OpenSarc\FACIN\BusinessDataTest\obj\Debug\BusinessDataTest.pdb

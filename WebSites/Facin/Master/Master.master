@@ -7,7 +7,7 @@
     
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Open SARC</title>
+    <title>OpenSARC</title>
     <style type="text/css">
         @import url("~/CORE.CSS")
     </style>
@@ -72,7 +72,8 @@ function confirm_delete()
 		                            <table style="height: 100%" class="ms-navframe" cellpadding="0" cellspacing="0" border="0">
 		                                <tr valign="top">
 			                                <td style="height: 86px; width: 4px;"></td>
-			                                    <td valign="top" style="height: 86px; width: 90%;">
+			                                    <td valign="top" 
+                                                style="padding: 4px; margin: 4px; height: 86px; width: 90%;">
                                                     &nbsp;<br />
                                                           <br />
                                                  <asp:PlaceHolder ID="phMenu" runat="server"></asp:PlaceHolder>
@@ -105,7 +106,7 @@ function confirm_delete()
                                             <asp:PlaceHolder ID="phCalendario" runat="server"></asp:PlaceHolder>
                                         </td>
                                         <td style="width: 3px; height: 20px;">
-                                            <asp:LoginStatus ID="lsLogin" runat="server" OnLoggedOut="lsLogin_LoggedOut" CssClass="ms-toolbar"/> 
+                                            <asp:LoginStatus ID="lsLogin" loginText="Entrar" logoutText="Sair" runat="server" OnLoggedOut="lsLogin_LoggedOut" CssClass="ms-toolbar"/> 
                                         </td>
                                     </tr>
                                     <tr>
@@ -135,7 +136,7 @@ function confirm_delete()
 	            <td class="ms-pagebottommarginleft" style="width: 118px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
 	            <td class="ms-pagebottommargin" style="width: 12px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
 	            <td class="ms-bodyareapagemargin" 
-                    style="height: 11px; width: 669px; text-align: center;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/>(c) 
+                    style="height: 11px; width: 669px; text-align: center;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/>&copy; 
                     2009 OpenSARC, <a href="http://opensarc.sourceforge.net">
                     http://opensarc.sourceforge.net</a>.</td>
 	            <td class="ms-pagebottommarginright" style="width: 31px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>

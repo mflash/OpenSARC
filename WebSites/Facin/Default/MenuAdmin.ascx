@@ -3,7 +3,7 @@
 <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
 <br />
 <div class="ms-quickLaunch">
-<table style="width: 150px">
+<table style="width: 150px" cellpadding="4" cellspacing="4">
     <tr >
         <td align="center" style="height: 28px; width: 341px;" class="ms-sitetitle a">
             Menu</td>

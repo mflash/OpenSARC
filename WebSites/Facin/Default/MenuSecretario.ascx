@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="MenuSecretario.ascx.cs" Inherits="Default_MenuSecretario" %>
 <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
 <br /><div class="ms-quickLaunch">
-    <table style="width: 150px">
+    <table style="width: 150px" cellpadding="4" cellspacing="4">
         <tr>
             <td style="height: 20px;  text-align :center" class="ms-sitetitle a" >
                 Menu</td>

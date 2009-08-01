@@ -2,7 +2,7 @@
 <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
 <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
 <br /><div class="ms-quickLaunch">
-    <table style="width: 150px">
+    <table style="width: 150px" cellpadding="4" cellspacing="4">
         <tr>
             <td style="height: 20px;  text-align :center" class="ms-sitetitle a" >
                 Menu</td>

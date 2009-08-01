@@ -51,7 +51,7 @@ public partial class ImportarDados_DefaultDisciplinas : System.Web.UI.Page
             ddlCalendario.DataValueField = "id";
             ddlCalendario.DataBind();
         }
-        catch (BusinessData.DataAccess.DataAccessException ex)
+        catch (BusinessData.DataAccess.DataAccessException )
         { }
     }
 

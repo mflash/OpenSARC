@@ -61,9 +61,9 @@ public partial class Recursos_AlteraRecurso : System.Web.UI.Page
 
 
                     }
-                    catch (FormatException ex)
+                    catch (FormatException )
                     {
-                        throw ex;
+                        //throw ex;
                         Response.Redirect("~/Recursos/ListaRecursos.aspx");
                     }
 

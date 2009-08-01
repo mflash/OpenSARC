@@ -33,7 +33,7 @@ public partial class CategoriaAtividades_Edit: System.Web.UI.Page
                         txtDescricao.Text = cateAtividade.Descricao;
                         ddlCor.SelectedColor = cateAtividade.Cor;
                     }
-                    catch(FormatException ex)
+                    catch(FormatException )
                     {
                         Response.Redirect("~/CategoriaAtividade/List.aspx");
                     }

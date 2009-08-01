@@ -23,8 +23,7 @@ public partial class Eventos_DownloadHTML : System.Web.UI.Page
         MemoryStream ms = new MemoryStream();
         StreamWriter sw = new StreamWriter(ms, Encoding.UTF8);
         HtmlTextWriter txtSaida = new HtmlTextWriter(sw);
-        Guid idturma = (Guid)Session["TurmaId"];
-        string turma = "***";
+
         try
         {
             //TODO: criar CSS e remover BrowserTop
@@ -41,7 +40,7 @@ public partial class Eventos_DownloadHTML : System.Web.UI.Page
 
 
         }
-        catch (Exception ex)
+        catch (Exception )
         {
             Response.Redirect("~/Default/Erro.aspx");
         }

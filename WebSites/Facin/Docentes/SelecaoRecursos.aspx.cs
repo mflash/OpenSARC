@@ -74,7 +74,7 @@ public partial class Docentes_SelecaoRecursos : System.Web.UI.Page
                     
                     Session.Add("aulaAtual", aulaAtual);
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     Response.Redirect("../Docentes/SelecionaTurma.aspx");
                 }

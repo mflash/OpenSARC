@@ -47,12 +47,12 @@ public partial class Eventos_EditarEventosFuturos : System.Web.UI.Page
                         txtUnidade.Text = evento.Unidade;
                         txtaDescricao.Text = evento.Descricao;
                     }
-                    catch (FormatException ex)
+                    catch (FormatException )
                     {
                         Response.Redirect("~/Eventos/ListaEventosFuturos.aspx");
                     }
                 }
-                catch (BusinessData.DataAccess.DataAccessException ex)
+                catch (BusinessData.DataAccess.DataAccessException )
                 {
                     Response.Redirect("~/Eventos/ListaEventosFuturos.aspx");
                 }

@@ -31,7 +31,7 @@ public partial class Vinculos_Edit : System.Web.UI.Page
                         Faculdade vinc = boVinculos.GetFaculdadeById(new Guid(Request.QueryString["GUID"]));
                         txtDescricao.Text = vinc.Nome;
                     }
-                    catch (FormatException ex)
+                    catch (FormatException )
                     {
                         Response.Redirect("~/Faculdades/List.aspx");  
                     }                

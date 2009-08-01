@@ -60,7 +60,7 @@ public partial class CategoriaDisciplina_Edit: System.Web.UI.Page
                             }
                         }
                     }
-                    catch (FormatException ex)
+                    catch (FormatException )
                     {
                         Response.Redirect("~/CategoriaDisciplina/List.aspx");
                     }

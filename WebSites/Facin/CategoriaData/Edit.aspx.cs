@@ -32,7 +32,7 @@ public partial class CategoriaData_Edit : System.Web.UI.Page
                         ddlCor.SelectedColor = categ.Cor;
                         rbDiaLetivo.SelectedIndex = Convert.ToInt32(categ.DiaLetivo);
                     }
-                    catch (FormatException ex)
+                    catch (FormatException )
                     {
                         Response.Redirect("~/CategoriaData/List.aspx");
                     }

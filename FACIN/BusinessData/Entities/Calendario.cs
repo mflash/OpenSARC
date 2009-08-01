@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BusinessData.Entities
 {
-    public class Calendario : ICalendario, ICloneable
+    public class Calendario : ICalendario, ICloneable, IComparable
     {
         private Guid id;
         private DateTime inicioG1;
@@ -115,6 +115,18 @@ namespace BusinessData.Entities
         public object Clone()
         {
             return Calendario.GetCalendario(id, semestre, ano, datas, inicioG1, inicioG2, fimG2);
+        }
+
+        #endregion
+
+        #region IComparable Members
+
+        public int CompareTo(object obj)
+        {
+            Calendario other = (Calendario) obj;
+            DateTime dataX = new DateTime(this.Ano, this.Semestre * 6, 1);
+            DateTime dataY = new DateTime(other.Ano, other.Semestre * 6, 1);
+            return DateTime.Compare(dataX, dataY);            
         }
 
         #endregion

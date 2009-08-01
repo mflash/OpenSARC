@@ -42,8 +42,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 {
                     Server.Transfer("~/Default/Erro.aspx?Erro=O sistema está bloqueado.");
                 }
-                else if ((AppState)Session["AppState"] != AppState.Requisicoes)
-                    Server.Transfer("~/Default/Erro.aspx?Erro=Os recursos já foram distribuídos.");
+                //else if ((AppState)Session["AppState"] != AppState.Requisicoes)
+                //    Server.Transfer("~/Default/Erro.aspx?Erro=Os recursos já foram distribuídos.");
                 else
                 {
                     if (Session["Calendario"] == null)

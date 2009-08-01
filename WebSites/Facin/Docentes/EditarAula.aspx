@@ -120,6 +120,7 @@ function popitup(url) {
                 </EditItemTemplate>
             </asp:TemplateColumn>
             
+            <asp:ButtonColumn CommandName="SelectLab" Text="L"></asp:ButtonColumn>
             <asp:ButtonColumn CommandName="Select" Text="Recurso" ></asp:ButtonColumn>
                        
             <asp:TemplateColumn HeaderText="Recursos Selecionados" >

@@ -41,3 +41,15 @@ C:\OpenSarc\FACIN\Domingo\bin\Debug\BusinessData.pdb
 C:\OpenSarc\FACIN\Domingo\obj\Debug\ResolveAssemblyReference.cache
 C:\OpenSarc\FACIN\Domingo\obj\Debug\Domingo.exe
 C:\OpenSarc\FACIN\Domingo\obj\Debug\Domingo.pdb
+G:\OpenSARC\FACIN\Domingo\bin\Debug\DataAccess\FACIN.mdb
+G:\OpenSARC\FACIN\Domingo\bin\Debug\Domingo.exe.config
+G:\OpenSARC\FACIN\Domingo\bin\Debug\Domingo.exe
+G:\OpenSARC\FACIN\Domingo\bin\Debug\Domingo.pdb
+G:\OpenSARC\FACIN\Domingo\bin\Debug\BusinessData.dll
+G:\OpenSARC\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+G:\OpenSARC\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+G:\OpenSARC\FACIN\Domingo\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+G:\OpenSARC\FACIN\Domingo\bin\Debug\BusinessData.pdb
+G:\OpenSARC\FACIN\Domingo\obj\Debug\ResolveAssemblyReference.cache
+G:\OpenSARC\FACIN\Domingo\obj\Debug\Domingo.exe
+G:\OpenSARC\FACIN\Domingo\obj\Debug\Domingo.pdb

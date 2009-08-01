@@ -15,6 +15,7 @@ EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Facin", "..\WebSites\Facin\", "{E659BEAE-966B-4F4B-9ECC-11EB7A19996C}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "2.0"
+		ProjectReferences = "{E76561B0-EBA4-4A78-A3ED-4D02218900F9}|BusinessData.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/Facin"
 		Debug.AspNetCompiler.PhysicalPath = "..\WebSites\Facin\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Facin\"

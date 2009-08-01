@@ -22,7 +22,7 @@ public partial class Default_SelecionaCalendario_ : System.Web.UI.UserControl
         {
             CalendariosBO cadastroCalendarios = new CalendariosBO();
             List<Calendario> listaCalendarios = cadastroCalendarios.GetCalendarios();
-            //listaCalendarios.Sort(); // Não funciona, por que ?
+            listaCalendarios.Sort();
 
             if (listaCalendarios.Count == 0)
             {

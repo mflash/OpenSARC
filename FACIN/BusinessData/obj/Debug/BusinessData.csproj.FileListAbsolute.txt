@@ -43,3 +43,11 @@ C:\OpenSarc\FACIN\BusinessData\bin\Debug\UNLV.IAP.WebControls.HtmlColorDropDown.
 C:\OpenSarc\FACIN\BusinessData\obj\Debug\ResolveAssemblyReference.cache
 C:\OpenSarc\FACIN\BusinessData\obj\Debug\BusinessData.dll
 C:\OpenSarc\FACIN\BusinessData\obj\Debug\BusinessData.pdb
+G:\OpenSARC\FACIN\BusinessData\bin\Debug\DataAccess\FACIN.mdb
+G:\OpenSARC\FACIN\BusinessData\bin\Debug\BusinessData.dll.config
+G:\OpenSARC\FACIN\BusinessData\bin\Debug\BusinessData.dll
+G:\OpenSARC\FACIN\BusinessData\bin\Debug\BusinessData.pdb
+G:\OpenSARC\FACIN\BusinessData\bin\Debug\UNLV.IAP.WebControls.HtmlColorDropDown.dll
+G:\OpenSARC\FACIN\BusinessData\obj\Debug\ResolveAssemblyReference.cache
+G:\OpenSARC\FACIN\BusinessData\obj\Debug\BusinessData.dll
+G:\OpenSARC\FACIN\BusinessData\obj\Debug\BusinessData.pdb

@@ -108,7 +108,7 @@ namespace BusinessData.Entities
             return b.ToString();
         }
 
-
+        public static int getSomething() { return 1; }
 
         #region ICloneable Members
 
@@ -126,7 +126,7 @@ namespace BusinessData.Entities
             Calendario other = (Calendario) obj;
             DateTime dataX = new DateTime(this.Ano, this.Semestre * 6, 1);
             DateTime dataY = new DateTime(other.Ano, other.Semestre * 6, 1);
-            return DateTime.Compare(dataX, dataY);            
+            return DateTime.Compare(dataY, dataX);
         }
 
         #endregion

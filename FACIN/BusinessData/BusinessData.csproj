@@ -201,7 +201,6 @@
     </Compile>
     <Compile Include="Reports\SARCFACINDataSet.cs">
       <DependentUpon>SARCFACINDataSet.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\SARCFACINDataSet.Designer.cs">
       <AutoGen>True</AutoGen>

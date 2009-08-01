@@ -23,7 +23,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao = new BusinessData.DataAccess.TurmaDAO();
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -46,7 +46,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -74,7 +74,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -114,7 +114,7 @@ namespace BusinessData.BusinessLogic
                     Logger.Write(log);
                 }
 
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -131,7 +131,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetTurma(id);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -144,7 +144,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetTurma(id,cal);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }

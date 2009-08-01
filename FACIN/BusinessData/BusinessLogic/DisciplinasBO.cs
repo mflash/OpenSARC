@@ -23,7 +23,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao = new DisciplinasDAO();
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -46,7 +46,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -74,7 +74,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -139,7 +139,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetDisciplinaInCalendario(id);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -151,7 +151,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetDisciplina(cod,cal);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -163,7 +163,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetDisciplina(cod, calId);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -175,7 +175,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetDisciplinas(calendario);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -187,7 +187,7 @@ namespace BusinessData.BusinessLogic
             {
                return dao.GetDisciplinas(calendarioId);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -199,7 +199,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetDisciplinas();
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }

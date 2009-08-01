@@ -24,7 +24,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao.Add(umAcesso);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }

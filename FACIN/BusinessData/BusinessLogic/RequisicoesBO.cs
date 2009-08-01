@@ -18,7 +18,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao = new BusinessData.DataAccess.RequisicaoDAO();
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -30,7 +30,7 @@ namespace BusinessData.BusinessLogic
                 {
                     dao.DeleteRequisicao(id);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -43,7 +43,7 @@ namespace BusinessData.BusinessLogic
                 {
                     dao.InsertRequisicao(requisicao);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -55,7 +55,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetRequisicaoByAulaAndPrioridade(aulaId, cal, prioridade);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -67,7 +67,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetRequisicaoByAulaPrioridadeAndCategoria(aulaId, cal, prioridade, catrecursoId);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -79,7 +79,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetRequisicoesPorAula(aulaId, cal);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -115,7 +115,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetRequisicaoByTurma(turma, cal);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -128,7 +128,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao.SetAtendida(reqId);
             }
-            catch (DataAccessException e)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -140,7 +140,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao.UpdateRequisicoes(req);
             }
-            catch (DataAccessException e)
+            catch (DataAccessException )
             {
                 throw;
             }

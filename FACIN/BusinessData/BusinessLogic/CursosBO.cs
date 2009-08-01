@@ -23,7 +23,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao = new CursosDAO();
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -52,7 +52,7 @@ namespace BusinessData.BusinessLogic
                     //guarda log no banco
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -85,7 +85,7 @@ namespace BusinessData.BusinessLogic
                     //guarda log no banco
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -117,7 +117,7 @@ namespace BusinessData.BusinessLogic
                     //guarda log no banco
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -134,7 +134,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetCurso(cod);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }

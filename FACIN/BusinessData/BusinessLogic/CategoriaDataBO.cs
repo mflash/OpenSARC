@@ -47,7 +47,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -75,7 +75,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -102,7 +102,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -119,7 +119,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetCategoriaData(id);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -131,7 +131,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetCategoriaData();
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }

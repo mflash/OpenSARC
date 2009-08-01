@@ -19,7 +19,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao = new BusinessData.DataAccess.HorariosEventoDAO();
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -32,7 +32,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao.RemoveHorariosEvento(id);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -44,7 +44,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao.InsereHorariosEvento(horariosEvento);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -56,7 +56,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetHorariosEvento(id);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -79,7 +79,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetHorariosEventosByIdDetalhados(eventoId);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }

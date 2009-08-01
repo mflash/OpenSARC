@@ -315,7 +315,7 @@ namespace BusinessData.DataAccess
                                                         leitor.GetString(leitor.GetOrdinal("Unidade")));
                             listaAux.Add(aux);
                         }
-                        catch (NullReferenceException ex)
+                        catch (NullReferenceException )
                         {
                             return listaAux;
                         }

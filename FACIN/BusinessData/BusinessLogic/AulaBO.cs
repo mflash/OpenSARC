@@ -25,7 +25,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao = new BusinessData.DataAccess.AulasDAO();
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -50,7 +50,7 @@ namespace BusinessData.BusinessLogic
                     //guarda log no banco
                     Logger.Write(log);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -64,7 +64,7 @@ namespace BusinessData.BusinessLogic
                 {
                     dao.RemoveAula(id);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -84,7 +84,7 @@ namespace BusinessData.BusinessLogic
                 {
                     dao.InsereAula(aula);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -101,7 +101,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetAula(id);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }

@@ -24,7 +24,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao = new BusinessData.DataAccess.EventoDAO();
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -49,7 +49,7 @@ namespace BusinessData.BusinessLogic
                 //guarda log no banco
                 Logger.Write(log);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -74,7 +74,7 @@ namespace BusinessData.BusinessLogic
                 //guarda log no banco
                 Logger.Write(log);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -98,7 +98,7 @@ namespace BusinessData.BusinessLogic
                 //guarda log no banco
                 Logger.Write(log);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -110,7 +110,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetEvento(id);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -123,7 +123,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetEventos();
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -135,7 +135,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetEventos(autorId, data, hora);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -147,7 +147,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetEventosByCal(id);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -159,7 +159,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetEventos(autorId, cal);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -172,7 +172,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetEventosNaoOcorridos(calId);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }

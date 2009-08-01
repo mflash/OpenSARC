@@ -16,7 +16,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao = new BusinessData.DataAccess.DatasDAO();
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }
@@ -31,7 +31,7 @@ namespace BusinessData.BusinessLogic
                     {
                         dao.DeletaData(id, data);
                     }
-                    catch (DataAccess.DataAccessException ex)
+                    catch (DataAccess.DataAccessException )
                     {
                         throw;
                     }
@@ -51,7 +51,7 @@ namespace BusinessData.BusinessLogic
                 {
                     dao.InsereData(data, cal.Id);
                 }
-                catch (DataAccess.DataAccessException ex)
+                catch (DataAccess.DataAccessException )
                 {
                     throw;
                 }
@@ -69,7 +69,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetDatasByCalendario(id);
             }
-            catch (DataAccess.DataAccessException ex)
+            catch (DataAccess.DataAccessException )
             {
                 throw;
             }

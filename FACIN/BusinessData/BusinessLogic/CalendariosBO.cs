@@ -23,7 +23,7 @@ namespace BusinessData.BusinessLogic
             {
                 dao = new CalendariosDAO();
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -46,7 +46,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -74,7 +74,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -102,7 +102,7 @@ namespace BusinessData.BusinessLogic
                     log.MachineName = Dns.GetHostName();
                     Logger.Write(log);
                 }
-                catch (DataAccessException ex)
+                catch (DataAccessException )
                 {
                     throw;
                 }
@@ -119,7 +119,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetCalendarios();
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -131,7 +131,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetCalendario(cod);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }
@@ -143,7 +143,7 @@ namespace BusinessData.BusinessLogic
             {
                 return dao.GetCalendarioByAnoSemestre(ano, semestre);
             }
-            catch (DataAccessException ex)
+            catch (DataAccessException )
             {
                 throw;
             }

@@ -91,7 +91,7 @@ namespace BusinessData.DataAccess.SPA
 
                             discip = disciDAO.GetDisciplina(disciplinaCodigo, calendarioId);
                         }
-                        catch (Exception exc)
+                        catch (Exception )
                         {
                             CriaLOG(leitor);
                             continue;
@@ -104,7 +104,7 @@ namespace BusinessData.DataAccess.SPA
 
                             prof = profDAO.GetProfessorByMatricula(matriculaProfessor);
                         }
-                        catch (Exception exc)
+                        catch (Exception )
                         {
                             CriaLOG(leitor);
                             continue;
@@ -118,7 +118,7 @@ namespace BusinessData.DataAccess.SPA
                             cur = curDAO.GetCurso(codigoCurso);
                         }
                         
-                        catch (Exception exc)
+                        catch (Exception )
                         {
                             CriaLOG(leitor);
                             continue;

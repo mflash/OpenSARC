@@ -17,7 +17,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
         if (Session["Calendario"] != null)
         {
             Label lbl = new Label();
-            lbl.Text = "Alterar Calendário:";
+            lbl.Text = "Calendário:";
             lbl.CssClass = "ms-toolbar";
             phCalendario.Controls.Add(lbl);
             
@@ -25,6 +25,14 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             calendar.CalendarioSelecionado += new EventHandler(calendar_CalendarioSelecionado);
             phCalendario.Controls.Add(calendar);
 
+            Label userEmail = new Label();
+            MembershipUser user = Membership.GetUser();
+            if (user != null)
+            {
+                userEmail.Text = user.Email;
+                userEmail.CssClass = "ms-toolbar";
+                phActiveUser.Controls.Add(userEmail);
+            }
             if (Roles.IsUserInRole("Admin"))
             {
                 Control menu = LoadControl("~/Default/MenuAdmin.ascx");

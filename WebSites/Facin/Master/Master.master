@@ -103,11 +103,15 @@ function confirm_delete()
                             <div  style="width: 100%; height: 64px; text-align:justify" id="DIV1" >
                                 <table style="width: 100%; height: 20px;">
                                     <tr>
-                                        <td style="width: 100%; height: 20px;">
+                                        <td style="width: 60%; height: 20px;">
                                             <asp:PlaceHolder ID="phCalendario" runat="server"></asp:PlaceHolder>
+                                            
                                         </td>
-                                        <td style="width: 3px; height: 20px;">
-                                            <asp:LoginStatus ID="lsLogin" loginText="Entrar" logoutText="Sair" runat="server" OnLoggedOut="lsLogin_LoggedOut" CssClass="ms-toolbar"/> 
+                                        <td style="height: 20px; text-align: right;">
+                                            
+                                            <asp:PlaceHolder ID="phActiveUser" runat="server"></asp:PlaceHolder>
+                                       
+                                            | <asp:LoginStatus ID="lsLogin" loginText="Entrar" logoutText="Sair" runat="server" OnLoggedOut="lsLogin_LoggedOut" CssClass="ms-toolbar"/> 
                                         </td>
                                     </tr>
                                 </table>

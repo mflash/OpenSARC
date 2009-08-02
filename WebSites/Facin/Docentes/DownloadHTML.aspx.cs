@@ -1,18 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Configuration;
-using System.Collections;
-using System.Web;
-using System.Web.Security;
+using System.Drawing;
+using System.IO;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-using System.IO;
-using System.Drawing;
-using System.Text;
 using BusinessData.BusinessLogic;
-using System.Collections.Generic;
 using BusinessData.Entities;
 
 public partial class Docentes_DownloadHTML : System.Web.UI.Page
@@ -28,11 +22,9 @@ public partial class Docentes_DownloadHTML : System.Web.UI.Page
         if (Session["TurmaId"] == null)
         {
             // FIXME: nem sempre o usuário estava na ListaEventos.
-            Server.Transfer("~/AcessoProfessores/ListaEventos.aspx");
+            Server.Transfer("~/Docentes/ListaEventos.aspx");
             return;
         }
-
-
 
         dgAulas.ItemDataBound += new DataGridItemEventHandler(dgAux_ItemDataBound);
         dgAulas.DataSource = Session["DownHtml"] as DataTable;
@@ -46,9 +38,6 @@ public partial class Docentes_DownloadHTML : System.Web.UI.Page
         string titulo = "***";
         try
         {
-            //Guid idturma = (Guid)Session["TurmaId"];
-            //cal = (Calendario)Session["Calendario"];
-
             AulaBO AulaBO = new AulaBO();
             List<Aula> listaAulas = null;
             try
@@ -65,9 +54,6 @@ public partial class Docentes_DownloadHTML : System.Web.UI.Page
             titulo = disciplina.Cod + "-"+disciplina.Cred + " " +disciplina.Nome + " (" + turma.Numero + ")";
 
             txtSaida.Write("<html>\n");
-            //txt
-            //Saida.Write("<head>\n\t<link href=\"http://localhost:1364/Facin/_layouts/css/exporthtml.css\" rel=\"stylesheet\" type=\"text/css\">\n</head>\n");
-            //TODO: falta css! 
             txtSaida.Write("<head>\n</head>\n");
             txtSaida.Write("<body>\n");
             txtSaida.Write("<H1>\n" + titulo + "</H1>\n");
@@ -87,6 +73,7 @@ public partial class Docentes_DownloadHTML : System.Web.UI.Page
         Response.AddHeader("Content-disposition",
               "attachment; filename=cronograma.html");
         Response.ContentType = "text/html";
+        Response.ContentEncoding = Encoding.UTF8;
 
         try
         {

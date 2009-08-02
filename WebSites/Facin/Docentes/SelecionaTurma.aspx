@@ -177,7 +177,7 @@
                 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
                 </asp:BoundField>
                 
-                <asp:BoundField HeaderText="N&#250;mero da Turma" DataField="Numero">
+                <asp:BoundField HeaderText="Turma" DataField="Numero">
                 <ControlStyle Width="100px"></ControlStyle>
                 <ItemStyle CssClass="ms-toolbar"></ItemStyle>
                 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>

@@ -5,7 +5,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default"  %>
 <%-- Add content controls here --%>
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphTitulo">
     <div align="left" class="ms-menutoolbar" style="width: 100%; height: 14px">
-        <asp:Label ID="lblLogin" runat="server" CssClass="ms-WPTitle" Text="LOGIN"></asp:Label></div>
+        <asp:Label ID="lblLogin" runat="server" CssClass="ms-WPTitle" Text="ENTRAR"></asp:Label></div>
     <table style="width: 100%">
         <tr>
             <td align="center"  valign="top" colspan="2" style="text-align: left">
@@ -46,7 +46,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default"  %>
                             DestinationPageUrl="~/Default/SelecionarCalendario.aspx" 
                             OnLoginError="loginEntrada_LoginError" TitleText="Entre com sua matrícula e senha no OpenSARC:" 
                             >
-                    <TitleTextStyle CssClass="ms-wikieditthird" Font-Bold="False" Font-Names="Verdana"
+                    <TitleTextStyle CssClass="ms-toolbar" Font-Bold="False" Font-Names="Verdana"
                         Font-Size="12px" />
                     <CheckBoxStyle CssClass="ms-toolbar" />
                     <InstructionTextStyle CssClass="ms-toolbar" />

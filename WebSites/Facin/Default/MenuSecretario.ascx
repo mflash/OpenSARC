@@ -20,7 +20,7 @@
                     <span style="color: #3966bf">Visualizar Alocações</span></a>
                     <a href="../Alocacoes/GerenciarRecursos.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Gerenciar Recursos</span></a>
-                <a href="../AcessoProfessores/AterarSenha.aspx" class="ms-SPLink">
+                <a href="../Docentes/AterarSenha.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Alterar Senha</span></a>
                     <a href="../Secretarios/VisualizarAtividades.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Visualizar Atividades</span></a>

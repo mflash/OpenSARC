@@ -18,9 +18,9 @@
                 </table>
                  <a href="../Common/RelatorioDeAcessos.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Relatório de Acessos</span></a>
-                <a href="../AcessoProfessores/SelecionaTurma.aspx" class="ms-SPLink">
+                <a href="../Docentes/SelecionaTurma.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Listar Turmas/Eventos</span></a>
-                <a href="../AcessoProfessores/AterarSenha.aspx" class="ms-SPLink">
+                <a href="../Docentes/AterarSenha.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Alterar Senha</span></a>
                 
                 <table border="0" cellpadding="0" cellspacing="0" class="ms-navheader" width="100%">

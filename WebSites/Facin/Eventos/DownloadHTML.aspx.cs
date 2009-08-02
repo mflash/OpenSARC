@@ -13,7 +13,7 @@ public partial class Eventos_DownloadHTML : System.Web.UI.Page
     {
         if (Session["DownHtml"] == null)
         {
-            Server.Transfer("~/AcessoProfessores/ListaEventos.aspx");
+            Server.Transfer("~/Docentes/ListaEventos.aspx");
             return;
         }
 

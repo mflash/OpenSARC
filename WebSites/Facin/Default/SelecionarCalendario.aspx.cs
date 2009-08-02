@@ -10,13 +10,26 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using BusinessData.Entities;
 using BusinessData.BusinessLogic;
+using System.Collections.Generic;
 
 public partial class Default_SelecionarCalendario : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {        
         this.selecionaCalendario.CalendarioSelecionado += new EventHandler(SelecionaCalendario_CalendarioSelecionado);
-
+        // //Caso não exista um calendário selecionado, opta pelo calendário mais recente.
+        Calendario c = Session["Calendario"] as Calendario;
+        if (c == null)
+        {
+            CalendariosBO cadastroCalendarios = new CalendariosBO();
+            List<Calendario> listaCalendarios = cadastroCalendarios.GetCalendarios();
+            listaCalendarios.Sort();
+            Session["Calendario"] = listaCalendarios[0];
+            ConfigBO controleConfiguracoes = new ConfigBO();
+            Session["AppState"] = controleConfiguracoes.GetAppState(Session["Calendario"] as Calendario);
+            //TODO: o redirecionamento é diferente para cada Role :(
+            Server.Transfer("~/AcessoProfessores/SelecionaTurma.aspx");
+        }
     }
 
     protected void SelecionaCalendario_CalendarioSelecionado(object sender, EventArgs e)
@@ -37,7 +50,7 @@ public partial class Default_SelecionarCalendario : System.Web.UI.Page
             AppState estadoAtual = (AppState)Session["AppState"];
             if (estadoAtual != AppState.Admin)
             {
-                Response.Redirect("~/AcessoProfessores/SelecionaTurma.aspx");
+                Response.Redirect("~/Docentes/SelecionaTurma.aspx");
             }
             ScriptManager.RegisterClientScriptBlock(this,this.GetType(),"Alerta",@"alert('O sistema está bloqueado');",true);
         }

@@ -20,7 +20,7 @@
                 <span style="color: #3966bf">Cadastrar</span></a>
             <a href="../Admin/ListaAdmin.aspx"class="ms-SPLink">
                 <span style="color: #3966bf">Listar</span></a>
-            <a href="../AcessoProfessores/AterarSenha.aspx" class="ms-SPLink">
+            <a href="../Docentes/AterarSenha.aspx" class="ms-SPLink">
                 <span style="color: #3966bf">Alterar senha do admin</span></a>
             <a href="../Common/RelatorioDeAcessos.aspx" class="ms-SPLink">
                  <span style="color: #3966bf">Relatório de Acessos</span></a>   

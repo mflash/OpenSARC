@@ -14,7 +14,7 @@ CodeFile="EditarAula.aspx.cs" Inherits="Docentes_EditarAula" Title="Sistema de A
 
 <asp:Content ID="Content2" runat="server" ContentPlaceHolderID="cphTitulo">
 
-<script  type="text/javascript" language="javascript">
+    <script  type="text/javascript" language="javascript">
 
 function popitup(url) {
 	newwindow=window.open(url,'name','height=140,width=333');

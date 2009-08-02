@@ -9,6 +9,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using BusinessData.Entities;
+using BusinessData.BusinessLogic;
+using System.Collections.Generic;
 
 public partial class Master_MasterFacin : System.Web.UI.MasterPage
 {
@@ -42,8 +44,40 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             {
                 if (Session["AppState"] != null && ((AppState)Session["AppState"]) != AppState.Admin)
                 {
+                    ProfessoresBO controleProfessores = new ProfessoresBO();
+                    TurmaBO turmaBO = new TurmaBO();
                     Control menu = LoadControl("~/Default/MenuProfessor.ascx");
-                    phMenu.Controls.Add(menu);
+                    Calendario cal = (Calendario)Session["Calendario"];
+                    //MembershipUser user = Membership.GetUser();
+                    Guid professorId = new Guid(user.ProviderUserKey.ToString());
+
+                    Professor prof = (Professor)controleProfessores.GetPessoaById(professorId);
+                    AppState estado = (AppState)Session["AppState"];
+                    string baseURL = null;
+                    if (estado == AppState.Requisicoes)
+                        baseURL = "EditarAula.aspx?GUID=";
+                    if (estado == AppState.AtivoSemestre)
+                        baseURL = "EditarAulaSemestre.aspx?GUID=";
+
+                    try
+                    {
+                        int pos = 1;
+                        List<Turma> listaTurmas = turmaBO.GetTurmas(cal, prof);
+                        foreach (Turma t in listaTurmas)
+                        {
+
+                            Label x = new Label();
+                            x.Text = "<span style=\"padding:4px\"> <a  href=\"" + baseURL + t.Id + "\">" + t.Disciplina + " - " + t.Numero + "</a> </span>";
+                            x.CssClass = "ms-toolbar";
+
+                            //x.("left=3px;top=3px");
+                            menu.Controls.AddAt(pos++, x);
+                        }
+                    }
+                    finally
+                    {
+                        phMenu.Controls.Add(menu);
+                    }                    
                 }
             }
             else if (Roles.IsUserInRole("Secretario"))

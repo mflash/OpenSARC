@@ -100,7 +100,7 @@ function confirm_delete()
 		            <tr>
 			            <td class='style1' valign="top">
                         <div style="text-align: justify"> 
-                            <div  style="width: 100%; height: 64px; text-align:justify" id="DIV1" >
+                            <div  style="width: 100%; height: 29px; text-align:justify" id="DIV1" >
                                 <table style="width: 100%; height: 20px;">
                                     <tr>
                                         <td style="width: 60%; height: 20px;">

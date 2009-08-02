@@ -11,8 +11,15 @@ using System.Web.UI.HtmlControls;
 
 public partial class Default_MenuProfessor : System.Web.UI.UserControl
 {
-    protected void Page_Load(object sender, EventArgs e)
+    
+    //protected void Page_Load(object sender, EventArgs e)
+    protected internal override void OnInit(EventArgs e)
     {
+
+        Label lbl = new Label();
+        lbl.Text = "Algoritmos...";
+        lbl.CssClass = "ms-toolbar";
+        phClassListing.Controls.Add(lbl);
 
     }
 }

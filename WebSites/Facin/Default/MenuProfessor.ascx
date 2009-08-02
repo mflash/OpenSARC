@@ -18,7 +18,7 @@
                 </table>
                 <a href="../Docentes/SelecionaTurma.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Turmas/Eventos</span></a>
-
+<span style="color: #3966bf"><asp:PlaceHolder ID="phClassListing" runat="server"></asp:PlaceHolder></span>
                 <a href="../Common/RelatorioDeAcessos.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Relatório de Acessos</span></a>
                 <a href="../Docentes/AterarSenha.aspx" class="ms-SPLink">

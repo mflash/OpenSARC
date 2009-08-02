@@ -16,10 +16,11 @@
                         </td>
                     </tr>
                 </table>
-                 <a href="../Common/RelatorioDeAcessos.aspx" class="ms-SPLink">
-                    <span style="color: #3966bf">Relatório de Acessos</span></a>
                 <a href="../Docentes/SelecionaTurma.aspx" class="ms-SPLink">
-                    <span style="color: #3966bf">Listar Turmas/Eventos</span></a>
+                    <span style="color: #3966bf">Turmas/Eventos</span></a>
+
+                <a href="../Common/RelatorioDeAcessos.aspx" class="ms-SPLink">
+                    <span style="color: #3966bf">Relatório de Acessos</span></a>
                 <a href="../Docentes/AterarSenha.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Alterar Senha</span></a>
                 

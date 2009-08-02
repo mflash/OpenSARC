@@ -27,8 +27,8 @@ public partial class Default_SelecionarCalendario : System.Web.UI.Page
             Session["Calendario"] = listaCalendarios[0];
             ConfigBO controleConfiguracoes = new ConfigBO();
             Session["AppState"] = controleConfiguracoes.GetAppState(Session["Calendario"] as Calendario);
-            //TODO: o redirecionamento é diferente para cada Role :(
-            Server.Transfer("~/AcessoProfessores/SelecionaTurma.aspx");
+
+            SelecionaCalendario_CalendarioSelecionado(null, null);
         }
     }
 

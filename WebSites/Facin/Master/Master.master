@@ -101,20 +101,13 @@ function confirm_delete()
 			            <td class='style1' valign="top">
                         <div style="text-align: justify"> 
                             <div  style="width: 100%; height: 64px; text-align:justify" id="DIV1" >
-                                <table style="width: 100%; height: 50px;">
+                                <table style="width: 100%; height: 20px;">
                                     <tr>
                                         <td style="width: 100%; height: 20px;">
                                             <asp:PlaceHolder ID="phCalendario" runat="server"></asp:PlaceHolder>
                                         </td>
                                         <td style="width: 3px; height: 20px;">
                                             <asp:LoginStatus ID="lsLogin" loginText="Entrar" logoutText="Sair" runat="server" OnLoggedOut="lsLogin_LoggedOut" CssClass="ms-toolbar"/> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 100%; height: 20px">
-                                        </td>
-                                        <td style="width: 3px; height: 20px;">
-                                            <a href="../Default/About.aspx" class="ms-toolbar">About</a>
                                         </td>
                                     </tr>
                                 </table>
@@ -147,8 +140,8 @@ function confirm_delete()
   </form>
   <div class="ms-toolbar" style="text-align: center">
 &copy; 
-                    2009 OpenSARC, <a href="http://opensarc.sourceforge.net">
-                    http://opensarc.sourceforge.net</a>.</td>  </div>
+                    2009 Open SARC, <a href="http://opensarc.sourceforge.net">
+                    http://opensarc.sourceforge.net</a> -  <a href="../Default/About.aspx" class="ms-toolbar">Sobre...</a></div>
 </body>
 
 </html>

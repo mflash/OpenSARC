@@ -50,7 +50,7 @@
                     </ItemTemplate>
                 </asp:TemplateColumn>
                 
-                <asp:TemplateColumn HeaderText="Horario" > 
+                <asp:TemplateColumn HeaderText="Horário" > 
                     <ItemTemplate>
                         <asp:Label ID="lblHorario" runat="server" ></asp:Label>
                     </ItemTemplate>
@@ -142,18 +142,15 @@
         <table>
             <tr>
                 <td>
-                Turmas Ministradas:    
+                    Minhas Turmas:    
                 </td>
             </tr>
-            <tr>
-            <td class="ms-toolbar" >
-            Selecione uma turma abaixo para editar suas aulas correspondentes:
-            </td>
-            </tr>
+           
         </table>
         </div>
         <div align="center">
-                <asp:Label ID="lblTurmas" runat="server" Visible="false" Text="Você não tem turmas cadastradas."></asp:Label>
+                <asp:Label ID="lblTurmas" runat="server" Visible="False" 
+                    Text="Nenhuma turma cadastrada."></asp:Label>
             </div>
         <br />
         <div align="center">
@@ -207,18 +204,17 @@
             <table>
                 <tr>
                     <td>
-                        Eventos Ministrados:
+                        Meus Eventos:
                     </td>
                 </tr>
-                <tr>
-                    <td class="ms-toolbar" >
-                        Selecione um evento para ver os detalhes:</td>
-                </tr>
+               
             </table>
             
             </div>
             <div align="center">
-                <asp:Label ID="lblEventos" runat="server" Visible="false" Text="Você não tem eventos cadastrados."></asp:Label>
+                <asp:Label ID="lblEventos" runat="server" Visible="False" 
+                    Text="Nenhum evento cadastrado."></asp:Label>
+                <br />
             </div>
             
          <asp:DataGrid ID="dgEventos" 
@@ -238,7 +234,7 @@
                     </ItemTemplate>
                 </asp:TemplateColumn>
                            
-                <asp:TemplateColumn HeaderText="Titulo" > 
+                <asp:TemplateColumn HeaderText="Título" > 
                     <ItemTemplate>
                         <asp:Label ID="lblTitulo" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "Titulo") %>'></asp:Label>
                     </ItemTemplate>
@@ -251,7 +247,7 @@
                 </asp:TemplateColumn>
                 
                 
-                <asp:ButtonColumn CommandName="Horarios" Text="Selecionar"></asp:ButtonColumn>
+                <asp:ButtonColumn CommandName="Horários" Text="Selecionar"></asp:ButtonColumn>
                 
             </Columns>
             </asp:DataGrid>

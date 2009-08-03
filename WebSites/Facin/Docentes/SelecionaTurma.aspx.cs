@@ -53,6 +53,7 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
                     try
                     {
                         listaTurmas = turmaBO.GetTurmas(cal, prof);
+                        listaTurmas.Sort();
                     }
                     catch (Exception ex)
                     {

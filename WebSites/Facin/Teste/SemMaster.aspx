@@ -4,9 +4,9 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<%@ Register Src="../Default/SelecionaCalendario.ascx" TagName="SelecionaCalendario" TagPrefix="uc3" %>
-<%@ Register Src="../Default/MenuProfessor.ascx" TagName="MenuProfessor" TagPrefix="uc2" %>
-<%@ Register Src="../Default/MenuAdmin.ascx" TagName="MenuAdmin" TagPrefix="uc1" %>
+<%@ Register Src="../UserControls/SelecionaCalendario.ascx" TagName="SelecionaCalendario" TagPrefix="uc3" %>
+<%@ Register Src="../UserControls/MenuProfessor.ascx" TagName="MenuProfessor" TagPrefix="uc2" %>
+<%@ Register Src="../UserControls/MenuAdmin.ascx" TagName="MenuAdmin" TagPrefix="uc1" %>
 <%@ Register Assembly="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
     Namespace="System.Web.UI" TagPrefix="asp" %>
     

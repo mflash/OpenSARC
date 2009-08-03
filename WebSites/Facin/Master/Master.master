@@ -1,7 +1,7 @@
 <%@ Master Language="C#" AutoEventWireup="true" CodeFile="Master.master.cs" Inherits="Master_MasterFacin" %>
-<%@ Register Src="../Default/SelecionaCalendario.ascx" TagName="SelecionaCalendario" TagPrefix="uc3" %>
-<%@ Register Src="../Default/MenuProfessor.ascx" TagName="MenuProfessor" TagPrefix="uc2" %>
-<%@ Register Src="../Default/MenuAdmin.ascx" TagName="MenuAdmin" TagPrefix="uc1" %>
+<%@ Register Src="../UserControls/SelecionaCalendario.ascx" TagName="SelecionaCalendario" TagPrefix="uc3" %>
+<%@ Register Src="../UserControls/MenuProfessor.ascx" TagName="MenuProfessor" TagPrefix="uc2" %>
+<%@ Register Src="../UserControls/MenuAdmin.ascx" TagName="MenuAdmin" TagPrefix="uc1" %>
 <%@ Register Assembly="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
     Namespace="System.Web.UI" TagPrefix="asp" %>
     
@@ -27,7 +27,7 @@
     </style>
     <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
     <link href="../datepicker.css" rel="stylesheet" type="text/css" />
-    <link rel="shortcut icon" href="../_layouts/logo/favicon.ico" >
+    <link rel="shortcut icon" href="../_layouts/logo/favicon.ico"/>
 </head>
 
 <body>

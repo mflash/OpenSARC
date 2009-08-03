@@ -22,8 +22,9 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             lbl.Text = "Calendário:";
             lbl.CssClass = "ms-toolbar";
             phCalendario.Controls.Add(lbl);
-            
-            Default_SelecionaCalendario_ calendar = (Default_SelecionaCalendario_)LoadControl("~/Default/SelecionaCalendario.ascx");
+
+            //ASP.default_selecionacalendario_ascx calendar = (ASP.default_selecionacalendario_ascx)LoadControl("~/Default/SelecionaCalendario.ascx");
+            Default_SelecionaCalendario_ calendar = (Default_SelecionaCalendario_)LoadControl("~/UserControls/SelecionaCalendario.ascx");
             calendar.CalendarioSelecionado += new EventHandler(calendar_CalendarioSelecionado);
             phCalendario.Controls.Add(calendar);
 
@@ -37,7 +38,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             }
             if (Roles.IsUserInRole("Admin"))
             {
-                Control menu = LoadControl("~/Default/MenuAdmin.ascx");
+                Control menu = LoadControl("~/UserControls/MenuAdmin.ascx");
                 phMenu.Controls.Add(menu);
             }
             else if (Roles.IsUserInRole("Professor"))
@@ -46,7 +47,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                 {
                     ProfessoresBO controleProfessores = new ProfessoresBO();
                     TurmaBO turmaBO = new TurmaBO();
-                    Control menu = LoadControl("~/Default/MenuProfessor.ascx");
+                    Control menu = LoadControl("~/UserControls/MenuProfessor.ascx");
                     Calendario cal = (Calendario)Session["Calendario"];
                     //MembershipUser user = Membership.GetUser();
                     Guid professorId = new Guid(user.ProviderUserKey.ToString());
@@ -84,7 +85,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             {
                 if (Session["AppState"] != null && ((AppState)Session["AppState"]) != AppState.Admin)
                 {
-                    Control menu = LoadControl("~/Default/MenuSecretario.ascx");
+                    Control menu = LoadControl("~/UserControls/MenuSecretario.ascx");
                     phMenu.Controls.Add(menu);
                 }
             }

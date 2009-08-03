@@ -1,7 +1,7 @@
 <%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="Master_MasterPage" %>
-<%@ Register Src="../Default/SelecionaCalendario.ascx" TagName="SelecionaCalendario" TagPrefix="uc3" %>
-<%@ Register Src="../Default/MenuProfessor.ascx" TagName="MenuProfessor" TagPrefix="uc2" %>
-<%@ Register Src="../Default/MenuAdmin.ascx" TagName="MenuAdmin" TagPrefix="uc1" %>
+<%@ Register Src="../UserControls/SelecionaCalendario.ascx" TagName="SelecionaCalendario" TagPrefix="uc3" %>
+<%@ Register Src="../UserControls/MenuProfessor.ascx" TagName="MenuProfessor" TagPrefix="uc2" %>
+<%@ Register Src="../UserControls/MenuAdmin.ascx" TagName="MenuAdmin" TagPrefix="uc1" %>
 <%@ Register Assembly="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
     Namespace="System.Web.UI" TagPrefix="asp" %>
 

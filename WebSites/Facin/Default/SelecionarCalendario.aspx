@@ -6,10 +6,10 @@
             Title="Sistema de Alocação de Recursos - FACIN"
              %>
 
-<%@ Register Src="SelecionaCalendario.ascx" TagName="SelecionaCalendario"
+<%@ Register Src="../UserControls/SelecionaCalendario.ascx" TagName="SelecionaCalendario"
  TagPrefix="uc2" %>
 
-<%@ Register Src="MenuAdmin.ascx"  
+<%@ Register Src="../UserControls/MenuAdmin.ascx"  
             TagName="MenuAdmin" 
             TagPrefix="uc1" %>
     <asp:Content ID="Content2" runat="server" ContentPlaceHolderID="cphTitulo">

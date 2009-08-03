@@ -6,7 +6,7 @@ using BusinessData.Entities;
 
 namespace BusinessData.Entities
 {
-    public class Turma : IEquatable<Turma>
+    public class Turma : IEquatable<Turma>, IComparable<Turma>
     {
         private Guid id;
         private int numero;
@@ -99,6 +99,17 @@ namespace BusinessData.Entities
                 return true;
             else
                 return false;
+        }
+
+        #endregion
+
+        #region IComparable<Turma> Members
+
+        public int CompareTo(Turma other)
+        {
+            string meuNome   = Disciplina.Nome + " - " + Numero;
+            string outroNome = other.Disciplina.Nome + " - " + other.Numero;
+            return meuNome.CompareTo(outroNome);
         }
 
         #endregion

@@ -64,12 +64,13 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                     {
                         int pos = 1;
                         List<Turma> listaTurmas = turmaBO.GetTurmas(cal, prof);
+                        listaTurmas.Sort();
                         foreach (Turma t in listaTurmas)
                         {
 
                             Label x = new Label();
-                            x.Text = "<span style=\"padding:4px\"> <a  href=\"" + baseURL + t.Id + "\">" + t.Disciplina + " - " + t.Numero + "</a> </span>";
-                            x.CssClass = "ms-toolbar";
+                            x.Text = "<span style=\"padding:4px\"> <a  href=\"" + baseURL + t.Id + "\">" + getNomeCurtoDisciplina(t.Disciplina) + " - " + t.Numero + "</a> </span>";
+                            x.CssClass = "ms-toolbar-small";
 
                             //x.("left=3px;top=3px");
                             menu.Controls.AddAt(pos++, x);
@@ -90,6 +91,35 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                 }
             }
         }
+    }
+
+    /*
+     * Retorna um nome curto para a disciplina, se o tamanho passar de 20 caracteres
+     * (o que cabe no menu lateral com fonte 7, mais o número da turma)
+     */
+    string getNomeCurtoDisciplina(Disciplina disc)
+    {
+        string nome = disc.Nome;
+        if (nome.Length <= 20)
+            return nome;
+        string curto = "";
+        foreach (string pal in nome.Split())
+        {
+            // Se a palavra tiver menos de 5 caracteres (ex: "de", "para", "(SI)") usa como está
+            string palCurta = pal;
+            if (pal.Length > 4)
+            {
+                // Pega as 3 primeiras letras da palavra
+                palCurta = pal.Substring(0, 3);
+                // Se terminar com uma vogal, acrescenta mais uma letra
+                if (palCurta[2] == 'a' || palCurta[2] == 'á' || palCurta[2] == 'e' || palCurta[2] == 'i' || palCurta[2] == 'o'
+                    || palCurta[2] == 'u')
+                    palCurta = pal.Substring(0, 4);
+                palCurta += ". ";
+            }
+            curto += palCurta + " ";
+        }
+        return curto;
     }
 
     void calendar_CalendarioSelecionado(object sender, EventArgs e)

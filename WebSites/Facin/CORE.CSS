@@ -18,11 +18,19 @@ text-align:left;
 .ms-alignright{
 text-align:right;
 }
-.ms-toolbar,.ms-viewtoolbar,.ms-formtoolbar,.ms-toolbarContainer{
+.ms-toolbar,.ms-viewtoolbar,.ms-formtoolbar,.ms-toolbarContainer
+{
 font-family:verdana;
 font-size:8pt;
 text-decoration:none;
 color:#003399;
+}
+.ms-toolbar-small 
+{
+	font-family:Verdana;
+	font-size:7pt;
+	text-decoration:none;
+	color:#0033AA;
 }
 .lblstatus
 {

@@ -18,7 +18,10 @@
     <asp:LinkButton ID="lbtnImportarTurmas" runat="server" OnClick="lbtnImportarTurmas_Click" Width="159px">Importar Turmas</asp:LinkButton></td>
         </tr>
     </table>
-        <asp:Wizard ID="wzImportarTurmas" runat="server" ActiveStepIndex="0" OnFinishButtonClick="wzImportarTurmas_FinishButtonClick" FinishCompleteButtonText="Import" StepNextButtonText="" StepPreviousButtonText="">
+        <asp:Wizard ID="wzImportarTurmas" runat="server" ActiveStepIndex="1" 
+            OnFinishButtonClick="wzImportarTurmas_FinishButtonClick" 
+            FinishCompleteButtonText="Import" StepNextButtonText="" 
+            StepPreviousButtonText="">
             <WizardSteps>
                 <asp:WizardStep runat="server" Title="Turmas com Dados Incompletos">
             <asp:GridView ID="grvTurmasNone" runat="server" AutoGenerateColumns="False" Width="601px" OnRowEditing="grvTurmasNone_RowEditing" OnRowCancelingEdit="grvTurmasNone_RowCancelingEdit" OnRowUpdating="grvTurmasNone_RowUpdating">

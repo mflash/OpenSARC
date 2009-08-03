@@ -44,7 +44,7 @@ public partial class ImportarDados_Default : System.Web.UI.Page
         listaTurmas = sistAcademico.getTurmas(calId.Id);
         grvListaTurmaOk.DataSource = listaTurmas;
         grvListaTurmaOk.DataBind();
-        Session["listaTurmas"] = listaTurmas;
+        //Session["listaTurmas"] = listaTurmas;
         for (int i = 0; i < grvListaTurmaOk.Rows.Count; i++)
         {
             populaDropOk(i, listaTurmas[i].Professor.Nome.ToString());
@@ -262,7 +262,9 @@ public partial class ImportarDados_Default : System.Web.UI.Page
         try
         {
             SPABO sistAcademico = new SPABO();
-            listaTurmas = (IList<Turma>)Session["listaTurmas"];
+            //listaTurmas = (IList<Turma>)Session["listaTurmas"];
+            Calendario calId = (Calendario)(Session["Calendario"]);
+            listaTurmas = sistAcademico.getTurmas(calId.Id);
             sistAcademico.ImportaTurmas(listaTurmas);
             lblSucesso.Text = "Turmas importadas com sucesso!";
         }

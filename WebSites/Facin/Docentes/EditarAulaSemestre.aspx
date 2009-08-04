@@ -138,7 +138,7 @@ function popitup(url,h,w) {
             <asp:TemplateColumn HeaderText="Recursos" >
                 <ItemTemplate>
                     <asp:TextBox ID="lblRecurosAlocados" runat="server" CssClass="ms-toolbar" Height="38px"
-                        Width="300px" TextMode="MultiLine"></asp:TextBox>
+                        Width="200px" TextMode="MultiLine"></asp:TextBox>
                 </ItemTemplate>
             </asp:TemplateColumn>
             

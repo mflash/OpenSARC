@@ -77,7 +77,7 @@ function popitup(url,h,w) {
                 </ItemTemplate>
             </asp:TemplateColumn>
                                 
-            <asp:TemplateColumn HeaderText="Aula">
+            <asp:TemplateColumn HeaderText="#">
                 <ItemTemplate>
                     <asp:Label ID="lblAula" runat="server"></asp:Label>
                 </ItemTemplate>
@@ -118,7 +118,7 @@ function popitup(url,h,w) {
             <asp:TemplateColumn HeaderText="Descri&#231;&#227;o">
                 <ItemTemplate>
                     <asp:TextBox ID="txtDescricao" runat="server" CssClass="ms-toolbar" Height="38px"
-                        Width="400px" TextMode="MultiLine" Text='<%#DataBinder.Eval(Container.DataItem, "DescricaoAtividade") %>'></asp:TextBox>
+                        Width="300px" TextMode="MultiLine" Text='<%#DataBinder.Eval(Container.DataItem, "DescricaoAtividade") %>'></asp:TextBox>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
@@ -134,23 +134,24 @@ function popitup(url,h,w) {
                     <asp:TextBox ID="TextBox6" runat="server"></asp:TextBox>
                 </EditItemTemplate>
             </asp:TemplateColumn>
+
+            <asp:TemplateColumn HeaderText="Recursos" >
+                <ItemTemplate>
+                    <asp:TextBox ID="lblRecurosAlocados" runat="server" CssClass="ms-toolbar" Height="38px"
+                        Width="300px" TextMode="MultiLine"></asp:TextBox>
+                </ItemTemplate>
+            </asp:TemplateColumn>
             
-            <asp:ButtonColumn CommandName="Select" Text="Selecionar"  HeaderText="Recursos Disponíveis"></asp:ButtonColumn>
+            <asp:ButtonColumn CommandName="Select" Text="Alterar" ></asp:ButtonColumn>
             
             <asp:TemplateColumn HeaderText="Recursos_Alocados_id"  Visible="false">
                 <ItemTemplate>
                     <asp:Label ID="lblRecurosAlocadosId" runat="server" ></asp:Label>
                 </ItemTemplate>
             </asp:TemplateColumn>
-                                   
-            <asp:TemplateColumn HeaderText="Recursos Alocados" >
-                <ItemTemplate>
-                    <asp:Label ID="lblRecurosAlocados" runat="server"></asp:Label>
-                </ItemTemplate>
-            </asp:TemplateColumn> 
             
-            <asp:ButtonColumn CommandName="Trocar" Text="Trocar Recurso" ></asp:ButtonColumn>
-            <asp:ButtonColumn CommandName="Transferir" Text="Transferir Recurso"></asp:ButtonColumn>
+            <asp:ButtonColumn CommandName="Trocar" Text="Trocar" ></asp:ButtonColumn>
+            <asp:ButtonColumn CommandName="Transferir" Text="Transferir"></asp:ButtonColumn>
             <asp:ButtonColumn CommandName="Salvar" Text="Salvar"></asp:ButtonColumn>
             
             <asp:TemplateColumn HeaderText="CorDaData" Visible="False"> 

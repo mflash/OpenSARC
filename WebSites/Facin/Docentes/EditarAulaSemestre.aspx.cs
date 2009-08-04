@@ -125,11 +125,15 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
             Label lblDescData = (Label)e.Item.FindControl("lblDescData");
             Label lblCorDaData = (Label)e.Item.FindControl("lblCorDaData");
-            Label lblRecurosAlocados = (Label)e.Item.FindControl("lblRecurosAlocados");
+            TextBox lblRecurosAlocados = (TextBox)e.Item.FindControl("lblRecurosAlocados");
+            lblRecurosAlocados.ReadOnly = true;
             Label lblRecurosAlocadosId = (Label)e.Item.FindControl("lblRecurosAlocadosId");
             Label lblAulaId = (Label)e.Item.FindControl("lblAulaId");
             Label lblHora = (Label)e.Item.FindControl("lblHora");
             Color cor = argb[0];
+
+            Label lbl = (Label)e.Item.FindControl("lblAula");
+            lbl.Text = "";
 
             listCData = cdataBo.GetCategoriaDatas();
 
@@ -155,38 +159,35 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                         data = d;
                 foreach (CategoriaData c in listCData)
                     if (c.Id == data.Categoria.Id)
+                    {
+                        e.Item.BackColor = c.Cor;
+                        lblCorDaData.Text = "True"; 
                         if (!c.DiaLetivo)
                         {
-                            e.Item.BackColor = c.Cor;
                             e.Item.Enabled = false;
                             txtDescricao.Text = c.Descricao;
-                            lblCorDaData.Text = "True";
                         }
                         else
                         {
                             lblDescData.Text = c.Descricao;
                             txtDescricao.Text = c.Descricao + "\n" + txtDescricao.Text;
-                            e.Item.BackColor = c.Cor;
-                            lblCorDaData.Text = "True";
                         }
+                    }
             }
             else
             {
                 e.Item.BackColor = cor;
                 lblCorDaData.Text = "False";
+                lbl.Text = (cont++).ToString();
             }
 
             AlocacaoBO alocBO = new AlocacaoBO();
             List<Recurso> recAlocados = alocBO.GetRecursoAlocadoByAula(dataAtual, lblHora.Text, new Guid(lblAulaId.Text));
 
-
-
-            //string recuros = "";
             if (recAlocados.Count != 0)
             {
                 for (int i = 0; i < recAlocados.Count - 1; i++)
                 {
-
                     lblRecurosAlocados.Text += recAlocados[i].Descricao + ", ";
                     lblRecurosAlocadosId.Text += recAlocados[i].Id + ",";
                 }
@@ -197,10 +198,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             categorias.RemoveAt(0);
             argb.RemoveAt(0);
-
-            //numera as aulas
-            Label lbl = (Label)e.Item.FindControl("lblAula");
-            lbl.Text = (cont++).ToString();
         }
 
     }

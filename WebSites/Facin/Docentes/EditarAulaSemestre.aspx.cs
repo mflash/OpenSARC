@@ -77,7 +77,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                             Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inválido!");
                         }
 
-                        lblTitulo.Text = listaAulas[0].TurmaId.Disciplina.Nome + " Turma-" + listaAulas[0].TurmaId.Numero;
+                        Disciplina d = listaAulas[0].TurmaId.Disciplina;
+                        lblTitulo.Text = d.Cod + "-" + d.Cred + " " + d.Nome + ", turma " + listaAulas[0].TurmaId.Numero;
 
                         foreach (Aula a in listaAulas)
                         {

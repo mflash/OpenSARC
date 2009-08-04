@@ -87,25 +87,27 @@ function popitup(url,h,w) {
                 <ItemStyle VerticalAlign="Middle" />
             </asp:TemplateColumn>
             
-            <asp:TemplateColumn HeaderText="Dia">
+            <asp:TemplateColumn HeaderText="Dia" Visible="False">
                 <ItemTemplate>
                     <asp:Label ID="lblDia" runat="server" Text='<%#(DataHelper.GetDia((DayOfWeek)((DateTime)DataBinder.Eval(Container.DataItem, "Data")).DayOfWeek))%>'></asp:Label>
+                    <asp:Label ID="lblData" runat="server" Text='<%#((DateTime)DataBinder.Eval(Container.DataItem, "Data")).ToShortDateString()%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:Label ID="lblDiaEdit" runat="server" Text='<%#(DataHelper.GetDia((DayOfWeek)((DateTime)DataBinder.Eval(Container.DataItem, "Data")).DayOfWeek))%>'></asp:Label>
                 </EditItemTemplate>
             </asp:TemplateColumn>
             
-            <asp:TemplateColumn HeaderText="Data" >
+            <asp:TemplateColumn HeaderText="Data Hora" >
                 <ItemTemplate>
-                    <asp:Label ID="lblData" runat="server" Text='<%#((DateTime)DataBinder.Eval(Container.DataItem, "Data")).ToShortDateString()%>'></asp:Label>
+                    <asp:Label ID="lblData2" runat="server" Text='<%#((DateTime)DataBinder.Eval(Container.DataItem, "Data")).ToString("dd/MM/yy")%>'></asp:Label>
+                    <asp:Label ID="lblDia2" runat="server" Text='<%#(DataHelper.GetDiaPUCRS((DayOfWeek)((DateTime)DataBinder.Eval(Container.DataItem, "Data")).DayOfWeek))%>'></asp:Label><asp:Label ID="lblHora2" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "Hora") %>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
                 </EditItemTemplate>
             </asp:TemplateColumn>
                      
-            <asp:TemplateColumn HeaderText="Hora">
+            <asp:TemplateColumn HeaderText="Hora" Visible="False">
                 <ItemTemplate>
                     <asp:Label ID="lblHora" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "Hora") %>'></asp:Label>
                 </ItemTemplate>

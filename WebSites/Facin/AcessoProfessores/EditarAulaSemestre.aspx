@@ -100,6 +100,11 @@ function popitup(url,h,w) {
                 <ItemTemplate>
                     <asp:Label ID="lblData" runat="server" Text='<%#((DateTime)DataBinder.Eval(Container.DataItem, "Data")).ToShortDateString()%>'></asp:Label>
                 </ItemTemplate>
+                
+                <ItemTemplate>
+                    <asp:Label ID="lblDia2" runat="server" Text='<%#(DataHelper.GetDia((DayOfWeek)((DateTime)DataBinder.Eval(Container.DataItem, "Data")).DayOfWeek))%>'></asp:Label>
+                </ItemTemplate>
+                
                 <EditItemTemplate>
                     <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
                 </EditItemTemplate>

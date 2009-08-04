@@ -161,8 +161,9 @@ namespace BusinessData.BusinessLogic
 
         public List<Recurso> GetRecursosDisponiveis(DateTime data, string hora)
         {
-            if (usr.IsAdmin())
-            {
+            //FIXME: somente o Admin pode consultar todos os recursos em um dado horario?
+            //if (usr.IsAdmin())
+            //{
                 try
                 {
                     return dao.GetRecursosDisponiveis(data,hora);
@@ -171,11 +172,11 @@ namespace BusinessData.BusinessLogic
                 {
                     throw;
                 }
-            }
-            else
-            {
-                throw new SecurityException("Acesso Negado.");
-            }
+            //}
+            //else
+            //{
+            //    throw new SecurityException("Acesso Negado.");
+            //}
         }
 
         public List<Recurso> GetRecursosAlocados()

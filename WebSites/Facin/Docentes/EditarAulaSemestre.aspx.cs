@@ -26,6 +26,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     List<Color> argb = new List<Color>();
     List<CategoriaData> listCData = new List<CategoriaData>();
     List<CategoriaAtividade> listaAtividades = new List<CategoriaAtividade>();
+    RecursosBO recursosBO = new RecursosBO();
+    Guid dummyGuid = new Guid();
+
     Calendario cal;
     private int cont = 1;
 
@@ -133,12 +136,27 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             Label lblHora = (Label)e.Item.FindControl("lblHora");
             Color cor = argb[0];
 
+            
+
             Label lbl = (Label)e.Item.FindControl("lblAula");
             lbl.Text = "";
 
             listCData = cdataBo.GetCategoriaDatas();
 
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
+
+
+            // FIXME: acrescentar Nenhum na lista de recursos
+            List<Recurso> livres = recursosBO.GetRecursosDisponiveis(dataAtual, lblHora.Text);
+            Recurso dummy = new Recurso();
+            dummy.Descricao = "Nenhum";
+            dummy.Id = dummyGuid;
+            livres.Insert(0, dummy);
+            DropDownList ddlOpcao1 = (DropDownList)e.Item.FindControl("ddlOpcao1");
+            ddlOpcao1.DataValueField = "Id";
+            ddlOpcao1.DataTextField = "Descricao";
+            ddlOpcao1.DataSource = livres;
+            ddlOpcao1.DataBind();
 
             ddlAtividade.DataValueField = "Id";
             ddlAtividade.DataTextField = "Descricao";

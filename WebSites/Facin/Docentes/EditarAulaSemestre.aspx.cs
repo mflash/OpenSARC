@@ -142,7 +142,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
            
             List<Recurso> livres = recursosBO.GetRecursosDisponiveis(dataAtual, lblHora.Text);
             Recurso dummy = new Recurso();
-            dummy.Descricao = "Selecionar";
+            dummy.Descricao = "Selecionar...";
             dummy.Id = dummyGuid;
             livres.Insert(0, dummy);
             DropDownList ddlOpcao1 = (DropDownList)e.Item.FindControl("ddlOpcao1");
@@ -534,6 +534,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         string recString = ddlOpcao1.SelectedValue;
 
         TableCell cell = (TableCell)ddlOpcao1.Parent;
+        
         DataGridItem grid = (DataGridItem)cell.Parent;
         string dataString = ((Label)grid.FindControl("lblData")).Text;
         string horario = ((Label)grid.FindControl("lblHora")).Text;
@@ -564,7 +565,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         }
         else lblRecurosAlocados.Text = "";
 
-
+        //List<Recurso> livres = (List<Recurso>)ddlOpcao1.DataSource;
+        //livres.RemoveAt(ddlOpcao1.SelectedIndex);
+        ddlOpcao1.Items.Remove(ddlOpcao1.Items.FindByValue(ddlOpcao1.SelectedValue));
         ddlOpcao1.SelectedIndex = 0;
     }
 

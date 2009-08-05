@@ -22,72 +22,68 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     List<CategoriaAtividade> listaAtividades = new List<CategoriaAtividade>();
     RecursosBO recursosBO = new RecursosBO();
     Guid dummyGuid = new Guid();
-
+    AlocacaoBO alocBO = new AlocacaoBO();
     Calendario cal;
     private int cont = 1;
 
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
         try
         {
-            if (!IsPostBack)
+            if (IsPostBack)
+                return;
+
+            if (Session["AppState"] != null && ((AppState)Session["AppState"]) == AppState.Admin)
             {
-                if (Session["AppState"] != null && ((AppState)Session["AppState"]) == AppState.Admin)
+                Server.Transfer("~/Default/Erro.aspx?Erro=O sistema está bloqueado.");
+            }
+            else if ((AppState)Session["AppState"] != AppState.AtivoSemestre)
+                Server.Transfer("~/Default/Erro.aspx?Erro=O semestre ainda não foi iniciado.");
+            else
+            {
+                if (Session["Calendario"] == null)
                 {
-                    Server.Transfer("~/Default/Erro.aspx?Erro=O sistema está bloqueado.");
+                    Response.Redirect("../Default/SelecionarCalendario.aspx");
                 }
-                else if ((AppState)Session["AppState"] != AppState.AtivoSemestre)
-                    Server.Transfer("~/Default/Erro.aspx?Erro=O semestre ainda não foi iniciado.");
-                else
+                //FIXME: falta um else aqui?
+                Guid idturma = new Guid();
+                if (Request.QueryString["GUID"] != null)
                 {
-                    if (Session["Calendario"] == null)
+                    try
                     {
-                        Response.Redirect("../Default/SelecionarCalendario.aspx");
+                        idturma = new Guid(Request.QueryString["GUID"]);
                     }
-                    Guid idturma = new Guid();
-                    if (Request.QueryString["GUID"] != null)
+                    catch (FormatException)
                     {
-                        try
-                        {
-                            idturma = new Guid(Request.QueryString["GUID"]);
-                        }
-                        catch (FormatException)
-                        {
-                            Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inválido!");
-                        }
-
-                        Session["TurmaId"] = idturma;
-                        cal = (Calendario)Session["Calendario"];
-
-                        CategoriaAtividadeBO cateBO = new CategoriaAtividadeBO();
-                        listaAtividades = cateBO.GetCategoriaAtividade();
-                        AulaBO AulaBO = new AulaBO();
-                        List<Aula> listaAulas = null;
-                        try
-                        {
-                            listaAulas = AulaBO.GetAulas(idturma);
-                        }
-                        catch (Exception)
-                        {
-                            Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inválido!");
-                        }
-
-                        Disciplina d = listaAulas[0].TurmaId.Disciplina;
-                        lblTitulo.Text = d.Cod + "-" + d.Cred + " " + d.Nome + ", turma " + listaAulas[0].TurmaId.Numero;
-
-                        foreach (Aula a in listaAulas)
-                        {
-                            categorias.Add(a.CategoriaAtividade.Id);
-                            argb.Add(a.CategoriaAtividade.Cor);
-                        }
-
-                        dgAulas.DataSource = listaAulas;
-                        dgAulas.DataBind();
-
-
+                        Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inválido!");
                     }
+
+                    Session["TurmaId"] = idturma;
+                    cal = (Calendario)Session["Calendario"];
+
+                    CategoriaAtividadeBO cateBO = new CategoriaAtividadeBO();
+                    listaAtividades = cateBO.GetCategoriaAtividade();
+                    AulaBO AulaBO = new AulaBO();
+                    List<Aula> listaAulas = null;
+                    try
+                    {
+                        listaAulas = AulaBO.GetAulas(idturma);
+                    }
+                    catch (Exception)
+                    {
+                        Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inválido!");
+                    }
+                    Disciplina d = listaAulas[0].TurmaId.Disciplina;
+                    lblTitulo.Text = d.Cod + "-" + d.Cred + " " + d.Nome + ", turma " + listaAulas[0].TurmaId.Numero;
+
+                    foreach (Aula a in listaAulas)
+                    {
+                        categorias.Add(a.CategoriaAtividade.Id);
+                        argb.Add(a.CategoriaAtividade.Cor);
+                    }
+                    dgAulas.DataSource = listaAulas;
+                    dgAulas.DataBind();
                 }
             }
         }
@@ -95,7 +91,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         {
             Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
         }
-
     }
 
     protected bool VerificaData(DateTime dt)
@@ -130,8 +125,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             Label lblHora = (Label)e.Item.FindControl("lblHora");
             Color cor = argb[0];
 
-
-
             Label lbl = (Label)e.Item.FindControl("lblAula");
             lbl.Text = "";
 
@@ -139,7 +132,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
 
-           
+
             List<Recurso> livres = recursosBO.GetRecursosDisponiveis(dataAtual, lblHora.Text);
             Recurso dummy = new Recurso();
             dummy.Descricao = "Selecionar...";
@@ -528,25 +521,24 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     protected void ddlOpcao1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //FIXME: falta atualizar a lista de recursos disponíveis.
+        //FIXME: tratar problemas de conexão com o servidor e solicitação de recurso indisponível.
         DropDownList ddlOpcao1 = (DropDownList)sender;
-
         string recString = ddlOpcao1.SelectedValue;
 
         TableCell cell = (TableCell)ddlOpcao1.Parent;
-        
         DataGridItem grid = (DataGridItem)cell.Parent;
+
         string dataString = ((Label)grid.FindControl("lblData")).Text;
         string horario = ((Label)grid.FindControl("lblHora")).Text;
         string aulaString = ((Label)grid.FindControl("lblAulaId")).Text;
+
         alocar(recString, dataString, horario, aulaString);
 
+        TextBox lblRecursosAlocados = (TextBox)grid.FindControl("lblRecurosAlocados");
+        Label lblRecursosAlocadosId = (Label)grid.FindControl("lblRecurosAlocadosId");
 
-        TextBox lblRecurosAlocados = (TextBox)grid.FindControl("lblRecurosAlocados");
-        Label lblRecurosAlocadosId = (Label)grid.FindControl("lblRecurosAlocadosId");
-
-        lblRecurosAlocados.Text = "";
-        lblRecurosAlocadosId.Text = "";
+        lblRecursosAlocados.Text = "";
+        lblRecursosAlocadosId.Text = "";
 
         DateTime data = Convert.ToDateTime(dataString);
 
@@ -557,16 +549,14 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         {
             for (int i = 0; i < recAlocados.Count - 1; i++)
             {
-                lblRecurosAlocados.Text += recAlocados[i].Descricao + ", ";
-                lblRecurosAlocadosId.Text += recAlocados[i].Id + ",";
+                lblRecursosAlocados.Text += recAlocados[i].Descricao + ", ";
+                lblRecursosAlocadosId.Text += recAlocados[i].Id + ",";
             }
-            lblRecurosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
-            lblRecurosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
+            lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
+            lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
         }
-        else lblRecurosAlocados.Text = "";
+        else lblRecursosAlocados.Text = "";
 
-        //List<Recurso> livres = (List<Recurso>)ddlOpcao1.DataSource;
-        //livres.RemoveAt(ddlOpcao1.SelectedIndex);
         ddlOpcao1.Items.Remove(ddlOpcao1.Items.FindByValue(ddlOpcao1.SelectedValue));
         ddlOpcao1.SelectedIndex = 0;
     }
@@ -574,9 +564,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     public void alocar(string recString, string dataString, string horario, string aulaString)
     {
-
-        AlocacaoBO alocBO = new AlocacaoBO();
-
         Guid recId = new Guid(recString);
         Guid aulaId = new Guid(aulaString);
         DateTime data = Convert.ToDateTime(dataString);

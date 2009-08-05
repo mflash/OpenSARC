@@ -80,7 +80,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="UNLV.IAP.WebControls.HtmlColorDropDown, Version=1.1.2.1, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\UNLV.IAP.WebControls.HtmlColorDropDown.dll</HintPath>
+      <HintPath>..\..\WebSites\Facin\Bin\UNLV.IAP.WebControls.HtmlColorDropDown.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -7,9 +7,9 @@
         <HeaderStyle CssClass="ms-toolbar" HorizontalAlign="Center" BackColor="AliceBlue" Font-Bold="True" Height="25px" />
         <Columns>
             
-            <asp:TemplateColumn HeaderText="Aula">
+            <asp:TemplateColumn HeaderText="#">
                 <ItemTemplate>
-                    <asp:Label ID="lblAula" runat="server" Text='<%#DataBinder.Eval(Container.DataItem,"Aula") %>'></asp:Label>
+                    <asp:Label ID="lblAula" runat="server" Text='<%#DataBinder.Eval(Container.DataItem,"#") %>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
@@ -17,25 +17,13 @@
                 <ItemStyle VerticalAlign="Middle" />
                 <HeaderStyle CssClass=".ms-wikieditthird" />
             </asp:TemplateColumn>
-            <asp:TemplateColumn HeaderText="Dia">
-                <ItemTemplate>
-                    <asp:Label ID="lblDia" runat="server" Text='<%#(DataBinder.Eval(Container.DataItem, "Dia"))%>'></asp:Label>
-                </ItemTemplate>
-            </asp:TemplateColumn>
 
             <asp:TemplateColumn HeaderText="Data">
                 <ItemTemplate>
-                    <asp:Label ID="lblData" runat="server" Text='<%#(DataBinder.Eval(Container.DataItem, "Data"))%>'></asp:Label>
+                    <asp:Label ID="lblData" runat="server" Text='<%#(DataBinder.Eval(Container.DataItem, "Data Hora"))%>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateColumn>
-
-            <asp:TemplateColumn HeaderText="Hora">
-                <ItemTemplate>
-                    <asp:Label ID="lblHora" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "Hora") %>'></asp:Label>
-                </ItemTemplate>
-                <ItemStyle VerticalAlign="Middle" />
-            </asp:TemplateColumn>
-            
+         
             <asp:TemplateColumn HeaderText="Descri&#231;&#227;o">
                 <ItemTemplate>
                     <asp:Label ID="lblDescricao" runat="server" CssClass="ms-toolbar"

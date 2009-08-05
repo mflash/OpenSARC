@@ -87,15 +87,20 @@ function popitup(url,h,w) {
                 </EditItemTemplate>
                 <ItemStyle VerticalAlign="Middle" />
             </asp:TemplateColumn>
-            
+
             <asp:TemplateColumn HeaderText="Dia" Visible="False">
                 <ItemTemplate>
                     <asp:Label ID="lblDia" runat="server" Text='<%#(DataHelper.GetDia((DayOfWeek)((DateTime)DataBinder.Eval(Container.DataItem, "Data")).DayOfWeek))%>'></asp:Label>
-                    <asp:Label ID="lblData" runat="server" Text='<%#((DateTime)DataBinder.Eval(Container.DataItem, "Data")).ToShortDateString()%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:Label ID="lblDiaEdit" runat="server" Text='<%#(DataHelper.GetDia((DayOfWeek)((DateTime)DataBinder.Eval(Container.DataItem, "Data")).DayOfWeek))%>'></asp:Label>
                 </EditItemTemplate>
+            </asp:TemplateColumn>
+            
+            <asp:TemplateColumn HeaderText="Data" Visible="False">
+                <ItemTemplate>
+                    <asp:Label ID="lblData" runat="server" Text='<%#((DateTime)DataBinder.Eval(Container.DataItem, "Data")).ToShortDateString()%>'></asp:Label>
+                </ItemTemplate>
             </asp:TemplateColumn>
             
             <asp:TemplateColumn HeaderText="Data Hora" >

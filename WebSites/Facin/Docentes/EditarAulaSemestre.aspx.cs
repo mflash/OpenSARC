@@ -489,20 +489,21 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Label lblAux;
         TextBox txtDescricao;
         DropDownList ddlAtividade;
+        TextBox ddlRecursos;
         foreach (DataGridItem item in dgAulas.Items)
         {
             dr = tabela.NewRow();
             lblAux = (Label)item.FindControl("lblAula");
-            dr["Aula"] = lblAux.Text;
+            dr["#"] = lblAux.Text;
 
-            lblAux = (Label)item.FindControl("lblDia");
-            dr["Dia"] = lblAux.Text;
-
-            lblAux = (Label)item.FindControl("lblData");
-            dr["Data"] = lblAux.Text;
+            lblAux = (Label)item.FindControl("lblData2");
+            dr["Data Hora"] = lblAux.Text; 
+            
+            lblAux = (Label)item.FindControl("lblDia2");
+            dr["Data Hora"] += " "+ lblAux.Text;
 
             lblAux = (Label)item.FindControl("lblHora");
-            dr["Hora"] = lblAux.Text;
+            dr["Data Hora"] += lblAux.Text;
 
             txtDescricao = (TextBox)item.FindControl("txtDescricao");
             dr["Descrição"] = txtDescricao.Text;
@@ -510,8 +511,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
             dr["Atividade"] = ddlAtividade.SelectedItem.Text;
 
-            lblAux = (Label)item.FindControl("lblRecurosAlocados");
-            dr["Recursos"] = lblAux.Text;
+            ddlRecursos = (TextBox)item.FindControl("lblRecurosAlocados");
+            dr["Recursos"] = ddlRecursos.Text;
 
             dr["CorDaData"] = item.BackColor.Name;
             tabela.Rows.Add(dr);

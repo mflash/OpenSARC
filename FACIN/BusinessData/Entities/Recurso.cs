@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BusinessData.Entities
 {
-    public class Recurso
+    public class Recurso : IComparable<Recurso>
     {
         private Guid id;
         private string descricao;
@@ -81,5 +81,14 @@ namespace BusinessData.Entities
         {
             return new Recurso(Guid.NewGuid(), descricao, vinculo, categoria, estaDisponivel,listaHB);
         }
+
+        #region IComparable<Recurso> Members
+
+        public int CompareTo(Recurso other)
+        {
+            return this.Descricao.CompareTo(other.Descricao);
+        }
+
+        #endregion
     }
 }

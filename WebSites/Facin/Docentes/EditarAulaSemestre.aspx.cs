@@ -134,6 +134,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
 
             List<Recurso> livres = recursosBO.GetRecursosDisponiveis(dataAtual, lblHora.Text);
+            livres.Sort();
             Recurso dummy = new Recurso();
             dummy.Descricao = "Selecionar...";
             dummy.Id = dummyGuid;

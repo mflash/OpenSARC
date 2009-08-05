@@ -6,6 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		FACIN.vsd = FACIN.vsd
 		FACIN.vsmdi = FACIN.vsmdi
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		SARC.vsmdi = SARC.vsmdi
 		UNLV.IAP.WebControls.HtmlColorDropDown.dll = UNLV.IAP.WebControls.HtmlColorDropDown.dll
 		UNLV.IAP.WebControls.HtmlColorDropDown.dll.refresh = UNLV.IAP.WebControls.HtmlColorDropDown.dll.refresh
 	EndProjectSection
@@ -40,6 +41,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessDataTest", "BusinessDataTest\BusinessDataTest.csproj", "{B7E2AA48-380C-4734-8849-0BBA59DEEBDF}"
 EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = SARC.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
 		Debug|Any CPU = Debug|Any CPU

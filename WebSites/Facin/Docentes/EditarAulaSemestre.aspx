@@ -14,7 +14,8 @@ Title="Sistema de Alocação de Recursos - FACIN" %>
 
 
 <asp:Content ID="Content2" runat="server" ContentPlaceHolderID="cphTitulo">
-<script  type="text/javascript" language="javascript">
+
+    <script  type="text/javascript" language="javascript">
 
 function popitup(url) {
 	newwindow=window.open(url,'name','width=400, height=300, menubar=no, resizable=no');

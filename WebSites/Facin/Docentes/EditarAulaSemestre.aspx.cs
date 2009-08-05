@@ -1,13 +1,7 @@
 using System;
 using System.Data;
-using System.Configuration;
-using System.Collections;
-using System.Web;
-using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using BusinessData.Entities;
 using BusinessData.BusinessLogic;
 using System.Collections.Generic;
@@ -136,7 +130,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             Label lblHora = (Label)e.Item.FindControl("lblHora");
             Color cor = argb[0];
 
-            
+
 
             Label lbl = (Label)e.Item.FindControl("lblAula");
             lbl.Text = "";
@@ -146,7 +140,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
 
 
-            // FIXME: acrescentar Nenhum na lista de recursos
+           
             List<Recurso> livres = recursosBO.GetRecursosDisponiveis(dataAtual, lblHora.Text);
             Recurso dummy = new Recurso();
             dummy.Descricao = "Nenhum";
@@ -157,6 +151,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             ddlOpcao1.DataTextField = "Descricao";
             ddlOpcao1.DataSource = livres;
             ddlOpcao1.DataBind();
+
 
             ddlAtividade.DataValueField = "Id";
             ddlAtividade.DataTextField = "Descricao";
@@ -180,7 +175,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     if (c.Id == data.Categoria.Id)
                     {
                         e.Item.BackColor = c.Cor;
-                        lblCorDaData.Text = "True"; 
+                        lblCorDaData.Text = "True";
                         if (!c.DiaLetivo)
                         {
                             e.Item.Enabled = false;
@@ -362,9 +357,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             Session["Horario"] = lblHora.Text;
             string id = lblaulaId.Text;
             ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
-                @"popitup('TrocarRecurso.aspx?AulaId=" + id + "',400,300);",true);
+                @"popitup('TrocarRecurso.aspx?AulaId=" + id + "',400,300);", true);
 
-            }
+        }
 
         #endregion
 
@@ -526,9 +521,18 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             dr["Recursos"] = lblAux.Text;
 
             dr["CorDaData"] = item.BackColor.Name;
-            tabela.Rows.Add(dr);  
+            tabela.Rows.Add(dr);
         }
         Session["DownHtml"] = tabela;
         Response.Redirect("DownloadHtml.aspx");
+    }
+
+    protected void ddlOpcao1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //FIXME: obter o item selecionado e comparar com o item selecionado anteriormente.
+        // caso sejam diferentes, desalocar o recurso anterior, se existir,
+        // alocar o recurso selecionado e atualizar a lista de recursos disponiveis.
+        DropDownList ddlOpcao1 = (DropDownList)sender;
+        ddlOpcao1.SelectedIndex = 0;
     }
 }

@@ -139,7 +139,8 @@ function popitup(url,h,w) {
 
             <asp:TemplateColumn HeaderText="Recurso Principal">
                 <ItemTemplate>
-                    <asp:DropDownList ID="ddlOpcao1" runat="server" CssClass="ms-toolbar" >
+                    <asp:DropDownList ID="ddlOpcao1" runat="server" CssClass="ms-toolbar" 
+                        AutoPostBack="True" onselectedindexchanged="ddlOpcao1_SelectedIndexChanged" >
                     </asp:DropDownList>
                 </ItemTemplate>
                 <EditItemTemplate>

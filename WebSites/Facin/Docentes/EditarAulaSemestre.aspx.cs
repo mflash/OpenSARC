@@ -139,11 +139,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
 
-
            
             List<Recurso> livres = recursosBO.GetRecursosDisponiveis(dataAtual, lblHora.Text);
             Recurso dummy = new Recurso();
-            dummy.Descricao = "Nenhum";
+            dummy.Descricao = "Selecionar";
             dummy.Id = dummyGuid;
             livres.Insert(0, dummy);
             DropDownList ddlOpcao1 = (DropDownList)e.Item.FindControl("ddlOpcao1");
@@ -529,10 +528,61 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     protected void ddlOpcao1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //FIXME: obter o item selecionado e comparar com o item selecionado anteriormente.
-        // caso sejam diferentes, desalocar o recurso anterior, se existir,
-        // alocar o recurso selecionado e atualizar a lista de recursos disponiveis.
+        //FIXME: falta atualizar a lista de recursos disponíveis.
         DropDownList ddlOpcao1 = (DropDownList)sender;
+
+        string recString = ddlOpcao1.SelectedValue;
+
+        TableCell cell = (TableCell)ddlOpcao1.Parent;
+        DataGridItem grid = (DataGridItem)cell.Parent;
+        string dataString = ((Label)grid.FindControl("lblData")).Text;
+        string horario = ((Label)grid.FindControl("lblHora")).Text;
+        string aulaString = ((Label)grid.FindControl("lblAulaId")).Text;
+        alocar(recString, dataString, horario, aulaString);
+
+
+        TextBox lblRecurosAlocados = (TextBox)grid.FindControl("lblRecurosAlocados");
+        Label lblRecurosAlocadosId = (Label)grid.FindControl("lblRecurosAlocadosId");
+
+        lblRecurosAlocados.Text = "";
+        lblRecurosAlocadosId.Text = "";
+
+        DateTime data = Convert.ToDateTime(dataString);
+
+        AlocacaoBO alocBO = new AlocacaoBO();
+        List<Recurso> recAlocados = alocBO.GetRecursoAlocadoByAula(data, horario, new Guid(aulaString));
+
+        if (recAlocados.Count != 0)
+        {
+            for (int i = 0; i < recAlocados.Count - 1; i++)
+            {
+                lblRecurosAlocados.Text += recAlocados[i].Descricao + ", ";
+                lblRecurosAlocadosId.Text += recAlocados[i].Id + ",";
+            }
+            lblRecurosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
+            lblRecurosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
+        }
+        else lblRecurosAlocados.Text = "";
+
+
         ddlOpcao1.SelectedIndex = 0;
     }
+
+
+    public void alocar(string recString, string dataString, string horario, string aulaString)
+    {
+
+        AlocacaoBO alocBO = new AlocacaoBO();
+
+        Guid recId = new Guid(recString);
+        Guid aulaId = new Guid(aulaString);
+        DateTime data = Convert.ToDateTime(dataString);
+
+        //FIXME: pode ocorrer um problema se outro usuário selecionar o recurso antes...
+        Aula aula = aulaBo.GetAulaById(aulaId);
+        Recurso rec = recursosBO.GetRecursoById(recId);
+        Alocacao aloc = new Alocacao(rec, data, horario, aula, null);
+        alocBO.UpdateAlocacao(aloc);
+    }
+
 }

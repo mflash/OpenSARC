@@ -137,7 +137,7 @@ function popitup(url,h,w) {
                 </EditItemTemplate>
             </asp:TemplateColumn>
 
-            <asp:TemplateColumn HeaderText="Recurso Principal">
+            <asp:TemplateColumn HeaderText="Recursos Disponíveis">
                 <ItemTemplate>
                     <asp:DropDownList ID="ddlOpcao1" runat="server" CssClass="ms-toolbar" 
                         AutoPostBack="True" onselectedindexchanged="ddlOpcao1_SelectedIndexChanged" >
@@ -148,7 +148,7 @@ function popitup(url,h,w) {
                 </EditItemTemplate>
             </asp:TemplateColumn>
 
-            <asp:TemplateColumn HeaderText="Recursos Adicionais" >
+            <asp:TemplateColumn HeaderText="Recursos Selecionados" >
                 <ItemTemplate>
                     <asp:TextBox ID="lblRecurosAlocados" runat="server" CssClass="ms-toolbar" Height="38px"
                         Width="200px" TextMode="MultiLine"></asp:TextBox>

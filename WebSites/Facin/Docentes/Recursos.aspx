@@ -22,38 +22,6 @@
             <ContentTemplate>
         <table >
             <tr>
-                <td class="ms-toolbar" >
-                    Categoria de Recurso:</td>
-                <td >
-                    <asp:DropDownList ID="ddlCategoriaRecurso" runat="server" CssClass="ms-toolbar" AutoPostBack="true"
-                    OnSelectedIndexChanged="ddlCategoriaRecurso_SelectedIndexChanged" Width="177px">
-                    </asp:DropDownList>
-                </td>
-                <td>
-                </td>
-            </tr>
-            <tr>
-                <td class="ms-toolbar"  >
-                    <asp:Label ID="lblRecurso" runat="server" CssClass="ms-toolbar" Text="Recursos Disponíveis:"></asp:Label>
-                </td>
-                <td >
-                    <asp:DropDownList ID="ddlRecurso" runat="server" CssClass="ms-toolbar" Enabled="False" Width="177px">
-                    </asp:DropDownList>
-                 </td>
-                <td align="right">
-                    <asp:Button ID="btnAdicionar" runat="server" CssClass="ms-toolbar" Text="Adicionar"
-                     OnClick="btnAdicionar_Click" Width="80px" />
-                  </td>
-            </tr>
-            <tr>
-                <td >
-                    </td>
-                <td >
-                    &nbsp;</td>
-                <td>
-                </td>
-            </tr>
-            <tr>
                 <td colspan="3">
                     <asp:ListBox ID="LBoxAlocados" runat="server" CssClass="ms-toolbar" Width="340px">
                     </asp:ListBox>

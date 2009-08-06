@@ -125,6 +125,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             Label lblHora = (Label)e.Item.FindControl("lblHora");
             Color cor = argb[0];
 
+            txtDescricao.Attributes.Add("onkeyup", "setDirtyFlag()");
+
             Label lbl = (Label)e.Item.FindControl("lblAula");
             lbl.Text = "";
 
@@ -257,55 +259,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         #endregion
 
-        #region Salvar
-
-        if (e.CommandName == "Salvar")
-        {
-
-            try
-            {
-
-                Label lblaulaId = (Label)e.Item.FindControl("lblAulaId");
-                Label lblData = (Label)e.Item.FindControl("lblData");
-                Label lblHora = (Label)e.Item.FindControl("lblHora");
-                TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
-                DropDownList ddlAtividade = (DropDownList)e.Item.FindControl("ddlAtividade");
-                Label lblCorDaData = (Label)e.Item.FindControl("lblCorDaData");
-                Label lblDescData = (Label)e.Item.FindControl("lblDescData");
-
-                Guid idaula = new Guid(lblaulaId.Text);
-                Guid idturma = (Guid)Session["TurmaId"];
-                Turma turma = turmaBo.GetTurmaById(idturma);
-
-                string hora = lblHora.Text;
-                DateTime data = Convert.ToDateTime(lblData.Text);
-
-                string aux = txtDescricao.Text;
-                string descricao = aux.Substring(aux.IndexOf('\n') + 1);
-
-                Guid idcategoria = new Guid(ddlAtividade.SelectedValue);
-                CategoriaAtividade categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
-
-                if (e.Item.BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
-                    e.Item.BackColor = categoria.Cor;
-
-
-                Aula aula = Aula.GetAula(idaula, turma, hora, data, descricao, categoria);
-
-                aulaBo.UpdateAula(aula);
-
-                txtDescricao.Text = lblDescData.Text + "\n" + descricao;
-                lblResultado.Text = "Alteração realizada com sucesso!";
-
-            }
-            catch (Exception ex)
-            {
-                Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
-            }
-        }
-
-        #endregion
-
         #region Trocar
 
         if (e.CommandName == "Trocar")
@@ -329,6 +282,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             string aux = txtDescricao.Text;
             string descricao = aux.Substring(aux.IndexOf('\n') + 1);
+
+         
+           
 
             Guid idcategoria = new Guid(ddlAtividade.SelectedValue);
             CategoriaAtividade categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
@@ -410,11 +366,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     protected void btnSalvarTudo_Click(object sender, EventArgs e)
     {
-        SalvarTodos();
-    }
-
-    protected void SalvarTodos()
-    {
         DataGridItemCollection t = dgAulas.Items;
         Label lblAulaId;
         Label lblAula;
@@ -459,7 +410,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             if (t[i].BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
                 t[i].BackColor = categoria.Cor;
 
-
+            //FIXME: não deveria atualizar apenas descricao e categoria??
             aula = Aula.GetAula(idaula, turma, hora, data, descricao, categoria);
 
             aulaBo.UpdateAula(aula);
@@ -468,6 +419,15 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         }
 
         lblResultado.Text = "Alteração realizada com sucesso!";
+
+        // TODO: alterar nome do botão.
+        Button salvar = (Button)sender;
+        salvar.Text = "Salvo";
+        salvar.Enabled = false;
+
+        ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
+                @"releaseDirtyFlag();", true);
+
     }
 
     protected void btnExportarHTML_Click(object sender, EventArgs e)
@@ -523,7 +483,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     protected void ddlOpcao1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //FIXME: tratar problemas de conexão com o servidor e solicitação de recurso indisponível.
+        //FIXME: tratar possíveis problemas de conexão com o servidor e solicitação de recurso indisponível.
         DropDownList ddlOpcao1 = (DropDownList)sender;
         string recString = ddlOpcao1.SelectedValue;
 

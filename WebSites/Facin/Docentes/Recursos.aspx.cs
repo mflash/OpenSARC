@@ -22,8 +22,6 @@ public partial class Docentes_Recursos : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            PopulaDDLCategoriaRecursos();
-            ddlRecurso.Items.Add("Selecione");
 
             if (Session["AppState"] != null && ((AppState)Session["AppState"]) == AppState.Admin)
             {
@@ -53,78 +51,8 @@ public partial class Docentes_Recursos : System.Web.UI.Page
         }
     }
 
-    private void PopulaDDLCategoriaRecursos()
-    {
-        CategoriaRecursoBO controleCategorias = new CategoriaRecursoBO();
-        ddlCategoriaRecurso.DataSource = controleCategorias.GetCategoriaRecurso();
-        ddlCategoriaRecurso.DataTextField = "Descricao";
-        ddlCategoriaRecurso.DataValueField = "Id";
-        ddlCategoriaRecurso.DataBind();
-        ddlCategoriaRecurso.Items.Insert(0, "Selecione");
-    }
-
-    protected void ddlCategoriaRecurso_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        if (ddlCategoriaRecurso.SelectedIndex != 0)
-        {
-            DateTime data = Convert.ToDateTime(Session["DataAula"]);
-            string horario = (string)Session["Horario"];
-            Guid catRecId = new Guid(ddlCategoriaRecurso.SelectedValue);
-            
-
-            List<Recurso> listaRecursos = controleRecursos.GetRecursosDisponiveis(data, horario, catRecId);
-            ddlRecurso.DataSource = listaRecursos;
-            ddlRecurso.DataTextField = "Descricao";
-            ddlRecurso.DataValueField = "Id";
-
-            ddlRecurso.DataBind();
-            ddlRecurso.Items.Insert(0, "Selecione");
-
-            ddlCategoriaRecurso.SelectedValue = Convert.ToString(catRecId);
-
-            ddlRecurso.Enabled = true;
-        }
-        else
-        {
-            lblStatus.Text = "";
-            ddlRecurso.SelectedIndex = 0;
-            ddlRecurso.Enabled = false;
-        }
-    }
     
-    protected void btnAdicionar_Click(object sender, EventArgs e)
-    {
-        if (ddlRecurso.SelectedIndex != 0)
-        {
-            DateTime data = Convert.ToDateTime(Session["DataAula"]);
-            string horario = (string)Session["Horario"];
-            Guid aulaId = new Guid(Request.QueryString["AulaId"]);
-            Guid recId = new Guid(ddlRecurso.SelectedValue);
-
-            Aula aula = aulaBO.GetAulaById(aulaId);
-            Recurso rec = controleRecursos.GetRecursoById(recId);
-            Alocacao aloc = new Alocacao(rec,data,horario,aula,null);
-            alocBO.UpdateAlocacao(aloc);
-
-            List<Recurso> recAlocados = alocBO.GetRecursoAlocadoByAula(data, horario, aulaId);
-            LBoxAlocados.DataSource = recAlocados;
-            LBoxAlocados.DataTextField = "Descricao";
-            LBoxAlocados.DataValueField = "Id";
-            LBoxAlocados.DataBind();
-
-            ddlCategoriaRecurso.SelectedIndex = 0;
-            ddlRecurso.SelectedIndex = 0;
-            ddlRecurso.Enabled = false;
-
-            lblStatus.Text = "Recurso adicionado com sucesso.";
-        }
-        else
-        {
-            lblStatus.Text = "Não é possível adicionar este recurso.";
-        }
-        
-    }
-
+   
     private void FechaJanela()
     {
         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "fecha", "window.close()", true);
@@ -150,9 +78,6 @@ public partial class Docentes_Recursos : System.Web.UI.Page
             LBoxAlocados.Items.RemoveAt(LBoxAlocados.SelectedIndex);
 
             lblStatus.Text = "Recurso liberado!";
-            ddlCategoriaRecurso.SelectedIndex = 0;
-            ddlRecurso.SelectedIndex = 0;
-            ddlRecurso.Enabled = false;
         }
         else
         {

@@ -44,7 +44,8 @@ CodeFile="Default.aspx.cs" Inherits="_Default"  %>
                     RememberMeText="Lembrar de mim da próxima vez." UserNameLabelText="Matrícula:"
                     UserNameRequiredErrorMessage="Matrícula não pode ser nula." Width="360px" 
                             DestinationPageUrl="~/Default/SelecionarCalendario.aspx" 
-                            OnLoginError="loginEntrada_LoginError" TitleText="Entre com sua matrícula e senha no OpenSARC:" 
+                            OnLoginError="loginEntrada_LoginError" 
+                            TitleText="Entre com sua matrícula e senha no OpenSARC:" AccessKey="M" BorderPadding="3" 
                             >
                     <TitleTextStyle CssClass="ms-toolbar" Font-Bold="False" Font-Names="Verdana"
                         Font-Size="12px" />

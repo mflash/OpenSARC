@@ -71,12 +71,13 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                 EnableViewState="true" Visible="false" /><div style="width: 244px; height: 30px">
                     <asp:Button ID="btnExportarHTML" runat="server" CssClass="ms-toolbar" OnClick="btnExportarHTML_Click"
                         Text="Exportar HTML" />
-                    <asp:Button ID="btnSalvarTudo" runat="server" CssClass="ms-toolbar" Text="Salvo"
+                    <asp:Button accesskey="S" ID="btnSalvarTudo" runat="server" CssClass="ms-toolbar" Text="Salvo"
                         OnClick="btnSalvarTudo_Click" Enabled="False" />
                 </div>
             <asp:DataGrid ID="dgAulas" runat="server" AutoGenerateColumns="False" Width="100%"
                 HorizontalAlign="Center" OnItemDataBound="dgAulas_ItemDataBound" DataKeyField="Id"
-                OnItemCommand="dgAulas_ItemCommand">
+                OnItemCommand="dgAulas_ItemCommand" 
+                onselectedindexchanged="dgAulas_SelectedIndexChanged">
                 <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
                 <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Center" />
                 <Columns>
@@ -137,7 +138,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                     </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="Atividade">
                         <ItemTemplate>
-                            <asp:DropDownList ID="ddlAtividade" runat="server" CssClass="ms-toolbar">
+                            <asp:DropDownList ID="ddlAtividade" runat="server" CssClass="ms-toolbar" onChange="setDirtyFlag();">
                             </asp:DropDownList>
                         </ItemTemplate>
                         <EditItemTemplate>

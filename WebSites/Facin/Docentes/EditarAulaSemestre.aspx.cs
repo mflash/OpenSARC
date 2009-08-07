@@ -537,4 +537,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         alocBO.UpdateAlocacao(aloc);
     }
 
+    protected void dgAulas_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
 }

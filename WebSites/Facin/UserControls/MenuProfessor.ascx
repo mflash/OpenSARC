@@ -16,7 +16,7 @@
                         </td>
                     </tr>
                 </table>
-                <a href="../Docentes/SelecionaTurma.aspx" class="ms-SPLink">
+                <a accesskey="T" href="../Docentes/SelecionaTurma.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Turmas/Eventos</span></a>
 <span style="color: #3966bf"><asp:PlaceHolder ID="phClassListing" runat="server"></asp:PlaceHolder></span>
                 <a href="../Common/RelatorioDeAcessos.aspx" class="ms-SPLink">

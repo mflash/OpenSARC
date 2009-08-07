@@ -111,7 +111,7 @@ function confirm_delete()
                                             
                                             <asp:PlaceHolder ID="phActiveUser" runat="server"></asp:PlaceHolder>
                                        
-                                            | <asp:LoginStatus ID="lsLogin" loginText="Entrar" logoutText="Sair" runat="server" OnLoggedOut="lsLogin_LoggedOut" CssClass="ms-toolbar"/> 
+                                             | <span class="ms-toolbar"> <a href="http://sourceforge.net/apps/trac/opensarc/wiki/manual" target="_manual">Ajuda</a></span> | <asp:LoginStatus accesskey="R" ID="lsLogin" loginText="Entrar" logoutText="Sair" runat="server" OnLoggedOut="lsLogin_LoggedOut" CssClass="ms-toolbar"/> 
                                         </td>
                                     </tr>
                                 </table>

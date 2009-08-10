@@ -95,18 +95,21 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     protected bool VerificaData(DateTime dt)
     {
-        bool achou = false;
-        int i = 0;
+        //bool achou = false;
+        //int i = 0;
 
-        while ((achou == false) && (i < cal.Datas.Count))
-        {
-            if (dt == cal.Datas[i].Date)
-                achou = true;
-            i++;
-        }
+        foreach(Data data in cal.Datas)
+        //while ((achou == false) && (i < cal.Datas.Count))
+        //{
+            if (dt == data.Date)
+                return true;
+            //if (dt == cal.Datas[i].Date)
+            //    achou = true;
+            //i++;
+        //}
 
-        return achou;
-
+        //return achou;
+        return false;
     }
 
     protected void dgAulas_ItemDataBound(object sender, DataGridItemEventArgs e)
@@ -163,6 +166,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             }
             else if (VerificaData(dataAtual))
             {
+                // FIXME: VerificaData já faz um foreach!
                 foreach (Data d in cal.Datas)
                     if (d.Date == dataAtual)
                         data = d;

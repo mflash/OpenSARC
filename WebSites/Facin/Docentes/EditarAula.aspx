@@ -63,7 +63,7 @@ function popitup(url) {
                 </ItemTemplate>
             </asp:TemplateColumn>
                                 
-            <asp:TemplateColumn HeaderText="Aula">
+            <asp:TemplateColumn HeaderText="#">
                 <ItemTemplate>
                     <asp:Label ID="lblAula" runat="server"></asp:Label>
                 </ItemTemplate>
@@ -72,7 +72,7 @@ function popitup(url) {
                 </EditItemTemplate>
                 <ItemStyle VerticalAlign="Middle" />
             </asp:TemplateColumn>
-            <asp:TemplateColumn HeaderText="Dia">
+            <asp:TemplateColumn HeaderText="Dia" Visible="false">
                 <ItemTemplate>
                     <asp:Label ID="lblDia" runat="server" Text='<%#(DataHelper.GetDia((DayOfWeek)((DateTime)DataBinder.Eval(Container.DataItem, "Data")).DayOfWeek))%>'></asp:Label>
                 </ItemTemplate>
@@ -81,7 +81,7 @@ function popitup(url) {
                 </EditItemTemplate>
             </asp:TemplateColumn>
                 
-            <asp:TemplateColumn HeaderText="Data" >
+            <asp:TemplateColumn HeaderText="Data" Visible="false">
                 <ItemTemplate>
                     <asp:Label ID="lblData" runat="server" Text='<%#((DateTime)DataBinder.Eval(Container.DataItem, "Data")).ToShortDateString()%>'></asp:Label>
                 </ItemTemplate>
@@ -90,12 +90,22 @@ function popitup(url) {
                 </EditItemTemplate>
             </asp:TemplateColumn>
                      
-            <asp:TemplateColumn HeaderText="Hora">
+            <asp:TemplateColumn HeaderText="Hora" Visible="false">
                 <ItemTemplate>
                     <asp:Label ID="lblHora" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "Hora") %>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
+                </EditItemTemplate>
+                <ItemStyle VerticalAlign="Middle" />
+            </asp:TemplateColumn>
+            
+            <asp:TemplateColumn HeaderText="Data / Hora">
+                <ItemTemplate>
+                    <asp:Label ID="lblDataHora" runat="server" Text=''></asp:Label>
+                </ItemTemplate>
+                <EditItemTemplate>
+                    <asp:TextBox ID="TextBox14" runat="server"></asp:TextBox>
                 </EditItemTemplate>
                 <ItemStyle VerticalAlign="Middle" />
             </asp:TemplateColumn>
@@ -120,10 +130,17 @@ function popitup(url) {
                 </EditItemTemplate>
             </asp:TemplateColumn>
             
-            <asp:ButtonColumn CommandName="SelectLab" Text="L"></asp:ButtonColumn>
-            <asp:ButtonColumn CommandName="Select" Text="Recurso" ></asp:ButtonColumn>
+            <asp:TemplateColumn HeaderText="Recurso">
+                <ItemTemplate>
+                    <asp:DropDownList ID="ddlRecurso" runat="server" CssClass="ms-toolbar" >
+                    </asp:DropDownList>
+                </ItemTemplate>
+                <EditItemTemplate>
+                    <asp:TextBox ID="TextBox7" runat="server"></asp:TextBox>
+                </EditItemTemplate>
+            </asp:TemplateColumn>          
                        
-            <asp:TemplateColumn HeaderText="Recursos Selecionados" >
+            <asp:TemplateColumn HeaderText="Selecionados" >
                 <ItemTemplate>
                     <asp:Label ID="lblRecurosSelecionados" runat="server"></asp:Label>
                 </ItemTemplate>

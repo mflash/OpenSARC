@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BusinessData.Entities
 {
-    public class CategoriaRecurso : CategoriaBase, System.IEquatable<CategoriaRecurso>
+    public class CategoriaRecurso : CategoriaBase, System.IEquatable<CategoriaRecurso>, IComparable<CategoriaRecurso>
     {
         public CategoriaRecurso() { }
         public CategoriaRecurso(Guid id, string descricao)
@@ -54,5 +54,14 @@ namespace BusinessData.Entities
         #endregion
 
 
+
+        #region IComparable<CategoriaRecurso> Members
+
+        public int CompareTo(CategoriaRecurso other)
+        {
+            return Descricao.CompareTo(other.Descricao);
+        }
+
+        #endregion
     }
 }

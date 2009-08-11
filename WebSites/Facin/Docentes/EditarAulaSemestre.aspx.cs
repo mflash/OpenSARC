@@ -93,7 +93,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         }
     }
 
-    protected bool VerificaData(DateTime dt)
+    protected Data VerificaData(DateTime dt)
     {
         //bool achou = false;
         //int i = 0;
@@ -102,14 +102,14 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         //while ((achou == false) && (i < cal.Datas.Count))
         //{
             if (dt == data.Date)
-                return true;
+                return data;
             //if (dt == cal.Datas[i].Date)
             //    achou = true;
             //i++;
         //}
 
         //return achou;
-        return false;
+        return null;
     }
 
     protected void dgAulas_ItemDataBound(object sender, DataGridItemEventArgs e)
@@ -158,40 +158,40 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             ddlAtividade.SelectedValue = categorias[0].ToString();
 
-            Data data = null;
+            //Data data = null;
             //verifica as data para pintar as linhas
             if ((dataAtual >= cal.InicioG2))
             {
                 e.Item.BackColor = Color.LightGray;
             }
-            else if (VerificaData(dataAtual))
-            {
-                // FIXME: VerificaData já faz um foreach!
-                foreach (Data d in cal.Datas)
-                    if (d.Date == dataAtual)
-                        data = d;
-                foreach (CategoriaData c in listCData)
-                    if (c.Id == data.Categoria.Id)
-                    {
-                        e.Item.BackColor = c.Cor;
-                        lblCorDaData.Text = "True";
-                        if (!c.DiaLetivo)
-                        {
-                            e.Item.Enabled = false;
-                            txtDescricao.Text = c.Descricao;
-                        }
-                        else
-                        {
-                            lblDescData.Text = c.Descricao;
-                            txtDescricao.Text = c.Descricao + "\n" + txtDescricao.Text;
-                        }
-                    }
-            }
             else
             {
-                e.Item.BackColor = cor;
-                lblCorDaData.Text = "False";
-                lbl.Text = (cont++).ToString();
+                Data data = VerificaData(dataAtual);
+                if (data != null)
+                {
+                    foreach (CategoriaData c in listCData)
+                        if (c.Id == data.Categoria.Id)
+                        {
+                            e.Item.BackColor = c.Cor;
+                            lblCorDaData.Text = "True";
+                            if (!c.DiaLetivo)
+                            {
+                                e.Item.Enabled = false;
+                                txtDescricao.Text = c.Descricao;
+                            }
+                            else
+                            {
+                                lblDescData.Text = c.Descricao;
+                                txtDescricao.Text = c.Descricao + "\n" + txtDescricao.Text;
+                            }
+                        }
+                }
+                else
+                {
+                    e.Item.BackColor = cor;
+                    lblCorDaData.Text = "False";
+                    lbl.Text = (cont++).ToString();
+                }
             }
 
             AlocacaoBO alocBO = new AlocacaoBO();

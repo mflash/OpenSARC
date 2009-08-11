@@ -96,6 +96,31 @@ namespace BusinessData.DataAccess
             return aux;
         }
 
+        public List<Entities.CategoriaRecurso> GetCategoriaRecursoSortedByUse()
+        {
+            DbCommand cmd = baseDados.GetStoredProcCommand("CategoriasRecursoSelectSortedByUse");
+            Entities.CategoriaRecurso aux;
+            List<Entities.CategoriaRecurso> listaAux = new List<BusinessData.Entities.CategoriaRecurso>();
+            try
+            {
+                using (IDataReader leitor = baseDados.ExecuteReader(cmd))
+                {
+                    while (leitor.Read())
+                    {
+                        aux = Entities.CategoriaRecurso.GetCategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaRecursoId")),
+                                                                leitor.GetString(leitor.GetOrdinal("Descricao")));
+                        listaAux.Add(aux);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DataAccessException(ErroMessages.GetErrorMessage(ex.Number), ex);
+            }
+
+            return listaAux;
+        }
+
         public List<Entities.CategoriaRecurso> GetCategoriaRecurso()
         {
             DbCommand cmd = baseDados.GetStoredProcCommand("CategoriasRecursoSelect");
@@ -120,6 +145,5 @@ namespace BusinessData.DataAccess
 
             return listaAux;
         }
-
     }
 }

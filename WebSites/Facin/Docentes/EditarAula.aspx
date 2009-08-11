@@ -22,6 +22,33 @@ function popitup(url) {
 	return false;
 }
 
+var needToConfirm = false;
+
+function setDirtyFlag()
+{
+needToConfirm = true;
+b = $get('ctl00_cphTitulo_btnSalvarTudo');
+b.value = "Salvar Agora";
+b.disabled = false;
+b = $get('ctl00_cphTitulo_btnSalvarTudo2');
+b.value = "Salvar Agora";
+b.disabled = false;
+}
+
+function releaseDirtyFlag()
+{
+needToConfirm = false;
+}
+
+window.onbeforeunload = 
+function exitpop()
+{
+if (needToConfirm)
+{
+return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?";
+}
+}
+
 </script>
 
     <div align="left" class="ms-menutoolbar" style="width: 100%; height: 14px">
@@ -102,7 +129,9 @@ function popitup(url) {
             
             <asp:TemplateColumn HeaderText="Data / Hora">
                 <ItemTemplate>
-                    <asp:Label ID="lblDataHora" runat="server" Text=''></asp:Label>
+                            <asp:Label ID="lblData2" runat="server" Text='<%#((DateTime)DataBinder.Eval(Container.DataItem, "Data")).ToString("dd/MM/yy")%>'></asp:Label>
+                            <asp:Label ID="lblDia2" runat="server" Text='<%#(DataHelper.GetDiaPUCRS((DayOfWeek)((DateTime)DataBinder.Eval(Container.DataItem, "Data")).DayOfWeek))%>'></asp:Label><asp:Label
+                                ID="lblHora2" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "Hora") %>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox ID="TextBox14" runat="server"></asp:TextBox>
@@ -136,13 +165,13 @@ function popitup(url) {
                     </asp:DropDownList>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:TextBox ID="TextBox7" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="TextBox17" runat="server"></asp:TextBox>
                 </EditItemTemplate>
             </asp:TemplateColumn>          
                        
             <asp:TemplateColumn HeaderText="Selecionados" >
                 <ItemTemplate>
-                    <asp:Label ID="lblRecurosSelecionados" runat="server"></asp:Label>
+                    <asp:Label ID="lblRecursosSelecionados" runat="server"></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox ID="TextBox7" runat="server"></asp:TextBox>

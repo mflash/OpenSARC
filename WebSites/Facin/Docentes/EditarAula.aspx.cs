@@ -17,19 +17,20 @@ using System.IO;
 
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
-{
+{          
     AulaBO aulaBo = new AulaBO();
     TurmaBO turmaBo = new TurmaBO();
     CategoriaDataBO cdataBo = new CategoriaDataBO();
     RequisicoesBO reqBo = new RequisicoesBO();
     CategoriaAtividadeBO categoriaBo = new CategoriaAtividadeBO();
+    CategoriaRecursoBO categoriaRecursoBo = new CategoriaRecursoBO();
     List<Guid> categorias = new List<Guid>();
     List<Color> argb = new List<Color>();
     List<CategoriaData> listCData = new List<CategoriaData>();
     List<CategoriaAtividade> listaAtividades = new List<CategoriaAtividade>();
     Calendario cal;
     private int cont = 1;
-
+    Guid dummyGuid = new Guid();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -124,19 +125,24 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
             Label lblDescData = (Label)e.Item.FindControl("lblDescData");
             Label lblCorDaData = (Label)e.Item.FindControl("lblCorDaData");
-            Label lblRecurosSelecionados = (Label)e.Item.FindControl("lblRecurosSelecionados");
+            Label lblRecursosSelecionados = (Label)e.Item.FindControl("lblRecursosSelecionados");
             Label lblAulaId = (Label)e.Item.FindControl("lblAulaId");
             Color cor = argb[0];
 
-            listCData = cdataBo.GetCategoriaDatas();
-            List<Requisicao> listReq = reqBo.GetRequisicoesPorAula(new Guid(lblAulaId.Text), cal);
+            txtDescricao.Attributes.Add("onkeyup", "setDirtyFlag()");
 
-            string recuros = "";
+            Label lbl = (Label)e.Item.FindControl("lblAula");
+            lbl.Text = "";
+
+            listCData = cdataBo.GetCategoriaDatas();
+            List<Requisicao> listReq = reqBo.GetRequisicoesPorAula(new Guid(lblAulaId.Text), cal);            
+
+            string recursos = "";
 
             foreach (Requisicao r in listReq)
-                recuros += r.CategoriaRecurso.Descricao + ", ";
+                recursos += r.CategoriaRecurso.Descricao + ", ";
 
-            lblRecurosSelecionados.Text = recuros;
+            lblRecursosSelecionados.Text = recursos;
 
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
 
@@ -146,6 +152,17 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             ddlAtividade.DataBind();
 
             ddlAtividade.SelectedValue = categorias[0].ToString();
+
+            List<CategoriaRecurso> listCatRecursos = categoriaRecursoBo.GetCategoriaRecursoSortedByUse();
+            // listCatRecursos.Sort();
+            CategoriaRecurso dummy = new CategoriaRecurso(dummyGuid, "Selecionar...");
+            listCatRecursos.Insert(0, dummy);
+            DropDownList ddlCategoriaRecurso = (DropDownList)e.Item.FindControl("ddlRecurso");
+            ddlCategoriaRecurso.SelectedIndex = 0;
+            ddlCategoriaRecurso.DataSource = listCatRecursos;
+            ddlCategoriaRecurso.DataTextField = "Descricao";
+            ddlCategoriaRecurso.DataValueField = "Id";
+            ddlCategoriaRecurso.DataBind();
 
             Data data = null;
             //verifica as data para pintar as linhas
@@ -179,13 +196,11 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             {
                 e.Item.BackColor = cor;
                 lblCorDaData.Text = "False";
+                lbl.Text = (cont++).ToString();
             }
 
             categorias.RemoveAt(0);
             argb.RemoveAt(0);
-
-            Label lbl = (Label)e.Item.FindControl("lblAula");
-            lbl.Text = (cont++).ToString();
         }
 
     }

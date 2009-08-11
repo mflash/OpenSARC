@@ -31,7 +31,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Facin", "..\WebSites\Facin\
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "1364"
+		VWDPort = "5347"
 	EndProjectSection
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SARC Setup", "SARC Setup\SARC Setup.vdproj", "{C8BF546F-A517-43DD-924B-F36C356EB640}"

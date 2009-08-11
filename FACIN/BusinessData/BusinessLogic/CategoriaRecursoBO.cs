@@ -14,6 +14,8 @@ namespace BusinessData.BusinessLogic
     public class CategoriaRecursoBO
     {
         private DataAccess.CategoriaRecursoDAO dao;
+        // FIXME: Alguma maneira melhor de fazer isto ???
+        //private static List<CategoriaRecurso> listByUse = new BusinessData.DataAccess.CategoriaRecursoDAO().GetCategoriaRecursoSortedByUse();
         private Usuario usr;
 
         public CategoriaRecursoBO()
@@ -130,6 +132,10 @@ namespace BusinessData.BusinessLogic
             return dao.GetCategoriaRecurso();
         }
 
+        public List<Entities.CategoriaRecurso> GetCategoriaRecursoSortedByUse()
+        {
+            return dao.GetCategoriaRecursoSortedByUse();// listByUse;
+        }
 
     }
 }

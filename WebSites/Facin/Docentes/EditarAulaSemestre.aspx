@@ -155,23 +155,19 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                             <asp:TextBox ID="TextBox7" runat="server"></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateColumn>
-                    <asp:TemplateColumn HeaderText="Recursos Selecionados">
-                        <ItemTemplate>
-                            <asp:TextBox ID="lblRecurosAlocados" runat="server" CssClass="picker-target-simple" Height="38px"
-                                Width="200px" TextMode="MultiLine"></asp:TextBox>
-                        </ItemTemplate>
-                    </asp:TemplateColumn>
-
+               
                     <asp:TemplateColumn HeaderText="Recursos_Alocados_id" Visible="false">
                         <ItemTemplate>
-                            <asp:Label ID="lblRecurosAlocadosId" runat="server"></asp:Label>
+                            <asp:Label ID="lblRecursosAlocadosId" runat="server"></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="Recursos Selecionados" Visible="True">
                         <ItemTemplate>
-                            <asp:LinkButton runat="server" CommandName="Trocar" Text="Trocar" Visible="True"></asp:LinkButton>
-                            <asp:LinkButton runat="server" CommandName="Transferir" Text="Transferir" Visible="True"></asp:LinkButton>
-                            <asp:LinkButton runat="server" CommandName="Select" Text="Remover"></asp:LinkButton>
+                         <asp:TextBox ID="lblRecursosAlocados" runat="server" Height="38px"
+                                Width="250px" TextMode="MultiLine" ></asp:TextBox>
+                            <br><asp:LinkButton runat="server" CommandName="Trocar" Text="Trocar..." Visible="True"></asp:LinkButton>
+                            <asp:LinkButton runat="server" CommandName="Transferir" Text="Transferir..." Visible="True"></asp:LinkButton>
+                            <asp:LinkButton runat="server" CommandName="Select" Text="Remover..."></asp:LinkButton>
                         </ItemTemplate>
                     </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="CorDaData" Visible="False">

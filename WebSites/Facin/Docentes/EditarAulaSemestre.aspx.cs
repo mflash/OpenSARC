@@ -121,9 +121,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
             Label lblDescData = (Label)e.Item.FindControl("lblDescData");
             Label lblCorDaData = (Label)e.Item.FindControl("lblCorDaData");
-            TextBox lblRecurosAlocados = (TextBox)e.Item.FindControl("lblRecurosAlocados");
-            lblRecurosAlocados.ReadOnly = true;
-            Label lblRecurosAlocadosId = (Label)e.Item.FindControl("lblRecurosAlocadosId");
+            TextBox lblRecursosAlocados = (TextBox)e.Item.FindControl("lblRecursosAlocados");
+            lblRecursosAlocados.ReadOnly = true;
+            Label lblRecursosAlocadosId = (Label)e.Item.FindControl("lblRecursosAlocadosId");
             Label lblAulaId = (Label)e.Item.FindControl("lblAulaId");
             Label lblHora = (Label)e.Item.FindControl("lblHora");
             Color cor = argb[0];
@@ -201,13 +201,13 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             {
                 for (int i = 0; i < recAlocados.Count - 1; i++)
                 {
-                    lblRecurosAlocados.Text += recAlocados[i].Descricao + ", ";
-                    lblRecurosAlocadosId.Text += recAlocados[i].Id + ",";
+                    lblRecursosAlocados.Text += recAlocados[i].Descricao + ", ";
+                    lblRecursosAlocadosId.Text += recAlocados[i].Id + ",";
                 }
-                lblRecurosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
-                lblRecurosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
+                lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
+                lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
             }
-            else lblRecurosAlocados.Text = "";
+            else lblRecursosAlocados.Text = "";
 
             categorias.RemoveAt(0);
             argb.RemoveAt(0);
@@ -275,7 +275,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             Label lblCorDaData = (Label)e.Item.FindControl("lblCorDaData");
             Label lblDescData = (Label)e.Item.FindControl("lblDescData");
             Label lblaulaId = (Label)e.Item.FindControl("lblAulaId");
-            Label lblRecurosAlocadosId = (Label)e.Item.FindControl("lblRecurosAlocadosId");
+            Label lblRecursosAlocadosId = (Label)e.Item.FindControl("lblRecursosAlocadosId");
 
             Guid idaula = new Guid(lblaulaId.Text);
             Guid idturma = (Guid)Session["TurmaId"];
@@ -303,7 +303,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             txtDescricao.Text = lblDescData.Text + "\n" + descricao;
 
-            Session["RecursosIds"] = lblRecurosAlocadosId.Text;
+            Session["RecursosIds"] = lblRecursosAlocadosId.Text;
 
             // abre a popup de trocar de recursos
             Session["DataAula"] = lblData.Text;
@@ -328,7 +328,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             Label lblCorDaData = (Label)e.Item.FindControl("lblCorDaData");
             Label lblDescData = (Label)e.Item.FindControl("lblDescData");
             Label lblaulaId = (Label)e.Item.FindControl("lblAulaId");
-            Label lblRecurosAlocadosId = (Label)e.Item.FindControl("lblRecurosAlocadosId");
+            Label lblRecursosAlocadosId = (Label)e.Item.FindControl("lblRecursosAlocadosId");
 
             Guid idaula = new Guid(lblaulaId.Text);
             Guid idturma = (Guid)Session["TurmaId"];
@@ -353,7 +353,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             txtDescricao.Text = lblDescData.Text + "\n" + descricao;
 
-            Session["RecursosIds"] = lblRecurosAlocadosId.Text;
+            Session["RecursosIds"] = lblRecursosAlocadosId.Text;
 
             // abre a popup de transferir de recursos
             Session["DataAula"] = lblData.Text;
@@ -475,7 +475,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
             dr["Atividade"] = ddlAtividade.SelectedItem.Text;
 
-            ddlRecursos = (TextBox)item.FindControl("lblRecurosAlocados");
+            ddlRecursos = (TextBox)item.FindControl("lblRecursosAlocados");
             dr["Recursos"] = ddlRecursos.Text;
 
             dr["CorDaData"] = item.BackColor.Name;
@@ -500,8 +500,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         alocar(recString, dataString, horario, aulaString);
 
-        TextBox lblRecursosAlocados = (TextBox)grid.FindControl("lblRecurosAlocados");
-        Label lblRecursosAlocadosId = (Label)grid.FindControl("lblRecurosAlocadosId");
+        TextBox lblRecursosAlocados = (TextBox)grid.FindControl("lblRecursosAlocados");
+        Label lblRecursosAlocadosId = (Label)grid.FindControl("lblRecursosAlocadosId");
 
         lblRecursosAlocados.Text = "";
         lblRecursosAlocadosId.Text = "";

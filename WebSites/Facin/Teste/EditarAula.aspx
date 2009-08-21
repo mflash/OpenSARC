@@ -102,7 +102,7 @@ CodeFile="EditarAula.aspx.cs" Inherits="Professores_EditarAula" Title="Untitled 
                        
             <asp:TemplateColumn HeaderText="Recursos Selecionados" >
                 <ItemTemplate>
-                    <asp:Label ID="lblRecurosSelecionados" runat="server"></asp:Label>
+                    <asp:Label ID="lblRecursosSelecionados" runat="server"></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox ID="TextBox7" runat="server"></asp:TextBox>

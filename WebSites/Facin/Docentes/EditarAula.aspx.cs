@@ -395,7 +395,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
             dr["Atividade"] = ddlAtividade.SelectedItem.Text;
 
-            lblAux = (Label)item.FindControl("lblRecurosSelecionados");
+            lblAux = (Label)item.FindControl("lblRecursosSelecionados");
             dr["Recursos"] = lblAux.Text;
 
             dr["CorDaData"] = item.BackColor.Name;

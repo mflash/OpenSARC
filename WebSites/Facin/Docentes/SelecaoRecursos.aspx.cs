@@ -162,7 +162,7 @@ public partial class Docentes_SelecaoRecursos : System.Web.UI.Page
         }
         else
         {
-            lblStatus.Text = "Não é possível adicinar mais opções.";
+            lblStatus.Text = "Não é possível adicionar mais opções.";
             return false;
         }
     }

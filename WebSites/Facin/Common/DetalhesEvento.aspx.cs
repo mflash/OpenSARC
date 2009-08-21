@@ -56,8 +56,8 @@ public partial class Secretarios_DetalhesEvento : System.Web.UI.Page
             AlocacaoBO alocBO = new AlocacaoBO();
 
             Label lblEventoId = (Label)e.Item.FindControl("lblEventoId");
-            Label lblRecurosAlocados = (Label)e.Item.FindControl("lblRecurosAlocados");
-            Label lblRecurosAlocadosId = (Label)e.Item.FindControl("lblRecurosAlocadosId");
+            Label lblRecursosAlocados = (Label)e.Item.FindControl("lblRecursosAlocados");
+            Label lblRecursosAlocadosId = (Label)e.Item.FindControl("lblRecursosAlocadosId");
             Label lblData = (Label)e.Item.FindControl("lblData");
             Label lblHorario = (Label)e.Item.FindControl("lblHorario");
 
@@ -77,13 +77,13 @@ public partial class Secretarios_DetalhesEvento : System.Web.UI.Page
                 for (int i = 0; i < recAlocados.Count - 1; i++)
                 {
 
-                    lblRecurosAlocados.Text += recAlocados[i].Descricao + ", ";
-                    lblRecurosAlocadosId.Text += recAlocados[i].Id + ",";
+                    lblRecursosAlocados.Text += recAlocados[i].Descricao + ", ";
+                    lblRecursosAlocadosId.Text += recAlocados[i].Id + ",";
                 }
-                lblRecurosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
-                lblRecurosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
+                lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
+                lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
             }
-            else lblRecurosAlocados.Text = "";
+            else lblRecursosAlocados.Text = "";
         }
 
     }
@@ -109,8 +109,8 @@ public partial class Secretarios_DetalhesEvento : System.Web.UI.Page
 
         if (e.CommandName == "Trocar")
         {
-            Label lblRecurosAlocadosId = (Label)e.Item.FindControl("lblRecurosAlocadosId");
-            Session["RecursosIds"] = lblRecurosAlocadosId.Text;
+            Label lblRecursosAlocadosId = (Label)e.Item.FindControl("lblRecursosAlocadosId");
+            Session["RecursosIds"] = lblRecursosAlocadosId.Text;
 
             // abre a popup de troca de recursos
             ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
@@ -119,8 +119,8 @@ public partial class Secretarios_DetalhesEvento : System.Web.UI.Page
 
         if (e.CommandName == "Transferir")
         {
-            Label lblRecurosAlocadosId = (Label)e.Item.FindControl("lblRecurosAlocadosId");
-            Session["RecursosIds"] = lblRecurosAlocadosId.Text;
+            Label lblRecursosAlocadosId = (Label)e.Item.FindControl("lblRecursosAlocadosId");
+            Session["RecursosIds"] = lblRecursosAlocadosId.Text;
 
             // abre a popup de transferencia de recursos
             ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",

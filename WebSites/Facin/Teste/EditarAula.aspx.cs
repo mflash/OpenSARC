@@ -106,19 +106,19 @@ public partial class Professores_EditarAula : System.Web.UI.Page
             TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
             Label lblDescData = (Label)e.Item.FindControl("lblDescData");
             Label lblCorDaData = (Label)e.Item.FindControl("lblCorDaData");
-            Label lblRecurosSelecionados = (Label)e.Item.FindControl("lblRecurosSelecionados");
+            Label lblRecursosSelecionados = (Label)e.Item.FindControl("lblRecursosSelecionados");
             Label lblAulaId = (Label)e.Item.FindControl("lblAulaId");
             Color cor = argb[0];
 
             listCData = cdataBo.GetCategoriaDatas();
             List<Requisicao> listReq = reqBo.GetRequisicoesPorAula(new Guid(lblAulaId.Text), cal);
 
-            string recuros = "";
+            string recursos = "";
 
             foreach (Requisicao r in listReq)
-                recuros += r.CategoriaRecurso.Descricao + ", ";
+                recursos += r.CategoriaRecurso.Descricao + ", ";
 
-            lblRecurosSelecionados.Text = recuros;
+            lblRecursosSelecionados.Text = recursos;
 
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
 

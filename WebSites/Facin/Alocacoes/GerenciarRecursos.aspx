@@ -85,13 +85,13 @@
 
                             <asp:TemplateColumn Visible="false">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblRecurosAlocadosId" runat="server" ></asp:Label>
+                                    <asp:Label ID="lblRecursosAlocadosId" runat="server" ></asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateColumn>
                                                    
                             <asp:TemplateColumn HeaderText="Recursos Alocados" >
                                 <ItemTemplate>
-                                    <asp:Label ID="lblRecurosAlocados" runat="server"></asp:Label>
+                                    <asp:Label ID="lblRecursosAlocados" runat="server"></asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateColumn> 
                             

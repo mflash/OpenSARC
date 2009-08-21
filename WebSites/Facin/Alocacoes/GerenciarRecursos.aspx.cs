@@ -171,8 +171,8 @@ public partial class Alocacoes_GerenciarRecursos : System.Web.UI.Page
         {
             Label lblAulaIdEventoId = (Label)e.Item.FindControl("lblAulaIdEventoId");
             Label lblHorario = (Label)e.Item.FindControl("lblHorario");
-            Label lblRecurosAlocadosId = (Label)e.Item.FindControl("lblRecurosAlocadosId");
-            Label lblRecurosAlocados = (Label)e.Item.FindControl("lblRecurosAlocados");
+            Label lblRecursosAlocadosId = (Label)e.Item.FindControl("lblRecursosAlocadosId");
+            Label lblRecursosAlocados = (Label)e.Item.FindControl("lblRecursosAlocados");
             Label lblTipo = (Label)e.Item.FindControl("lblTipo");
             
             List<HorariosEvento> horariosEvento;
@@ -198,13 +198,13 @@ public partial class Alocacoes_GerenciarRecursos : System.Web.UI.Page
                     for (int i = 0; i < recAlocados.Count - 1; i++)
                     {
 
-                        lblRecurosAlocados.Text += recAlocados[i].Descricao + ", ";
-                        lblRecurosAlocadosId.Text += recAlocados[i].Id + ",";
+                        lblRecursosAlocados.Text += recAlocados[i].Descricao + ", ";
+                        lblRecursosAlocadosId.Text += recAlocados[i].Id + ",";
                     }
-                    lblRecurosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
-                    lblRecurosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
+                    lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
+                    lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
                 }
-                else lblRecurosAlocados.Text = "";
+                else lblRecursosAlocados.Text = "";
             }
             else
             {
@@ -223,13 +223,13 @@ public partial class Alocacoes_GerenciarRecursos : System.Web.UI.Page
                     for (int i = 0; i < recAlocados.Count - 1; i++)
                     {
 
-                        lblRecurosAlocados.Text += recAlocados[i].Descricao + ", ";
-                        lblRecurosAlocadosId.Text += recAlocados[i].Id + ",";
+                        lblRecursosAlocados.Text += recAlocados[i].Descricao + ", ";
+                        lblRecursosAlocadosId.Text += recAlocados[i].Id + ",";
                     }
-                    lblRecurosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
-                    lblRecurosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
+                    lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
+                    lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
                 }
-                else lblRecurosAlocados.Text = "";
+                else lblRecursosAlocados.Text = "";
             }
         }
     }

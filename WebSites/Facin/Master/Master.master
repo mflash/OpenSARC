@@ -24,6 +24,19 @@
             padding: 10px;
             background-color: #ffffff;
         }
+
+.picker-target-simple{height:80px;overflow-y:auto;background-color:#fff;padding:2px 8px;font-size:83%;border-left:1px solid #cce;margin-right:1px;cursor:pointer;border-right:1px solid #fff;border-top:1px solid #fff;border-bottom:1px solid #fff}
+.picker-target-simple.focused{border:1px solid #619ac9}
+.picker-target-simple .row{cursor:pointer;line-height:150%;padding:0px 0px 2px 0px}
+.picker-target-simple .action{width:6px;font-size:9px;border:1px solid #999;font-weight:bold;background-color:#fff;padding:0px 4px 0px 4px;color:#555;margin-left:5px}
+.picker-target-simple .selected{background-color:#f0f0f0;border-bottom:1px solid #fff}
+.picker-target-simple .selected .line1{font-weight:bold}
+.picker-target-simple .active{background-color:#d4e3ff;color:#000;text-decoration:line-through;padding-left:2px;margin-left:-2px;padding-right:2px;margin-right:-2px}
+.picker-target-simple .active .line2{color:#fff}
+.picker-target-simple .preselect{background-color:#d4e3ff;border:1px solid black;padding-top:2px}
+.picker-target-simple .preselect .line1{font-weight:bold}
+.picker-target-simple .active .action,.picker-target-simple .preselect .action{background-color:#ccc;color:white}        
+        
     </style>
     <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
     <link href="../datepicker.css" rel="stylesheet" type="text/css" />

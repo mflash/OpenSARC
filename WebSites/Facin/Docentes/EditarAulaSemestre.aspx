@@ -157,18 +157,18 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                     </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="Recursos Selecionados">
                         <ItemTemplate>
-                            <asp:TextBox ID="lblRecurosAlocados" runat="server" CssClass="ms-toolbar" Height="38px"
+                            <asp:TextBox ID="lblRecurosAlocados" runat="server" CssClass="picker-target-simple" Height="38px"
                                 Width="200px" TextMode="MultiLine"></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateColumn>
-                    <asp:ButtonColumn CommandName="Select" Text="Alterar"></asp:ButtonColumn>
+                    <asp:ButtonColumn CommandName="Select" Text="Remover"></asp:ButtonColumn>
                     <asp:TemplateColumn HeaderText="Recursos_Alocados_id" Visible="false">
                         <ItemTemplate>
                             <asp:Label ID="lblRecurosAlocadosId" runat="server"></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateColumn>
-                    <asp:ButtonColumn CommandName="Trocar" Text="Trocar"></asp:ButtonColumn>
-                    <asp:ButtonColumn CommandName="Transferir" Text="Transferir"></asp:ButtonColumn>
+                    <asp:ButtonColumn CommandName="Trocar" Text="Trocar" Visible="False"></asp:ButtonColumn>
+                    <asp:ButtonColumn CommandName="Transferir" Text="Transferir" Visible="False"></asp:ButtonColumn>
                     <asp:TemplateColumn HeaderText="CorDaData" Visible="False">
                         <ItemTemplate>
                             <asp:Label ID="lblCorDaData" runat="server"></asp:Label>

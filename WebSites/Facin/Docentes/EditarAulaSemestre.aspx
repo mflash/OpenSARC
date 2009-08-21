@@ -161,14 +161,19 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                                 Width="200px" TextMode="MultiLine"></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateColumn>
-                    <asp:ButtonColumn CommandName="Select" Text="Remover"></asp:ButtonColumn>
+
                     <asp:TemplateColumn HeaderText="Recursos_Alocados_id" Visible="false">
                         <ItemTemplate>
                             <asp:Label ID="lblRecurosAlocadosId" runat="server"></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateColumn>
-                    <asp:ButtonColumn CommandName="Trocar" Text="Trocar" Visible="False"></asp:ButtonColumn>
-                    <asp:ButtonColumn CommandName="Transferir" Text="Transferir" Visible="False"></asp:ButtonColumn>
+                    <asp:TemplateColumn HeaderText="Recursos Selecionados" Visible="True">
+                        <ItemTemplate>
+                            <asp:LinkButton runat="server" CommandName="Trocar" Text="Trocar" Visible="True"></asp:LinkButton>
+                            <asp:LinkButton runat="server" CommandName="Transferir" Text="Transferir" Visible="True"></asp:LinkButton>
+                            <asp:LinkButton runat="server" CommandName="Select" Text="Remover"></asp:LinkButton>
+                        </ItemTemplate>
+                    </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="CorDaData" Visible="False">
                         <ItemTemplate>
                             <asp:Label ID="lblCorDaData" runat="server"></asp:Label>

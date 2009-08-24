@@ -16,6 +16,10 @@ public partial class _Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        //
+        //Page p = (Page)sender;
+        //LoginStatus s = (LoginStatus)p.FindControl("lsLogin");
+        //s.Enabled = false;
         if (!IsPostBack)
         {
             if (Roles.GetUsersInRole("Admin").Length == 0)
@@ -26,6 +30,8 @@ public partial class _Default : System.Web.UI.Page
             {
                 Server.Transfer("~/Default/PaginaInicial.aspx");
             }
+
+
 
             //ACESSOS
             Acesso a = new Acesso(Guid.NewGuid(), DateTime.Now);
@@ -43,6 +49,10 @@ public partial class _Default : System.Web.UI.Page
         
     }
     protected void loginEntrada_Authenticate(object sender, AuthenticateEventArgs e)
+    {
+
+    }
+    protected void loginEntrada_Authenticate1(object sender, AuthenticateEventArgs e)
     {
 
     }

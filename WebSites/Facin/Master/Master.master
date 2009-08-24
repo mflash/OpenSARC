@@ -121,10 +121,19 @@ function confirm_delete()
                                             
                                         </td>
                                         <td style="height: 20px; text-align: right;">
-                                            
                                             <asp:PlaceHolder ID="phActiveUser" runat="server"></asp:PlaceHolder>
-                                       
-                                             | <span class="ms-toolbar"> <a href="http://sourceforge.net/apps/trac/opensarc/wiki/manual" target="_manual">Ajuda</a></span> | <asp:LoginStatus accesskey="R" ID="lsLogin" loginText="Entrar" logoutText="Sair" runat="server" OnLoggedOut="lsLogin_LoggedOut" CssClass="ms-toolbar"/> 
+  
+                                             <asp:LoginView ID="LV1" runat="server">
+                                             <AnonymousTemplate>
+<span class="ms-toolbar"> <a href="http://sourceforge.net/apps/trac/opensarc/wiki/manual" target="_manual">Ajuda</a></span>                                             
+                                             </AnonymousTemplate>
+                                             <LoggedInTemplate>
+                                                                                
+                                             | <span class="ms-toolbar"> <a href="http://sourceforge.net/apps/trac/opensarc/wiki/manual" target="_manual">Ajuda</a></span>
+                                             | <asp:LoginStatus accesskey="R" ID="lsLogin" loginText="Entrar" logoutText="Sair" runat="server" OnLoggedOut="lsLogin_LoggedOut" CssClass="ms-toolbar"/>
+                                             </LoggedInTemplate>
+                                             </asp:LoginView>
+                          
                                         </td>
                                     </tr>
                                 </table>

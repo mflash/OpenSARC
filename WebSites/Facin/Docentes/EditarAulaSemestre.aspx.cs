@@ -3,11 +3,12 @@ using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using BusinessData.Entities;
+using BusinessData.Util;
 using BusinessData.BusinessLogic;
 using System.Collections.Generic;
 using BusinessData.DataAccess;
 using System.Drawing;
-
+using System.Collections;
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
 {
@@ -26,6 +27,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     Calendario cal;
     private int cont = 1;
 
+    private ASPNetDatagridDecorator m_add = new ASPNetDatagridDecorator();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -82,6 +84,26 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                         categorias.Add(a.CategoriaAtividade.Id);
                         argb.Add(a.CategoriaAtividade.Cor);
                     }
+
+                    m_add.DatagridToDecorate = dgAulas;
+                    ArrayList header = new ArrayList();
+                    TableCell cell = null;
+                    cell = new TableCell();
+
+                    cell.Text = " ";
+                    cell.ColumnSpan = 4;
+                    cell.HorizontalAlign = HorizontalAlign.Center;
+                    header.Add(cell);
+
+
+                    cell = new TableCell(); 
+                    cell.Text = "Recursos";
+                    cell.ColumnSpan = 2;
+                    cell.HorizontalAlign = HorizontalAlign.Center;
+                    header.Add(cell);
+
+                    m_add.AddMergeHeader(header);
+
                     dgAulas.DataSource = listaAulas;
                     dgAulas.DataBind();
                 }
@@ -114,6 +136,18 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     protected void dgAulas_ItemDataBound(object sender, DataGridItemEventArgs e)
     {
+        //if (e.Item.ItemType == ListItemType.Header)
+        //{
+            //http://www.codeproject.com/KB/webforms/MergeDatagridHeader.aspx
+
+            //m_add.DatagridToDecorate = dgAulas;
+            //ArrayList header = new ArrayList();
+
+
+
+
+        //}
+
         if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
         {
             DropDownList ddlAtividade = (DropDownList)e.Item.FindControl("ddlAtividade");

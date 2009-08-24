@@ -71,13 +71,12 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                 EnableViewState="true" Visible="false" /><div style="width: 244px; height: 30px">
                     <asp:Button ID="btnExportarHTML" runat="server" CssClass="ms-toolbar" OnClick="btnExportarHTML_Click"
                         Text="Exportar HTML" />
-                    <asp:Button accesskey="S" ID="btnSalvarTudo" runat="server" CssClass="ms-toolbar" Text="Salvo"
-                        OnClick="btnSalvarTudo_Click" Enabled="False" />
+                    <asp:Button AccessKey="S" ID="btnSalvarTudo" runat="server" CssClass="ms-toolbar"
+                        Text="Salvo" OnClick="btnSalvarTudo_Click" Enabled="False" />
                 </div>
             <asp:DataGrid ID="dgAulas" runat="server" AutoGenerateColumns="False" Width="100%"
                 HorizontalAlign="Center" OnItemDataBound="dgAulas_ItemDataBound" DataKeyField="Id"
-                OnItemCommand="dgAulas_ItemCommand" 
-                onselectedindexchanged="dgAulas_SelectedIndexChanged">
+                OnItemCommand="dgAulas_ItemCommand" OnSelectedIndexChanged="dgAulas_SelectedIndexChanged">
                 <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
                 <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Center" />
                 <Columns>
@@ -130,7 +129,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                     <asp:TemplateColumn HeaderText="Descri&#231;&#227;o">
                         <ItemTemplate>
                             <asp:TextBox ID="txtDescricao" runat="server" CssClass="ms-toolbar" Height="38px"
-                                Width="300px" TextMode="MultiLine" Text='<%#DataBinder.Eval(Container.DataItem, "DescricaoAtividade") %>'></asp:TextBox>
+                                Width="100%" TextMode="MultiLine" Text='<%#DataBinder.Eval(Container.DataItem, "DescricaoAtividade") %>'></asp:TextBox>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
@@ -145,7 +144,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                             <asp:TextBox ID="TextBox6" runat="server"></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateColumn>
-                    <asp:TemplateColumn HeaderText="Recursos Disponíveis">
+                    <asp:TemplateColumn HeaderText="Disponíveis">
                         <ItemTemplate>
                             <asp:DropDownList ID="ddlOpcao1" runat="server" CssClass="ms-toolbar" AutoPostBack="True"
                                 OnSelectedIndexChanged="ddlOpcao1_SelectedIndexChanged">
@@ -155,17 +154,17 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                             <asp:TextBox ID="TextBox7" runat="server"></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateColumn>
-               
                     <asp:TemplateColumn HeaderText="Recursos_Alocados_id" Visible="false">
                         <ItemTemplate>
                             <asp:Label ID="lblRecursosAlocadosId" runat="server"></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateColumn>
-                    <asp:TemplateColumn HeaderText="Recursos Selecionados" Visible="True">
+                    <asp:TemplateColumn HeaderText="Selecionados" Visible="True">
                         <ItemTemplate>
-                         <asp:TextBox ID="lblRecursosAlocados" runat="server" Height="38px"
-                                Width="250px" TextMode="MultiLine" ></asp:TextBox>
-                            <br><asp:LinkButton runat="server" CommandName="Trocar" Text="Trocar..." Visible="True"></asp:LinkButton>
+                            <asp:TextBox ID="lblRecursosAlocados" runat="server" Height="38px" 
+                                TextMode="MultiLine"></asp:TextBox>
+                            <br>
+                            <asp:LinkButton runat="server" CommandName="Trocar" Text="Trocar..." Visible="True"></asp:LinkButton>
                             <asp:LinkButton runat="server" CommandName="Transferir" Text="Transferir..." Visible="True"></asp:LinkButton>
                             <asp:LinkButton runat="server" CommandName="Select" Text="Remover..."></asp:LinkButton>
                         </ItemTemplate>

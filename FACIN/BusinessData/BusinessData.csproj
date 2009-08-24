@@ -207,6 +207,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SARCFACINDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Util\ASPNetDatagridDecorator.cs" />
     <Compile Include="Util\DataHelper.cs" />
     <Compile Include="Util\RecursosEventArgs.cs" />
   </ItemGroup>

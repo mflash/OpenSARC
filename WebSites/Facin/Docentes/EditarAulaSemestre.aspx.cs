@@ -98,7 +98,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
                     cell = new TableCell(); 
                     cell.Text = "Recursos";
-                    cell.ColumnSpan = 2;
+                    cell.ColumnSpan = 3;
                     cell.HorizontalAlign = HorizontalAlign.Center;
                     header.Add(cell);
 
@@ -136,18 +136,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     protected void dgAulas_ItemDataBound(object sender, DataGridItemEventArgs e)
     {
-        //if (e.Item.ItemType == ListItemType.Header)
-        //{
-            //http://www.codeproject.com/KB/webforms/MergeDatagridHeader.aspx
-
-            //m_add.DatagridToDecorate = dgAulas;
-            //ArrayList header = new ArrayList();
-
-
-
-
-        //}
-
         if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
         {
             DropDownList ddlAtividade = (DropDownList)e.Item.FindControl("ddlAtividade");

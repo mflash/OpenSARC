@@ -12,7 +12,7 @@
         @import url("~/CORE.CSS")
     </style>
     <style type="text/css">
-        @import url("~/datepicker.css")
+        @import url("~/datepicker.css");
         .style1
         {
             vertical-align: top;
@@ -25,7 +25,7 @@
             background-color: #ffffff;
         }
 
-.picker-target-simple{height:80px;overflow-y:auto;background-color:#fff;padding:2px 8px;font-size:83%;border-left:1px solid #cce;margin-right:1px;cursor:pointer;border-right:1px solid #fff;border-top:1px solid #fff;border-bottom:1px solid #fff}
+.picker-target-simple{height:80px;background-color:#fff;padding:2px 8px;font-size:83%;border-left:1px solid #cce;margin-right:1px;cursor:pointer;border-right:1px solid #fff;border-top:1px solid #fff;border-bottom:1px solid #fff}
 .picker-target-simple.focused{border:1px solid #619ac9}
 .picker-target-simple .row{cursor:pointer;line-height:150%;padding:0px 0px 2px 0px}
 .picker-target-simple .action{width:6px;font-size:9px;border:1px solid #999;font-weight:bold;background-color:#fff;padding:0px 4px 0px 4px;color:#555;margin-left:5px}
@@ -55,7 +55,7 @@ function confirm_delete()
 </script>
   <form id="Form1" runat="server">
 
-  <table class="ms-main" cellpadding="0" cellspacing="0" border="0" width="100%" 
+  <table cellpadding="0" cellspacing="0" border="0" width="100%" 
       style="height: 95%">
     <tr style="height:100%">
 	    <td style="height: 100%">
@@ -108,7 +108,7 @@ function confirm_delete()
 	                <div class="ms-pagemargin">
 	                <img src="/_layouts/images/blank.gif" width="10" height="1" alt=""/></div>
 		        </td>
-               <td class='ms-bodyareacell' valign="top" style="width: 100%px">
+               <td class='ms-bodyareacell' valign="top" style="width: 100%">
         		<table id="MSO_ContentTable" width="100%" style="height: 100%" border="0" cellspacing="0" cellpadding="0" class="ms-propertysheet">
 		            <tr>
 			            <td class='style1' valign="top">
@@ -157,7 +157,7 @@ function confirm_delete()
 	            <td class="ms-pagebottommarginleft" style="width: 118px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
 	            <td class="ms-pagebottommargin" style="width: 12px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
 	            <td class="ms-bodyareapagemargin" 
-                    style="height: 11px; width: 669px; text-align: center;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/>
+                    style="height: 11px; width: 669px; text-align: center;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
 	            <td class="ms-pagebottommarginright" style="width: 31px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
             </tr>
 	     </table>
@@ -167,7 +167,7 @@ function confirm_delete()
   </form>
   <div class="ms-toolbar" style="text-align: center">
 &copy; 
-                    2009 <a href="http://opensarc.sourceforge.net" target="_projeto">OpenSARC (http:/opensarc.sourceforge.net)</a> -  <a href="http://sourceforge.net/apps/trac/opensarc/wiki/sobre" target="_sobre" class="ms-toolbar">Sobre...</a></div>
+                    2009 <a href="http://opensarc.sourceforge.net" target="_projeto" class="ms-toolbar">OpenSARC (http:/opensarc.sourceforge.net)</a> -  <a href="http://sourceforge.net/apps/trac/opensarc/wiki/sobre" target="_sobre" class="ms-toolbar">Sobre...</a></div>
 </body>
 
 </html>

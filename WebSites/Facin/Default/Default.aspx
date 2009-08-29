@@ -30,7 +30,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default"  %>
                     recursos durante todo o ano.<br />
                     <br />
                     O OpenSARC é <i>software</i> livre. Caso deseje participar, reclamar ou dar 
-                    sugestões, visite <a href="http://www.opensarc.net">http://www.opensarc.net</a>.<br />
+                    sugestões, visite <a href="http://opensarc.sourceforge.net" target="_projeto">http://opensarc.sourceforge.net</a>.<br />
                     <br />
                     Em especial, aguardamos voluntários interessados em utilizar o sistema como 
                     estudo de caso para suas disciplinas de desenvolvimento de <i>software</i>.</p>

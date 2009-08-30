@@ -17,7 +17,7 @@ public partial class Default_MenuProfessor : System.Web.UI.UserControl
     {
 
         Label lbl = new Label();
-        lbl.Text = "Algoritmos...";
+        lbl.Text = "<li>Algoritmos...</li>";
         lbl.CssClass = "ms-toolbar";
         phClassListing.Controls.Add(lbl);
 

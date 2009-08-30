@@ -21,12 +21,12 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             Label lbl = new Label();
             lbl.Text = "Calendário:";
             lbl.CssClass = "ms-toolbar";
-            phCalendario.Controls.Add(lbl);
+            LV1.FindControl("phCalendario").Controls.Add(lbl);
 
             //ASP.default_selecionacalendario_ascx calendar = (ASP.default_selecionacalendario_ascx)LoadControl("~/Default/SelecionaCalendario.ascx");
             Default_SelecionaCalendario_ calendar = (Default_SelecionaCalendario_)LoadControl("~/UserControls/SelecionaCalendario.ascx");
             calendar.CalendarioSelecionado += new EventHandler(calendar_CalendarioSelecionado);
-            phCalendario.Controls.Add(calendar);
+            LV1.FindControl("phCalendario").Controls.Add(calendar);
 
             Label userEmail = new Label();
             MembershipUser user = Membership.GetUser();
@@ -34,7 +34,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             {
                 userEmail.Text = user.Email;
                 userEmail.CssClass = "ms-toolbar";
-                phActiveUser.Controls.Add(userEmail);
+                LV1.FindControl("phActiveUser").Controls.Add(userEmail);
             }
             if (Roles.IsUserInRole("Admin"))
             {
@@ -49,7 +49,6 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                     TurmaBO turmaBO = new TurmaBO();
                     Control menu = LoadControl("~/UserControls/MenuProfessor.ascx");
                     Calendario cal = (Calendario)Session["Calendario"];
-                    //MembershipUser user = Membership.GetUser();
                     Guid professorId = new Guid(user.ProviderUserKey.ToString());
 
                     Professor prof = (Professor)controleProfessores.GetPessoaById(professorId);
@@ -67,12 +66,8 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                         listaTurmas.Sort();
                         foreach (Turma t in listaTurmas)
                         {
-
-                            Label x = new Label();
-                            x.Text = "<span style=\"padding:4px\"> <a  href=\"" + baseURL + t.Id + "\">" + getNomeCurtoDisciplina(t.Disciplina) + " - " + t.Numero + "</a> </span>";
-                            x.CssClass = "ms-toolbar-small";
-
-                            //x.("left=3px;top=3px");
+                            Literal x = new Literal();
+                            x.Text = "<li> <a  href=\"" + baseURL + t.Id + "\">" + getNomeCurtoDisciplina(t.Disciplina) + " - " + t.Numero + "</a> </li>";
                             menu.Controls.AddAt(pos++, x);
                         }
                     }

@@ -25,6 +25,7 @@ public partial class ImportarDados_Importar : System.Web.UI.Page
     protected void lbImportar_Click(object sender, EventArgs e)
     {
             Calendario calId = (Calendario)(Session["Calendario"]);
+            //Application["CalendarioImporta"] = calId; 
             lblStatus.Text = "Importando Faculdades... Aguarde.";
             ImportarFaculdades();
             lblStatus.Text = "Importando Cursos... Aguarde.";

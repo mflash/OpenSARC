@@ -12,13 +12,6 @@
     </asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
     <ContentTemplate>
-        <table>
-            <tr>
-                <td>
-                    Propostas de Trocas de Recursos Recebidas:
-                </td>
-            </tr>
-        </table>
     <br />
         <div align="center"> 
             
@@ -90,13 +83,6 @@
             </asp:DataGrid>
         </div>
         <br />
-        <table>
-            <tr>
-                <td>
-                    Recursos Recebidos via Transferência:
-                </td>
-            </tr>
-        </table>
         <br />
         <div align="center">
         <asp:Label Visible="False" CssClass="ms-toolbar" ID="lblTransfencia" runat="server" Text="O seguintes recursos foram tranferidos para você:"></asp:Label>

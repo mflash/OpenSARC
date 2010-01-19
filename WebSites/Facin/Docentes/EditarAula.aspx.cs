@@ -100,20 +100,12 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     }
 
-    protected bool VerificaData(DateTime dt)
+    protected Data VerificaData(DateTime dt)
     {
-        bool achou = false;
-        int i = 0;
-
-        while ((achou == false) && (i < cal.Datas.Count))
-        {
-            if (dt == cal.Datas[i].Date)
-                achou = true;
-            i++;
-        }
-
-        return achou;
-
+        foreach (Data data in cal.Datas)
+            if (dt == data.Date)
+                return data;
+        return null;
     }
 
     protected void dgAulas_ItemDataBound(object sender, DataGridItemEventArgs e)
@@ -140,7 +132,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             string recursos = "";
 
             foreach (Requisicao r in listReq)
-                recursos += r.CategoriaRecurso.Descricao + ", ";
+                recursos += r.Prioridade+":"+r.CategoriaRecurso.Descricao + ", ";
 
             lblRecursosSelecionados.Text = recursos;
 
@@ -164,39 +156,40 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             ddlCategoriaRecurso.DataValueField = "Id";
             ddlCategoriaRecurso.DataBind();
 
-            Data data = null;
-            //verifica as data para pintar as linhas
+            //Data data = null;
+            //verifica as datas para pintar as linhas
             if ((dataAtual >= cal.InicioG2))
             {
                 e.Item.BackColor = Color.LightGray;
             }
-            else if (VerificaData(dataAtual))
-            {
-                foreach (Data d in cal.Datas)
-                    if (d.Date == dataAtual)
-                        data = d;
-                foreach (CategoriaData c in listCData)
-                    if (c.Id == data.Categoria.Id)
-                        if (!c.DiaLetivo)
-                        {
-                            e.Item.BackColor = c.Cor;
-                            e.Item.Enabled = false;
-                            txtDescricao.Text = c.Descricao;
-                            lblCorDaData.Text = "True";
-                        }
-                        else
-                        {
-                            lblDescData.Text = c.Descricao;
-                            txtDescricao.Text = c.Descricao + "\n" + txtDescricao.Text;
-                            e.Item.BackColor = c.Cor;
-                            lblCorDaData.Text = "True";
-                        }
-            }
             else
             {
-                e.Item.BackColor = cor;
-                lblCorDaData.Text = "False";
-                lbl.Text = (cont++).ToString();
+                Data data = VerificaData(dataAtual);
+                if (data != null)
+                {
+                    foreach (CategoriaData c in listCData)
+                        if (c.Id == data.Categoria.Id)
+                            if (!c.DiaLetivo)
+                            {
+                                e.Item.BackColor = c.Cor;
+                                e.Item.Enabled = false;
+                                txtDescricao.Text = c.Descricao;
+                                lblCorDaData.Text = "True";
+                            }
+                            else
+                            {
+                                lblDescData.Text = c.Descricao;
+                                txtDescricao.Text = c.Descricao + "\n" + txtDescricao.Text;
+                                e.Item.BackColor = c.Cor;
+                                lblCorDaData.Text = "True";
+                            }
+                }
+                else
+                {
+                    e.Item.BackColor = cor;
+                    lblCorDaData.Text = "False";
+                    lbl.Text = (cont++).ToString();
+                }
             }
 
             categorias.RemoveAt(0);

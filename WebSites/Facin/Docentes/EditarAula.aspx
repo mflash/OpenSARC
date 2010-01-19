@@ -167,7 +167,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                 <EditItemTemplate>
                     <asp:TextBox ID="TextBox17" runat="server"></asp:TextBox>
                 </EditItemTemplate>
-            </asp:TemplateColumn>          
+            </asp:TemplateColumn>
                        
             <asp:TemplateColumn HeaderText="Selecionados" >
                 <ItemTemplate>

@@ -13,7 +13,7 @@ using BusinessData.BusinessLogic;
 using System.Collections.Generic;
 using BusinessData.DataAccess;
 using BusinessData.Entities.Util;
-using Microsoft.ReportingServices.Diagnostics;
+//using Microsoft.ReportingServices.Diagnostics;
 
 public partial class Docentes_SelecionaTurma : System.Web.UI.Page
 {

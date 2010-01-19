@@ -3,12 +3,11 @@ using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using BusinessData.Entities;
-using BusinessData.Util;
 using BusinessData.BusinessLogic;
 using System.Collections.Generic;
 using BusinessData.DataAccess;
 using System.Drawing;
-using System.Collections;
+
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
 {
@@ -27,7 +26,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     Calendario cal;
     private int cont = 1;
 
-    private ASPNetDatagridDecorator m_add = new ASPNetDatagridDecorator();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -84,26 +82,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                         categorias.Add(a.CategoriaAtividade.Id);
                         argb.Add(a.CategoriaAtividade.Cor);
                     }
-
-                    m_add.DatagridToDecorate = dgAulas;
-                    ArrayList header = new ArrayList();
-                    TableCell cell = null;
-                    cell = new TableCell();
-
-                    cell.Text = " ";
-                    cell.ColumnSpan = 4;
-                    cell.HorizontalAlign = HorizontalAlign.Center;
-                    header.Add(cell);
-
-
-                    cell = new TableCell(); 
-                    cell.Text = "Recursos";
-                    cell.ColumnSpan = 3;
-                    cell.HorizontalAlign = HorizontalAlign.Center;
-                    header.Add(cell);
-
-                    m_add.AddMergeHeader(header);
-
                     dgAulas.DataSource = listaAulas;
                     dgAulas.DataBind();
                 }
@@ -117,20 +95,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     protected Data VerificaData(DateTime dt)
     {
-        //bool achou = false;
-        //int i = 0;
-
         foreach(Data data in cal.Datas)
-        //while ((achou == false) && (i < cal.Datas.Count))
-        //{
             if (dt == data.Date)
                 return data;
-            //if (dt == cal.Datas[i].Date)
-            //    achou = true;
-            //i++;
-        //}
-
-        //return achou;
         return null;
     }
 
@@ -181,7 +148,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             ddlAtividade.SelectedValue = categorias[0].ToString();
 
             //Data data = null;
-            //verifica as data para pintar as linhas
+            //verifica as datas para pintar as linhas
             if ((dataAtual >= cal.InicioG2))
             {
                 e.Item.BackColor = Color.LightGray;

@@ -40,7 +40,15 @@ public partial class ImportarDados_Default : System.Web.UI.Page
     protected void lbtnImportarTurmas_Click(object sender, EventArgs e)
     {
         SPABO sistAcademico = new SPABO();
+        //Calendario calId = (Calendario)(Session["Calendario"]);
+
+        // Ugly fix        
+        CalendariosBO cadastroCalendarios = new CalendariosBO();
+        List<Calendario> listaCalendarios = cadastroCalendarios.GetCalendarios();
+        listaCalendarios.Sort();
+        Session["Calendario"] = listaCalendarios[0];
         Calendario calId = (Calendario)(Session["Calendario"]);
+
         listaTurmas = sistAcademico.getTurmas(calId.Id);
         grvListaTurmaOk.DataSource = listaTurmas;
         grvListaTurmaOk.DataBind();
@@ -263,7 +271,15 @@ public partial class ImportarDados_Default : System.Web.UI.Page
         {
             SPABO sistAcademico = new SPABO();
             //listaTurmas = (IList<Turma>)Session["listaTurmas"];
+            //Calendario calId = (Calendario)(Session["Calendario"]);
+
+            // Ugly fix        
+            CalendariosBO cadastroCalendarios = new CalendariosBO();
+            List<Calendario> listaCalendarios = cadastroCalendarios.GetCalendarios();
+            listaCalendarios.Sort();
+            Session["Calendario"] = listaCalendarios[0];
             Calendario calId = (Calendario)(Session["Calendario"]);
+
             listaTurmas = sistAcademico.getTurmas(calId.Id);
             sistAcademico.ImportaTurmas(listaTurmas);
             lblSucesso.Text = "Turmas importadas com sucesso!";

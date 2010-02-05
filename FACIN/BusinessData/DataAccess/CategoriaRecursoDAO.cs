@@ -98,7 +98,7 @@ namespace BusinessData.DataAccess
 
         public List<Entities.CategoriaRecurso> GetCategoriaRecursoSortedByUse()
         {
-            DbCommand cmd = baseDados.GetStoredProcCommand("CategoriasRecursoSelect");//SortedByUse");
+            DbCommand cmd = baseDados.GetStoredProcCommand("CategoriasRecursoSelectSortedByUse");
             Entities.CategoriaRecurso aux;
             List<Entities.CategoriaRecurso> listaAux = new List<BusinessData.Entities.CategoriaRecurso>();
             try

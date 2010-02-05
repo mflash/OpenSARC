@@ -24,7 +24,7 @@ public partial class Docentes_SelecaoRecursos : System.Web.UI.Page
     private void PopulaDDLCategoriaRecursos()
     {
         CategoriaRecursoBO controleCategorias = new CategoriaRecursoBO();
-        ddlCategoriaRecurso.DataSource = controleCategorias.GetCategoriaRecurso();
+        ddlCategoriaRecurso.DataSource = controleCategorias.GetCategoriaRecursoSortedByUse();
         ddlCategoriaRecurso.DataTextField = "Descricao";
         ddlCategoriaRecurso.DataValueField = "Id";
         ddlCategoriaRecurso.DataBind();

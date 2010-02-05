@@ -86,8 +86,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                             argb.Add(a.CategoriaAtividade.Cor);
                         }
 
-                        dgAulas.DataSource = listaAulas;
-                        
+                        dgAulas.DataSource = listaAulas;                        
                         dgAulas.DataBind();
                     }
                 }
@@ -112,7 +111,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     {
         if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
         {
-            DropDownList ddlAtividade = (DropDownList)e.Item.FindControl("ddlAtividade");
+            DropDownList ddlAtividade = (DropDownList)e.Item.FindControl("ddlAtividade");          
             Label lblData = (Label)e.Item.FindControl("lblData");
             TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
             Label lblDescData = (Label)e.Item.FindControl("lblDescData");
@@ -127,14 +126,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             lbl.Text = "";
 
             listCData = cdataBo.GetCategoriaDatas();
-            List<Requisicao> listReq = reqBo.GetRequisicoesPorAula(new Guid(lblAulaId.Text), cal);            
+            List<Requisicao> listReq = reqBo.GetRequisicoesPorAula(new Guid(lblAulaId.Text), cal);                        
 
-            string recursos = "";
-
-            foreach (Requisicao r in listReq)
-                recursos += r.Prioridade+":"+r.CategoriaRecurso.Descricao + ", ";
-
-            lblRecursosSelecionados.Text = recursos;
+            
+            
 
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
 
@@ -149,12 +144,28 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             // listCatRecursos.Sort();
             CategoriaRecurso dummy = new CategoriaRecurso(dummyGuid, "Selecionar...");
             listCatRecursos.Insert(0, dummy);
+
+            string recursos = "";
+            foreach (Requisicao r in listReq)
+            {
+                recursos += r.Prioridade + ":" + r.CategoriaRecurso.Descricao + ", ";
+                listCatRecursos.Remove(listCatRecursos.Find(delegate(CategoriaRecurso cr)
+                {
+                    return cr.Descricao == r.CategoriaRecurso.Descricao;
+                }
+                ));             
+            }
+
             DropDownList ddlCategoriaRecurso = (DropDownList)e.Item.FindControl("ddlRecurso");
             ddlCategoriaRecurso.SelectedIndex = 0;
             ddlCategoriaRecurso.DataSource = listCatRecursos;
             ddlCategoriaRecurso.DataTextField = "Descricao";
             ddlCategoriaRecurso.DataValueField = "Id";
             ddlCategoriaRecurso.DataBind();
+
+//            ddlCategoriaRecurso.Items.Remove("Laboratório");
+
+            lblRecursosSelecionados.Text = recursos;
 
             //Data data = null;
             //verifica as datas para pintar as linhas
@@ -400,6 +411,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Response.Redirect("DownloadHtml.aspx");
     }
 
+    protected void ddlRecurso_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
 }
     
     

@@ -127,7 +127,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                 <ItemStyle VerticalAlign="Middle" />
             </asp:TemplateColumn>
             
-            <asp:TemplateColumn HeaderText="Data / Hora">
+            <asp:TemplateColumn HeaderText="Data Hora">
                 <ItemTemplate>
                             <asp:Label ID="lblData2" runat="server" Text='<%#((DateTime)DataBinder.Eval(Container.DataItem, "Data")).ToString("dd/MM/yy")%>'></asp:Label>
                             <asp:Label ID="lblDia2" runat="server" Text='<%#(DataHelper.GetDiaPUCRS((DayOfWeek)((DateTime)DataBinder.Eval(Container.DataItem, "Data")).DayOfWeek))%>'></asp:Label><asp:Label
@@ -178,7 +178,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                 </EditItemTemplate>
             </asp:TemplateColumn> 
             
-            <asp:ButtonColumn CommandName="Salvar" Text="Salvar"></asp:ButtonColumn>
+            <asp:ButtonColumn CommandName="Select" Text="Editar..."></asp:ButtonColumn>
             
             <asp:TemplateColumn HeaderText="CorDaData" Visible="False"> 
                 <ItemTemplate>

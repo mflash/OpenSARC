@@ -148,7 +148,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             string recursos = "";
             foreach (Requisicao r in listReq)
             {
-                recursos += r.Prioridade + ":" + r.CategoriaRecurso.Descricao + ", ";
+                if (recursos != String.Empty) recursos += "<br/>";
+                recursos += r.Prioridade + ": " + r.CategoriaRecurso.Descricao;
                 listCatRecursos.Remove(listCatRecursos.Find(delegate(CategoriaRecurso cr)
                 {
                     return cr.Descricao == r.CategoriaRecurso.Descricao;
@@ -248,7 +249,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             // abre a popup de selecao de recursos
             string id = lblaulaId.Text;
            
-            ScriptManager.RegisterClientScriptBlock(this, GetType(), "onClick", "popitup('SelecaoRecursos.aspx?AulaId=" + id + "');", true);
+            ScriptManager.RegisterClientScriptBlock(this, GetType(), "onClick", "popitup('SelecaoRecursos.aspx?AulaId=" + id + "');", true);           
         }
         if (e.CommandName == "Salvar")
         {
@@ -413,8 +414,104 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     protected void ddlRecurso_SelectedIndexChanged(object sender, EventArgs e)
     {
+        DropDownList ddlRecurso = (DropDownList) sender;
+        string recString = ddlRecurso.SelectedValue;
 
+        TableCell cell = (TableCell) ddlRecurso.Parent;
+        DataGridItem gridItem = (DataGridItem) cell.Parent;
+
+        // Salva dados digitados
+
+        SalvaDados(gridItem);
+        
+        // abre a popup de selecao de recursos
+        //string id = lblaulaId.Text;
+        //ScriptManager.RegisterClientScriptBlock(this, GetType(), "onClick", "popitup('SelecaoRecursos.aspx?AulaId=" + id + "');", true);
+
+        Label lblaulaId = (Label) gridItem.FindControl("lblAulaId");
+        Guid idAula = new Guid(lblaulaId.Text);
+        Aula aulaAtual = aulaBo.GetAulaById(idAula);
+
+        RequisicoesBO controleRequisicoes = new RequisicoesBO();
+        IList<Requisicao> requisicoesExistentes = controleRequisicoes.GetRequisicoesPorAula(idAula, cal);
+        int pri = 0;
+        foreach (Requisicao req in requisicoesExistentes)
+            if (req.Prioridade > pri)
+                pri = req.Prioridade;
+
+        CategoriaRecursoBO controladorCategorias = new CategoriaRecursoBO();
+        Guid catId = new Guid(ddlRecurso.SelectedValue);
+        CategoriaRecurso categoria = controladorCategorias.GetCategoriaRecursoById(catId);
+        Requisicao novaReq = Requisicao.NewRequisicao(aulaAtual, categoria, pri+1); // teste! sempre prioridade + 1
+
+        // Insere a nova requisição
+        controleRequisicoes.InsereRequisicao(novaReq);
+        requisicoesExistentes.Add(novaReq);
+
+        // Atualiza label com os recursos selecionados
+        Label lblRecursosSelecionados = (Label) gridItem.FindControl("lblRecursosSelecionados");
+        string recursos = "";
+        foreach (Requisicao r in requisicoesExistentes)
+        {
+            if (recursos != String.Empty) recursos += "<br/>";
+            recursos += r.Prioridade + ": " + r.CategoriaRecurso.Descricao;
+        }
+        lblRecursosSelecionados.Text = recursos;
+
+        // Remove a categoria selecionada do drop down list
+        ddlRecurso.Items.Remove(ddlRecurso.Items.FindByValue(ddlRecurso.SelectedValue));
+        ddlRecurso.SelectedIndex = 0;
     }
+
+    // Troca de tipo de atividade, atualiza aula e cores na tela
+    protected void ddlAtividade_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        DropDownList ddlAtividade = (DropDownList)sender;
+        string ativString = ddlAtividade.SelectedValue;
+
+        TableCell cell = (TableCell)ddlAtividade.Parent;
+        DataGridItem gridItem = (DataGridItem)cell.Parent;
+
+        // Salva dados digitados
+
+        SalvaDados(gridItem);
+    }
+
+    // Salva os dados da linha corrente (chamados pelos eventos de select das drop down lists, etc)
+    private void SalvaDados(DataGridItem gridItem)
+    {
+        // Salva dados digitados
+
+        Label lblData = (Label)gridItem.FindControl("lblData");
+        Label lblHora = (Label)gridItem.FindControl("lblHora");
+        TextBox txtDescricao = (TextBox)gridItem.FindControl("txtDescricao");
+
+        DropDownList ddlAtividade = (DropDownList)gridItem.FindControl("ddlAtividade");
+        Label lblCorDaData = (Label)gridItem.FindControl("lblCorDaData");
+        Label lblDescData = (Label)gridItem.FindControl("lblDescData");
+        Label lblaulaId = (Label)gridItem.FindControl("lblAulaId");
+
+        Guid idaula = new Guid(lblaulaId.Text);
+        Guid idturma = (Guid)Session["TurmaId"];
+        Turma turma = turmaBo.GetTurmaById(idturma);
+
+        string hora = lblHora.Text;
+        DateTime data = Convert.ToDateTime(lblData.Text);
+
+        string aux = txtDescricao.Text;
+        string descricao = aux.Substring(aux.IndexOf('\n') + 1);
+
+        Guid idcategoria = new Guid(ddlAtividade.SelectedValue);
+        CategoriaAtividade categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
+
+        if (gridItem.BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
+            gridItem.BackColor = categoria.Cor;
+
+        Aula aula = Aula.GetAula(idaula, turma, hora, data, descricao, categoria);
+        
+        aulaBo.UpdateAula(aula);        
+
+        txtDescricao.Text = lblDescData.Text + "\n" + descricao;
+    }
+
 }
-    
-    

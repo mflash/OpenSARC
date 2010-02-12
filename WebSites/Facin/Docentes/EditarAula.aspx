@@ -151,7 +151,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
             
             <asp:TemplateColumn HeaderText="Atividade">
                 <ItemTemplate>
-                    <asp:DropDownList ID="ddlAtividade" runat="server" CssClass="ms-toolbar" >
+                    <asp:DropDownList ID="ddlAtividade" runat="server" CssClass="ms-toolbar" AutoPostBack=true OnSelectedIndexChanged="ddlAtividade_SelectedIndexChanged" >
                     </asp:DropDownList>
                 </ItemTemplate>
                 <EditItemTemplate>
@@ -161,7 +161,8 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
             
             <asp:TemplateColumn HeaderText="Recurso">
                 <ItemTemplate>
-                    <asp:DropDownList ID="ddlRecurso" runat="server" CssClass="ms-toolbar" >
+                    <asp:DropDownList ID="ddlRecurso" runat="server" CssClass="ms-toolbar" 
+                        onselectedindexchanged="ddlRecurso_SelectedIndexChanged" AutoPostBack=true>
                     </asp:DropDownList>
                 </ItemTemplate>
                 <EditItemTemplate>

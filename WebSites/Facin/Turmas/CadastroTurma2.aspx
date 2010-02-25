@@ -19,7 +19,7 @@ CodeFile="CadastroTurma2.aspx.cs" Inherits="Pagina6" Title="Sistema de Alocação 
             <td colspan="2" style="height: 14px" valign="middle">
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                     <ContentTemplate>
-<TABLE style="WIDTH: 510px" align=left><TBODY><TR><TD style="WIDTH: 20px; HEIGHT: 26px" class="ms-toolbar">Disciplina:</TD><TD style="WIDTH: 267px; HEIGHT: 26px"><asp:DropDownList id="ddlDisciplina" runat="server" CssClass="ms-toolbar" Width="200px">
+<TABLE style="WIDTH: 510px" align=left><TBODY><TR><TD style="WIDTH: 20px; HEIGHT: 26px" class="ms-toolbar">Disciplina:</TD><TD style="WIDTH: 267px; HEIGHT: 26px"><asp:DropDownList id="ddlDisciplina" runat="server" CssClass="ms-toolbar">
                 </asp:DropDownList></TD></TR><TR><TD style="WIDTH: 20px; HEIGHT: 16px" class="ms-toolbar">Número:</TD><TD style="WIDTH: 267px; HEIGHT: 16px"><asp:TextBox id="txtNumero" runat="server" CssClass="ms-toolbar" Width="200px"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtNumero"
                         CssClass="ms-toolbar" ErrorMessage="Digite um número.">*</asp:RequiredFieldValidator>

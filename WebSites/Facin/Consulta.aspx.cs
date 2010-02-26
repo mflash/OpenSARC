@@ -117,15 +117,15 @@ public partial class Alocacoes_Default : System.Web.UI.Page
 						break;
 					if(aloc.Horario == horarioAtual)
 					{
-						Alocacao nova = new Alocacao(aloc.Recurso,aloc.Data,aloc.Horario,aloc.Aula,aloc.Evento);
+						//Alocacao nova = new Alocacao(aloc.Recurso,aloc.Data,aloc.Horario,aloc.Aula,aloc.Evento);
 						//nova.Delta = dif.TotalMinutes.ToString();
-						filtradaAtual.Add(nova);
+						filtradaAtual.Add(aloc);
 						achei = true; // indica que ja achou - quando o horario mudar, sai do foreach							
 					}
 					if(aloc.Horario == horarioProx)
 					{
-						Alocacao nova = new Alocacao(aloc.Recurso,aloc.Data,aloc.Horario,aloc.Aula,aloc.Evento);
-						filtradaProx.Add(nova);
+						//Alocacao nova = new Alocacao(aloc.Recurso,aloc.Data,aloc.Horario,aloc.Aula,aloc.Evento);
+						filtradaProx.Add(aloc);
 						achei = true;
 					}
 				}				
@@ -179,8 +179,8 @@ public partial class Alocacoes_Default : System.Web.UI.Page
 
             if (aloc.Aula != null)
             {				
-                //lblDiscCod.Text = aloc.Aula.TurmaId.Disciplina.Cod.ToString();
-                lblDisc.Text = aloc.Aula.TurmaId.Disciplina.Nome + " (" +aloc.Aula.TurmaId.Numero.ToString() + ")";
+                //lblDiscCod.Text = aloc.Aula.TurmaId.Disciplina.Cod.ToString();                
+                lblDisc.Text = getNomeCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" +aloc.Aula.TurmaId.Numero.ToString() + ")";
                 lblResponsavel.Text = aloc.Aula.TurmaId.Professor.Nome;
                 lblCurso.Text = aloc.Aula.TurmaId.Curso.Nome;// + " - " + aloc.Delta;
             }
@@ -205,5 +205,43 @@ public partial class Alocacoes_Default : System.Web.UI.Page
     protected void lbtnVoltar_Click(object sender, EventArgs e)
     {
         Response.Redirect("~/Default/PaginaInicial.aspx");
+    }
+
+    /*
+     * Retorna um nome curto para a disciplina, se o tamanho passar de 20 caracteres     
+     */
+    public string getNomeCurtoDisciplina(string nome)
+    {        
+        if (nome.Length <= 20)
+            return nome;
+        char[] vogais = { 'a', 'á', 'e', 'ê', 'i', 'o', 'u' };
+        string curto = "";
+        foreach (string pal in nome.Split())
+        {
+            // Se a palavra tiver menos de 7 caracteres (ex: "de", "para", "(SI)") usa como está
+            string palCurta = pal;
+            if (pal.Length > 7)
+            {                
+                // Pega as 4 primeiras letras da palavra
+                palCurta = pal.Substring(0, 4);
+                // A partir da quarta letra, procura a primeira consoante
+                int pos = 4;
+                while(pos < pal.Length)
+                {
+                    palCurta += pal[pos];
+                    if (pal[pos] == 'a' || pal[pos] == 'á' || pal[pos] == 'e' || pal[pos] == 'ê'
+                       || pal[pos] == 'o' || pal[pos] == 'ó' || pal[pos] == 'u')
+                        pos++;
+                    else break;
+                }
+                // Se terminar com uma vogal, acrescenta mais uma letra
+                //if (palCurta[2] == 'a' || palCurta[2] == 'á' || palCurta[2] == 'e' || palCurta[2] == 'i' || palCurta[2] == 'o'
+                //    || palCurta[2] == 'u')
+                //    palCurta = pal.Substring(0, 4);
+                palCurta += ". ";
+            }
+            curto += palCurta + " ";
+        }
+        return curto;
     }
 }

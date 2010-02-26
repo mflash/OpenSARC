@@ -1,0 +1,147 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Login.master.cs" Inherits="Master_MasterFacin" %>
+<%@ Register Src="../UserControls/SelecionaCalendario.ascx" TagName="SelecionaCalendario" TagPrefix="uc3" %>
+<%@ Register Src="../UserControls/MenuProfessor.ascx" TagName="MenuProfessor" TagPrefix="uc2" %>
+<%@ Register Src="../UserControls/MenuAdmin.ascx" TagName="MenuAdmin" TagPrefix="uc1" %>
+<%@ Register Assembly="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+    Namespace="System.Web.UI" TagPrefix="asp" %>
+    
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Open SARC</title>
+    <style type="text/css">
+        @import url("~/CORE.CSS")
+    </style>
+    <style type="text/css">
+        @import url("~/datepicker.css")
+        .style1
+        {
+            vertical-align: top;
+            height: 100%;
+            width: 100%;
+            border-left: 1px solid #6f9dd9;
+            border-right: 1px solid #6f9dd9;
+            border-top: 1px solid #6f9dd9;
+            padding: 10px;
+            background-color: #ffffff;
+        }
+
+.picker-target-simple{height:80px;overflow-y:auto;background-color:#fff;padding:2px 8px;font-size:83%;border-left:1px solid #cce;margin-right:1px;cursor:pointer;border-right:1px solid #fff;border-top:1px solid #fff;border-bottom:1px solid #fff}
+.picker-target-simple.focused{border:1px solid #619ac9}
+.picker-target-simple .row{cursor:pointer;line-height:150%;padding:0px 0px 2px 0px}
+.picker-target-simple .action{width:6px;font-size:9px;border:1px solid #999;font-weight:bold;background-color:#fff;padding:0px 4px 0px 4px;color:#555;margin-left:5px}
+.picker-target-simple .selected{background-color:#f0f0f0;border-bottom:1px solid #fff}
+.picker-target-simple .selected .line1{font-weight:bold}
+.picker-target-simple .active{background-color:#d4e3ff;color:#000;text-decoration:line-through;padding-left:2px;margin-left:-2px;padding-right:2px;margin-right:-2px}
+.picker-target-simple .active .line2{color:#fff}
+.picker-target-simple .preselect{background-color:#d4e3ff;border:1px solid black;padding-top:2px}
+.picker-target-simple .preselect .line1{font-weight:bold}
+.picker-target-simple .active .action,.picker-target-simple .preselect .action{background-color:#ccc;color:white}        
+        
+        .style1
+        {
+            height: 20px;
+            width: 61%;
+        }
+        .style2
+        {
+            height: 20px;
+            width: 93%;
+        }
+        
+    </style>
+    <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
+    <link href="../datepicker.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="../_layouts/logo/favicon.ico"/>
+</head>
+
+<body>
+<script  type="text/javascript" language="javascript">
+function confirm_delete()
+{
+  if (confirm("Confirma a exclusão?")==true)
+    return true;
+  else
+    return false;
+}
+</script>
+  <!--div align="center"><font color="red"><b>AVISO: este sistema &eacute; apenas para testes - as modifica&ccedil;&otilde;es n&atilde;o afetam as reservas do semestre!</b></font></div-->
+  <form id="Form1" runat="server">
+
+  <table class="ms-main" cellpadding="0" cellspacing="0" border="0" width="100%" 
+      style="height: 95%">
+    <tr style="height:100%">
+	    <td style="height: 100%">
+	        <table width="100%" cellspacing="0" cellpadding="0" style="height: 100%">
+	            <tr>
+                    <td class="ms-titleareaframe" colspan="2" style="height: 20px">
+                        <img alt="" src="../_layouts/logo/opensarc-logo.gif" 
+                            style="position: absolute; top: 3px; right: 15px;"/>
+                    </td>
+	                <td valign="top" id="onetidPageTitleAreaFrame" class='ms-pagetitleareaframe' nowrap style="height: 20px; width: 669px;">
+	                    <table id="onetidPageTitleAreaTable" cellpadding="0" cellspacing="0" width="100%" border="0" style="height: 12px">
+    	                    <tr>
+	    	                    <td valign="top" class="ms-titlearea" style="height: 21px">
+		    	                    &nbsp;
+		                        </td>
+	    	                    <td valign="top" class="ms-titlearea" style="height: 21px">
+        <asp:Label ID="lblLogin" runat="server" CssClass="ms-WPTitle" 
+            Text="Bem-vindo ao OpenSARC!"></asp:Label>
+		                        </td>
+	                        </tr>
+	                    
+	                    </table>
+                    </td>
+	                <td class="ms-titlearearight" style="width: 31px; height: 20px;">
+		                <div class="ms-titleareaframe" style='height:100%'></div>
+		            </td>
+	            </tr>
+	            <tr>
+	                <!--td class="ms-leftareacell" valign="top" id="LeftNavigationAreaCell" style="width: 118px; height: 100%">
+	                    <table class="ms-nav" width="100%" style="height: 100%" cellpadding="0" cellspacing="0">
+		                    <tr>
+		                        <td></td>
+		                    </tr>
+	                    </table>
+	                </td-->
+	            <td style="width: 12px">
+	                <div class="ms-pagemargin">
+	                <img src="/_layouts/images/blank.gif" width="10" height="1" alt=""/></div>
+		        </td>
+               <td class='ms-bodyareacell' valign="top" style="width: 100%px" colspan=3>
+        		<table id="MSO_ContentTable" width="100%" style="height: 100%" border="0" cellspacing="0" cellpadding="0" class="ms-propertysheet">
+		            <tr>
+			            <td class='style1' valign="top">
+                        <div style="text-align: justify"> 
+                            <asp:ContentPlaceHolder ID="cphTitulo" runat="server">
+                            <asp:ScriptManager ID="ScriptManager1" runat="server">
+                            </asp:ScriptManager>
+                            </asp:ContentPlaceHolder>
+                            <br />
+                        </div>
+			            </td>
+		            </tr>
+		        </table>
+       	    </td>
+	            <td class="ms-rightareacell" style="width: 31px"><div class="ms-pagemargin">
+	            <img src="/_layouts/images/blank.gif" width="10" height="1" alt=""/></div>
+		        </td>
+	        </tr>
+            <tr>
+	            <td class="ms-pagebottommarginleft" style="width: 118px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
+	            <td class="ms-pagebottommargin" style="width: 12px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
+	            <td class="ms-bodyareapagemargin" 
+                    style="height: 11px; width: 669px; text-align: center;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/>
+	            <td class="ms-pagebottommarginright" style="width: 31px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
+            </tr>
+	     </table>
+	    </td>
+	</tr>
+  </table>
+  </form>
+  <div class="ms-toolbar" style="text-align: center">
+&copy; 
+                    2009 Open SARC, <a href="http://opensarc.sourceforge.net">
+                    http://opensarc.sourceforge.net</a> -  <a href="../Default/About.aspx" class="ms-toolbar">Sobre...</a></div>
+</body>
+
+</html>

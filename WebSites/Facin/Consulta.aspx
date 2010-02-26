@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="Consulta.aspx.cs" Inherits="Alocacoes_Default" Title="Sistema de Alocação de Recursos - FACIN" %>
+<%@ Page Language="C#" MasterPageFile="~/Master/Login.master" AutoEventWireup="true" CodeFile="Consulta.aspx.cs" Inherits="Alocacoes_Default" Title="Sistema de Alocação de Recursos - FACIN" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <%@ Import Namespace="BusinessData.Entities" %>
@@ -18,7 +18,8 @@
                         Data
                         </td>
                     <td style="height: 26px; width: 166px;">
-                        <asp:TextBox ID="txtData" runat="server" CssClass="ms-toolbar"></asp:TextBox>
+                        <asp:TextBox ID="txtData" runat="server" CssClass="ms-toolbar" 
+                            AutoPostBack="True" ontextchanged="btnVisualizarAlocacoes_Click"></asp:TextBox>
                         <asp:ImageButton ID="ibtnAbrirCalendario" runat="server" ImageUrl="~/_layouts/images/CALENDAR.GIF" />
                         <asp:Label ID="lblOpcional" runat="server" CssClass="ms-toolbar" Text="(Opcional)" ForeColor="Red" Visible="False"></asp:Label>
                         <cc1:CalendarExtender ID="ceData" 

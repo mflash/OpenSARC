@@ -60,7 +60,9 @@ public partial class _Default : System.Web.UI.Page
     {
         //if (txtData.Text.Length != 0)
         //{
-        DateTime now = DateTime.Parse(lblDataHora.Text).Date;
+		DateTime tmp = DateTime.Parse(lblDataHora.Text);		
+        DateTime now = tmp.Date;
+		TimeSpan nowTime = tmp.TimeOfDay;
         List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByData(now, (BusinessData.Entities.Calendario)Session["Calendario"]);
         List<Alocacao> filtradaAtual = new List<Alocacao>();
         List<Alocacao> filtradaProx = new List<Alocacao>();
@@ -75,8 +77,9 @@ public partial class _Default : System.Web.UI.Page
             horarios.Add(hor.ToString());
         }
 
-        TimeSpan nowTime = DateTime.Now.TimeOfDay;
+        //TimeSpan nowTime = DateTime.Now.TimeOfDay;
         //nowTime = nowTime.Add(new TimeSpan(2,0,0)); // para testar com outros horarios
+		//nowTime = nowTime.Subtract(new TimeSpan(0,12,0));
 
         // Identifica o período de aula atual
         int pos;
@@ -85,7 +88,7 @@ public partial class _Default : System.Web.UI.Page
         else
             for (pos = 0; pos < horarios.Count - 1; pos++)
             {
-                if (nowTime >= horariosTime[pos] && nowTime <= horariosTime[pos + 1])
+                if (nowTime >= horariosTime[pos] && nowTime < horariosTime[pos + 1])
                     break;
             }        
       
@@ -226,7 +229,7 @@ public partial class _Default : System.Web.UI.Page
     protected void Timer1_Tick(object sender, EventArgs e)
     {
         //lblDataHora.Text = DateTime.Now.ToString();
-        lblDataHora.Text = DateTime.Now.Subtract(new TimeSpan(338, 0, 0, 0)).ToString();
+        lblDataHora.Text = DateTime.Now.Subtract(new TimeSpan(338, 3, 0, 0)).ToString();
         VisualizarAlocacoesData();
     }
 }

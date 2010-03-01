@@ -45,7 +45,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
             <ContentTemplate>
             <div align="center"><asp:Label ID="lblDataHora" runat="server" CssClass="ms-blogrss"></asp:Label>
-<table>
+		<table>
         <tr>
         <td><asp:Label ID="lblAtual" runat="server" 
                     CssClass="ms-pagecaption"></asp:Label></td>
@@ -58,7 +58,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
                      OnItemDataBound="dgAlocacoes_ItemDataBound"
                      Visible="False" >
         
-            <ItemStyle CssClass="ms-toolbar"  HorizontalAlign="Center"/>
+            <ItemStyle CssClass="ms-btoolbar"  HorizontalAlign="Center"/>
             <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Center" />
                     <Columns>
                     
@@ -89,7 +89,9 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
                    </Columns>
                     </asp:DataGrid>
 					</td>
-        </tr>
+        </tr></table>
+		<br/>
+		<table>
         <tr>
         <td><asp:Label ID="lblProximo" runat="server" 
                     CssClass="ms-pagecaption"></asp:Label></td>
@@ -102,7 +104,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
                      OnItemDataBound="dgAlocacoes_ItemDataBound"
                      Visible="False" >
         
-            <ItemStyle CssClass="ms-toolbar"  HorizontalAlign="Center"/>
+            <ItemStyle CssClass="ms-btoolbar"  HorizontalAlign="Center"/>
             <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Center" />
                     <Columns>
                     
@@ -150,7 +152,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
         <div align="center">
         <p style="padding: 4px; margin: 4px; text-align: center">
                     O OpenSARC é um sistema para alocação de recursos computacionais. Além da 
-                    solicitação de recursos durante o período de planejamento semestral, o sistema 
+                    solicitação de recursos durante o período de planejamento semestral,<br/>o sistema 
                     permite agendar eventos, consultar datas de avaliações e trocar e transferir 
                     recursos durante todo o ano.<br />
                     <br />

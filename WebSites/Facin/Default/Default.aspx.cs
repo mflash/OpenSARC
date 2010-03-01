@@ -233,7 +233,7 @@ public partial class _Default : System.Web.UI.Page
     protected void Timer1_Tick(object sender, EventArgs e)
     {
         //lblDataHora.Text = DateTime.Now.ToString();
-        lblDataHora.Text = DateTime.Now.Add(new TimeSpan(1, 2, 9, 0)).ToString();
+        lblDataHora.Text = DateTime.Now.Add(new TimeSpan(0, 0, 0, 0)).ToString();
         VisualizarAlocacoesData();
     }
 }

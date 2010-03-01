@@ -141,7 +141,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
             
             <asp:TemplateColumn HeaderText="Descri&#231;&#227;o">
                 <ItemTemplate>
-                    <asp:TextBox ID="txtDescricao" runat="server" CssClass="ms-toolbar" Height="38px"
+                    <asp:TextBox ID="txtDescricao" runat="server" style="resize:none;" CssClass="ms-toolbar" Height="38px"
                         Width="400px" TextMode="MultiLine" Text='<%#DataBinder.Eval(Container.DataItem, "DescricaoAtividade") %>'></asp:TextBox>
                 </ItemTemplate>
                 <EditItemTemplate>

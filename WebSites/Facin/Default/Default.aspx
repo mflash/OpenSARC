@@ -1,14 +1,14 @@
 <%-- $Id$ --%>
 
 <%@ Page Language="C#" MasterPageFile="~/Master/Login.master" AutoEventWireup="true" 
-CodeFile="Default.aspx.cs" Inherits="_Default"  %>
+CodeFile="Default.aspx.cs" Inherits="_Default" %>
 <%@ Import Namespace="BusinessData.Entities" %>
 <%-- Add content controls here --%>
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphTitulo">
     <div align="center" class="ms-menutoolbar" style="width: 100%; height: 14px">
         <asp:ScriptManager ID="ScriptManager1" runat="server">
                 </asp:ScriptManager>
-                <asp:Timer ID="Timer1" runat="server" Interval="30000" 
+                <asp:Timer ID="Timer1" runat="server" Interval="10000" 
             ontick="Timer1_Tick">
         </asp:Timer>
 </div>

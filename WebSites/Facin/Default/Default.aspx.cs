@@ -17,10 +17,20 @@ using System.Collections.Generic;
 
 public partial class _Default : System.Web.UI.Page
 {
-    private AlocacaoBO controladorAlocacoes;
+	private List<string> horarios;   
+	private List<TimeSpan> horariosTime;
 
     protected void Page_Load(object sender, EventArgs e)
     {
+		//controladorAlocacoes = new AlocacaoBO();
+		horarios = new List<string>();  
+			horariosTime = new List<TimeSpan>();
+			
+			foreach (string hor in Enum.GetNames(typeof(Horarios.HorariosPUCRS)))
+			{
+				horariosTime.Add(Horarios.ParseToDateTime(hor).TimeOfDay);
+				horarios.Add(hor.ToString());
+			}
         if (!IsPostBack)
         {
             if (Roles.GetUsersInRole("Admin").Length == 0)
@@ -35,10 +45,12 @@ public partial class _Default : System.Web.UI.Page
             //ACESSOS
             Acesso a = new Acesso(Guid.NewGuid(), DateTime.Now);
             AcessosBO controladorAcessos = new AcessosBO();
-            controladorAcessos.InserirAcesso(a);
-        }
-        controladorAlocacoes = new AlocacaoBO();
-        Timer1_Tick(null, null);
+            //controladorAcessos.InserirAcesso(a);
+			
+			
+			Timer1_Tick(null, null);
+        }        
+        
         //lblDataHora.Text = DateTime.Now.ToString();
     }
     protected void loginEntrada_LoginError(object sender, EventArgs e)
@@ -56,27 +68,41 @@ public partial class _Default : System.Web.UI.Page
 
     }
 
+	private List<Alocacao> ProcuraProximoHorario(List<Alocacao> lista, ref int pos)
+	{
+		List<Alocacao> filtradaAtual = new List<Alocacao>();
+		bool achei = false;
+		// Procura o primeiro período com reservas
+        while (filtradaAtual.Count == 0)
+        {
+			if(pos > horarios.Count - 1) // não há mais horários neste dia
+				break;
+            string horarioAtual = horarios[pos];
+            foreach (Alocacao aloc in lista)
+            {
+                if (aloc.Horario != horarioAtual && achei) // ja achou, ou seja, mudou o horario						
+                    break;
+                if (aloc.Horario == horarioAtual)
+                {
+                    //Alocacao nova = new Alocacao(aloc.Recurso,aloc.Data,aloc.Horario,aloc.Aula,aloc.Evento);
+                    //nova.Delta = dif.TotalMinutes.ToString();
+                    filtradaAtual.Add(aloc);
+                    achei = true; // indica que ja achou - quando o horario mudar, sai do foreach							
+                }
+            }
+			pos++;
+        }
+		return filtradaAtual;
+	}
+	
     private void VisualizarAlocacoesData()
     {
-        //if (txtData.Text.Length != 0)
-        //{
 		DateTime tmp = DateTime.Parse(lblDataHora.Text);		
         DateTime now = tmp.Date;
 		TimeSpan nowTime = tmp.TimeOfDay;
+		
+		AlocacaoBO controladorAlocacoes = new AlocacaoBO();
         List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByData(now, (BusinessData.Entities.Calendario)Session["Calendario"]);
-        List<Alocacao> filtradaAtual = new List<Alocacao>();
-        List<Alocacao> filtradaProx = new List<Alocacao>();
-
-        //string horarioAtual = String.Empty;
-
-        List<string> horarios = new List<string>();
-        List<TimeSpan> horariosTime = new List<TimeSpan>();
-        foreach (string hor in Enum.GetNames(typeof(Horarios.HorariosPUCRS)))
-        {
-            horariosTime.Add(Horarios.ParseToDateTime(hor).TimeOfDay);
-            horarios.Add(hor.ToString());
-        }
-
         //TimeSpan nowTime = DateTime.Now.TimeOfDay;
         //nowTime = nowTime.Add(new TimeSpan(2,0,0)); // para testar com outros horarios
 		//nowTime = nowTime.Subtract(new TimeSpan(0,12,0));
@@ -91,55 +117,33 @@ public partial class _Default : System.Web.UI.Page
                 if (nowTime >= horariosTime[pos] && nowTime < horariosTime[pos + 1])
                     break;
             }        
-      
-        bool achei = false;
-
-        // Procura o primeiro período com reservas
-        while (filtradaAtual.Count == 0 && filtradaProx.Count == 0)
+		
+		List<Alocacao> filtradaAtual = ProcuraProximoHorario(listaAlocacoes, ref pos);
+		if (filtradaAtual != null && filtradaAtual.Count != 0)
         {
-            string horarioAtual = horarios[pos];
-            string horarioProx = String.Empty;
-            lblAtual.Text = "Horário atual: " + horarioAtual;//+" - "+nowTime.ToString();
-            if (pos < horarios.Count - 1) // se nao estivermos ja no ultimo horario... 
-            {
-                horarioProx = horarios[pos + 1];
-                lblProximo.Text = "Proximo horario: " + horarioProx;
-            }
-            foreach (Alocacao aloc in listaAlocacoes)
-            {
-                if (aloc.Horario != horarioAtual && aloc.Horario != horarioProx && achei) // ja achou, ou seja, mudou o horario						
-                    break;
-                if (aloc.Horario == horarioAtual)
-                {
-                    //Alocacao nova = new Alocacao(aloc.Recurso,aloc.Data,aloc.Horario,aloc.Aula,aloc.Evento);
-                    //nova.Delta = dif.TotalMinutes.ToString();
-                    filtradaAtual.Add(aloc);
-                    achei = true; // indica que ja achou - quando o horario mudar, sai do foreach							
-                }
-                if (aloc.Horario == horarioProx)
-                {
-                    //Alocacao nova = new Alocacao(aloc.Recurso,aloc.Data,aloc.Horario,aloc.Aula,aloc.Evento);
-                    filtradaProx.Add(aloc);
-                    achei = true;
-                }
-            }
-            if (++pos >= horarios.Count - 1)
-                break; // não há mais horários neste dia
-        }
-        if (filtradaAtual.Count != 0)
-        {
+			//Response.Write("pos="+pos+"<br/>");
+			lblAtual.Text = horarios[pos-1];
             dgAlocacoes.DataSource = filtradaAtual;
             dgAlocacoes.Visible = true;
             dgAlocacoes.DataBind();
             lblStatus.Visible = false;
         }
-        if (filtradaProx.Count != 0)
+		
+		List<Alocacao> filtradaProx  = ProcuraProximoHorario(listaAlocacoes, ref pos);
+		if (filtradaProx != null && filtradaProx.Count != 0)
         {
+			//Response.Write("pos="+pos+"<br/>");
+			lblProximo.Text = horarios[pos-1];
             dgAlocacoes2.DataSource = filtradaProx;
             dgAlocacoes2.DataBind();
             dgAlocacoes2.Visible = true;
             lblStatus.Visible = false;
         }
+
+		//if (pos < horarios.Count - 1) // se nao estivermos ja no ultimo horario... 
+        //    {
+        // lblAtual.Text = "Horário atual: " + horarioAtual;//+" - "+nowTime.ToString();
+		// lblProximo.Text = "Proximo horario: " + horarioProx;
         if (filtradaAtual.Count == 0 && filtradaProx.Count == 0)
         {
             lblStatus.Text = "Não existem recursos alocados para hoje.";
@@ -229,7 +233,7 @@ public partial class _Default : System.Web.UI.Page
     protected void Timer1_Tick(object sender, EventArgs e)
     {
         //lblDataHora.Text = DateTime.Now.ToString();
-        lblDataHora.Text = DateTime.Now.Subtract(new TimeSpan(338, 3, 0, 0)).ToString();
+        lblDataHora.Text = DateTime.Now.Add(new TimeSpan(1, 2, 9, 0)).ToString();
         VisualizarAlocacoesData();
     }
 }

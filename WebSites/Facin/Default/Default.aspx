@@ -8,7 +8,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
     <div align="center" class="ms-menutoolbar" style="width: 100%; height: 14px">
         <asp:ScriptManager ID="ScriptManager1" runat="server">
                 </asp:ScriptManager>
-                <asp:Timer ID="Timer1" runat="server" Interval="10000" 
+                <asp:Timer ID="Timer1" runat="server" Interval="60000" 
             ontick="Timer1_Tick">
         </asp:Timer>
 </div>

@@ -129,7 +129,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                     </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="Descri&#231;&#227;o">
                         <ItemTemplate>
-                            <asp:TextBox ID="txtDescricao" runat="server" CssClass="ms-toolbar" Height="38px"
+                            <asp:TextBox ID="txtDescricao" runat="server" CssClass="ms-toolbar" 
                                 Width="300px" TextMode="MultiLine" Text='<%#DataBinder.Eval(Container.DataItem, "DescricaoAtividade") %>'></asp:TextBox>
                         </ItemTemplate>
                         <EditItemTemplate>
@@ -163,11 +163,13 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                     </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="Recursos Selecionados" Visible="True">
                         <ItemTemplate>
-                         <asp:TextBox ID="lblRecursosAlocados" runat="server" Height="38px"
-                                Width="250px" TextMode="MultiLine" ></asp:TextBox>
+						<asp:Panel ID="pnRecursos" runat="server">
+                         <asp:TextBox ID="lblRecursosAlocados" runat="server"
+                                Width="250px" TextMode="MultiLine" visible="false"></asp:TextBox>
                             <br><asp:LinkButton runat="server" CommandName="Trocar" Text="Trocar..." Visible="True"></asp:LinkButton>
                             <asp:LinkButton runat="server" CommandName="Transferir" Text="Transferir..." Visible="True"></asp:LinkButton>
                             <asp:LinkButton runat="server" CommandName="Select" Text="Remover..."></asp:LinkButton>
+						</asp:Panel>
                         </ItemTemplate>
                     </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="CorDaData" Visible="False">

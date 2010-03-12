@@ -38,7 +38,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             {
                 Server.Transfer("~/Default/Erro.aspx?Erro=O sistema está bloqueado.");
             }
-            else if ((AppState)Session["AppState"] != AppState.AtivoSemestre)
+            else if (Session["AppState"] != null && (AppState)Session["AppState"] != AppState.AtivoSemestre)
                 Server.Transfer("~/Default/Erro.aspx?Erro=O semestre ainda não foi iniciado.");
             else
             {
@@ -115,6 +115,15 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             Label lblRecursosAlocadosId = (Label)e.Item.FindControl("lblRecursosAlocadosId");
             Label lblAulaId = (Label)e.Item.FindControl("lblAulaId");
             Label lblHora = (Label)e.Item.FindControl("lblHora");
+			
+			Panel pnRecursos = (Panel)e.Item.FindControl("pnRecursos");			
+			//Label tmp2 = new Label();
+			//tmp2.Text = "boo";
+			//pnRecursos.Controls.Add(tmp2);
+			//Label tmp3 = new Label();
+			//tmp3.Text = "boo2";
+			//pnRecursos.Controls.Add(tmp3);
+			//pnRecursos.BackColor = Color.Red;
             Color cor = argb[0];
 
             txtDescricao.Attributes.Add("onkeyup", "setDirtyFlag()");
@@ -185,16 +194,24 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             AlocacaoBO alocBO = new AlocacaoBO();
             List<Recurso> recAlocados = alocBO.GetRecursoAlocadoByAula(dataAtual, lblHora.Text, new Guid(lblAulaId.Text));
-
+			
             if (recAlocados.Count != 0)
             {
-                for (int i = 0; i < recAlocados.Count - 1; i++)
+				foreach(Recurso r in recAlocados)
+                //for (int i = 0; i < recAlocados.Count - 1; i++)
                 {
-                    lblRecursosAlocados.Text += recAlocados[i].Descricao + ", ";
-                    lblRecursosAlocadosId.Text += recAlocados[i].Id + ",";
+                    lblRecursosAlocados.Text += r.Descricao; //recAlocados[i].Descricao + ", ";
+                    lblRecursosAlocadosId.Text += r.Id; //recAlocados[i].Id + ",";
+					
+					Label tmpLbl = new Label();
+					tmpLbl.Text = r.Descricao; //recAlocados[i].Descricao;
+					pnRecursos.Controls.Add(tmpLbl);
                 }
-                lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
-                lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
+                //lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
+                //lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
+				//Label tmp0 = new Label();
+				//tmp0.Text = recAlocados[recAlocados.Count-1].Descricao;
+				//pnRecursos.Controls.Add(tmp0);
             }
             else lblRecursosAlocados.Text = "";
 
@@ -491,6 +508,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         TextBox lblRecursosAlocados = (TextBox)grid.FindControl("lblRecursosAlocados");
         Label lblRecursosAlocadosId = (Label)grid.FindControl("lblRecursosAlocadosId");
+		
+		Panel pnRecursos = (Panel)grid.FindControl("pnRecursos");			
 
         lblRecursosAlocados.Text = "";
         lblRecursosAlocadosId.Text = "";
@@ -502,13 +521,18 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         if (recAlocados.Count != 0)
         {
-            for (int i = 0; i < recAlocados.Count - 1; i++)
+			foreach(Recurso r in recAlocados)
+            //for (int i = 0; i < recAlocados.Count - 1; i++)
             {
-                lblRecursosAlocados.Text += recAlocados[i].Descricao + ", ";
-                lblRecursosAlocadosId.Text += recAlocados[i].Id + ",";
+                lblRecursosAlocados.Text += r.Descricao; //recAlocados[i].Descricao + ", ";
+                lblRecursosAlocadosId.Text += r.Id; // recAlocados[i].Id + ",";
+				
+				Label tmpLbl = new Label();
+				tmpLbl.Text = r.Descricao; //recAlocados[i].Descricao;
+				pnRecursos.Controls.Add(tmpLbl);
             }
-            lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
-            lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
+            //lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
+            //lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
         }
         else lblRecursosAlocados.Text = "";
 

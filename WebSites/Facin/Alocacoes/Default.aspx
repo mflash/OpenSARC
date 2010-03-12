@@ -13,6 +13,7 @@
                 <asp:Label ID="lblDisciplina" runat="server" CssClass="ms-WPTitle" Text="VISUALIZAR RECURSOS ALOCADOS POR:"></asp:Label></div>
             <asp:RadioButtonList ID="rblAlocacoes" runat="server" OnSelectedIndexChanged="rblAlocacoes_SelectedIndexChanged" AutoPostBack="True" BackColor="White" BorderColor="White" CssClass="ms-toolbar">
                 <asp:ListItem Selected="True" Value="Data">Data</asp:ListItem>
+				<asp:ListItem Value="Categoria">Categoria recurso + horário</asp:ListItem>
                 <asp:ListItem Value="Recurso">Recurso</asp:ListItem>
                 <asp:ListItem Value="Professor">Professor</asp:ListItem>
                 <asp:ListItem>Secret&#225;rio</asp:ListItem>
@@ -58,8 +59,32 @@
                         </asp:DropDownList>
                         </td>
                 </tr>
-            </table>
-                </asp:Panel><asp:Panel ID="pnlVisualizarPorProfessor" runat="server" Height="50px"
+            </table>			
+                </asp:Panel>
+			<asp:Panel ID="pnlVisualizarPorCategoria" runat="server" Height="50px"
+                Width="125px" Visible="False">
+            <table id="Table2">
+                <tr>
+                    <td style="width: 88px; height: 26px" class="ms-toolbar">
+                        Categoria</td>
+                    <td style="height: 26px; width: 173px;">
+                        <asp:DropDownList ID="ddlCategorias2" runat="server" AppendDataBoundItems="True" AutoPostBack="True"
+                            OnSelectedIndexChanged="ddlCategorias2_SelectedIndexChanged" CssClass="ms-toolbar" Width="170px">
+                            <asp:ListItem>Selecione</asp:ListItem>
+                        </asp:DropDownList></td>
+                </tr>
+                <tr>
+                    <td style="width: 88px; height: 26px" class="ms-toolbar">
+                        Horário</td>
+                    <td style="height: 26px; width: 173px;">
+                        <asp:DropDownList ID="ddlHorarios" runat="server" AppendDataBoundItems="True" CssClass="ms-toolbar" Width="170px">
+                            <asp:ListItem>Selecione</asp:ListItem>
+                        </asp:DropDownList>
+                        </td>
+                </tr>
+            </table>			
+                </asp:Panel>
+				<asp:Panel ID="pnlVisualizarPorProfessor" runat="server" Height="50px"
                 Width="125px" Visible="False">
                     <table id="Table1">
                         <tr>

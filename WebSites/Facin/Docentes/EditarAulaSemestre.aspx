@@ -76,8 +76,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                 </div>
             <asp:DataGrid ID="dgAulas" runat="server" AutoGenerateColumns="False" Width="100%"
                 HorizontalAlign="Center" OnItemDataBound="dgAulas_ItemDataBound" DataKeyField="Id"
-                OnItemCommand="dgAulas_ItemCommand" 
-                onselectedindexchanged="dgAulas_SelectedIndexChanged">
+                OnItemCommand="dgAulas_ItemCommand">
                 <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
                 <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Center" />
                 <Columns>
@@ -164,11 +163,28 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                     <asp:TemplateColumn HeaderText="Recursos Selecionados" Visible="True">
                         <ItemTemplate>
 						<asp:Panel ID="pnRecursos" runat="server">
-                         <asp:TextBox ID="lblRecursosAlocados" runat="server"
-                                Width="250px" TextMode="MultiLine" visible="false"></asp:TextBox>
-                            <br><asp:LinkButton runat="server" CommandName="Trocar" Text="Trocar..." Visible="True"></asp:LinkButton>
-                            <asp:LinkButton runat="server" CommandName="Transferir" Text="Transferir..." Visible="True"></asp:LinkButton>
-                            <asp:LinkButton runat="server" CommandName="Select" Text="Remover..."></asp:LinkButton>
+						
+						<table id="tabRecursos" runat="server">												    
+						<tr><td>
+                            <asp:CheckBoxList ID="cbRecursos" runat="server" CssClass="UserConfiguration">
+                            </asp:CheckBoxList>
+                            </td>
+						<td>
+						<asp:ImageButton ID="butDeletar" runat="server" 
+                                ImageUrl="~/_layouts/images/CRIT_16.GIF" onclick="butDeletar_Click" />
+						    <br />
+                            <asp:ImageButton ID="butTransferir" runat="server" 
+                                ImageUrl="~/_layouts/images/PLNEXT1.GIF" />
+                            <br />
+                            <asp:ImageButton ID="butTrocar" runat="server" 
+                                ImageUrl="~/_layouts/images/recurrence.gif"  />
+						</td>
+						</tr>
+						</table>						
+						
+                         <asp:Label ID="lblRecursosAlocados" runat="server"
+                                Width="250px" visible="false"></asp:Label>
+                            <br>                            
 						</asp:Panel>
                         </ItemTemplate>
                     </asp:TemplateColumn>

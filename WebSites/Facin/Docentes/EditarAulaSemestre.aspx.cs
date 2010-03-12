@@ -7,6 +7,7 @@ using BusinessData.BusinessLogic;
 using System.Collections.Generic;
 using BusinessData.DataAccess;
 using System.Drawing;
+using System.Web.UI.HtmlControls;
 
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
@@ -110,13 +111,19 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
             Label lblDescData = (Label)e.Item.FindControl("lblDescData");
             Label lblCorDaData = (Label)e.Item.FindControl("lblCorDaData");
-            TextBox lblRecursosAlocados = (TextBox)e.Item.FindControl("lblRecursosAlocados");
-            lblRecursosAlocados.ReadOnly = true;
+            Label lblRecursosAlocados = (Label)e.Item.FindControl("lblRecursosAlocados");
+            //lblRecursosAlocados.ReadOnly = true;
             Label lblRecursosAlocadosId = (Label)e.Item.FindControl("lblRecursosAlocadosId");
             Label lblAulaId = (Label)e.Item.FindControl("lblAulaId");
             Label lblHora = (Label)e.Item.FindControl("lblHora");
 			
-			Panel pnRecursos = (Panel)e.Item.FindControl("pnRecursos");			
+			Panel pnRecursos = (Panel)e.Item.FindControl("pnRecursos");
+            HtmlTable tabRecursos = (HtmlTable)e.Item.FindControl("tabRecursos");
+            int i = tabRecursos.Rows[0].Cells[0].Controls.Count;
+            CheckBoxList cbRecursos = (CheckBoxList)tabRecursos.Rows[0].Cells[0].Controls[1];
+
+            //CheckBoxList cbRecursos = (CheckBoxList) tabRecursos.FindControl("cbRecursos");
+
 			//Label tmp2 = new Label();
 			//tmp2.Text = "boo";
 			//pnRecursos.Controls.Add(tmp2);
@@ -197,15 +204,47 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 			
             if (recAlocados.Count != 0)
             {
+                //if(cbRecursos != null && cbRecursos.Items != null)
+                cbRecursos.Items.Clear();
 				foreach(Recurso r in recAlocados)
                 //for (int i = 0; i < recAlocados.Count - 1; i++)
                 {
-                    lblRecursosAlocados.Text += r.Descricao; //recAlocados[i].Descricao + ", ";
+                    //lblRecursosAlocados.Text += r.Descricao; //recAlocados[i].Descricao + ", ";
                     lblRecursosAlocadosId.Text += r.Id; //recAlocados[i].Id + ",";
 					
-					Label tmpLbl = new Label();
-					tmpLbl.Text = r.Descricao; //recAlocados[i].Descricao;
-					pnRecursos.Controls.Add(tmpLbl);
+					//Label tmpLbl = new Label();
+					//tmpLbl.Text = r.Descricao; //recAlocados[i].Descricao;
+					//pnRecursos.Controls.Add(tmpLbl);
+
+                    cbRecursos.Items.Add(r.Descricao);
+
+                    /*
+                    HtmlTableRow row = new HtmlTableRow();
+                    HtmlTableCell cell = new HtmlTableCell();                    
+                    
+                    CheckBox cbRec = new CheckBox();
+                    cbRec.Text = r.Descricao;
+                    cbRec.Checked = false;
+                    cell.Controls.Add(cbRec);
+                    row.Cells.Add(cell);
+                    HtmlTableCell cell2 = new HtmlTableCell();
+                    
+                    //ImageButton butDelete = new ImageButton();                    
+                    //butDelete.ImageUrl = "/_layouts/images/delete.gif";
+                    //butDelete.ID = "imgButton1";
+                    //butDelete.BorderColor = Color.Red;
+                    //butDelete.Click +=new ImageClickEventHandler(butDelete_Click);
+                    //butDelete.Command += new CommandEventHandler(butDelete_Command);
+                    //butDelete.CommandArgument = "blablabla";
+
+                    Button butDelete = new Button();
+                    butDelete.Command += new CommandEventHandler(butDelete_Command);
+                    butDelete.CommandName = "butDelete";
+                    butDelete.Text = " X ";
+                    cell2.Controls.Add(butDelete);
+                    row.Cells.Add(cell2);
+                    tabRecursos.Rows.Add(row);
+                     */
                 }
                 //lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
                 //lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
@@ -219,6 +258,17 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             argb.RemoveAt(0);
         }
 
+    }
+
+    void butDelete_Command(object sender, CommandEventArgs e)
+    {        
+        //throw new NotImplementedException();
+        ClientScript.RegisterClientScriptBlock(this.GetType(), "img", "<script type = 'text/javascript'>alert('ImageButton Clicked');</script>");       
+    }
+
+    void butDelete_Click(object sender, ImageClickEventArgs e)
+    {
+        ClientScript.RegisterClientScriptBlock(this.GetType(), "img", "<script type = 'text/javascript'>alert('ImageButton Clicked');</script>");       
     }
 
     protected void dgAulas_ItemCommand(object sender, DataGridCommandEventArgs e)
@@ -506,7 +556,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         alocar(recString, dataString, horario, aulaString);
 
-        TextBox lblRecursosAlocados = (TextBox)grid.FindControl("lblRecursosAlocados");
+        Label lblRecursosAlocados = (Label)grid.FindControl("lblRecursosAlocados");
         Label lblRecursosAlocadosId = (Label)grid.FindControl("lblRecursosAlocadosId");
 		
 		Panel pnRecursos = (Panel)grid.FindControl("pnRecursos");			
@@ -554,8 +604,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         alocBO.UpdateAlocacao(aloc);
     }
 
-    protected void dgAulas_SelectedIndexChanged(object sender, EventArgs e)
+    // Deleta o(s) recurso(s) selecionado(s)
+    protected void butDeletar_Click(object sender, ImageClickEventArgs e)
     {
-
+        sender = sender;
     }
 }

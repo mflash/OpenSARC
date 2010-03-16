@@ -210,13 +210,13 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 //for (int i = 0; i < recAlocados.Count - 1; i++)
                 {
                     //lblRecursosAlocados.Text += r.Descricao; //recAlocados[i].Descricao + ", ";
-                    lblRecursosAlocadosId.Text += r.Id; //recAlocados[i].Id + ",";
+                    //lblRecursosAlocadosId.Text += r.Id; //recAlocados[i].Id + ",";
 					
 					//Label tmpLbl = new Label();
 					//tmpLbl.Text = r.Descricao; //recAlocados[i].Descricao;
 					//pnRecursos.Controls.Add(tmpLbl);
 
-                    cbRecursos.Items.Add(r.Descricao);
+                    cbRecursos.Items.Add(new ListItem(r.Descricao, r.Id.ToString()));
 
                     /*
                     HtmlTableRow row = new HtmlTableRow();
@@ -541,6 +541,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Response.Redirect("DownloadHtml.aspx");
     }
 
+    // Callback do dropdownlist de seleção: aloca um recurso
     protected void ddlOpcao1_SelectedIndexChanged(object sender, EventArgs e)
     {
         //FIXME: tratar possíveis problemas de conexão com o servidor e solicitação de recurso indisponível.
@@ -549,6 +550,11 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         TableCell cell = (TableCell)ddlOpcao1.Parent;
         DataGridItem grid = (DataGridItem)cell.Parent;
+        CheckBoxList cbRecursos = (CheckBoxList)grid.FindControl("cbRecursos");
+
+        ImageButton butDel    = (ImageButton)grid.FindControl("butDeletar");
+        ImageButton butTransf = (ImageButton)grid.FindControl("butTransferir");
+        ImageButton butTrocar = (ImageButton)grid.FindControl("butTrocar");
 
         string dataString = ((Label)grid.FindControl("lblData")).Text;
         string horario = ((Label)grid.FindControl("lblHora")).Text;
@@ -556,36 +562,50 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         alocar(recString, dataString, horario, aulaString);
 
-        Label lblRecursosAlocados = (Label)grid.FindControl("lblRecursosAlocados");
-        Label lblRecursosAlocadosId = (Label)grid.FindControl("lblRecursosAlocadosId");
+        //Label lblRecursosAlocados = (Label)grid.FindControl("lblRecursosAlocados");
+        //Label lblRecursosAlocadosId = (Label)grid.FindControl("lblRecursosAlocadosId");
 		
 		Panel pnRecursos = (Panel)grid.FindControl("pnRecursos");			
 
-        lblRecursosAlocados.Text = "";
-        lblRecursosAlocadosId.Text = "";
+        //lblRecursosAlocados.Text = "";
+        //lblRecursosAlocadosId.Text = "";
 
         DateTime data = Convert.ToDateTime(dataString);
 
         AlocacaoBO alocBO = new AlocacaoBO();
         List<Recurso> recAlocados = alocBO.GetRecursoAlocadoByAula(data, horario, new Guid(aulaString));
 
+        cbRecursos.Items.Clear();
         if (recAlocados.Count != 0)
         {
-			foreach(Recurso r in recAlocados)
+            // Habilita botões
+            butDel.Visible = true;
+            butTransf.Visible = true;
+            butTrocar.Visible = true;
+            foreach (Recurso r in recAlocados)
             //for (int i = 0; i < recAlocados.Count - 1; i++)
             {
-                lblRecursosAlocados.Text += r.Descricao; //recAlocados[i].Descricao + ", ";
-                lblRecursosAlocadosId.Text += r.Id; // recAlocados[i].Id + ",";
-				
-				Label tmpLbl = new Label();
-				tmpLbl.Text = r.Descricao; //recAlocados[i].Descricao;
-				pnRecursos.Controls.Add(tmpLbl);
+                //lblRecursosAlocados.Text += r.Descricao; //recAlocados[i].Descricao + ", ";
+                //lblRecursosAlocadosId.Text += r.Id; // recAlocados[i].Id + ",";
+
+                //Label tmpLbl = new Label();
+                //tmpLbl.Text = r.Descricao; //recAlocados[i].Descricao;
+                //pnRecursos.Controls.Add(tmpLbl);
+
+                cbRecursos.Items.Add(new ListItem(r.Descricao, r.Id.ToString()));
             }
             //lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
             //lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
         }
-        else lblRecursosAlocados.Text = "";
+        else
+        {
+            // Desabilita botões
+            butDel.Visible = false;
+            butTransf.Visible = false;
+            butTrocar.Visible = false;
+        }
 
+        // Finalmente, remove recurso do dropdown de seleção
         ddlOpcao1.Items.Remove(ddlOpcao1.Items.FindByValue(ddlOpcao1.SelectedValue));
         ddlOpcao1.SelectedIndex = 0;
     }
@@ -607,6 +627,36 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     // Deleta o(s) recurso(s) selecionado(s)
     protected void butDeletar_Click(object sender, ImageClickEventArgs e)
     {
-        sender = sender;
+        ImageButton butDel = (ImageButton)sender;
+        
+        // O checkbox list está dentro da célula da tabela...
+        HtmlTableCell cell = (HtmlTableCell) butDel.Parent;
+        CheckBoxList cbList = (CheckBoxList)cell.FindControl("cbRecursos");
+
+        // Para chegar no DataGridItem correspondente... bleargh!
+        DataGridItem grid = (DataGridItem)cell.Parent.Parent.Parent.Parent.Parent;
+
+        string dataString = ((Label)grid.FindControl("lblData")).Text;
+        DateTime data = Convert.ToDateTime(dataString);
+        string horario = ((Label)grid.FindControl("lblHora")).Text;
+        string aulaString = ((Label)grid.FindControl("lblAulaId")).Text;
+
+        Guid aulaId = new Guid(aulaString);
+        Aula aula = aulaBo.GetAulaById(aulaId);
+
+        // Varre o checkbox list do fim para o início,
+        // e remove todos os recursos selecionados (da tela e do BD)
+        for(int r=cbList.Items.Count-1; r>=0; r--)
+        {
+            ListItem recurso = cbList.Items[r];
+            if (recurso.Selected)
+            {
+                Guid recId = new Guid(recurso.Value);
+                Recurso rec = recursosBO.GetRecursoById(recId);
+                Alocacao aloc = new Alocacao(rec, data, horario, null, null);
+                alocBO.UpdateAlocacao(aloc);
+                cbList.Items.RemoveAt(r);
+            }
+        }
     }
 }

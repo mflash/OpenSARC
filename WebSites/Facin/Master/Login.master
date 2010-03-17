@@ -140,7 +140,7 @@ function confirm_delete()
   </form>
   <div class="ms-toolbar" style="text-align: center">
 &copy; 
-                    2009 Open SARC, <a href="http://opensarc.sourceforge.net">
+                    2010 Open SARC, <a href="http://opensarc.sourceforge.net">
                     http://opensarc.sourceforge.net</a> -  <a href="../Default/About.aspx" class="ms-toolbar">Sobre...</a></div>
 </body>
 

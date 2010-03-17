@@ -122,6 +122,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             int i = tabRecursos.Rows[0].Cells[0].Controls.Count;
             CheckBoxList cbRecursos = (CheckBoxList)tabRecursos.Rows[0].Cells[0].Controls[1];
 
+            ImageButton butDel = (ImageButton)e.Item.FindControl("butDeletar");
+            ImageButton butTransf = (ImageButton)e.Item.FindControl("butTransferir");
+            ImageButton butTrocar = (ImageButton)e.Item.FindControl("butTrocar");
+
             //CheckBoxList cbRecursos = (CheckBoxList) tabRecursos.FindControl("cbRecursos");
 
 			//Label tmp2 = new Label();
@@ -149,12 +153,11 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             dummy.Descricao = "Selecionar...";
             dummy.Id = dummyGuid;
             livres.Insert(0, dummy);
-            DropDownList ddlOpcao1 = (DropDownList)e.Item.FindControl("ddlOpcao1");
-            ddlOpcao1.DataValueField = "Id";
-            ddlOpcao1.DataTextField = "Descricao";
-            ddlOpcao1.DataSource = livres;
-            ddlOpcao1.DataBind();
-
+            DropDownList ddlDisponiveis = (DropDownList)e.Item.FindControl("ddlDisponiveis");
+            ddlDisponiveis.DataValueField = "Id";
+            ddlDisponiveis.DataTextField = "Descricao";
+            ddlDisponiveis.DataSource = livres;
+            ddlDisponiveis.DataBind();
 
             ddlAtividade.DataValueField = "Id";
             ddlAtividade.DataTextField = "Descricao";
@@ -201,20 +204,24 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             AlocacaoBO alocBO = new AlocacaoBO();
             List<Recurso> recAlocados = alocBO.GetRecursoAlocadoByAula(dataAtual, lblHora.Text, new Guid(lblAulaId.Text));
-			
+
             if (recAlocados.Count != 0)
             {
                 //if(cbRecursos != null && cbRecursos.Items != null)
                 cbRecursos.Items.Clear();
-				foreach(Recurso r in recAlocados)
+                // Habilita botões
+                butDel.Visible = true;
+                butTransf.Visible = true;
+                butTrocar.Visible = true;
+                foreach (Recurso r in recAlocados)
                 //for (int i = 0; i < recAlocados.Count - 1; i++)
                 {
                     //lblRecursosAlocados.Text += r.Descricao; //recAlocados[i].Descricao + ", ";
                     //lblRecursosAlocadosId.Text += r.Id; //recAlocados[i].Id + ",";
-					
-					//Label tmpLbl = new Label();
-					//tmpLbl.Text = r.Descricao; //recAlocados[i].Descricao;
-					//pnRecursos.Controls.Add(tmpLbl);
+
+                    //Label tmpLbl = new Label();
+                    //tmpLbl.Text = r.Descricao; //recAlocados[i].Descricao;
+                    //pnRecursos.Controls.Add(tmpLbl);
 
                     cbRecursos.Items.Add(new ListItem(r.Descricao, r.Id.ToString()));
 
@@ -248,11 +255,16 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 }
                 //lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
                 //lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
-				//Label tmp0 = new Label();
-				//tmp0.Text = recAlocados[recAlocados.Count-1].Descricao;
-				//pnRecursos.Controls.Add(tmp0);
+                //Label tmp0 = new Label();
+                //tmp0.Text = recAlocados[recAlocados.Count-1].Descricao;
+                //pnRecursos.Controls.Add(tmp0);
             }
-            else lblRecursosAlocados.Text = "";
+            else
+            {
+                butDel.Visible = false;
+                butTransf.Visible = false;
+                butTrocar.Visible = false;
+            }
 
             categorias.RemoveAt(0);
             argb.RemoveAt(0);
@@ -542,13 +554,13 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     }
 
     // Callback do dropdownlist de seleção: aloca um recurso
-    protected void ddlOpcao1_SelectedIndexChanged(object sender, EventArgs e)
+    protected void ddlDisponiveis_SelectedIndexChanged(object sender, EventArgs e)
     {
         //FIXME: tratar possíveis problemas de conexão com o servidor e solicitação de recurso indisponível.
-        DropDownList ddlOpcao1 = (DropDownList)sender;
-        string recString = ddlOpcao1.SelectedValue;
+        DropDownList ddlDisponiveis = (DropDownList)sender;
+        string recString = ddlDisponiveis.SelectedValue;
 
-        TableCell cell = (TableCell)ddlOpcao1.Parent;
+        TableCell cell = (TableCell)ddlDisponiveis.Parent;
         DataGridItem grid = (DataGridItem)cell.Parent;
         CheckBoxList cbRecursos = (CheckBoxList)grid.FindControl("cbRecursos");
 
@@ -582,20 +594,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             butDel.Visible = true;
             butTransf.Visible = true;
             butTrocar.Visible = true;
-            foreach (Recurso r in recAlocados)
-            //for (int i = 0; i < recAlocados.Count - 1; i++)
-            {
-                //lblRecursosAlocados.Text += r.Descricao; //recAlocados[i].Descricao + ", ";
-                //lblRecursosAlocadosId.Text += r.Id; // recAlocados[i].Id + ",";
-
-                //Label tmpLbl = new Label();
-                //tmpLbl.Text = r.Descricao; //recAlocados[i].Descricao;
-                //pnRecursos.Controls.Add(tmpLbl);
-
-                cbRecursos.Items.Add(new ListItem(r.Descricao, r.Id.ToString()));
-            }
-            //lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
-            //lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
+            foreach (Recurso r in recAlocados)            
+                cbRecursos.Items.Add(new ListItem(r.Descricao, r.Id.ToString()));                     
         }
         else
         {
@@ -606,8 +606,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         }
 
         // Finalmente, remove recurso do dropdown de seleção
-        ddlOpcao1.Items.Remove(ddlOpcao1.Items.FindByValue(ddlOpcao1.SelectedValue));
-        ddlOpcao1.SelectedIndex = 0;
+        ddlDisponiveis.Items.Remove(ddlDisponiveis.Items.FindByValue(ddlDisponiveis.SelectedValue));
+        ddlDisponiveis.SelectedIndex = 0;
     }
 
 
@@ -636,6 +636,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         // Para chegar no DataGridItem correspondente... bleargh!
         DataGridItem grid = (DataGridItem)cell.Parent.Parent.Parent.Parent.Parent;
 
+        DropDownList ddlDisponiveis = (DropDownList)grid.FindControl("ddlDisponiveis");
         string dataString = ((Label)grid.FindControl("lblData")).Text;
         DateTime data = Convert.ToDateTime(dataString);
         string horario = ((Label)grid.FindControl("lblHora")).Text;
@@ -658,5 +659,31 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 cbList.Items.RemoveAt(r);
             }
         }
+
+        //ImageButton butDel = (ImageButton)grid.FindControl("butDeletar");
+        ImageButton butTransf = (ImageButton)grid.FindControl("butTransferir");
+        ImageButton butTrocar = (ImageButton)grid.FindControl("butTrocar");
+
+        // Se nenhum restou, esconde botões
+        if (cbList.Items.Count == 0)
+        {
+            butDel.Visible = false;
+            butTransf.Visible = false;
+            butTrocar.Visible = false;
+        }
+
+        // Recria o dropdownlist de recursos disponíveis
+        //ddlDisponiveis.Items.Clear();
+        List<Recurso> livres = recursosBO.GetRecursosDisponiveis(data, horario);
+        livres.Sort();
+        Recurso dummy = new Recurso();
+        dummy.Descricao = "Selecionar...";
+        dummy.Id = dummyGuid;
+        livres.Insert(0, dummy);
+        
+        ddlDisponiveis.DataValueField = "Id";
+        ddlDisponiveis.DataTextField = "Descricao";
+        ddlDisponiveis.DataSource = livres;
+        ddlDisponiveis.DataBind();
     }
 }

@@ -49,9 +49,7 @@ public partial class Docentes_Recursos : System.Web.UI.Page
 
             }
         }
-    }
-
-    
+    }    
    
     private void FechaJanela()
     {
@@ -62,7 +60,7 @@ public partial class Docentes_Recursos : System.Web.UI.Page
     {
         FechaJanela();
     }
-
+   
     protected void btnLiberar_Click(object sender, EventArgs e)
     {
         if (LBoxAlocados.SelectedValue != "")

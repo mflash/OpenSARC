@@ -115,6 +115,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             //lblRecursosAlocados.ReadOnly = true;
             Label lblRecursosAlocadosId = (Label)e.Item.FindControl("lblRecursosAlocadosId");
             Label lblAulaId = (Label)e.Item.FindControl("lblAulaId");
+            Label lblAula = (Label)e.Item.FindControl("lblAula");
             Label lblHora = (Label)e.Item.FindControl("lblHora");
 			
 			Panel pnRecursos = (Panel)e.Item.FindControl("pnRecursos");
@@ -137,7 +138,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 			//pnRecursos.BackColor = Color.Red;
             Color cor = argb[0];
 
-            txtDescricao.Attributes.Add("onkeyup", "setDirtyFlag()");
+            //txtDescricao.Attributes.Add("onkeyup", "setDirtyFlag()");
+            //string call = "testAlert(this," + lblAula.Text + ")";
+            //txtDescricao.Attributes.Add("onkeyup", call);
+            //txtDescricao.Attributes.Add("onkeyup", "this.className='changed'");
 
             Label lbl = (Label)e.Item.FindControl("lblAula");
             lbl.Text = "";
@@ -199,89 +203,25 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     e.Item.BackColor = cor;
                     lblCorDaData.Text = "False";
                     lbl.Text = (cont++).ToString();
+                    // Associa a chamada da funçao Javascript para setar a dirty flag + trocar cor                    
+                    string num = cont.ToString();
+                    if (cont < 10)
+                        num = "0" + num;
+                    string call = "testAlert(this,'" + num + "')";
+                    txtDescricao.Attributes.Add("onkeyup", call);
                 }
             }
 
-            AlocacaoBO alocBO = new AlocacaoBO();
-            List<Recurso> recAlocados = alocBO.GetRecursoAlocadoByAula(dataAtual, lblHora.Text, new Guid(lblAulaId.Text));
+            AtualizaComponentes(e.Item, lblData.Text, lblHora.Text, lblAulaId.Text);
 
-            if (recAlocados.Count != 0)
-            {
-                //if(cbRecursos != null && cbRecursos.Items != null)
-                cbRecursos.Items.Clear();
-                // Habilita botões
-                butDel.Visible = true;
-                butTransf.Visible = true;
-                butTrocar.Visible = true;
-                foreach (Recurso r in recAlocados)
-                //for (int i = 0; i < recAlocados.Count - 1; i++)
-                {
-                    //lblRecursosAlocados.Text += r.Descricao; //recAlocados[i].Descricao + ", ";
-                    //lblRecursosAlocadosId.Text += r.Id; //recAlocados[i].Id + ",";
-
-                    //Label tmpLbl = new Label();
-                    //tmpLbl.Text = r.Descricao; //recAlocados[i].Descricao;
-                    //pnRecursos.Controls.Add(tmpLbl);
-
-                    cbRecursos.Items.Add(new ListItem(r.Descricao, r.Id.ToString()));
-
-                    /*
-                    HtmlTableRow row = new HtmlTableRow();
-                    HtmlTableCell cell = new HtmlTableCell();                    
-                    
-                    CheckBox cbRec = new CheckBox();
-                    cbRec.Text = r.Descricao;
-                    cbRec.Checked = false;
-                    cell.Controls.Add(cbRec);
-                    row.Cells.Add(cell);
-                    HtmlTableCell cell2 = new HtmlTableCell();
-                    
-                    //ImageButton butDelete = new ImageButton();                    
-                    //butDelete.ImageUrl = "/_layouts/images/delete.gif";
-                    //butDelete.ID = "imgButton1";
-                    //butDelete.BorderColor = Color.Red;
-                    //butDelete.Click +=new ImageClickEventHandler(butDelete_Click);
-                    //butDelete.Command += new CommandEventHandler(butDelete_Command);
-                    //butDelete.CommandArgument = "blablabla";
-
-                    Button butDelete = new Button();
-                    butDelete.Command += new CommandEventHandler(butDelete_Command);
-                    butDelete.CommandName = "butDelete";
-                    butDelete.Text = " X ";
-                    cell2.Controls.Add(butDelete);
-                    row.Cells.Add(cell2);
-                    tabRecursos.Rows.Add(row);
-                     */
-                }
-                //lblRecursosAlocados.Text += recAlocados[recAlocados.Count - 1].Descricao;
-                //lblRecursosAlocadosId.Text += recAlocados[recAlocados.Count - 1].Id.ToString();
-                //Label tmp0 = new Label();
-                //tmp0.Text = recAlocados[recAlocados.Count-1].Descricao;
-                //pnRecursos.Controls.Add(tmp0);
-            }
-            else
-            {
-                butDel.Visible = false;
-                butTransf.Visible = false;
-                butTrocar.Visible = false;
-            }
+            /*
+            */
 
             categorias.RemoveAt(0);
             argb.RemoveAt(0);
         }
 
-    }
-
-    void butDelete_Command(object sender, CommandEventArgs e)
-    {        
-        //throw new NotImplementedException();
-        ClientScript.RegisterClientScriptBlock(this.GetType(), "img", "<script type = 'text/javascript'>alert('ImageButton Clicked');</script>");       
-    }
-
-    void butDelete_Click(object sender, ImageClickEventArgs e)
-    {
-        ClientScript.RegisterClientScriptBlock(this.GetType(), "img", "<script type = 'text/javascript'>alert('ImageButton Clicked');</script>");       
-    }
+    }    
 
     protected void dgAulas_ItemCommand(object sender, DataGridCommandEventArgs e)
     {
@@ -354,16 +294,12 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             string aux = txtDescricao.Text;
             string descricao = aux.Substring(aux.IndexOf('\n') + 1);
-
-         
-           
-
+                  
             Guid idcategoria = new Guid(ddlAtividade.SelectedValue);
             CategoriaAtividade categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
 
             if (e.Item.BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
                 e.Item.BackColor = categoria.Cor;
-
 
             Aula aula = Aula.GetAula(idaula, turma, hora, data, descricao, categoria);
 
@@ -436,6 +372,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         #endregion
     }
 
+    // Salva os dados de todas as aulas modificadas
     protected void btnSalvarTudo_Click(object sender, EventArgs e)
     {
         DataGridItemCollection t = dgAulas.Items;
@@ -447,6 +384,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         TextBox txtDescricao;
         Label lblDescData;
         DropDownList ddlAtividade;
+        CheckBox cbChanged;
         string hora;
         string aux;
         string descricao;
@@ -461,6 +399,12 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         for (int i = 0; i < t.Count; i++)
         {
+            cbChanged = (CheckBox)t[i].FindControl("cbChanged");
+            // Se a linha não foi modificada, pula ela
+            if (!cbChanged.Checked)
+                continue;
+            cbChanged.Checked = false;
+            
             lblAulaId = (Label)t[i].FindControl("lblAulaId");
             lblAula = (Label)t[i].FindControl("lblAula");
             lblData = (Label)t[i].FindControl("lblData");
@@ -553,7 +497,40 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Response.Redirect("DownloadHtml.aspx");
     }
 
-    // Callback do dropdownlist de seleção: aloca um recurso
+    // Atualiza o dropdownlist de seleção de recursos e o checkbox list dos selecionados,
+    // para uma determinada linha da tabela
+    private void AtualizaComponentes(DataGridItem grid, String dataString, String horario, String aulaString)
+    {
+        CheckBoxList cbRecursos = (CheckBoxList)grid.FindControl("cbRecursos");
+        ImageButton butDel = (ImageButton)grid.FindControl("butDeletar");
+        ImageButton butTransf = (ImageButton)grid.FindControl("butTransferir");
+        ImageButton butTrocar = (ImageButton)grid.FindControl("butTrocar");
+
+        DateTime data = Convert.ToDateTime(dataString);
+
+        AlocacaoBO alocBO = new AlocacaoBO();
+        List<Recurso> recAlocados = alocBO.GetRecursoAlocadoByAula(data, horario, new Guid(aulaString));
+
+        cbRecursos.Items.Clear();
+        if (recAlocados.Count != 0)
+        {
+            // Habilita botões
+            butDel.Visible = true;
+            butTransf.Visible = true;
+            butTrocar.Visible = true;
+            foreach (Recurso r in recAlocados)
+                cbRecursos.Items.Add(new ListItem(r.Descricao, r.Id.ToString()));
+        }
+        else
+        {
+            // Desabilita botões
+            butDel.Visible = false;
+            butTransf.Visible = false;
+            butTrocar.Visible = false;
+        }
+    }
+
+    // Callback do dropdownlist de seleção: aloca um recurso e atualiza os componentes na tela
     protected void ddlDisponiveis_SelectedIndexChanged(object sender, EventArgs e)
     {
         //FIXME: tratar possíveis problemas de conexão com o servidor e solicitação de recurso indisponível.
@@ -562,11 +539,11 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         TableCell cell = (TableCell)ddlDisponiveis.Parent;
         DataGridItem grid = (DataGridItem)cell.Parent;
-        CheckBoxList cbRecursos = (CheckBoxList)grid.FindControl("cbRecursos");
 
-        ImageButton butDel    = (ImageButton)grid.FindControl("butDeletar");
-        ImageButton butTransf = (ImageButton)grid.FindControl("butTransferir");
-        ImageButton butTrocar = (ImageButton)grid.FindControl("butTrocar");
+        //CheckBoxList cbRecursos = (CheckBoxList)grid.FindControl("cbRecursos");
+        //ImageButton butDel    = (ImageButton)grid.FindControl("butDeletar");
+        //ImageButton butTransf = (ImageButton)grid.FindControl("butTransferir");
+        //ImageButton butTrocar = (ImageButton)grid.FindControl("butTrocar");
 
         string dataString = ((Label)grid.FindControl("lblData")).Text;
         string horario = ((Label)grid.FindControl("lblHora")).Text;
@@ -576,11 +553,11 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         //Label lblRecursosAlocados = (Label)grid.FindControl("lblRecursosAlocados");
         //Label lblRecursosAlocadosId = (Label)grid.FindControl("lblRecursosAlocadosId");
-		
-		Panel pnRecursos = (Panel)grid.FindControl("pnRecursos");			
 
-        //lblRecursosAlocados.Text = "";
-        //lblRecursosAlocadosId.Text = "";
+        AtualizaComponentes(grid, dataString, horario, aulaString);
+
+		/*
+		Panel pnRecursos = (Panel)grid.FindControl("pnRecursos");			
 
         DateTime data = Convert.ToDateTime(dataString);
 
@@ -604,7 +581,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             butTransf.Visible = false;
             butTrocar.Visible = false;
         }
-
+        */
         // Finalmente, remove recurso do dropdown de seleção
         ddlDisponiveis.Items.Remove(ddlDisponiveis.Items.FindByValue(ddlDisponiveis.SelectedValue));
         ddlDisponiveis.SelectedIndex = 0;

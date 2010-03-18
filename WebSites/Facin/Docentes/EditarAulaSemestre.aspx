@@ -7,6 +7,25 @@
 <%-- Add content controls here --%>
 <asp:Content ID="Content2" runat="server" ContentPlaceHolderID="cphTitulo">
 
+<style>
+
+textarea.normal{
+/*background-color:FFFFFF;*/
+font-family:verdana;
+font-size:8pt;
+text-decoration:none;
+color:#003399;
+}
+
+textarea.changed{
+/*background-color:FF0000;*/
+font-family:verdana;
+font-size:8pt;
+text-decoration:none;
+color:#ff0000;
+}
+</style>
+
     <script type="text/javascript" language="javascript">
 
 function popitup(url) {
@@ -32,6 +51,16 @@ b.disabled = false;
 b = $get('ctl00_cphTitulo_btnSalvarTudo2');
 b.value = "Salvar Agora";
 b.disabled = false;
+}
+
+function testAlert(txt, num) 
+{
+    txt.style.color = '#FF0000';
+    // TODO: descobrir número da linha atual (tem que somar 1)
+    c = $get('ctl00_cphTitulo_dgAulas_ctl'+num+'_cbChanged');
+    c.checked = true;
+    //alert(num);
+    setDirtyFlag(); 
 }
 
 function releaseDirtyFlag()
@@ -129,7 +158,9 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                     <asp:TemplateColumn HeaderText="Descri&#231;&#227;o">
                         <ItemTemplate>
                             <asp:TextBox ID="txtDescricao" runat="server" CssClass="ms-toolbar" 
-                                Width="300px" TextMode="MultiLine" Text='<%#DataBinder.Eval(Container.DataItem, "DescricaoAtividade") %>'></asp:TextBox>
+                                Width="300px" TextMode="MultiLine" 
+                                Text='<%#DataBinder.Eval(Container.DataItem, "DescricaoAtividade") %>' 
+                                AutoPostBack="False"></asp:TextBox>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
@@ -196,6 +227,11 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                     <asp:TemplateColumn HeaderText="DescData" Visible="False">
                         <ItemTemplate>
                             <asp:Label ID="lblDescData" runat="server"></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateColumn>
+                    <asp:TemplateColumn HeaderText="Modificado" Visible="True">
+                        <ItemTemplate>
+                            <asp:CheckBox ID="cbChanged" runat="server" Checked="false"></asp:CheckBox>
                         </ItemTemplate>
                     </asp:TemplateColumn>
                 </Columns>

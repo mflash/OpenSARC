@@ -168,7 +168,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                     </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="Atividade">
                         <ItemTemplate>
-                            <asp:DropDownList ID="ddlAtividade" runat="server" CssClass="ms-toolbar" onChange="setDirtyFlag();">
+                            <asp:DropDownList ID="ddlAtividade" runat="server" CssClass="ms-toolbar" onChange="ddlAtividade_SelectedIndexChanged">
                             </asp:DropDownList>
                         </ItemTemplate>
                         <EditItemTemplate>
@@ -205,10 +205,10 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                                 ImageUrl="~/_layouts/images/CRIT_16.GIF" onclick="butDeletar_Click" />
 						    <br />
                             <asp:ImageButton ID="butTransferir" runat="server" 
-                                ImageUrl="~/_layouts/images/PLNEXT1.GIF" />
+                                Command="Transferir" ImageUrl="~/_layouts/images/PLNEXT1.GIF" />
                             <br />
                             <asp:ImageButton ID="butTrocar" runat="server" 
-                                ImageUrl="~/_layouts/images/recurrence.gif"  />
+                                Command="Trocar" ImageUrl="~/_layouts/images/recurrence.gif"  />
 						</td>
 						</tr>
 						</table>						

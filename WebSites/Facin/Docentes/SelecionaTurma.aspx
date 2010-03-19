@@ -247,7 +247,7 @@
                 </asp:TemplateColumn>
                 
                 
-                <asp:ButtonColumn CommandName="Horários" Text="Selecionar"></asp:ButtonColumn>
+                <asp:ButtonColumn CommandName="Horarios" Text="Selecionar"></asp:ButtonColumn>
                 
             </Columns>
             </asp:DataGrid>

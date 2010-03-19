@@ -254,7 +254,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             if (e.Item.BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
                 e.Item.BackColor = categoria.Cor;
 
-
             Aula aula = Aula.GetAula(idaula, turma, hora, data, descricao, categoria);
 
             aulaBo.UpdateAula(aula);
@@ -530,6 +529,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         }
     }
 
+	protected void ddlAtividade_SelectedIndexChanged(object sender, EventArgs e)
+	{
+	}
+	
     // Callback do dropdownlist de seleção: aloca um recurso e atualiza os componentes na tela
     protected void ddlDisponiveis_SelectedIndexChanged(object sender, EventArgs e)
     {

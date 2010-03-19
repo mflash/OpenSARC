@@ -53,7 +53,7 @@ function confirm_delete()
     return false;
 }
 </script>
-  <div align=right><font color="red"><b>AVISO: este sistema &eacute; apenas para testes - as modifica&ccedil;&otilde;es n&atilde;o afetam as reservas do semestre!</b></font></div>
+  <!--div align=right><font color="red"><b>AVISO: este sistema &eacute; apenas para testes - as modifica&ccedil;&otilde;es n&atilde;o afetam as reservas do semestre!</b></font></div!-->
   <form id="Form1" runat="server">
 
   <table class="ms-main" cellpadding="0" cellspacing="0" border="0" width="100%" 

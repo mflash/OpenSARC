@@ -383,7 +383,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         TextBox txtDescricao;
         Label lblDescData;
         DropDownList ddlAtividade;
-        CheckBox cbChanged;
+        //CheckBox cbChanged;
+		ImageButton butConfirm;
         string hora;
         string aux;
         string descricao;
@@ -398,11 +399,16 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         for (int i = 0; i < t.Count; i++)
         {
-            cbChanged = (CheckBox)t[i].FindControl("cbChanged");
+            //cbChanged = (CheckBox)t[i].FindControl("cbChanged");
+			butConfirm = (ImageButton) t[i].FindControl("butConfirm");			
             // Se a linha não foi modificada, pula ela
-            if (!cbChanged.Checked)
-                continue;
-            cbChanged.Checked = false;
+            //if (!cbChanged.Checked)
+            //    continue;
+            //cbChanged.Checked = false;
+			if (!butConfirm.Enabled)
+				continue;
+			butConfirm.Enabled = false;
+			butConfirm.ImageUrl = "~/_layouts/images/STARgray.gif";
             
             lblAulaId = (Label)t[i].FindControl("lblAulaId");
             lblAula = (Label)t[i].FindControl("lblAula");

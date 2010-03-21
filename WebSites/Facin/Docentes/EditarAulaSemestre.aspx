@@ -55,10 +55,12 @@ b.disabled = false;
 
 function testAlert(txt, num) 
 {
-    txt.style.color = '#FF0000';
-    // TODO: descobrir número da linha atual (tem que somar 1)
-    c = $get('ctl00_cphTitulo_dgAulas_ctl'+num+'_cbChanged');
-    c.checked = true;
+    txt.style.color = '#FF0000';    
+    //c = $get('ctl00_cphTitulo_dgAulas_ctl'+num+'_cbChanged');
+    //c.checked = true;
+	b = $get('ctl00_cphTitulo_dgAulas_ctl'+num+'_butConfirm');
+	b.src = '../_layouts/images/STAR.gif';
+	b.disabled=false;
     //alert(num);
     setDirtyFlag(); 
 }
@@ -157,10 +159,14 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                     </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="Descri&#231;&#227;o">
                         <ItemTemplate>
+							<table><tr><td>
                             <asp:TextBox ID="txtDescricao" runat="server" CssClass="ms-toolbar" 
                                 Width="300px" TextMode="MultiLine" 
                                 Text='<%#DataBinder.Eval(Container.DataItem, "DescricaoAtividade") %>' 
                                 AutoPostBack="False"></asp:TextBox>
+								</td><td>
+							<asp:ImageButton ID="butConfirm" Enabled="False" runat="server" ImageURL="~/_layouts/images/STARgray.gif" />
+							</td></tr></table>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
@@ -228,12 +234,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                         <ItemTemplate>
                             <asp:Label ID="lblDescData" runat="server"></asp:Label>
                         </ItemTemplate>
-                    </asp:TemplateColumn>
-                    <asp:TemplateColumn HeaderText="Modificado" Visible="True">
-                        <ItemTemplate>
-                            <asp:CheckBox ID="cbChanged" runat="server" Checked="false"></asp:CheckBox>
-                        </ItemTemplate>
-                    </asp:TemplateColumn>
+                    </asp:TemplateColumn>                    
                 </Columns>
             </asp:DataGrid>
             <div align="right">

@@ -535,8 +535,46 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         }
     }
 
+    // Callback do dropdownlist de atividade: troca o tipo de atividade (aula, prova, etc)
 	protected void ddlAtividade_SelectedIndexChanged(object sender, EventArgs e)
 	{
+        DropDownList ddlAtividade = (DropDownList)sender;
+
+//        TableCell cell = (TableCell)ddlDisponiveis.Parent;
+        DataGridItem grid = (DataGridItem)ddlAtividade.Parent;
+
+        // Obtem os dados digitados nesta linha
+        Label lblData = (Label) grid.FindControl("lblData");
+        Label lblHora = (Label) grid.FindControl("lblHora");
+        TextBox txtDescricao = (TextBox) grid.FindControl("txtDescricao");
+        DropDownList ddlAtividade = (DropDownList) grid.FindControl("ddlAtividade");
+        Label lblCorDaData = (Label) grid.FindControl("lblCorDaData");
+        Label lblDescData = (Label) grid.FindControl("lblDescData");
+        Label lblaulaId = (Label) grid.FindControl("lblAulaId");
+        Label lblRecursosAlocadosId = (Label) grid.FindControl("lblRecursosAlocadosId");
+
+        Guid idaula = new Guid(lblaulaId.Text);
+        Guid idturma = (Guid)Session["TurmaId"];
+        Turma turma = turmaBo.GetTurmaById(idturma);
+
+        string hora = lblHora.Text;
+        DateTime data = Convert.ToDateTime(lblData.Text);
+
+        string aux = txtDescricao.Text;
+        string descricao = aux.Substring(aux.IndexOf('\n') + 1);
+
+        Guid idcategoria = new Guid(ddlAtividade.SelectedValue);
+        CategoriaAtividade categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
+
+        if (e.Item.BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
+            e.Item.BackColor = categoria.Cor;
+
+        Aula aula = Aula.GetAula(idaula, turma, hora, data, descricao, categoria);
+
+//        aulaBo.UpdateAula(aula);
+
+        txtDescricao.Text = lblDescData.Text + "\n" + descricao;
+
 	}
 	
     // Callback do dropdownlist de seleção: aloca um recurso e atualiza os componentes na tela

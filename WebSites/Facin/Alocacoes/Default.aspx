@@ -148,17 +148,11 @@
                             </ItemTemplate>
                         </asp:TemplateColumn>
                     
-                        <asp:TemplateColumn HeaderText="Disciplina">
+                        <asp:TemplateColumn HeaderText="Disciplina/Evento">
                             <ItemTemplate>
                                 <asp:Label ID="lblDisc" runat="server" ></asp:Label>
                             </ItemTemplate>
-                        </asp:TemplateColumn>
-                        
-                        <asp:TemplateColumn HeaderText="Turma/Evento">
-                            <ItemTemplate>
-                                <asp:Label ID="lblTurmaEvento" runat="server" ></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateColumn>
+                        </asp:TemplateColumn>                       
                         
                         <asp:TemplateColumn HeaderText="Curso">
                             <ItemTemplate>

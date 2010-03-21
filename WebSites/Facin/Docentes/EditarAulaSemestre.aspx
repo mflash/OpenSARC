@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true"
-    CodeFile="EditarAulaSemestre.aspx.cs" Inherits="Docentes_EditarAula" %>
+    CodeFile="EditarAulaSemestre.aspx.cs" Inherits="Docentes_EditarAula" MaintainScrollPositionOnPostback="true" %>
 
 <%@ Register Src="../Default/Aguarde.ascx" TagName="Aguarde" TagPrefix="uc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
@@ -56,8 +56,8 @@ b.disabled = false;
 function testAlert(txt, num) 
 {
     txt.style.color = '#FF0000';    
-    //c = $get('ctl00_cphTitulo_dgAulas_ctl'+num+'_cbChanged');
-    //c.checked = true;
+    c = $get('ctl00_cphTitulo_dgAulas_ctl'+num+'_cbChanged');
+    c.checked = true;
 	b = $get('ctl00_cphTitulo_dgAulas_ctl'+num+'_butConfirm');
 	b.src = '../_layouts/images/STAR.gif';
 	b.disabled=false;
@@ -107,7 +107,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                 </div>
             <asp:DataGrid ID="dgAulas" runat="server" AutoGenerateColumns="False" Width="100%"
                 HorizontalAlign="Center" OnItemDataBound="dgAulas_ItemDataBound" DataKeyField="Id"
-                OnItemCommand="dgAulas_ItemCommand">
+                >
                 <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
                 <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Center" />
                 <Columns>
@@ -165,7 +165,9 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                                 Text='<%#DataBinder.Eval(Container.DataItem, "DescricaoAtividade") %>' 
                                 AutoPostBack="False"></asp:TextBox>
 								</td><td>
-							<asp:ImageButton ID="butConfirm" Enabled="False" runat="server" ImageURL="~/_layouts/images/STARgray.gif" />
+							<asp:ImageButton ID="butConfirm" Enabled="False" runat="server"
+									OnClick="btnSalvarTudo_Click" ImageURL="~/_layouts/images/STARgray.gif" />
+							<asp:CheckBox ID="cbChanged" style="display: none" runat="server"></asp:CheckBox>
 							</td></tr></table>
                         </ItemTemplate>
                         <EditItemTemplate>
@@ -174,7 +176,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                     </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="Atividade">
                         <ItemTemplate>
-                            <asp:DropDownList ID="ddlAtividade" runat="server" CssClass="ms-toolbar" onChange="ddlAtividade_SelectedIndexChanged">
+                            <asp:DropDownList ID="ddlAtividade" AutoPostback="true" runat="server" CssClass="ms-toolbar" OnSelectedIndexChanged="ddlAtividade_SelectedIndexChanged">
                             </asp:DropDownList>
                         </ItemTemplate>
                         <EditItemTemplate>
@@ -189,6 +191,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="TextBox7" runat="server"></asp:TextBox>
+							
                         </EditItemTemplate>
                     </asp:TemplateColumn>
                
@@ -204,24 +207,22 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
 						<table id="tabRecursos" runat="server">												    
 						<tr><td>
                             <asp:CheckBoxList ID="cbRecursos" runat="server" CssClass="UserConfiguration">
-                            </asp:CheckBoxList>
+                            </asp:CheckBoxList>							
                             </td>
 						<td>
 						<asp:ImageButton ID="butDeletar" runat="server" 
                                 ImageUrl="~/_layouts/images/CRIT_16.GIF" onclick="butDeletar_Click" />
 						    <br />
                             <asp:ImageButton ID="butTransferir" runat="server" 
-                                Command="Transferir" ImageUrl="~/_layouts/images/PLNEXT1.GIF" />
+                                onclick="butTransferir_Click" ImageUrl="~/_layouts/images/PLNEXT1.GIF" />
                             <br />
                             <asp:ImageButton ID="butTrocar" runat="server" 
-                                Command="Trocar" ImageUrl="~/_layouts/images/recurrence.gif"  />
+                                onclick="butTrocar_Click" ImageUrl="~/_layouts/images/recurrence.gif" />
 						</td>
 						</tr>
-						</table>						
-						
+						</table>												
                          <asp:Label ID="lblRecursosAlocados" runat="server"
-                                Width="250px" visible="false"></asp:Label>
-                            <br>                            
+                                Width="250px" visible="false"></asp:Label>                            
 						</asp:Panel>
                         </ItemTemplate>
                     </asp:TemplateColumn>
@@ -232,15 +233,11 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                     </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="DescData" Visible="False">
                         <ItemTemplate>
-                            <asp:Label ID="lblDescData" runat="server"></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateColumn>                    
+                            <asp:Label ID="lblDescData" runat="server"></asp:Label>                                           					
+						</ItemTemplate>
+					</asp:TemplateColumn>
                 </Columns>
-            </asp:DataGrid>
-            <div align="right">
-                <asp:Button ID="btnSalvarTudo2" runat="server" CssClass="ms-toolbar" Text="Salvo"
-                    OnClick="btnSalvarTudo_Click" Enabled="False" />
-            </div>
+            </asp:DataGrid>			
         </ContentTemplate>
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="dgAulas" EventName="SelectedIndexChanged" />

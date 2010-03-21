@@ -221,159 +221,65 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             argb.RemoveAt(0);
         }
 
-    }    
-
-    protected void dgAulas_ItemCommand(object sender, DataGridCommandEventArgs e)
-    {
-        #region Select
-
-        if (e.CommandName == "Select")
-        {
-            //salva dados digitados antes de selecionar os recursos
-            Label lblData = (Label)e.Item.FindControl("lblData");
-            Label lblHora = (Label)e.Item.FindControl("lblHora");
-            TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
-            DropDownList ddlAtividade = (DropDownList)e.Item.FindControl("ddlAtividade");
-            Label lblCorDaData = (Label)e.Item.FindControl("lblCorDaData");
-            Label lblDescData = (Label)e.Item.FindControl("lblDescData");
-            Label lblaulaId = (Label)e.Item.FindControl("lblAulaId");
-
-            Guid idaula = new Guid(lblaulaId.Text);
-            Guid idturma = (Guid)Session["TurmaId"];
-            Turma turma = turmaBo.GetTurmaById(idturma);
-
-            string hora = lblHora.Text;
-            DateTime data = Convert.ToDateTime(lblData.Text);
-
-            string aux = txtDescricao.Text;
-            string descricao = aux.Substring(aux.IndexOf('\n') + 1);
-
-            Guid idcategoria = new Guid(ddlAtividade.SelectedValue);
-            CategoriaAtividade categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
-
-            if (e.Item.BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
-                e.Item.BackColor = categoria.Cor;
-
-            Aula aula = Aula.GetAula(idaula, turma, hora, data, descricao, categoria);
-
-            aulaBo.UpdateAula(aula);
-
-            txtDescricao.Text = lblDescData.Text + "\n" + descricao;
-
-            // abre a popup de selecao de recursos
-            Session["DataAula"] = lblData.Text;
-            Session["Horario"] = lblHora.Text;
-            string id = lblaulaId.Text;
-            ScriptManager.RegisterClientScriptBlock(this, GetType(), "onClick", "popitup('Recursos.aspx?AulaId=" + id + "',350,220);", true);
-
-        }
-
-        #endregion
-
-        #region Trocar
-
-        if (e.CommandName == "Trocar")
-        {
-            //salva dados digitados antes de selecionar os recursos
-            Label lblData = (Label)e.Item.FindControl("lblData");
-            Label lblHora = (Label)e.Item.FindControl("lblHora");
-            TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
-            DropDownList ddlAtividade = (DropDownList)e.Item.FindControl("ddlAtividade");
-            Label lblCorDaData = (Label)e.Item.FindControl("lblCorDaData");
-            Label lblDescData = (Label)e.Item.FindControl("lblDescData");
-            Label lblaulaId = (Label)e.Item.FindControl("lblAulaId");
-            Label lblRecursosAlocadosId = (Label)e.Item.FindControl("lblRecursosAlocadosId");
-
-            Guid idaula = new Guid(lblaulaId.Text);
-            Guid idturma = (Guid)Session["TurmaId"];
-            Turma turma = turmaBo.GetTurmaById(idturma);
-
-            string hora = lblHora.Text;
-            DateTime data = Convert.ToDateTime(lblData.Text);
-
-            string aux = txtDescricao.Text;
-            string descricao = aux.Substring(aux.IndexOf('\n') + 1);
-                  
-            Guid idcategoria = new Guid(ddlAtividade.SelectedValue);
-            CategoriaAtividade categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
-
-            if (e.Item.BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
-                e.Item.BackColor = categoria.Cor;
-
-            Aula aula = Aula.GetAula(idaula, turma, hora, data, descricao, categoria);
-
-            aulaBo.UpdateAula(aula);
-
-            txtDescricao.Text = lblDescData.Text + "\n" + descricao;
-
-            Session["RecursosIds"] = lblRecursosAlocadosId.Text;
-
-            // abre a popup de trocar de recursos
-            Session["DataAula"] = lblData.Text;
-            Session["Horario"] = lblHora.Text;
-            string id = lblaulaId.Text;
-            ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
-                @"popitup('TrocarRecurso.aspx?AulaId=" + id + "',400,300);", true);
-
-        }
-
-        #endregion
-
-        #region Transferir
-
-        if (e.CommandName == "Transferir")
-        {
-            //salva dados digitados antes de selecionar os recursos
-            Label lblData = (Label)e.Item.FindControl("lblData");
-            Label lblHora = (Label)e.Item.FindControl("lblHora");
-            TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
-            DropDownList ddlAtividade = (DropDownList)e.Item.FindControl("ddlAtividade");
-            Label lblCorDaData = (Label)e.Item.FindControl("lblCorDaData");
-            Label lblDescData = (Label)e.Item.FindControl("lblDescData");
-            Label lblaulaId = (Label)e.Item.FindControl("lblAulaId");
-            Label lblRecursosAlocadosId = (Label)e.Item.FindControl("lblRecursosAlocadosId");
-
-            Guid idaula = new Guid(lblaulaId.Text);
-            Guid idturma = (Guid)Session["TurmaId"];
-            Turma turma = turmaBo.GetTurmaById(idturma);
-
-            string hora = lblHora.Text;
-            DateTime data = Convert.ToDateTime(lblData.Text);
-
-            string aux = txtDescricao.Text;
-            string descricao = aux.Substring(aux.IndexOf('\n') + 1);
-
-            Guid idcategoria = new Guid(ddlAtividade.SelectedValue);
-            CategoriaAtividade categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
-
-            if (e.Item.BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
-                e.Item.BackColor = categoria.Cor;
+    }
+	
+	protected void butTransferir_Click(object sender, EventArgs e)
+	{
+		ImageButton but = (ImageButton) sender;
+		DataGridItem grid = (DataGridItem) but.Parent.Parent.Parent.Parent.Parent.Parent;
+		
+		Label lblData = (Label) grid.FindControl("lblData");
+        Label lblHora = (Label) grid.FindControl("lblHora");
+		Label lblaulaId = (Label) grid.FindControl("lblAulaId");
+		
+		// Salva a grade antes de selecionar os recursos
+		//AtualizaTodaGrade();
+		List<string> recursos = new List<string>();
+		CheckBoxList cbRecursos = (CheckBoxList) grid.FindControl("cbRecursos");
+		foreach(ListItem rec in cbRecursos.Items)
+			recursos.Add(rec.Value);
+		Session["RecursosIds"] = recursos;
+		
+		// abre a popup de trocar recursos
+        Session["DataAula"] = lblData.Text;
+        Session["Horario"] = lblHora.Text;
+        string id = lblaulaId.Text;
+        ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
+            @"popitup('TransferirRecurso.aspx?AulaId=" + id + "',400,300);", true);
+	}
+	
+	protected void butTrocar_Click(object sender, EventArgs e)
+	{
+		ImageButton but = (ImageButton) sender;
+		DataGridItem grid = (DataGridItem) but.Parent.Parent.Parent.Parent.Parent.Parent;
+		
+		Label lblData = (Label) grid.FindControl("lblData");
+		Label lblHora = (Label) grid.FindControl("lblHora");
+		Label lblaulaId = (Label) grid.FindControl("lblAulaId");
+		
 
 
-            Aula aula = Aula.GetAula(idaula, turma, hora, data, descricao, categoria);
+		List<string> recursos = new List<string>();
+		CheckBoxList cbRecursos = (CheckBoxList) grid.FindControl("cbRecursos");
+		foreach(ListItem rec in cbRecursos.Items)
+			recursos.Add(rec.Value);			
+        Session["RecursosIds"] = recursos;
+	
+        // abre a popup de transferir recursos
+        Session["DataAula"] = lblData.Text;
+        Session["Horario"] = lblHora.Text;
+        string id = lblaulaId.Text;
+        ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
+            @"popitup('TrocarRecurso.aspx?AulaId=" + id + "',350,300);",
+                true);   
 
-            aulaBo.UpdateAula(aula);
-
-            txtDescricao.Text = lblDescData.Text + "\n" + descricao;
-
-            Session["RecursosIds"] = lblRecursosAlocadosId.Text;
-
-            // abre a popup de transferir de recursos
-            Session["DataAula"] = lblData.Text;
-            Session["Horario"] = lblHora.Text;
-            string id = lblaulaId.Text;
-            ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
-                @"popitup('TransferirRecurso.aspx?AulaId=" + id + "',350,300);",
-                true);
-
-        }
-
-        #endregion
+		// Salva a grade antes de selecionar os recursos
+		AtualizaTodaGrade();		
     }
 
-    // Salva os dados de todas as aulas modificadas
-    protected void btnSalvarTudo_Click(object sender, EventArgs e)
-    {
+	// Salva o conteudo das linhas alteradas no BD	
+	private void AtualizaTodaGrade()
+	{
         DataGridItemCollection t = dgAulas.Items;
         Label lblAulaId;
         Label lblAula;
@@ -383,7 +289,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         TextBox txtDescricao;
         Label lblDescData;
         DropDownList ddlAtividade;
-        //CheckBox cbChanged;
+        CheckBox cbChanged;
 		ImageButton butConfirm;
         string hora;
         string aux;
@@ -397,18 +303,29 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Guid idturma = (Guid)Session["TurmaId"];
         Turma turma = turmaBo.GetTurmaById(idturma);
 
+		int totalLinhas = 0;
         for (int i = 0; i < t.Count; i++)
         {
-            //cbChanged = (CheckBox)t[i].FindControl("cbChanged");
+            cbChanged = (CheckBox)t[i].FindControl("cbChanged");
 			butConfirm = (ImageButton) t[i].FindControl("butConfirm");			
-            // Se a linha não foi modificada, pula ela
-            //if (!cbChanged.Checked)
-            //    continue;
-            //cbChanged.Checked = false;
-			if (!butConfirm.Enabled)
-				continue;
+            // Se a linha não foi modificada, pula ela			
+			
+			// NAO FUNCIONA!
+			//if(butConfirm.ImageUrl == "~/_layouts/images/STARgray.gif")
+			//	continue;
+			
+            if (!cbChanged.Checked)
+                continue;
+            cbChanged.Checked = false;
+			
+			// NAO FUNCIONA!
+			//if (!butConfirm.Enabled)
+			//	continue;
+			
 			butConfirm.Enabled = false;
 			butConfirm.ImageUrl = "~/_layouts/images/STARgray.gif";
+			
+			totalLinhas++;
             
             lblAulaId = (Label)t[i].FindControl("lblAulaId");
             lblAula = (Label)t[i].FindControl("lblAula");
@@ -437,18 +354,24 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             aulaBo.UpdateAula(aula);
 
             txtDescricao.Text = lblDescData.Text + "\n" + descricao;
-        }
-
-        lblResultado.Text = "Alteração realizada com sucesso!";
+        }	
+        lblResultado.Text = "Alteração realizada com sucesso ("+totalLinhas.ToString()+" linhas)";
 
         // TODO: alterar nome do botão.
-        Button salvar = (Button)sender;
-        salvar.Text = "Salvo";
-        salvar.Enabled = false;
+		btnSalvarTudo.Text = "Salvo";
+		btnSalvarTudo.Enabled = false;
+        //Button salvar = (Button)sender;
+        //salvar.Text = "Salvo";
+        //salvar.Enabled = false;
 
         ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
                 @"releaseDirtyFlag();", true);
-
+	}
+	
+    // Salva os dados de todas as aulas modificadas
+    protected void btnSalvarTudo_Click(object sender, EventArgs e)
+    {
+		AtualizaTodaGrade();
     }
 
     protected void btnExportarHTML_Click(object sender, EventArgs e)
@@ -539,10 +462,18 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 	protected void ddlAtividade_SelectedIndexChanged(object sender, EventArgs e)
 	{
         DropDownList ddlAtividade = (DropDownList)sender;
-
 //        TableCell cell = (TableCell)ddlDisponiveis.Parent;
-        DataGridItem grid = (DataGridItem)ddlAtividade.Parent;
-
+        DataGridItem grid = (DataGridItem)ddlAtividade.Parent.Parent;
+		ImageButton butConfirm = (ImageButton) grid.FindControl("butConfirm");
+		CheckBox cbChanged = (CheckBox) grid.FindControl("cbChanged");
+		cbChanged.Checked = true; // marca para alteracao
+		butConfirm.Enabled = true;		
+		AtualizaTodaGrade();
+	}
+	
+	// Atualiza uma unica linha da grade (sem uso no momento)
+	private void AtualizaLinhaGrade(DataGridItem grid)
+	{
         // Obtem os dados digitados nesta linha
         Label lblData = (Label) grid.FindControl("lblData");
         Label lblHora = (Label) grid.FindControl("lblHora");
@@ -566,12 +497,12 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Guid idcategoria = new Guid(ddlAtividade.SelectedValue);
         CategoriaAtividade categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
 
-        if (e.Item.BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
-            e.Item.BackColor = categoria.Cor;
+        if (grid.BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
+            grid.BackColor = categoria.Cor;
 
         Aula aula = Aula.GetAula(idaula, turma, hora, data, descricao, categoria);
 
-//        aulaBo.UpdateAula(aula);
+        aulaBo.UpdateAula(aula);
 
         txtDescricao.Text = lblDescData.Text + "\n" + descricao;
 
@@ -587,51 +518,20 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         TableCell cell = (TableCell)ddlDisponiveis.Parent;
         DataGridItem grid = (DataGridItem)cell.Parent;
 
-        //CheckBoxList cbRecursos = (CheckBoxList)grid.FindControl("cbRecursos");
-        //ImageButton butDel    = (ImageButton)grid.FindControl("butDeletar");
-        //ImageButton butTransf = (ImageButton)grid.FindControl("butTransferir");
-        //ImageButton butTrocar = (ImageButton)grid.FindControl("butTrocar");
-
         string dataString = ((Label)grid.FindControl("lblData")).Text;
         string horario = ((Label)grid.FindControl("lblHora")).Text;
         string aulaString = ((Label)grid.FindControl("lblAulaId")).Text;
 
         alocar(recString, dataString, horario, aulaString);
 
-        //Label lblRecursosAlocados = (Label)grid.FindControl("lblRecursosAlocados");
-        //Label lblRecursosAlocadosId = (Label)grid.FindControl("lblRecursosAlocadosId");
-
         AtualizaComponentes(grid, dataString, horario, aulaString);
 
-		/*
-		Panel pnRecursos = (Panel)grid.FindControl("pnRecursos");			
-
-        DateTime data = Convert.ToDateTime(dataString);
-
-        AlocacaoBO alocBO = new AlocacaoBO();
-        List<Recurso> recAlocados = alocBO.GetRecursoAlocadoByAula(data, horario, new Guid(aulaString));
-
-        cbRecursos.Items.Clear();
-        if (recAlocados.Count != 0)
-        {
-            // Habilita botões
-            butDel.Visible = true;
-            butTransf.Visible = true;
-            butTrocar.Visible = true;
-            foreach (Recurso r in recAlocados)            
-                cbRecursos.Items.Add(new ListItem(r.Descricao, r.Id.ToString()));                     
-        }
-        else
-        {
-            // Desabilita botões
-            butDel.Visible = false;
-            butTransf.Visible = false;
-            butTrocar.Visible = false;
-        }
-        */
-        // Finalmente, remove recurso do dropdown de seleção
+        // Remove recurso do dropdown de seleção
         ddlDisponiveis.Items.Remove(ddlDisponiveis.Items.FindByValue(ddlDisponiveis.SelectedValue));
         ddlDisponiveis.SelectedIndex = 0;
+		
+		// E atualiza o BD com as alteracoes na grade
+		AtualizaTodaGrade();
     }
 
 
@@ -709,5 +609,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         ddlDisponiveis.DataTextField = "Descricao";
         ddlDisponiveis.DataSource = livres;
         ddlDisponiveis.DataBind();
+		
+		AtualizaTodaGrade();
     }
 }

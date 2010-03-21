@@ -45,15 +45,15 @@ public partial class Docentes_TransferirRecurso : System.Web.UI.Page
                     string horario = (string)Session["Horario"];
 
                     lblDataHorario.Text = "Data: " + data.ToShortDateString() + " Horário: " + horario;
-                    string recursosIds = (string)Session["RecursosIds"];
+                    List<string> recursosIds = (List<string>) Session["RecursosIds"];
 
-                    if (recursosIds != "")
+                    if (recursosIds.Count > 0)
                     {
-                        string[] recIds = recursosIds.Split(',');
+                        //string[] recIds = recursosIds.Split(',');
 
                         List<Recurso> recursosAtuais = new List<Recurso>();
 
-                        foreach (string s in recIds)
+                        foreach (string s in recursosIds)
                         {
                             try
                             {

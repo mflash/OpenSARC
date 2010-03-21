@@ -37,9 +37,9 @@ public partial class Docentes_TrocarRecurso : System.Web.UI.Page
 
                 if (Request.QueryString["AulaId"] != String.Empty)
                 {
-                    string recursosIds = (string)Session["RecursosIds"];
+                    List<string> recursosIds = (List<string>)Session["RecursosIds"];
                     // verifica se jah ha recursos alocados deste professor
-                    if (recursosIds != "")
+                    if (recursosIds.Count > 0)
                     {
                         Guid aulaId = new Guid(Request.QueryString["AulaId"]);
                         Session["AulaId"] = aulaId;
@@ -50,12 +50,12 @@ public partial class Docentes_TrocarRecurso : System.Web.UI.Page
                         lblDataHorario.Text = "Data: " + data.ToShortDateString() + " Horário: " + horario;
                         List<Alocacao> recAlocados = alocBO.GetRecursosAlocados(data, horario);
 
-                        string[] recIds = recursosIds.Split(',');
+                        //string[] recIds = recursosIds.Split(',');
 
                         List<Recurso> recursosAtuais = new List<Recurso>();
 
                         //monta lista de recursos do professor solicitante apartir da string
-                        foreach (string s in recIds)
+                        foreach (string s in recursosIds)
                         {
                             try
                             {

@@ -46,8 +46,8 @@ public partial class Alocacoes_Default : System.Web.UI.Page
         ddlRecursos.Items.Add("Selecione");
         try
         {
-        ddlRecursos.DataSource = controladorRecursos.GetRecursosPorCategoria(
-            controladorCategorias.GetCategoriaRecursoById(new Guid(ddlCategorias.SelectedValue)));
+        ddlRecursos.DataSource = controladorRecursos.GetRecursos();
+            //controladorCategorias.GetCategoriaRecursoById(new Guid(ddlCategorias.SelectedValue)));
         ddlRecursos.DataValueField = "Id";
         ddlRecursos.DataTextField = "Descricao";
         ddlRecursos.DataBind();
@@ -94,6 +94,7 @@ public partial class Alocacoes_Default : System.Web.UI.Page
         if (!IsPostBack)
         {
             PopulaCategorias();
+			PopulaRecursos();
             PopulaProfessores();
             PopulaSecretarios();
 			PopulaHorarios();

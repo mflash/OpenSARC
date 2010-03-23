@@ -73,7 +73,7 @@
                             </ItemTemplate>
                         </asp:TemplateColumn>
                         
-                        <asp:TemplateColumn HeaderText="Responsavel">
+                        <asp:TemplateColumn HeaderText="Responsável">
                             <ItemTemplate>
                                 <asp:Label ID="lblResponsavel" runat="server" ></asp:Label>
                             </ItemTemplate>
@@ -118,7 +118,7 @@
                             </ItemTemplate>
                         </asp:TemplateColumn>
                         
-                        <asp:TemplateColumn HeaderText="Responsavel">
+                        <asp:TemplateColumn HeaderText="Responsável">
                             <ItemTemplate>
                                 <asp:Label ID="lblResponsavel" runat="server" ></asp:Label>
                             </ItemTemplate>

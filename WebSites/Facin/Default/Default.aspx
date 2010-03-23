@@ -55,7 +55,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
                      AutoGenerateColumns="False" 
                      Width="100%" 
                      HorizontalAlign="Center"  
-                     OnItemDataBound="dgAlocacoes_ItemDataBound"
+                     OnItemDataBound="dgAlocacoes_ItemDataBound"					 
                      Visible="False" >
         
             <ItemStyle CssClass="ms-btoolbar"  HorizontalAlign="Center"/>
@@ -81,7 +81,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
                             </ItemTemplate>
                         </asp:TemplateColumn>
                         
-                        <asp:TemplateColumn HeaderText="Responsavel">
+                        <asp:TemplateColumn HeaderText="Responsável">
                             <ItemTemplate>
                                 <asp:Label ID="lblResponsavel" runat="server" ></asp:Label>
                             </ItemTemplate>
@@ -127,7 +127,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
                             </ItemTemplate>
                         </asp:TemplateColumn>
                         
-                        <asp:TemplateColumn HeaderText="Responsavel">
+                        <asp:TemplateColumn HeaderText="Responsável">
                             <ItemTemplate>
                                 <asp:Label ID="lblResponsavel" runat="server" ></asp:Label>
                             </ItemTemplate>

@@ -529,7 +529,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         // Remove recurso do dropdown de seleção
         ddlDisponiveis.Items.Remove(ddlDisponiveis.Items.FindByValue(ddlDisponiveis.SelectedValue));
         ddlDisponiveis.SelectedIndex = 0;
-		
+				
 		// E atualiza o BD com as alteracoes na grade
 		AtualizaTodaGrade();
     }

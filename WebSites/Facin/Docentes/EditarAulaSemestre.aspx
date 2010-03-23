@@ -210,13 +210,13 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                             </asp:CheckBoxList>							
                             </td>
 						<td>
-						<asp:ImageButton ID="butDeletar" runat="server" 
+						<asp:ImageButton ID="butDeletar" runat="server" Title="Liberar recurso"
                                 ImageUrl="~/_layouts/images/CRIT_16.GIF" onclick="butDeletar_Click" />
 						    <br />
-                            <asp:ImageButton ID="butTransferir" runat="server" 
+                            <asp:ImageButton ID="butTransferir" runat="server" title="Transferir recurso"
                                 onclick="butTransferir_Click" ImageUrl="~/_layouts/images/PLNEXT1.GIF" />
                             <br />
-                            <asp:ImageButton ID="butTrocar" runat="server" 
+                            <asp:ImageButton ID="butTrocar" runat="server" title="Trocar recurso"
                                 onclick="butTrocar_Click" ImageUrl="~/_layouts/images/recurrence.gif" />
 						</td>
 						</tr>

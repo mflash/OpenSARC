@@ -1,5 +1,6 @@
 <%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Alocacoes_Default" Title="Sistema de Alocação de Recursos - FACIN" %>
 
+<%@ Register Src="../Default/Aguarde.ascx" TagName="Aguarde" TagPrefix="uc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <%@ Import Namespace="BusinessData.Entities" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" Runat="Server">
@@ -8,7 +9,7 @@
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>
+        <ContentTemplate>			
             <div align="left" style="width: 100%; height: 14px">
                 <asp:Label ID="lblDisciplina" runat="server" CssClass="ms-WPTitle" Text="VISUALIZAR RECURSOS ALOCADOS POR:"></asp:Label></div>
             <asp:RadioButtonList ID="rblAlocacoes" runat="server" OnSelectedIndexChanged="rblAlocacoes_SelectedIndexChanged" AutoPostBack="True" BackColor="White" BorderColor="White" CssClass="ms-toolbar">
@@ -38,7 +39,7 @@
                     </td>
                 </tr>
             </table>
-            <asp:Panel ID="pnlVisualizarPorRecurso" runat="server" Height="50px"
+            <asp:Panel ID="pnlVisualizarPorCategoria" runat="server" Height="50px"
                 Width="125px" Visible="False">
             <table id="Table2">
                 <tr>
@@ -50,6 +51,11 @@
                             <asp:ListItem>Selecione</asp:ListItem>
                         </asp:DropDownList></td>
                 </tr>
+				</table>
+				</asp:Panel>
+				<asp:Panel ID="pnlVisualizarPorRecurso" runat="server" Height="50px"
+                Width="125px" Visible="False">
+            <table id="Table2b">
                 <tr>
                     <td style="width: 88px; height: 26px" class="ms-toolbar">
                         Recurso</td>
@@ -61,7 +67,7 @@
                 </tr>
             </table>			
                 </asp:Panel>
-			<asp:Panel ID="pnlVisualizarPorCategoria" runat="server" Height="50px"
+			<asp:Panel ID="pnlVisualizarPorHorario" runat="server" Height="50px"
                 Width="125px" Visible="False">
             <table id="Table2">
                 <tr>
@@ -115,6 +121,13 @@
                         <asp:Button ID="btnVisualizarAlocacoes" runat="server" OnClick="btnVisualizarAlocacoes_Click"
                             Text="Visualizar Alocações" CssClass="ms-toolbar" Width="170px" /><br />
             <br />
+			<div align="left">
+                <asp:UpdateProgress ID="UpdateProgress2" runat="server">
+                    <ProgressTemplate>
+                        <uc1:Aguarde ID="Aguarde1" runat="server" />
+                    </ProgressTemplate>
+                </asp:UpdateProgress>
+            </div>
                 
             <asp:DataGrid ID="dgAlocacoes" 
                      runat="server"       

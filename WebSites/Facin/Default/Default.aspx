@@ -48,14 +48,15 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
 		<table>
         <tr>
         <td><asp:Label ID="lblAtual" runat="server" 
-                    CssClass="ms-pagecaption"></asp:Label></td>
+                    CssClass="ms-bigcaption"></asp:Label></td>
         <td>                     
             <asp:DataGrid ID="dgAlocacoes" 
                      runat="server"       
                      AutoGenerateColumns="False" 
                      Width="100%" 
                      HorizontalAlign="Center"  
-                     OnItemDataBound="dgAlocacoes_ItemDataBound"					 
+                     OnItemDataBound="dgAlocacoes_ItemDataBound"
+					 CellPadding="4"
                      Visible="False" >
         
             <ItemStyle CssClass="ms-btoolbar"  HorizontalAlign="Center"/>
@@ -94,7 +95,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
 		<table>
         <tr>
         <td><asp:Label ID="lblProximo" runat="server" 
-                    CssClass="ms-pagecaption"></asp:Label></td>
+                    CssClass="ms-bigcaption"></asp:Label></td>
         <td>
             <asp:DataGrid ID="dgAlocacoes2" 
                      runat="server"       
@@ -102,6 +103,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
                      Width="100%" 
                      HorizontalAlign="Center"  
                      OnItemDataBound="dgAlocacoes_ItemDataBound"
+					 CellPadding="4"
                      Visible="False" >
         
             <ItemStyle CssClass="ms-btoolbar"  HorizontalAlign="Center"/>

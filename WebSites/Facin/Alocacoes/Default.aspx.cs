@@ -118,8 +118,8 @@ public partial class Alocacoes_Default : System.Web.UI.Page
         List<Alocacao> listaAlocacoes;
         try
         {
-            if (ddlCategorias.SelectedIndex != 0)
-            {
+            //if (ddlCategorias.SelectedIndex != 0)
+            //{
                 if (ddlRecursos.SelectedIndex != 0)
                 {
                     Guid recursoId = new Guid(ddlRecursos.SelectedValue);
@@ -165,12 +165,12 @@ public partial class Alocacoes_Default : System.Web.UI.Page
                     dgAlocacoes.Visible = false;
                     lblStatus.Text = "Selecione um Recurso Válido.";
                 }
-            }
-            else
-            {
-                dgAlocacoes.Visible = false;
-                lblStatus.Text = "Selecione uma Categoria de Recurso Válido.";
-            }
+            //}
+            //else
+            //{
+            //    dgAlocacoes.Visible = false;
+            //    lblStatus.Text = "Selecione uma Categoria de Recurso Válido.";
+            //}
         }
         catch (FormatException)
         {
@@ -213,6 +213,7 @@ public partial class Alocacoes_Default : System.Web.UI.Page
 		pnlVisualizarPorRecurso.Visible = false;
 		pnlVisualizarPorProfessor.Visible = false;
         pnlVisualizarPorSecretario.Visible = false;
+		pnlVisualizarPorHorario.Visible = false;
 	}
 	
     protected void rblAlocacoes_SelectedIndexChanged(object sender, EventArgs e)
@@ -227,7 +228,7 @@ public partial class Alocacoes_Default : System.Web.UI.Page
                 dgAlocacoes.Visible = false;
                 break;
 			case "Categoria":
-				pnlVisualizarPorCategoria.Visible = true;				
+				pnlVisualizarPorHorario.Visible = true;
                 ResetaComponentes();
                 lblOpcional.Visible = true;
                 dgAlocacoes.Visible = false;

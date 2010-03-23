@@ -1304,6 +1304,11 @@ font-size:9pt;
 color:#000000;
 font-family:arial,verdana,sans-serif;
 }
+.ms-bigcaption{
+font-size:22pt;
+color:#000000;
+font-family:arial,verdana,sans-serif;
+}
 .ms-selected
 {
 background-position:left top;

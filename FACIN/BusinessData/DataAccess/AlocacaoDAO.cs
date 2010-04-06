@@ -394,9 +394,11 @@ namespace BusinessData.DataAccess
         public List<Alocacao> GetAlocacoesSemData(Calendario cal, Guid recursoId)
         {
             List<Alocacao> lista = new List<Alocacao>();
-
+            
             DbCommand cmd = baseDados.GetStoredProcCommand("AlocacaoSelectByRecursoSemData");
-            baseDados.AddInParameter(cmd, "@RecursoId", DbType.Guid, recursoId);
+            baseDados.AddInParameter(cmd, "@RecursoId", DbType.Guid, recursoId);            
+            baseDados.AddInParameter(cmd, "@DataInicio", DbType.DateTime, cal.InicioG1);
+            baseDados.AddInParameter(cmd, "@DataFim", DbType.DateTime, cal.FimG2);
 
             AulasDAO aulaDAO = new AulasDAO();
             EventoDAO eventoDAO = new EventoDAO();
@@ -442,6 +444,8 @@ namespace BusinessData.DataAccess
 
             DbCommand cmd = baseDados.GetStoredProcCommand("AlocacaoSelectByProfessorSemData");
             baseDados.AddInParameter(cmd, "@ProfessorId", DbType.Guid, prof.Id);
+            baseDados.AddInParameter(cmd, "@DataInicio", DbType.DateTime, cal.InicioG1);
+            baseDados.AddInParameter(cmd, "@DataFim", DbType.DateTime, cal.FimG2);
 
             AulasDAO aulaDAO = new AulasDAO();
             EventoDAO eventoDAO = new EventoDAO();
@@ -485,8 +489,10 @@ namespace BusinessData.DataAccess
         {
             List<Alocacao> lista = new List<Alocacao>();
 
-            DbCommand cmd = baseDados.GetStoredProcCommand("AlocacaoSelectBySecretarioSemData");
-            baseDados.AddInParameter(cmd, "@SecretarioId", DbType.Guid, secretario.Id);
+            DbCommand cmd = baseDados.GetStoredProcCommand("AlocacaoSelectByProfessorSemData");
+            baseDados.AddInParameter(cmd, "@ProfessorId", DbType.Guid, secretario.Id);
+            baseDados.AddInParameter(cmd, "@DataInicio", DbType.DateTime, cal.InicioG1);
+            baseDados.AddInParameter(cmd, "@DataFim", DbType.DateTime, cal.FimG2);
 
             AulasDAO aulaDAO = new AulasDAO();
             EventoDAO eventoDAO = new EventoDAO();

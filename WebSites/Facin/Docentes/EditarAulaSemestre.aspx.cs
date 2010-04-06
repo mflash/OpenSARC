@@ -393,7 +393,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Label lblAux;
         TextBox txtDescricao;
         DropDownList ddlAtividade;
-        TextBox ddlRecursos;
+        CheckBoxList cbRecursos;
         foreach (DataGridItem item in dgAulas.Items)
         {
             dr = tabela.NewRow();
@@ -415,8 +415,14 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
             dr["Atividade"] = ddlAtividade.SelectedItem.Text;
 
-            ddlRecursos = (TextBox)item.FindControl("lblRecursosAlocados");
-            dr["Recursos"] = ddlRecursos.Text;
+            cbRecursos = (CheckBoxList)item.FindControl("cbRecursos");
+            string aux = "";
+            foreach (ListItem rec in cbRecursos.Items)
+                if (aux != String.Empty)
+                    aux += "<br/>" + rec.Text;
+                else aux = rec.Text;
+
+            dr["Recursos"] = aux;
 
             dr["CorDaData"] = item.BackColor.Name;
             tabela.Rows.Add(dr);

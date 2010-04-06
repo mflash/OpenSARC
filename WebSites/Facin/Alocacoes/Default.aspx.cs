@@ -439,8 +439,10 @@ public partial class Alocacoes_Default : System.Web.UI.Page
                 lblDiscCod.Text = aloc.Aula.TurmaId.Disciplina.Cod.ToString();
                 lblDisc.Text = aloc.Aula.TurmaId.Disciplina.Nome + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
                 //lblTurmaEvento.Text = aloc.Aula.TurmaId.Numero.ToString(); ;
-                lblResponsavel.Text = aloc.Aula.TurmaId.Professor.Nome;
-                lblCurso.Text = aloc.Aula.TurmaId.Curso.Nome;
+                if(aloc.Aula.TurmaId.Professor != null)
+                    lblResponsavel.Text = aloc.Aula.TurmaId.Professor.Nome;
+                if(aloc.Aula.TurmaId.Curso != null)
+                    lblCurso.Text = aloc.Aula.TurmaId.Curso.Nome;
             }
             else 
             {

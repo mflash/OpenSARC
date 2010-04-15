@@ -47,45 +47,45 @@
         <xs:element name="CriaRelatorioAtividades" msprop:Generator_UserTableName="CriaRelatorioAtividades" msprop:Generator_RowDeletedName="CriaRelatorioAtividadesRowDeleted" msprop:Generator_RowChangedName="CriaRelatorioAtividadesRowChanged" msprop:Generator_RowClassName="CriaRelatorioAtividadesRow" msprop:Generator_RowChangingName="CriaRelatorioAtividadesRowChanging" msprop:Generator_RowEvArgName="CriaRelatorioAtividadesRowChangeEvent" msprop:Generator_RowEvHandlerName="CriaRelatorioAtividadesRowChangeEventHandler" msprop:Generator_TableClassName="CriaRelatorioAtividadesDataTable" msprop:Generator_TableVarName="tableCriaRelatorioAtividades" msprop:Generator_RowDeletingName="CriaRelatorioAtividadesRowDeleting" msprop:Generator_TablePropName="CriaRelatorioAtividades">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="Categoria_x0020_de_x0020_Atividade" msprop:Generator_UserColumnName="Categoria de Atividade" msprop:Generator_ColumnVarNameInTable="columnCategoria_de_Atividade" msprop:Generator_ColumnPropNameInRow="Categoria_de_Atividade" msprop:Generator_ColumnPropNameInTable="Categoria_de_AtividadeColumn">
+              <xs:element name="Categoria_x0020_de_x0020_Atividade" msprop:Generator_UserColumnName="Categoria de Atividade" msprop:Generator_ColumnPropNameInRow="Categoria_de_Atividade" msprop:Generator_ColumnVarNameInTable="columnCategoria_de_Atividade" msprop:Generator_ColumnPropNameInTable="Categoria_de_AtividadeColumn">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="256" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="Descricao" msprop:Generator_UserColumnName="Descricao" msprop:Generator_ColumnVarNameInTable="columnDescricao" msprop:Generator_ColumnPropNameInRow="Descricao" msprop:Generator_ColumnPropNameInTable="DescricaoColumn">
+              <xs:element name="Descricao" msprop:Generator_UserColumnName="Descricao" msprop:Generator_ColumnPropNameInRow="Descricao" msprop:Generator_ColumnVarNameInTable="columnDescricao" msprop:Generator_ColumnPropNameInTable="DescricaoColumn">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="256" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="Data" msprop:Generator_UserColumnName="Data" msprop:Generator_ColumnVarNameInTable="columnData" msprop:Generator_ColumnPropNameInRow="Data" msprop:Generator_ColumnPropNameInTable="DataColumn" type="xs:dateTime" />
-              <xs:element name="Hora" msprop:Generator_UserColumnName="Hora" msprop:Generator_ColumnVarNameInTable="columnHora" msprop:Generator_ColumnPropNameInRow="Hora" msprop:Generator_ColumnPropNameInTable="HoraColumn">
+              <xs:element name="Data" msprop:Generator_UserColumnName="Data" msprop:Generator_ColumnPropNameInRow="Data" msprop:Generator_ColumnVarNameInTable="columnData" msprop:Generator_ColumnPropNameInTable="DataColumn" type="xs:dateTime" />
+              <xs:element name="Hora" msprop:Generator_UserColumnName="Hora" msprop:Generator_ColumnPropNameInRow="Hora" msprop:Generator_ColumnVarNameInTable="columnHora" msprop:Generator_ColumnPropNameInTable="HoraColumn">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="2" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="Turma" msprop:Generator_UserColumnName="Turma" msprop:Generator_ColumnVarNameInTable="columnTurma" msprop:Generator_ColumnPropNameInRow="Turma" msprop:Generator_ColumnPropNameInTable="TurmaColumn" type="xs:int" />
-              <xs:element name="Cod" msprop:Generator_UserColumnName="Cod" msprop:Generator_ColumnVarNameInTable="columnCod" msprop:Generator_ColumnPropNameInRow="Cod" msprop:Generator_ColumnPropNameInTable="CodColumn">
+              <xs:element name="Turma" msprop:Generator_UserColumnName="Turma" msprop:Generator_ColumnPropNameInRow="Turma" msprop:Generator_ColumnVarNameInTable="columnTurma" msprop:Generator_ColumnPropNameInTable="TurmaColumn" type="xs:int" />
+              <xs:element name="Cod" msprop:Generator_UserColumnName="Cod" msprop:Generator_ColumnPropNameInRow="Cod" msprop:Generator_ColumnVarNameInTable="columnCod" msprop:Generator_ColumnPropNameInTable="CodColumn">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="5" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="Cred" msprop:Generator_UserColumnName="Cred" msprop:Generator_ColumnVarNameInTable="columnCred" msprop:Generator_ColumnPropNameInRow="Cred" msprop:Generator_ColumnPropNameInTable="CredColumn" type="xs:int" />
-              <xs:element name="Disciplina" msprop:Generator_UserColumnName="Disciplina" msprop:Generator_ColumnVarNameInTable="columnDisciplina" msprop:Generator_ColumnPropNameInRow="Disciplina" msprop:Generator_ColumnPropNameInTable="DisciplinaColumn">
+              <xs:element name="Cred" msprop:Generator_UserColumnName="Cred" msprop:Generator_ColumnPropNameInRow="Cred" msprop:Generator_ColumnVarNameInTable="columnCred" msprop:Generator_ColumnPropNameInTable="CredColumn" type="xs:int" />
+              <xs:element name="Disciplina" msprop:Generator_UserColumnName="Disciplina" msprop:Generator_ColumnPropNameInRow="Disciplina" msprop:Generator_ColumnVarNameInTable="columnDisciplina" msprop:Generator_ColumnPropNameInTable="DisciplinaColumn">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="256" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="Professor" msprop:Generator_UserColumnName="Professor" msprop:Generator_ColumnVarNameInTable="columnProfessor" msprop:Generator_ColumnPropNameInRow="Professor" msprop:Generator_ColumnPropNameInTable="ProfessorColumn">
+              <xs:element name="Professor" msprop:Generator_UserColumnName="Professor" msprop:Generator_ColumnPropNameInRow="Professor" msprop:Generator_ColumnVarNameInTable="columnProfessor" msprop:Generator_ColumnPropNameInTable="ProfessorColumn">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="256" />

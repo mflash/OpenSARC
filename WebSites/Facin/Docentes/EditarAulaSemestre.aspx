@@ -167,7 +167,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
 								</td><td>
 							<asp:ImageButton ID="butConfirm" Enabled="False" runat="server"
 									OnClick="btnSalvarTudo_Click" ImageURL="~/_layouts/images/STARgray.gif" />
-							<asp:CheckBox ID="cbChanged" style="display: normal" runat="server"></asp:CheckBox>
+							<asp:CheckBox ID="cbChanged" style="display: none" runat="server"></asp:CheckBox>
 							</td></tr></table>
                         </ItemTemplate>
                         <EditItemTemplate>

@@ -25,7 +25,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     Guid dummyGuid = new Guid();
     AlocacaoBO alocBO = new AlocacaoBO();
     Calendario cal;
-    private int cont = 1;
+    private int cont = 1;  // contador de aulas (SEM feriados)
+    private int cont2 = 2; // contador de aulas (incluindo feriados)
 
 
     protected void Page_Load(object sender, EventArgs e)
@@ -172,6 +173,14 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             //Data data = null;
             //verifica as datas para pintar as linhas
+
+            // Associa a chamada da funçao Javascript para setar a dirty flag + trocar cor                    
+            string num = cont2.ToString();
+            if (cont2++ < 10)
+                num = "0" + num;
+            string call = "testAlert(this,'" + num + "')";
+            txtDescricao.Attributes.Add("onkeyup", call);
+
             if ((dataAtual >= cal.InicioG2))
             {
                 e.Item.BackColor = Color.LightGray;
@@ -204,11 +213,12 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     lblCorDaData.Text = "False";
                     lbl.Text = (cont++).ToString();
                     // Associa a chamada da funçao Javascript para setar a dirty flag + trocar cor                    
-                    string num = cont.ToString();
+                    /*string num = cont.ToString();
                     if (cont < 10)
                         num = "0" + num;
                     string call = "testAlert(this,'" + num + "')";
                     txtDescricao.Attributes.Add("onkeyup", call);
+                     */
                 }
             }
 

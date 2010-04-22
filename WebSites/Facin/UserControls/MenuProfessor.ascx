@@ -5,14 +5,14 @@
     <table style="width: 150px" cellpadding="4" cellspacing="4">
         <tr>
             <td style="height: 20px;  text-align :center" class="ms-sitetitle a" >
-                Menu</td>
+                Professores</td>
         </tr>
         <tr>
             <td style="height: 34px;">
                 <table border="0" cellpadding="0" cellspacing="0" class="ms-navheader" width="100%">
                     <tr>
                         <td id="Td1" class="ms-sitetitle a" nowrap="nowrap" 
-                            style="height: 10px; width:135px;"> Professores
+                            style="height: 10px; width:135px;"> Turmas
                         </td>
                     </tr>
                 </table>
@@ -39,12 +39,14 @@
                 <table border="0" cellpadding="0" cellspacing="0" class="ms-navheader" width="100%">
                     <tr>
                         <td id="Td3" class="ms-sitetitle a" nowrap="nowrap" 
-                            style="height: 10px; width:135px;"> Alocações
+                            style="height: 10px; width:135px;"> Consultas
                         </td>
                     </tr>
                 </table>
                 <a href="../Alocacoes/Default.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Visualizar Alocações</span></a>
+                <a href="../Common/ListaTurmas.aspx" class="ms-SPLink">
+                    <span style="color: #3966bf">Listar Turmas</span></a>
                </td>
         </tr>
 </table>

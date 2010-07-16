@@ -56,10 +56,9 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
     </div>
     <asp:ScriptManager id="ScriptManager1" runat="server">
     </asp:ScriptManager>
-    
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
-         <div align="left">
+         <div style="position:absolute;left:500px;top:50px;">
     <asp:UpdateProgress ID="UpdateProgress1" runat="server">
         <ProgressTemplate>
             <uc1:Aguarde ID="Aguarde1" runat="server" />
@@ -67,7 +66,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
     </asp:UpdateProgress>
              &nbsp;</div>
         <asp:Label ID="lblResultado" runat="server" CssClass="lblStatus" Text="" Visible="true"></asp:Label>
-            <asp:CheckBox ID="chbAutoSave" runat="server" CssClass ="ms-toolbar" Text="Auto Save" EnableViewState="true"  Visible="false"/><div style="width: 244px; height: 30px">
+            <div style="width: 244px; height: 30px">
                 <asp:Button ID="btnExportarHTML" runat="server" CssClass="ms-toolbar" OnClick="btnExportarHTML_Click"
                     Text="Exportar HTML" />
                         <asp:Button ID="btnSalvarTudo" runat="server" CssClass="ms-toolbar" Text="Salvar Todos" OnClick="btnSalvarTudo_Click" /></div>

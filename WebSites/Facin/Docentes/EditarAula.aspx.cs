@@ -357,6 +357,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         }
 
         lblResultado.Text = "Alteração realizada com sucesso!";
+        ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
+                @"releaseDirtyFlag();", true);
     }
 
 
@@ -383,9 +385,18 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         {
             dr = tabela.NewRow();
             lblAux = (Label)item.FindControl("lblAula");
-            dr["Aula"] = lblAux.Text;
+            dr["#"] = lblAux.Text;
 
-            lblAux = (Label)item.FindControl("lblDia");
+            lblAux = (Label)item.FindControl("lblData2");
+            dr["Data Hora"] = lblAux.Text;
+
+            lblAux = (Label)item.FindControl("lblDia2");
+            dr["Data Hora"] += " " + lblAux.Text;
+
+            lblAux = (Label)item.FindControl("lblHora");
+            dr["Data Hora"] += lblAux.Text;
+
+            /*lblAux = (Label)item.FindControl("lblDia");
             dr["Dia"] = lblAux.Text;
 
             lblAux = (Label)item.FindControl("lblData");
@@ -393,6 +404,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             lblAux = (Label)item.FindControl("lblHora");
             dr["Hora"] = lblAux.Text;
+            */
 
             txtDescricao = (TextBox)item.FindControl("txtDescricao");
             dr["Descrição"] = txtDescricao.Text;
@@ -422,7 +434,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         // Salva dados digitados
 
-        SalvaDados(gridItem);
+        SalvarTodos();
+//        SalvaDados(gridItem);
         
         // abre a popup de selecao de recursos
         //string id = lblaulaId.Text;
@@ -474,7 +487,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         // Salva dados digitados
 
-        SalvaDados(gridItem);
+        SalvarTodos();
+//        SalvaDados(gridItem);
     }
 
     // Salva os dados da linha corrente (chamados pelos eventos de select das drop down lists, etc)

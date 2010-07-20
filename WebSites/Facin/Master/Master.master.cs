@@ -112,7 +112,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                 // Pega as 3 primeiras letras da palavra
                 palCurta = pal.Substring(0, 3);
                 // Se terminar com uma vogal, acrescenta mais uma letra
-                if (palCurta[2] == 'a' || palCurta[2] == 'á' || palCurta[2]== 'ê' palCurta[2] == 'e' || palCurta[2] == 'i' || palCurta[2] == 'o'
+                if (palCurta[2] == 'a' || palCurta[2] == 'á' || palCurta[2]== 'ê' || palCurta[2] == 'e' || palCurta[2] == 'i' || palCurta[2] == 'o'
                     || palCurta[2] == 'u')
                     palCurta = pal.Substring(0, 4);
                 palCurta += ". ";

@@ -18,7 +18,11 @@ CodeFile="ListaProfessores.aspx.cs" Inherits="Professores_ListaProfessores" Titl
         <contenttemplate>
 <TABLE style="WIDTH: 514px; HEIGHT: 71px" align="left">
 <TBODY>
-<TR>
+<tr><td>
+<asp:Label id="lblOnline"
+ runat="server" CssClass="lblstatus" Visible="True"></asp:Label>
+</td></tr>
+<tr>
 <TD>
 <asp:GridView id="grvListaProfessores" 
 runat="server" AutoGenerateColumns="False" Width="636px" AllowSorting="True" DataKeyNames="Id"

@@ -371,7 +371,18 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     {
         DataTable tabela = new DataTable();
 
-        foreach (DataGridColumn coluna in dgAulas.Columns)
+		/*
+		tabela.Columns.Add("#");
+		tabela.Columns.Add("Dia");
+		tabela.Columns.Add("Data");
+		tabela.Columns.Add("Hora");
+		tabela.Columns.Add("Descrição");
+		tabela.Columns.Add("Atividade");		
+		tabela.Columns.Add("CorDaData");
+		tabela.Columns.Add("Recursos");
+		*/
+				        
+		foreach (DataGridColumn coluna in dgAulas.Columns)
         {
             tabela.Columns.Add(coluna.HeaderText);
         }
@@ -387,14 +398,23 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             lblAux = (Label)item.FindControl("lblAula");
             dr["#"] = lblAux.Text;
 
-            lblAux = (Label)item.FindControl("lblData2");
-            dr["Data Hora"] = lblAux.Text;
+			lblAux = (Label)item.FindControl("lblDia");
+			dr["Dia"] = lblAux.Text;
+			
+			lblAux = (Label)item.FindControl("lblData");
+			dr["Data"] = lblAux.Text;
+			
+			lblAux = (Label)item.FindControl("lblHora");
+			dr["Hora"] = lblAux.Text;
+			
+            //lblAux = (Label)item.FindControl("lblData2");
+            //dr["Data Hora"] = lblAux.Text;
 
-            lblAux = (Label)item.FindControl("lblDia2");
-            dr["Data Hora"] += " " + lblAux.Text;
+            //lblAux = (Label)item.FindControl("lblDia2");
+            //dr["Data Hora"] += " " + lblAux.Text;
 
-            lblAux = (Label)item.FindControl("lblHora");
-            dr["Data Hora"] += lblAux.Text;
+            //lblAux = (Label)item.FindControl("lblHora");
+            //dr["Data Hora"] += lblAux.Text;
 
             /*lblAux = (Label)item.FindControl("lblDia");
             dr["Dia"] = lblAux.Text;
@@ -421,7 +441,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         
         Session["DownHtml"] = tabela;
-        Response.Redirect("DownloadHtml.aspx");
+        Response.Redirect("DownloadHtml2.aspx");
     }
 
     protected void ddlRecurso_SelectedIndexChanged(object sender, EventArgs e)

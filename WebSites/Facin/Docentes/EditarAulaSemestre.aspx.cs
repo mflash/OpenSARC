@@ -386,6 +386,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     protected void btnExportarHTML_Click(object sender, EventArgs e)
     {
+        AtualizaTodaGrade();
         ExportarHtml();
     }
 

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" 
+<%@ Page Language="C#" MasterPageFile="~/Master/Master2.master" AutoEventWireup="true" 
 CodeFile="EditarAula.aspx.cs" Inherits="Docentes_EditarAula" Title="Sistema de Alocação de Recursos Computacionais - FACIN" Trace="false" %>
 
 <%@ Register Src="../Default/Aguarde.ascx" TagName="Aguarde" TagPrefix="uc1" %>
@@ -56,19 +56,22 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
     </div>
     <asp:ScriptManager id="ScriptManager1" runat="server">
     </asp:ScriptManager>
+	<asp:Button ID="btnExportarHTML" runat="server" CssClass="ms-toolbar" OnClick="btnExportarHTML_Click"
+                    Text="Exportar HTML" />
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
-         <div style="position:absolute;left:500px;top:50px;">
+         <!--div style="position:fixed;left:50%;top:50%;"!-->
     <asp:UpdateProgress ID="UpdateProgress1" runat="server">
         <ProgressTemplate>
+			<div id="progressBackgroundFilter"></div>
+			<div id="processMessage">
             <uc1:Aguarde ID="Aguarde1" runat="server" />
+			</div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-             &nbsp;</div>
+             <!--&nbsp;</div-->
         <asp:Label ID="lblResultado" runat="server" CssClass="lblStatus" Text="" Visible="true"></asp:Label>
-            <div style="width: 244px; height: 30px">
-                <asp:Button ID="btnExportarHTML" runat="server" CssClass="ms-toolbar" OnClick="btnExportarHTML_Click"
-                    Text="Exportar HTML" />
+            <div style="width: 244px; height: 30px">                
                         <asp:Button ID="btnSalvarTudo" runat="server" CssClass="ms-toolbar" Text="Salvar Todos" OnClick="btnSalvarTudo_Click" /></div>
    <asp:DataGrid ID="dgAulas" 
                  runat="server"       

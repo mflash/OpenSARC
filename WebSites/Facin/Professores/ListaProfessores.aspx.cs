@@ -16,15 +16,17 @@ public partial class Professores_ListaProfessores : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+		List<Professor> listaProf = null;
         try
         {
             
             ProfessoresBO boProfessor = new ProfessoresBO();
-            List<Professor> listaProf = boProfessor.GetProfessores();
+            listaProf = boProfessor.GetProfessores();
             if (listaProf.Count == 0)
             {
                 lblStatus.Text = "Nenhum professor cadastrado";
                 lblStatus.Visible = true;
+                lblOnline.Visible = false;
             }
             else
             {
@@ -36,7 +38,15 @@ public partial class Professores_ListaProfessores : System.Web.UI.Page
         {
             Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
         }
-    }
+        
+        string online = "Usuários online: ";
+		foreach(Professor p in listaProf)
+		{
+			if(Membership.GetUser(p.Matricula).IsOnline)
+				online += p.Nome + " (" + p.Matricula + ") ";			
+		}
+		lblOnline.Text = online;
+	}
 
 
     protected void grvListaProfessores_RowDeleting(object sender, GridViewDeleteEventArgs e)

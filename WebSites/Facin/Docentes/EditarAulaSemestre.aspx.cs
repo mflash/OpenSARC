@@ -411,6 +411,15 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             lblAux = (Label)item.FindControl("lblAula");
             dr["#"] = lblAux.Text;
 
+            lblAux = (Label)item.FindControl("lblDia");
+            dr["Dia"] = lblAux.Text;
+
+            lblAux = (Label)item.FindControl("lblData");
+            dr["Data"] = lblAux.Text;
+
+            lblAux = (Label)item.FindControl("lblHora");
+            dr["Hora"] = lblAux.Text;
+/*
             lblAux = (Label)item.FindControl("lblData2");
             dr["Data Hora"] = lblAux.Text; 
             
@@ -419,7 +428,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             lblAux = (Label)item.FindControl("lblHora");
             dr["Data Hora"] += lblAux.Text;
-
+            */
             txtDescricao = (TextBox)item.FindControl("txtDescricao");
             dr["Descrição"] = txtDescricao.Text;
 
@@ -439,7 +448,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             tabela.Rows.Add(dr);
         }
         Session["DownHtml"] = tabela;
-        Response.Redirect("DownloadHtml.aspx");
+        Response.Redirect("DownloadHtml2.aspx");
     }
 
     // Atualiza o dropdownlist de seleção de recursos e o checkbox list dos selecionados,

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true"
+<%@ Page Language="C#" MasterPageFile="~/Master/Master2.master" AutoEventWireup="true"
     CodeFile="EditarAulaSemestre.aspx.cs" Inherits="Docentes_EditarAula" MaintainScrollPositionOnPostback="true" %>
 
 <%@ Register Src="../Default/Aguarde.ascx" TagName="Aguarde" TagPrefix="uc1" %>
@@ -87,11 +87,15 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
     </div>
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
+    	<asp:Button ID="Button1" runat="server" CssClass="ms-toolbar" OnClick="btnExportarHTML_Click"
+                    Text="Exportar HTML" />
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
             <div align="left">
                 <asp:UpdateProgress ID="UpdateProgress2" runat="server">
                     <ProgressTemplate>
+                        <div id="progressBackgroundFilter"></div>
+			            <div id="processMessage">
                         <uc1:Aguarde ID="Aguarde1" runat="server" />
                     </ProgressTemplate>
                 </asp:UpdateProgress>
@@ -100,8 +104,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
             </asp:Label>
             <asp:CheckBox ID="chbAutoSave" runat="server" CssClass="ms-toolbar" Text="Auto Save"
                 EnableViewState="true" Visible="false" /><div style="width: 244px; height: 30px">
-                    <asp:Button ID="btnExportarHTML" runat="server" CssClass="ms-toolbar" OnClick="btnExportarHTML_Click"
-                        Text="Exportar HTML" />
+                    
                     <asp:Button accesskey="S" ID="btnSalvarTudo" runat="server" CssClass="ms-toolbar" Text="Salvo"
                         OnClick="btnSalvarTudo_Click" Enabled="False" />
                 </div>

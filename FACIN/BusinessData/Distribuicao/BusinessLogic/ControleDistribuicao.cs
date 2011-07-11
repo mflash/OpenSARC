@@ -5,7 +5,7 @@ using BusinessData.Distribuicao.Entities;
 using BusinessData.Distribuicao.Catalogos;
 using System.Diagnostics;
 //Log
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Web.Security;
 
@@ -205,17 +205,17 @@ namespace BusinessData.Distribuicao.BusinessLogic
             ///
             //LOG
             //instancia o usuario logado
-            MembershipUser user = Membership.GetUser();
+            //MembershipUser user = Membership.GetUser();
             //instancia o log
-            LogEntry log = new LogEntry();
+            //LogEntry log = new LogEntry();
             //monta log
-            log.Message = "Calendário: " + calAtual.Ano + "/" + calAtual.Semestre + "; Administrador: " + user.UserName;
-            log.TimeStamp = DateTime.Now;
-            log.Severity = TraceEventType.Information;
-            log.Title = "Iniciar Semestre";
-            log.MachineName = Dns.GetHostName();
+            //log.Message = "Calendário: " + calAtual.Ano + "/" + calAtual.Semestre + "; Administrador: " + user.UserName;
+            //log.TimeStamp = DateTime.Now;
+            //log.Severity = TraceEventType.Information;
+            //log.Title = "Iniciar Semestre";
+            //log.MachineName = Dns.GetHostName();
             //guarda log no banco
-            Logger.Write(log);
+            //Logger.Write(log);
         }
     }
 }

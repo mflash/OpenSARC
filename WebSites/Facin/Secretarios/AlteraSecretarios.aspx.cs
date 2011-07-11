@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 using BusinessData.BusinessLogic;
 using BusinessData.Entities;
 using System.Web.Security;
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 
@@ -121,13 +121,13 @@ public partial class Secretarios_AlteraSecretarios : System.Web.UI.Page
         SetBtnLockUnlockText();
         
 
-        LogEntry log = new LogEntry();
-        log.Message = usr.UserName + "teve seu acesso alterado por "  + Membership.GetUser().UserName;
-        log.TimeStamp = DateTime.Now;
-        log.Severity = TraceEventType.Information;
-        log.Title = "Acesso";
-        log.MachineName = Dns.GetHostName();
-        Logger.Write(log);
+        //LogEntry log = new LogEntry();
+        //log.Message = usr.UserName + "teve seu acesso alterado por "  + Membership.GetUser().UserName;
+        //log.TimeStamp = DateTime.Now;
+        //log.Severity = TraceEventType.Information;
+        //log.Title = "Acesso";
+        //log.MachineName = Dns.GetHostName();
+        //Logger.Write(log);
         
     }
 

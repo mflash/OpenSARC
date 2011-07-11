@@ -5,7 +5,7 @@ using System.Security;
 using BusinessData.DataAccess;
 using BusinessData.Entities;
 //Log
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 using System.Web.Security;
@@ -42,15 +42,15 @@ namespace BusinessData.BusinessLogic
                     //instancia o usuario logado
                     MembershipUser user = Membership.GetUser();
                     //instancia o log
-                    LogEntry log = new LogEntry();
+                    //LogEntry log = new LogEntry();
                     //monta log
-                    log.Message = "Curso: " + curso.Nome + "; Id: " + curso.Codigo + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Update Curso";
-                    log.MachineName = Dns.GetHostName();
+                    //log.Message = "Curso: " + curso.Nome + "; Id: " + curso.Codigo + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Update Curso";
+                    //log.MachineName = Dns.GetHostName();
                     //guarda log no banco
-                    Logger.Write(log);
+                    //Logger.Write(log);
                 }
                 catch (DataAccessException )
                 {
@@ -75,15 +75,15 @@ namespace BusinessData.BusinessLogic
                     //instancia o usuario logado
                     MembershipUser user = Membership.GetUser();
                     //instancia o log
-                    LogEntry log = new LogEntry();
+                    //LogEntry log = new LogEntry();
                     //monta log
-                    log.Message = "Curso: " + curso.Nome + "; Id: " + curso.Codigo + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Delete Curso";
-                    log.MachineName = Dns.GetHostName();
+                    //log.Message = "Curso: " + curso.Nome + "; Id: " + curso.Codigo + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Delete Curso";
+                    //log.MachineName = Dns.GetHostName();
                     //guarda log no banco
-                    Logger.Write(log);
+                    //Logger.Write(log);
                 }
                 catch (DataAccessException )
                 {
@@ -107,15 +107,15 @@ namespace BusinessData.BusinessLogic
                     //instancia o usuario logado
                     MembershipUser user = Membership.GetUser();
                     //instancia o log
-                    LogEntry log = new LogEntry();
+                    //LogEntry log = new LogEntry();
                     //monta log
-                    log.Message = "Curso: " + curso.Nome + "; Id: " + curso.Codigo + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Insert Curso";
-                    log.MachineName = Dns.GetHostName();
+                    //log.Message = "Curso: " + curso.Nome + "; Id: " + curso.Codigo + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Insert Curso";
+                    //log.MachineName = Dns.GetHostName();
                     //guarda log no banco
-                    Logger.Write(log);
+                    //Logger.Write(log);
                 }
                 catch (DataAccessException )
                 {

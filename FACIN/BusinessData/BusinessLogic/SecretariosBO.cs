@@ -10,7 +10,7 @@ using System.Net.Mail;
 using System.Security;
 using System.Text.RegularExpressions;
 
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 
@@ -44,14 +44,14 @@ namespace BusinessData.BusinessLogic
                     dao.DeleteSecretario(secretario.Id);
                     Membership.DeleteUser(secretario.Matricula);
                     
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Secretario: " + secretario.Nome + "; Id: " + secretario.Id+"; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Delete Secretario";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Secretario: " + secretario.Nome + "; Id: " + secretario.Id+"; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Delete Secretario";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -100,14 +100,14 @@ namespace BusinessData.BusinessLogic
                     Roles.AddUserToRole(secretario.Matricula, "Secretario");
                     dao.InsertSecretario((Secretario)secretario);
                     //LOG
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Secretario: " + secretario.Nome + "; Id: " + secretario.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Insert Secretario";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Secretario: " + secretario.Nome + "; Id: " + secretario.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Insert Secretario";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
 
                     MembershipUser muser = Membership.GetUser(secretario.Id);
                     try
@@ -167,14 +167,14 @@ namespace BusinessData.BusinessLogic
                     Roles.AddUserToRole(secretario.Matricula, "Secretario");
                     dao.InsertSecretario((Secretario)secretario);
 
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Secretario: " + secretario.Nome + "; Id: " + secretario.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Insert Secretario";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Secretario: " + secretario.Nome + "; Id: " + secretario.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Insert Secretario";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
 
                     MembershipUser muser = Membership.GetUser(secretario.Id);
                     try

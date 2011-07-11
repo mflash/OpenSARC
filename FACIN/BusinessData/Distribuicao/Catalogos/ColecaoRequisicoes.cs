@@ -15,7 +15,7 @@ namespace BusinessData.Distribuicao.Catalogos
             ColecaoRequisicoes requisicoes = new ColecaoRequisicoes();
             Requisicao req;
             bool anteriorAtendido = false;
-            DateTime data;
+            //DateTime data;
 
             
                       

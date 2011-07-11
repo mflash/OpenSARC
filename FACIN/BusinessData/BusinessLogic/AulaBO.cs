@@ -7,7 +7,7 @@ using BusinessData.Entities;
 using System.Text.RegularExpressions;
 using BusinessData.DataAccess;
 //Log
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 using System.Web.Security;
@@ -38,17 +38,17 @@ namespace BusinessData.BusinessLogic
                 {
                     dao.AtualizaAula(aula);
                     //instancia o usuario logado
-                    MembershipUser user = Membership.GetUser();
+                    //MembershipUser user = Membership.GetUser();
                     //instancia o log
-                    LogEntry log = new LogEntry();
+                    //LogEntry log = new LogEntry();
                     //monta log
-                    log.Message = "Id: " + aula.Id + "; Usuário: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Update Aula";
-                    log.MachineName = Dns.GetHostName();
+                    //log.Message = "Id: " + aula.Id + "; Usuário: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Update Aula";
+                    //log.MachineName = Dns.GetHostName();
                     //guarda log no banco
-                    Logger.Write(log);
+                    //Logger.Write(log);
                 }
                 catch (DataAccess.DataAccessException )
                 {

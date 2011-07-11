@@ -5,7 +5,7 @@ using System.Security;
 using BusinessData.Entities;
 using BusinessData.DataAccess;
 
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 using System.Web.Security;
@@ -37,14 +37,14 @@ namespace BusinessData.BusinessLogic
                 try
                 {
                     dao.AtualizaTurma(turma);
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Turma: " + turma.Numero + "; Disciplina: " + turma.Disciplina + "; Semestre: " + turma.Calendario.Ano + "/" + turma.Calendario.Semestre + "; Id: "+ turma.Id +"; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Update Turma";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Turma: " + turma.Numero + "; Disciplina: " + turma.Disciplina + "; Semestre: " + turma.Calendario.Ano + "/" + turma.Calendario.Semestre + "; Id: "+ turma.Id +"; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Update Turma";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (DataAccess.DataAccessException )
                 {
@@ -65,14 +65,14 @@ namespace BusinessData.BusinessLogic
                 {
                     Turma turma = dao.GetTurma(id);
                     dao.RemoveTurma(id);
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Turma: " + turma.Numero + "; Disciplina: " + turma.Disciplina + "; Semestre: " + turma.Calendario.Ano + "/" + turma.Calendario.Semestre + "; Id: " + turma.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Delete Turma";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Turma: " + turma.Numero + "; Disciplina: " + turma.Disciplina + "; Semestre: " + turma.Calendario.Ano + "/" + turma.Calendario.Semestre + "; Id: " + turma.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Delete Turma";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (DataAccess.DataAccessException )
                 {
@@ -104,14 +104,14 @@ namespace BusinessData.BusinessLogic
                 try
                 {
                     dao.InsereTurma(turma);
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Turma: " + turma.Numero + "; Disciplina: " + turma.Disciplina + "; Semestre: " + turma.Calendario.Ano + "/" + turma.Calendario.Semestre + "; Id: " + turma.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Insert Turma";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Turma: " + turma.Numero + "; Disciplina: " + turma.Disciplina + "; Semestre: " + turma.Calendario.Ano + "/" + turma.Calendario.Semestre + "; Id: " + turma.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Insert Turma";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
 
                 catch (DataAccessException )

@@ -8,7 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Diagnostics;
 using System.Net;
 using BusinessData.BusinessLogic;
@@ -26,12 +26,12 @@ public partial class Docentes_AterarSenhaaspx : System.Web.UI.Page
         MembershipUser user = Membership.GetUser();
         PessoaFactory factory = PessoaFactory.GetInstance();
         PessoaBase pes =  factory.CreatePessoa((Guid)user.ProviderUserKey);
-        LogEntry log = new LogEntry();
-        log.Message = "Usuário: " + user.UserName + "; Id: " + pes.Id + "; Nome: " + pes.Nome;
-        log.TimeStamp = DateTime.Now;
-        log.Severity = TraceEventType.Information;
-        log.Title = "Troca senha Usuário";
-        log.MachineName = Dns.GetHostName();
-        Logger.Write(log);
+        //LogEntry log = new LogEntry();
+        //log.Message = "Usuário: " + user.UserName + "; Id: " + pes.Id + "; Nome: " + pes.Nome;
+        //log.TimeStamp = DateTime.Now;
+        //log.Severity = TraceEventType.Information;
+        //log.Title = "Troca senha Usuário";
+        //log.MachineName = Dns.GetHostName();
+        //Logger.Write(log);
     }
 }

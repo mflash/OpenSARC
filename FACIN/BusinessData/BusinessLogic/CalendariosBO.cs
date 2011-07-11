@@ -5,7 +5,7 @@ using System.Security;
 using BusinessData.Entities;
 using BusinessData.DataAccess;
 
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 using System.Web.Security;
@@ -37,14 +37,14 @@ namespace BusinessData.BusinessLogic
                 try
                 {
                     dao.UpdateCalendario(calendario);
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Calendario: " + calendario.Ano + "/" + calendario.Semestre + "; Id: "+calendario.Id +"; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Update Calendario";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Calendario: " + calendario.Ano + "/" + calendario.Semestre + "; Id: "+calendario.Id +"; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Update Calendario";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (DataAccessException )
                 {
@@ -65,14 +65,14 @@ namespace BusinessData.BusinessLogic
                 {
                     Calendario calendario = dao.GetCalendario(cod);
                     dao.DeletaCalendario(cod);
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Calendario: " + calendario.Ano + "/" + calendario.Semestre + "; Id: " + calendario.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Delete Calendario";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Calendario: " + calendario.Ano + "/" + calendario.Semestre + "; Id: " + calendario.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Delete Calendario";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (DataAccessException )
                 {
@@ -93,14 +93,14 @@ namespace BusinessData.BusinessLogic
                 try
                 {
                     dao.InsereCalendario(calendario);
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Calendario: " + calendario.Ano + "/" + calendario.Semestre + "; Id: " + calendario.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Insert Calendario";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Calendario: " + calendario.Ano + "/" + calendario.Semestre + "; Id: " + calendario.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Insert Calendario";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (DataAccessException )
                 {

@@ -5,7 +5,7 @@ using BusinessData.DataAccess;
 using System.Security;
 using BusinessData.Entities;
 
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 using System.Web.Security;
@@ -64,14 +64,14 @@ namespace BusinessData.BusinessLogic
             try
             {
                 dao.UpdateAlocacao(alocacao);
-                MembershipUser user = Membership.GetUser();
-                LogEntry log = new LogEntry();
-                log.Message = "Recurso: " + alocacao.Recurso.Categoria + " - " + alocacao.Recurso.Descricao + "; Id: "+ alocacao.Recurso.Id +"; Data: " + alocacao.Data.ToShortDateString() + "; Horário: " + alocacao.Horario + "; Usuário: " + user.UserName;
-                log.TimeStamp = DateTime.Now;
-                log.Severity = TraceEventType.Information;
-                log.Title = "Update Alocação";
-                log.MachineName = Dns.GetHostName();
-                Logger.Write(log);
+                //MembershipUser user = Membership.GetUser();
+                //LogEntry log = new LogEntry();
+                //log.Message = "Recurso: " + alocacao.Recurso.Categoria + " - " + alocacao.Recurso.Descricao + "; Id: "+ alocacao.Recurso.Id +"; Data: " + alocacao.Data.ToShortDateString() + "; Horário: " + alocacao.Horario + "; Usuário: " + user.UserName;
+                //log.TimeStamp = DateTime.Now;
+                //log.Severity = TraceEventType.Information;
+                //log.Title = "Update Alocação";
+                //log.MachineName = Dns.GetHostName();
+                //Logger.Write(log);
             }
             catch (DataAccessException ex)
             {

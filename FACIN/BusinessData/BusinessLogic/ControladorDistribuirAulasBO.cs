@@ -4,7 +4,7 @@ using System.Text;
 using BusinessData.Entities;
 using BusinessData.DataAccess;
 //Log
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 using System.Web.Security;
@@ -35,15 +35,15 @@ namespace BusinessData.BusinessLogic
                 //instancia o usuario logado
                 MembershipUser user = Membership.GetUser();
                 //instancia o log
-                LogEntry log = new LogEntry();
+                //LogEntry log = new LogEntry();
                 //monta log
-                log.Message = "Calendário: " + cal.Ano + "/" + cal.Semestre +"; Administrador: " + user.UserName;
-                log.TimeStamp = DateTime.Now;
-                log.Severity = TraceEventType.Information;
-                log.Title = "Abrir solicitação de Recursos";
-                log.MachineName = Dns.GetHostName();
+                //log.Message = "Calendário: " + cal.Ano + "/" + cal.Semestre +"; Administrador: " + user.UserName;
+                //log.TimeStamp = DateTime.Now;
+                //log.Severity = TraceEventType.Information;
+                //log.Title = "Abrir solicitação de Recursos";
+                //log.MachineName = Dns.GetHostName();
                 //guarda log no banco
-                Logger.Write(log);
+                //Logger.Write(log);
             }
             catch (IndexOutOfRangeException ex)
             {

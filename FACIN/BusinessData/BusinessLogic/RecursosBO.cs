@@ -4,7 +4,7 @@ using System.Text;
 using System.Security;
 using BusinessData.Entities;
 using BusinessData.DataAccess;
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 using System.Web.Security;
@@ -38,17 +38,17 @@ namespace BusinessData.BusinessLogic
                     dao.UpdateRecurso(recurso);
 
                     //instancia o usuario logado
-                    MembershipUser user = Membership.GetUser();
+                    //MembershipUser user = Membership.GetUser();
                     //instancia o log
-                    LogEntry log = new LogEntry();
+                    //LogEntry log = new LogEntry();
                     //monta log
-                    log.Message = "Recurso: " + recurso.Descricao + "; Id: " + recurso.Id+"; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Update Recurso";
-                    log.MachineName = Dns.GetHostName();
+                    //log.Message = "Recurso: " + recurso.Descricao + "; Id: " + recurso.Id+"; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Update Recurso";
+                    //log.MachineName = Dns.GetHostName();
                     //guarda log no banco
-                    Logger.Write(log);
+                    //Logger.Write(log);
                 }
                 catch (DataAccess.DataAccessException )
                 {
@@ -71,17 +71,17 @@ namespace BusinessData.BusinessLogic
                     dao.DeletaRecurso(id);
 
                     //instancia o usuario logado
-                    MembershipUser user = Membership.GetUser();
+                    //MembershipUser user = Membership.GetUser();
                     //instancia o log
-                    LogEntry log = new LogEntry();
+                    //LogEntry log = new LogEntry();
                     //monta log
-                    log.Message = "Recurso: " + recurso.Descricao + "; Id: " + recurso.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Delete Recurso";
-                    log.MachineName = Dns.GetHostName();
+                    //log.Message = "Recurso: " + recurso.Descricao + "; Id: " + recurso.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Delete Recurso";
+                    //log.MachineName = Dns.GetHostName();
                     //guarda log no banco
-                    Logger.Write(log);
+                    //Logger.Write(log);
                 }
                 catch (DataAccessException )
                 {
@@ -105,17 +105,17 @@ namespace BusinessData.BusinessLogic
                     dao.InsereRecurso(recurso);
 
                     //instancia o usuario logado
-                    MembershipUser user = Membership.GetUser();
+                    //MembershipUser user = Membership.GetUser();
                     //instancia o log
-                    LogEntry log = new LogEntry();
+                    //LogEntry log = new LogEntry();
                     //monta log
-                    log.Message = "Recurso: " + recurso.Descricao + "; Id: " + recurso.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Insert Recurso";
-                    log.MachineName = Dns.GetHostName();
+                    //log.Message = "Recurso: " + recurso.Descricao + "; Id: " + recurso.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Insert Recurso";
+                    //log.MachineName = Dns.GetHostName();
                     //guarda log no banco
-                    Logger.Write(log);
+                    //Logger.Write(log);
 
                     if (configuracoes.IsAulasDistribuidas(cal))
                     {
@@ -209,17 +209,17 @@ namespace BusinessData.BusinessLogic
                     dao.InsereHorarioBloqueado(hb, recurso);
 
                     //instancia o usuario logado
-                    MembershipUser user = Membership.GetUser();
+                    //MembershipUser user = Membership.GetUser();
                     //instancia o log
-                    LogEntry log = new LogEntry();
+                    //LogEntry log = new LogEntry();
                     //monta log
-                    log.Message = "Recurso: " + recurso.Descricao + "; Id: " + recurso.Id + "; Horario de Inicio: " + hb.HoraInicio + "; Horario de Fim: " + hb.HoraFim + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Insert Horario Bloqueado de um Recurso";
-                    log.MachineName = Dns.GetHostName();
+                    //log.Message = "Recurso: " + recurso.Descricao + "; Id: " + recurso.Id + "; Horario de Inicio: " + hb.HoraInicio + "; Horario de Fim: " + hb.HoraFim + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Insert Horario Bloqueado de um Recurso";
+                    //log.MachineName = Dns.GetHostName();
                     //guarda log no banco
-                    Logger.Write(log);
+                    //Logger.Write(log);
                 }
                 catch (DataAccessException )
                 {
@@ -243,17 +243,17 @@ namespace BusinessData.BusinessLogic
                     dao.DeletaHorarioBloqueado(recursoId);
 
                     //instancia o usuario logado
-                    MembershipUser user = Membership.GetUser();
+                    //MembershipUser user = Membership.GetUser();
                     //instancia o log
-                    LogEntry log = new LogEntry();
+                    //LogEntry log = new LogEntry();
                     //monta log
-                    log.Message = "Recurso: " + recurso.Descricao + "; Id: " + recurso.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Delete todos Horarios Bloqueado de um Recurso";
-                    log.MachineName = Dns.GetHostName();
+                    //log.Message = "Recurso: " + recurso.Descricao + "; Id: " + recurso.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Delete todos Horarios Bloqueado de um Recurso";
+                    //log.MachineName = Dns.GetHostName();
                     //guarda log no banco
-                    Logger.Write(log);
+                    //Logger.Write(log);
 
                 }
                 catch (DataAccessException )
@@ -278,17 +278,17 @@ namespace BusinessData.BusinessLogic
                     dao.DeletaHorarioBloqueado(recursoId, hb);
 
                     //instancia o usuario logado
-                    MembershipUser user = Membership.GetUser();
+                    //MembershipUser user = Membership.GetUser();
                     //instancia o log
-                    LogEntry log = new LogEntry();
+                    //LogEntry log = new LogEntry();
                     //monta log
-                    log.Message = "Recurso: " + recurso.Descricao + "; Id: " + recurso.Id + "; Horario de Inicio: " + hb.HoraInicio + "; Horario de Fim: " + hb.HoraFim + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Delete Horario Bloqueado de um Recurso";
-                    log.MachineName = Dns.GetHostName();
+                    //log.Message = "Recurso: " + recurso.Descricao + "; Id: " + recurso.Id + "; Horario de Inicio: " + hb.HoraInicio + "; Horario de Fim: " + hb.HoraFim + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Delete Horario Bloqueado de um Recurso";
+                    //log.MachineName = Dns.GetHostName();
                     //guarda log no banco
-                    Logger.Write(log);
+                    //Logger.Write(log);
                 }
                 catch (DataAccessException )
                 {

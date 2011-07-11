@@ -12,7 +12,7 @@ namespace BusinessData.BusinessLogic
 {
     public abstract class PessoaBaseBO
     {
-        private Usuario usr;
+        //private Usuario usr;
 
         public abstract void InsertPessoa(PessoaBase professor, string perguntaSecreta, string respostaSecreta);
 

@@ -5,7 +5,7 @@ using System.Security;
 using BusinessData.Entities;
 using BusinessData.DataAccess;
 
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 using System.Web.Security;
@@ -37,14 +37,14 @@ namespace BusinessData.BusinessLogic
                 try
                 {
                     dao.UpdateDisciplina(disciplina);
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Disciplina: " + disciplina.Nome + "; Id: " + disciplina.Cod  +"; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Update Disciplina";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Disciplina: " + disciplina.Nome + "; Id: " + disciplina.Cod  +"; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Update Disciplina";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (DataAccess.DataAccessException )
                 {
@@ -65,14 +65,14 @@ namespace BusinessData.BusinessLogic
                 {
                     Disciplina disciplina = dao.GetDisciplina(cod, calId);
                     dao.DeletaDisciplina(cod, calId);
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Disciplina: " + disciplina.Nome + "; Id: " + disciplina.Cod + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Delete Disciplina";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Disciplina: " + disciplina.Nome + "; Id: " + disciplina.Cod + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Delete Disciplina";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (DataAccess.DataAccessException )
                 {
@@ -93,14 +93,14 @@ namespace BusinessData.BusinessLogic
                 try
                 {
                     dao.InsereDisciplina(disciplina);
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Disciplina: " + disciplina.Nome + "; Id: " + disciplina.Cod + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Insert Disciplina";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Disciplina: " + disciplina.Nome + "; Id: " + disciplina.Cod + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Insert Disciplina";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (DataAccessException ex)
                 {

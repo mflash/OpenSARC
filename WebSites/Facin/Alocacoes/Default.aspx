@@ -6,9 +6,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" Runat="Server">
 
 
-    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server" EnableScriptGlobalization="true" EnableScriptLocalization="true">
     </asp:ScriptManager>
-    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server" >
         <ContentTemplate>			
             <div align="left" style="width: 100%; height: 14px">
                 <asp:Label ID="lblDisciplina" runat="server" CssClass="ms-WPTitle" Text="VISUALIZAR RECURSOS ALOCADOS POR:"></asp:Label></div>
@@ -26,15 +26,10 @@
                         </td>
                     <td style="height: 26px; width: 166px;">
                         <asp:TextBox ID="txtData" runat="server" CssClass="ms-toolbar"></asp:TextBox>
-                        <asp:ImageButton ID="ibtnAbrirCalendario" runat="server" ImageUrl="~/_layouts/images/CALENDAR.GIF" />
-                        <asp:Label ID="lblOpcional" runat="server" CssClass="ms-toolbar" Text="(Opcional)" ForeColor="Red" Visible="False"></asp:Label>
-                        <cc1:CalendarExtender ID="ceData" 
-                        runat="server" 
-                        PopupButtonID="ibtnAbrirCalendario"
-                        TargetControlID="txtData"
-                        Format="dd/MM/yyyy"
-                        >
+                        <cc1:CalendarExtender ID="txtData_CalendarExtender" runat="server" 
+                            Enabled="True" TargetControlID="txtData">
                         </cc1:CalendarExtender>
+                        <asp:Label ID="lblOpcional" runat="server" CssClass="ms-toolbar" Text="(Opcional)" ForeColor="Red" Visible="False"></asp:Label>
                         &nbsp;
                     </td>
                 </tr>

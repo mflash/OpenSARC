@@ -233,11 +233,11 @@ namespace BusinessData.DataAccess
                     List<Recurso> listaRecursos = new List<Recurso>();
                     Recurso aux;
                     RecursosDAO RecDAO = new RecursosDAO(); 
-                    using (DbDataReader leitor = (DbDataReader)baseDados.ExecuteReader(cmd))
+                    using (RefCountingDataReader leitor = (RefCountingDataReader) baseDados.ExecuteReader(cmd))
                     {
                         while (leitor.Read())
                         {
-                            if (leitor.HasRows)
+                            if (((SqlDataReader)leitor.InnerReader).HasRows)
                             {
                                 aux = new Recurso();
                                 CategoriaRecurso catRec = new CategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaId")), leitor.GetString(leitor.GetOrdinal("CatDescricao")));

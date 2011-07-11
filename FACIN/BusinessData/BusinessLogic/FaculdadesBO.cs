@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Security;
 
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 using System.Web.Security;
@@ -36,14 +36,14 @@ namespace BusinessData.BusinessLogic
                 try
                 {
                     dao.UpdateFaculdade(vinculo);
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Faculdade: " + vinculo.Nome + "; Id: "+ vinculo.Id+ "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Update Faculdade";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Faculdade: " + vinculo.Nome + "; Id: "+ vinculo.Id+ "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Update Faculdade";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (DataAccess.DataAccessException )
                 {
@@ -64,14 +64,14 @@ namespace BusinessData.BusinessLogic
                     {
                         Faculdade vinculo = dao.GetFaculdade(id);
                         dao.DeletaFaculdade(id);
-                        MembershipUser user = Membership.GetUser();
-                        LogEntry log = new LogEntry();
-                        log.Message = "Faculdade: " + vinculo.Nome + "; Id: " + vinculo.Id + "; Administrador: " + user.UserName;
-                        log.TimeStamp = DateTime.Now;
-                        log.Severity = TraceEventType.Information;
-                        log.Title = "Delete Faculdade";
-                        log.MachineName = Dns.GetHostName();
-                        Logger.Write(log);
+                        //MembershipUser user = Membership.GetUser();
+                        //LogEntry log = new LogEntry();
+                        //log.Message = "Faculdade: " + vinculo.Nome + "; Id: " + vinculo.Id + "; Administrador: " + user.UserName;
+                        //log.TimeStamp = DateTime.Now;
+                        //log.Severity = TraceEventType.Information;
+                        //log.Title = "Delete Faculdade";
+                        //log.MachineName = Dns.GetHostName();
+                        //Logger.Write(log);
                     }
                     catch (DataAccess.DataAccessException )
                     {
@@ -92,14 +92,14 @@ namespace BusinessData.BusinessLogic
                 try
                 {
                     dao.InsereFaculdade(vinculo);
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Faculdade: " + vinculo.Nome + "; Id: " + vinculo.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Insert Faculdade";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Faculdade: " + vinculo.Nome + "; Id: " + vinculo.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Insert Faculdade";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (DataAccess.DataAccessException )
                 {

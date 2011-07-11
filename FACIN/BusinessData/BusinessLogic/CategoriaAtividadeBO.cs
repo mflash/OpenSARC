@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Security;
 
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 using System.Web.Security;
@@ -37,14 +37,14 @@ namespace BusinessData.BusinessLogic
                 try
                 {
                     dao.UpdateCategoriaAtividade(categoriaAtividade);
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Categoria de Atividade: " + categoriaAtividade.Descricao + "; Id: " + categoriaAtividade.Id +"; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Update Categoria de Atividade";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Categoria de Atividade: " + categoriaAtividade.Descricao + "; Id: " + categoriaAtividade.Id +"; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Update Categoria de Atividade";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (DataAccessException )
                 {
@@ -66,13 +66,13 @@ namespace BusinessData.BusinessLogic
                     CategoriaAtividade categoriaAtividade = dao.GetCategoriaAtividadeById(id);
                     dao.DeletaCategoriaAtividade(id);
                     MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Categoria de Atividade: " + categoriaAtividade.Descricao + "; Id: " + categoriaAtividade.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Delete Categoria de Atividade";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Categoria de Atividade: " + categoriaAtividade.Descricao + "; Id: " + categoriaAtividade.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Delete Categoria de Atividade";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (DataAccessException )
                 {
@@ -92,14 +92,14 @@ namespace BusinessData.BusinessLogic
                 try
                 {
                     dao.InsereCategoriaAtividade(categoriaAtividade);
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Categoria de Atividade: " + categoriaAtividade.Descricao + "; Id: " + categoriaAtividade.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Insert Categoria de Atividade";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Categoria de Atividade: " + categoriaAtividade.Descricao + "; Id: " + categoriaAtividade.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Insert Categoria de Atividade";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (DataAccessException )
                 {

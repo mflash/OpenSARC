@@ -22,6 +22,14 @@ public partial class _Default : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        horarios = new List<string>();  
+	    horariosTime = new List<TimeSpan>();
+
+        foreach (string hor in Enum.GetNames(typeof(Horarios.HorariosPUCRS)))
+        {
+            horariosTime.Add(Horarios.ParseToDateTime(hor).TimeOfDay);
+            horarios.Add(hor.ToString());
+        }
         if (!IsPostBack)
         {
             if (Roles.GetUsersInRole("Admin").Length == 0)
@@ -142,5 +150,89 @@ public partial class _Default : System.Web.UI.Page
         //lblDataHora.Text = DateTime.Now.ToString();
         lblDataHora.Text = DateTime.Now.Add(new TimeSpan(0, 0, 0, 0)).ToString();
         VisualizarAlocacoesData();
+    }
+
+    private List<Alocacao> ProcuraProximoHorario(List<Alocacao> lista, ref int pos)
+	{
+		List<Alocacao> filtradaAtual = new List<Alocacao>();
+		bool achei = false;
+		// Procura o primeiro período com reservas
+        while (filtradaAtual.Count == 0)
+        {
+			if(pos > horarios.Count - 1) // não há mais horários neste dia
+				break;
+            string horarioAtual = horarios[pos];
+            foreach (Alocacao aloc in lista)
+            {
+                if (aloc.Horario != horarioAtual && achei) // ja achou, ou seja, mudou o horario						
+                    break;
+                if (aloc.Horario == horarioAtual)
+                {
+                    //Alocacao nova = new Alocacao(aloc.Recurso,aloc.Data,aloc.Horario,aloc.Aula,aloc.Evento);
+                    //nova.Delta = dif.TotalMinutes.ToString();
+                    filtradaAtual.Add(aloc);
+                    achei = true; // indica que ja achou - quando o horario mudar, sai do foreach							
+                }
+            }
+			pos++;
+        }
+		return filtradaAtual;
+	}
+	
+    private void VisualizarAlocacoesData()
+    {
+		DateTime tmp = DateTime.Parse(lblDataHora.Text);		
+        DateTime now = tmp.Date;
+		TimeSpan nowTime = tmp.TimeOfDay;
+		
+		AlocacaoBO controladorAlocacoes = new AlocacaoBO();
+        List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByData(now, (BusinessData.Entities.Calendario)Session["Calendario"]);
+        //TimeSpan nowTime = DateTime.Now.TimeOfDay;
+        //nowTime = nowTime.Add(new TimeSpan(2,0,0)); // para testar com outros horarios
+		//nowTime = nowTime.Subtract(new TimeSpan(0,12,0));
+
+        // Identifica o período de aula atual
+        int pos;
+        if (nowTime < horariosTime[0])
+            pos = 0;
+        else
+            for (pos = 0; pos < horarios.Count - 1; pos++)
+            {
+                if (nowTime >= horariosTime[pos] && nowTime < horariosTime[pos + 1])
+                    break;
+            }        
+		
+		List<Alocacao> filtradaAtual = ProcuraProximoHorario(listaAlocacoes, ref pos);
+		if (filtradaAtual != null && filtradaAtual.Count != 0)
+        {
+			//Response.Write("pos="+pos+"<br/>");
+			lblAtual.Text = horarios[pos-1];
+            dgAlocacoes.DataSource = filtradaAtual;
+            dgAlocacoes.Visible = true;
+            dgAlocacoes.DataBind();
+            lblStatus.Visible = false;
+        }
+		
+		List<Alocacao> filtradaProx  = ProcuraProximoHorario(listaAlocacoes, ref pos);
+		if (filtradaProx != null && filtradaProx.Count != 0)
+        {
+			//Response.Write("pos="+pos+"<br/>");
+			lblProximo.Text = horarios[pos-1];
+            dgAlocacoes2.DataSource = filtradaProx;
+            dgAlocacoes2.DataBind();
+            dgAlocacoes2.Visible = true;
+            lblStatus.Visible = false;
+        }
+
+		//if (pos < horarios.Count - 1) // se nao estivermos ja no ultimo horario... 
+        //    {
+        // lblAtual.Text = "Horário atual: " + horarioAtual;//+" - "+nowTime.ToString();
+		// lblProximo.Text = "Proximo horario: " + horarioProx;
+        if (filtradaAtual.Count == 0 && filtradaProx.Count == 0)
+        {
+            lblStatus.Text = "Não existem recursos alocados para hoje.";
+            lblStatus.Visible = true;
+            dgAlocacoes.Visible = false;
+        }                     
     }
 }

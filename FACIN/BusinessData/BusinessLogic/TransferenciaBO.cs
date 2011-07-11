@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using BusinessData.DataAccess;
 using BusinessData.Entities;
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 using System.Web.Security;
@@ -34,14 +34,14 @@ namespace BusinessData.BusinessLogic
             {
                 dao.InsereTransferencia(trans);
 
-                MembershipUser user = Membership.GetUser();
-                LogEntry log = new LogEntry();
-                log.Message = "; Id: " + trans.Id + "; Usuário: " + user.UserName;
-                log.TimeStamp = DateTime.Now;
-                log.Severity = TraceEventType.Information;
-                log.Title = "Insert Transferência";
-                log.MachineName = Dns.GetHostName();
-                Logger.Write(log);
+                //MembershipUser user = Membership.GetUser();
+                //LogEntry log = new LogEntry();
+                //log.Message = "; Id: " + trans.Id + "; Usuário: " + user.UserName;
+                //log.TimeStamp = DateTime.Now;
+                //log.Severity = TraceEventType.Information;
+                //log.Title = "Insert Transferência";
+                //log.MachineName = Dns.GetHostName();
+                //Logger.Write(log);
             }
             catch (DataAccessException)
             {
@@ -81,14 +81,14 @@ namespace BusinessData.BusinessLogic
             {
                 dao.TransferenciaUpdate(trans);
 
-                MembershipUser user = Membership.GetUser();
-                LogEntry log = new LogEntry();
-                log.Message = "; Id: " + trans.Id + "; Usuário: " + user.UserName;
-                log.TimeStamp = DateTime.Now;
-                log.Severity = TraceEventType.Information;
-                log.Title = "Update Transferência";
-                log.MachineName = Dns.GetHostName();
-                Logger.Write(log);
+                //MembershipUser user = Membership.GetUser();
+                //LogEntry log = new LogEntry();
+                //log.Message = "; Id: " + trans.Id + "; Usuário: " + user.UserName;
+                //log.TimeStamp = DateTime.Now;
+                //log.Severity = TraceEventType.Information;
+                //log.Title = "Update Transferência";
+                //log.MachineName = Dns.GetHostName();
+                //Logger.Write(log);
             }
             catch (DataAccessException)
             {

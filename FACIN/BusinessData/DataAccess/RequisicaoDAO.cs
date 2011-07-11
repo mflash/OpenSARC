@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.Practices.EnterpriseLibrary.Data;
 using System.Data;
 using System.Data.Common;
 using BusinessData.Entities;
 using System.Drawing;
 using System.Data.SqlClient;
+using Microsoft.Practices.EnterpriseLibrary.Data;
 
 namespace BusinessData.DataAccess
 {

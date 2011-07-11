@@ -139,7 +139,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
 					</td>
         </tr>
         <tr>
-        <td colspan=2>
+        <td colspan="2">
             <asp:Label ID="lblStatus" runat="server" CssClass="ms-blogrss"></asp:Label>
         <br />
         </td></tr>

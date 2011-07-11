@@ -10,7 +10,7 @@ using BusinessData.DataAccess;
 using System.Configuration;
 using System.IO;
 
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+//using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Diagnostics;
 
@@ -45,14 +45,14 @@ namespace BusinessData.BusinessLogic
                     Membership.DeleteUser(professor.Matricula);
                     dao.DeletePofessor(professor.Id);
 
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Professor: " + professor.Nome + "; Id: " + professor.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Delete Professor";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Professor: " + professor.Nome + "; Id: " + professor.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Delete Professor";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -108,14 +108,14 @@ namespace BusinessData.BusinessLogic
                     Roles.AddUserToRole(professor.Matricula, "Professor");
                     dao.InsertProfessor((Professor)professor);
                     
-                    MembershipUser user = Membership.GetUser();
-                    LogEntry log = new LogEntry();
-                    log.Message = "Professor: " + professor.Nome + "; Id: " + professor.Id + "; Administrador: " + user.UserName;
-                    log.TimeStamp = DateTime.Now;
-                    log.Severity = TraceEventType.Information;
-                    log.Title = "Insert Professor";
-                    log.MachineName = Dns.GetHostName();
-                    Logger.Write(log);
+                    //MembershipUser user = Membership.GetUser();
+                    //LogEntry log = new LogEntry();
+                    //log.Message = "Professor: " + professor.Nome + "; Id: " + professor.Id + "; Administrador: " + user.UserName;
+                    //log.TimeStamp = DateTime.Now;
+                    //log.Severity = TraceEventType.Information;
+                    //log.Title = "Insert Professor";
+                    //log.MachineName = Dns.GetHostName();
+                    //Logger.Write(log);
 
                     MembershipUser muser = Membership.GetUser(professor.Id);
                     try
@@ -183,14 +183,14 @@ namespace BusinessData.BusinessLogic
             professor.Email = email;
             Membership.UpdateUser(professor);
 
-            MembershipUser user = Membership.GetUser();
-            LogEntry log = new LogEntry();
-            log.Message = "Professor: " + prof.Nome + "; Id: " + prof.Id + "; Administrador: " + user.UserName;
-            log.TimeStamp = DateTime.Now;
-            log.Severity = TraceEventType.Information;
-            log.Title = "Update Email Professor";
-            log.MachineName = Dns.GetHostName();
-            Logger.Write(log);
+            //MembershipUser user = Membership.GetUser();
+            //LogEntry log = new LogEntry();
+            //log.Message = "Professor: " + prof.Nome + "; Id: " + prof.Id + "; Administrador: " + user.UserName;
+            //log.TimeStamp = DateTime.Now;
+            //log.Severity = TraceEventType.Information;
+            //log.Title = "Update Email Professor";
+            //log.MachineName = Dns.GetHostName();
+            //Logger.Write(log);
         }
 
         public List<PessoaBase> GetProfessoresESecretarios()
@@ -220,14 +220,13 @@ namespace BusinessData.BusinessLogic
             string usuario = Membership.GetUser().UserName;
 
             FormsAuthentication.SetAuthCookie(matricula, false);
-            LogEntry log = new LogEntry();
-
-            log.Message = usuario + " foi personificou o professor c/ matricula " + matricula;
-            log.TimeStamp = DateTime.Now;
-            log.Severity = TraceEventType.Information;
-            log.Title = "Personificação";
-            log.MachineName = Dns.GetHostName();
-            Logger.Write(log);
+            //LogEntry log = new LogEntry();
+            //log.Message = usuario + " foi personificou o professor c/ matricula " + matricula;
+            //log.TimeStamp = DateTime.Now;
+            //log.Severity = TraceEventType.Information;
+            //log.Title = "Personificação";
+            //log.MachineName = Dns.GetHostName();
+            //Logger.Write(log);
         }
     }    
   }

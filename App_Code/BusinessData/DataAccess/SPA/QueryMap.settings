@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BusinessData.DataAccess.SPA" GeneratedClassName="QueryMap">
+  <Profiles />
+  <Settings>
+    <Setting Name="Faculdades" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SELECT DISTINCT UNIDADE from Cursos;</Value>
+    </Setting>
+    <Setting Name="Cursos" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SELECT DISTINCT NOME, UNIDADE, CODIGO from Cursos;</Value>
+    </Setting>
+    <Setting Name="Professores" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SELECT PROFESSOR, MATRICULA, [CORREIO ELETRONICO] from Professores;</Value>
+    </Setting>
+    <Setting Name="Turmas" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SELECT CODIGO, TURMA, CURSO, PROFESSOR1, HORARIO from Turmas WHERE PROFESSOR1 &lt;&gt; 'none'</Value>
+    </Setting>
+    <Setting Name="Disciplinas" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SELECT CODIGO, CREDITOS, NOME, G2 FROM DISCIPLINAS</Value>
+    </Setting>
+    <Setting Name="TurmasNone" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SELECT CODIGO, TURMA, CURSO, PROFESSOR1, HORARIO from Turmas where PROFESSOR1 = 'none';</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

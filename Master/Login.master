@@ -141,7 +141,7 @@ function confirm_delete()
   <div class="ms-toolbar" style="text-align: center">
 &copy; 
                     2011 Open SARC, <a href="http://opensarc.sourceforge.net">
-                    http://opensarc.sourceforge.net</a> -  <a href="http://www.sourceforge.net/apps/trac/opensarc/wiki/sobre" class="ms-toolbar">Sobre...</a></div>
+                    http://opensarc.sourceforge.net</a> -  <a href="https://github.com/mflash/OpenSARC/wiki/Sobre..." class="ms-toolbar">Sobre...</a></div>
 </body>
 
 </html>

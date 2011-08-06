@@ -127,7 +127,7 @@ function confirm_delete()
                                             
                                             <asp:PlaceHolder ID="phActiveUser" runat="server"></asp:PlaceHolder>
                                        
-                                             | <span class="ms-toolbar"> <a href="http://sourceforge.net/apps/trac/opensarc/wiki/manual" target="_manual">Ajuda</a></span> | <asp:LoginStatus accesskey="R" ID="lsLogin" loginText="Entrar" logoutText="Sair" runat="server" OnLoggedOut="lsLogin_LoggedOut" CssClass="ms-toolbar"/> 
+                                             | <span class="ms-toolbar"> <a href="https://github.com/mflash/OpenSARC/wiki/Manual" target="_manual">Ajuda</a></span> | <asp:LoginStatus accesskey="R" ID="lsLogin" loginText="Entrar" logoutText="Sair" runat="server" OnLoggedOut="lsLogin_LoggedOut" CssClass="ms-toolbar"/> 
                                         </td>
                                     </tr>
                                 </table>
@@ -160,8 +160,8 @@ function confirm_delete()
   </form>
   <div class="ms-toolbar" style="text-align: center">
 &copy; 
-                    2011 Open SARC, <a href="http://opensarc.sourceforge.net">
-                    http://opensarc.sourceforge.net</a> - <a href="https://github.com/mflash/OpenSARC/wiki/Sobre..." class="ms-toolbar">Sobre...</a></div>
+                    2011 Open SARC, <a href="https://github.com/mflash/OpenSARC">
+                    https://github.com/mflash/OpenSARC</a> - <a href="https://github.com/mflash/OpenSARC/wiki/Sobre..." class="ms-toolbar">Sobre...</a></div>
 </body>
 
 </html>

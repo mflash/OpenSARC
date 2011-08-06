@@ -25,7 +25,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
                     UserNameRequiredErrorMessage="Matrícula não pode ser nula." Width="852px" 
                             DestinationPageUrl="~/Default/SelecionarCalendario.aspx" 
                             OnLoginError="loginEntrada_LoginError" 
-                            TitleText="Entre com sua matrícula e senha no OpenSARC:" AccessKey="M" 
+                            TitleText="Informe sua matrícula e senha no OpenSARC:" AccessKey="M" 
                             BorderPadding="3" EnableTheming="True" Orientation="Horizontal" 
                             >
                     <TitleTextStyle CssClass="ms-toolbar" Font-Bold="False" Font-Names="Verdana"
@@ -159,7 +159,7 @@ CodeFile="Default.aspx.cs" Inherits="_Default" %>
                     recursos durante todo o ano.<br />
                     <br />
                     O OpenSARC é <i>software</i> livre. Caso deseje participar, reclamar ou dar 
-                    sugestões, visite <a href="http://opensarc.sourceforge.net">http://opensarc.sourceforge.net</a>.<br />
+                    sugestões, visite <a href="https://github.com/mflash/OpenSARC">https://github.com/mflash/OpenSARC</a>.<br />
                     <br />
                     Em especial, aguardamos voluntários interessados em utilizar o sistema como 
                     estudo de caso para suas disciplinas de desenvolvimento de <i>software</i>.</p>        

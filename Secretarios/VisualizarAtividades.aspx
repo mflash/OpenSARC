@@ -1,6 +1,6 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="VisualizarAtividades.aspx.cs" Inherits="Secretarios_VisualizarAtividades" %>
 
-<%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %>
+<%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" Runat="Server">
     Selecione as categorias para o relatório:
@@ -42,6 +42,8 @@
             <asp:ControlParameter ControlID="hdfIdCalendario" DbType="Guid" 
                 Name="IDCalendario" PropertyName="Value" />
         </SelectParameters>
-    </asp:ObjectDataSource>
+    </asp:ObjectDataSource>    
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    </asp:ScriptManager>
 </asp:Content>
 

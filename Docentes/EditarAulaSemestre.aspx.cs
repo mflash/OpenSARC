@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using BusinessData.DataAccess;
 using System.Drawing;
 using System.Web.UI.HtmlControls;
+using System.Security;
+using System.Net.Mail;
+using System.Configuration;
 
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
@@ -597,6 +600,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         // Varre o checkbox list do fim para o início,
         // e remove todos os recursos selecionados (da tela e do BD)
+        List<Recurso> listaRecLib = new List<Recurso>();
         for(int r=cbList.Items.Count-1; r>=0; r--)
         {
             ListItem recurso = cbList.Items[r];
@@ -607,6 +611,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 Alocacao aloc = new Alocacao(rec, data, horario, null, null);
                 alocBO.UpdateAlocacao(aloc);
                 cbList.Items.RemoveAt(r);
+                // TODO: melhorar isso - só envia email se forem recursos com a palavra "lab" em algum lugar
+                if(rec.Categoria.Descricao.ToLower().Contains("lab"))
+                    listaRecLib.Add(rec);
             }
         }
 
@@ -637,5 +644,25 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         ddlDisponiveis.DataBind();
 		
 		AtualizaTodaGrade();
+        if(listaRecLib.Count > 0)
+            EnviarEmailLiberacao("marcelo.cohen@pucrs.br", listaRecLib, data, horario);
+    }
+
+    private void EnviarEmailLiberacao(string pessoa, List<Recurso> liberados , DateTime data, String horario)
+    {
+//        string para = ConfigurationManager.AppSettings["MailMessageSecretaria"];
+        string from = ConfigurationManager.AppSettings["MailMessageFrom"];
+        MailMessage email = new MailMessage(from, pessoa);
+        email.Subject = "OpenSARC: Liberação de recurso(s) no dia " + data.ToShortDateString() + ", horário " + horario;
+        email.Body = "Sistema de Alocação de Recursos Computacionais - FACIN \n\n" +
+               "Um ou mais recursos foram liberados por " + User.Identity.Name + "." +
+               "\nDia: " + data.ToShortDateString() +
+               "\nRecurso(s):";
+        foreach (Recurso r in liberados)
+        {
+            email.Body += "\n" + r.Descricao;
+        }
+        SmtpClient client = new SmtpClient();
+        client.Send(email);
     }
 }

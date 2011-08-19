@@ -11,6 +11,7 @@ using System.Web.UI.HtmlControls;
 using System.Security;
 using System.Net.Mail;
 using System.Configuration;
+using System.Web.Security;
 
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
@@ -645,7 +646,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 		
 		AtualizaTodaGrade();
         if(listaRecLib.Count > 0)
-            EnviarEmailLiberacao("marcelo.cohen@pucrs.br", listaRecLib, data, horario);
+            EnviarEmailLiberacao("professores@inf.pucrs.br", listaRecLib, data, horario);
     }
 
     private void EnviarEmailLiberacao(string pessoa, List<Recurso> liberados , DateTime data, String horario)
@@ -655,8 +656,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         MailMessage email = new MailMessage(from, pessoa);
         email.Subject = "OpenSARC: Liberação de recurso(s) no dia " + data.ToShortDateString() + ", horário " + horario;
         email.Body = "Sistema de Alocação de Recursos Computacionais - FACIN \n\n" +
-               "Um ou mais recursos foram liberados por " + User.Identity.Name + "." +
-               "\nDia: " + data.ToShortDateString() +
+               "Um ou mais recursos foram liberados por " + Membership.GetUser().Email + "." +
+               "\nDia: " + data.ToShortDateString() + ", horário " + horario + "\n" +
                "\nRecurso(s):";
         foreach (Recurso r in liberados)
         {

@@ -63,11 +63,7 @@
                                             <asp:Label ID="lblDisc" runat="server"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateColumn>
-                                    <asp:TemplateColumn HeaderText="Curso">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblCurso" runat="server"></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateColumn>
+                                    
                                     <asp:TemplateColumn HeaderText="Responsável">
                                         <ItemTemplate>
                                             <asp:Label ID="lblResponsavel" runat="server"></asp:Label>
@@ -101,11 +97,7 @@
                                             <asp:Label ID="lblDisc" runat="server"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateColumn>
-                                    <asp:TemplateColumn HeaderText="Curso">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblCurso" runat="server"></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateColumn>
+                                    
                                     <asp:TemplateColumn HeaderText="Responsável">
                                         <ItemTemplate>
                                             <asp:Label ID="lblResponsavel" runat="server"></asp:Label>

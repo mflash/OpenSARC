@@ -84,7 +84,7 @@ public partial class _Default : System.Web.UI.Page
                 //lblDiscCod.Text = aloc.Aula.TurmaId.Disciplina.Cod.ToString();                
                 lblDisc.Text = getNomeCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
                 lblResponsavel.Text = getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
-                lblCurso.Text = aloc.Aula.TurmaId.Curso.Nome;// + " - " + aloc.Delta;
+               // lblCurso.Text = aloc.Aula.TurmaId.Curso.Nome;// + " - " + aloc.Delta;
             }
             else
             {

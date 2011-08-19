@@ -329,11 +329,13 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
 
                 if (trans[e.Item.ItemIndex].EventoTransferiu == null)
                 {
-                    lblAutor.Text = trans[e.Item.ItemIndex].TurmaTransferiu.Professor.Nome;
+                    if(trans[e.Item.ItemIndex].TurmaTransferiu != null)
+                        lblAutor.Text = trans[e.Item.ItemIndex].TurmaTransferiu.Professor.Nome;
                 }
                 else
                 {
-                    lblAutor.Text = trans[e.Item.ItemIndex].EventoTransferiu.AutorId.Nome;
+                    if(trans[e.Item.ItemIndex].EventoTransferiu != null)
+                        lblAutor.Text = trans[e.Item.ItemIndex].EventoTransferiu.AutorId.Nome;
                 }
 
                 if (trans[e.Item.ItemIndex].TurmaRecebeu == null)

@@ -10,7 +10,7 @@ namespace BusinessData.Distribuicao.Entities
         {
             AB,
             CD,
-            E,
+            EE,
             FG,
             HI,
             JK,
@@ -24,7 +24,7 @@ namespace BusinessData.Distribuicao.Entities
             {
                 case "AB": return HorariosPUCRS.AB;
                 case "CD": return HorariosPUCRS.CD;
-                case "E": return HorariosPUCRS.E;
+                case "EE": return HorariosPUCRS.EE;
                 case "FG": return HorariosPUCRS.FG;
                 case "HI": return HorariosPUCRS.HI;
                 case "JK": return HorariosPUCRS.JK;
@@ -46,11 +46,7 @@ namespace BusinessData.Distribuicao.Entities
                     data = data.AddHours(9);
                     data = data.AddMinutes(50);
                     return data;
-                case "E":
-                    data = data.AddHours(11);
-                    data = data.AddMinutes(35);
-                    return data;
-                case "E ":
+                case "EE":
                     data = data.AddHours(11);
                     data = data.AddMinutes(35);
                     return data;

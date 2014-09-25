@@ -105,7 +105,7 @@ CodeFile="CadastroRecurso.aspx.cs" Inherits="Pagina6" Title="Sistema de Alocação
                             <asp:DropDownList ID="ddlHorarioInicio" runat="server" CssClass="ms-toolbar" AutoPostBack="True">
                                 <asp:ListItem Value="1">AB</asp:ListItem>
                                 <asp:ListItem Value="2">CD</asp:ListItem>
-                                <asp:ListItem Value="3">E</asp:ListItem>
+                                <asp:ListItem Value="3">EE</asp:ListItem>
                                 <asp:ListItem Value="4">FG</asp:ListItem>
                                 <asp:ListItem Value="5">HI</asp:ListItem>
                                 <asp:ListItem Value="6">JK</asp:ListItem>
@@ -127,7 +127,7 @@ CodeFile="CadastroRecurso.aspx.cs" Inherits="Pagina6" Title="Sistema de Alocação
                                               AutoPostBack="True">
                                 <asp:ListItem Value="1">AB</asp:ListItem>
                                 <asp:ListItem Value="2">CD</asp:ListItem>
-                                <asp:ListItem Value="3">E</asp:ListItem>
+                                <asp:ListItem Value="3">EE</asp:ListItem>
                                 <asp:ListItem Value="4">FG</asp:ListItem>
                                 <asp:ListItem Value="5">HI</asp:ListItem>
                                 <asp:ListItem Value="6">JK</asp:ListItem>

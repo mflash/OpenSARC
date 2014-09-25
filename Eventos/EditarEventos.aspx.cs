@@ -99,7 +99,7 @@ public partial class Eventos_EditarEventos : System.Web.UI.Page
 
     public string[] GetHorariosFuturos(string horarioInicial)
     {
-        string[] horariosPUCRS = { "AB", "CD", "E", "FG", "HI", "JK", "LM", "NP" };
+        string[] horariosPUCRS = { "AB", "CD", "EE", "FG", "HI", "JK", "LM", "NP" };
         int indice = 0;
         for (; indice < horariosPUCRS.Length; indice++)
         {

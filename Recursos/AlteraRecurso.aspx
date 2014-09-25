@@ -67,7 +67,7 @@ CodeFile="AlteraRecurso.aspx.cs" Inherits="Recursos_AlteraRecurso" Title="Sistem
                             <asp:DropDownList ID="ddlHorarioInicio" runat="server" AutoPostBack="True" CssClass="ms-toolbar">
                                 <asp:ListItem Value="1">AB</asp:ListItem>
                                 <asp:ListItem Value="2">CD</asp:ListItem>
-                                <asp:ListItem Value="3">E</asp:ListItem>
+                                <asp:ListItem Value="3">EE</asp:ListItem>
                                 <asp:ListItem Value="4">FG</asp:ListItem>
                                 <asp:ListItem Value="5">HI</asp:ListItem>
                                 <asp:ListItem Value="6">JK</asp:ListItem>
@@ -87,7 +87,7 @@ CodeFile="AlteraRecurso.aspx.cs" Inherits="Recursos_AlteraRecurso" Title="Sistem
                             <asp:DropDownList ID="ddlHorarioFim" runat="server" AutoPostBack="True" CssClass="ms-toolbar">
                                 <asp:ListItem Value="1">AB</asp:ListItem>
                                 <asp:ListItem Value="2">CD</asp:ListItem>
-                                <asp:ListItem Value="3">E</asp:ListItem>
+                                <asp:ListItem Value="3">EE</asp:ListItem>
                                 <asp:ListItem Value="4">FG</asp:ListItem>
                                 <asp:ListItem Value="5">HI</asp:ListItem>
                                 <asp:ListItem Value="6">JK</asp:ListItem>

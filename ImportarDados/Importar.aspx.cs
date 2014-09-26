@@ -25,18 +25,28 @@ public partial class ImportarDados_Importar : System.Web.UI.Page
     protected void lbImportar_Click(object sender, EventArgs e)
     {
             Calendario calId = (Calendario)(Session["Calendario"]);
-            //Application["CalendarioImporta"] = calId; 
+			//return;
+	        //Application["CalendarioImporta"] = calId; 
             lblStatus.Text = "Importando Faculdades... Aguarde.";
+//			return;
+			//return;
             ImportarFaculdades();
+			lblStatus.Text = "Faculdades...";
+//			return;
+			//return;
             lblStatus.Text = "Importando Cursos... Aguarde.";
             ImportarCursos();
+//			return;
             lblStatus.Text = "Importando Disciplinas... Aguarde.";
             ImportarDisciplinas(calId.Id);
+			lblStatus.Text = "Disciplinas... feito.";
+//			return;
             lblStatus.Text = "Importando Professores... Aguarde.";
             ImportarProfessores();
+			lblStatus.Text = "Professores... feito.";
+//			return;
             lblStatus.Text = "Importando Turmas... Aguarde.";
             Response.Redirect("~/ImportarDados/ImportarTurmas.aspx");
-        
     }
 
             
@@ -48,7 +58,8 @@ public partial class ImportarDados_Importar : System.Web.UI.Page
         }
         catch(Exception ex)
         {
-            Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
+			//lblStatus.Text = ex.ToString();
+            Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.InnerException.Message); //ToString());
         }
     
     }
@@ -61,7 +72,7 @@ public partial class ImportarDados_Importar : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
+            Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.InnerException.Message); //ex.ToString());
         }
 
     }
@@ -74,7 +85,7 @@ public partial class ImportarDados_Importar : System.Web.UI.Page
         }
         catch(Exception ex)
         {
-            Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
+            Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.InnerException.Message); // ex.ToString());
         }
 
     }
@@ -87,7 +98,7 @@ public partial class ImportarDados_Importar : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
+            Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message); //ToString()); //InnerException.Message); //ex.ToString());
         }
 
     }

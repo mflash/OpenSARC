@@ -13,6 +13,7 @@ using BusinessData.BusinessLogic;
 using System.Collections.Generic;
 using BusinessData.DataAccess;
 using BusinessData.Entities.Util;
+using System.Net.Mail;
 //using Microsoft.ReportingServices.Diagnostics;
 
 public partial class Docentes_SelecionaTurma : System.Web.UI.Page
@@ -104,6 +105,9 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
                             dgEventos.DataBind();
                         }
                     }
+					// XGH!!!
+					if(cal.Ano == 2011 && cal.Semestre == 2)
+						butMoodle.Visible = true;
                 }
             }
             else
@@ -115,6 +119,7 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
 
                 VerificaTrocas();
                 VerificaTransferencias();
+				butMoodle.Visible = false; // ugly hack! should check something in the DB
             }
         }
 
@@ -329,13 +334,12 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
 
                 if (trans[e.Item.ItemIndex].EventoTransferiu == null)
                 {
-                    if(trans[e.Item.ItemIndex].TurmaTransferiu != null)
-                        lblAutor.Text = trans[e.Item.ItemIndex].TurmaTransferiu.Professor.Nome;
+					if(trans[e.Item.ItemIndex].TurmaTransferiu != null)
+                    lblAutor.Text = trans[e.Item.ItemIndex].TurmaTransferiu.Professor.Nome;
                 }
                 else
                 {
-                    if(trans[e.Item.ItemIndex].EventoTransferiu != null)
-                        lblAutor.Text = trans[e.Item.ItemIndex].EventoTransferiu.AutorId.Nome;
+                    lblAutor.Text = trans[e.Item.ItemIndex].EventoTransferiu.AutorId.Nome;
                 }
 
                 if (trans[e.Item.ItemIndex].TurmaRecebeu == null)
@@ -378,4 +382,44 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
         else
             return true;
     }
+	
+	protected void butMoodle_Click(object sender, EventArgs e)
+	{
+		Calendario cal = (Calendario)Session["Calendario"];
+		MembershipUser user = Membership.GetUser();
+        Guid professorId = new Guid(user.ProviderUserKey.ToString());
+
+        Professor prof = (Professor) controleProfessores.GetPessoaById(professorId);
+		
+		List<Turma> listaTurmas = null;        
+
+        try
+        {
+			listaTurmas = turmaBO.GetTurmas(cal, prof);
+            listaTurmas.Sort();
+        }
+        catch (Exception ex)
+        {
+			Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
+        }
+	
+	    string para = ConfigurationManager.AppSettings["MailMessageSecretaria"];
+        string de = ConfigurationManager.AppSettings["MailMessageFrom"];
+		String pessoa = prof.Nome.ToUpper();
+		
+        MailMessage email = new MailMessage(de, para);
+		email.CC.Add(new MailAddress(prof.Email));
+        email.Subject = "Solicitação de áreas no Moodle - prof. "+prof.Nome;
+        email.Body = "OpenSARC - Sistema de Alocação de Recursos Computacionais - FACIN \n\n" +
+			   "Prezados,\n\n"+
+               pessoa + " solicita a criação de áreas no Moodle para as seguintes turmas:\n\n";
+
+		foreach(Turma t in listaTurmas)
+			email.Body += t.Disciplina.Cod + "-" + t.Disciplina.Cred + " - " +
+				t.Disciplina.Nome + " - " + t.Numero + "\n";
+
+        SmtpClient client = new SmtpClient();
+        client.Send(email);
+		//Response.Redirect("SelecionaTurma2.aspx");
+	}
 }

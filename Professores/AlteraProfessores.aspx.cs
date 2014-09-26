@@ -60,19 +60,25 @@ public partial class Professores_AlteraProfessores : System.Web.UI.Page
             ProfessoresBO boProfessores = new ProfessoresBO();
             Professor prof = (Professor)boProfessores.GetPessoaById(new Guid(Request.QueryString["GUID"]));
 
+			MembershipUser pessoa = Membership.GetUser(prof.Id);
+			string newPassword = pessoa.ResetPassword();
+			Membership.UpdateUser(pessoa);
+			
+			// Nao envia mais email, erro no relay (?)
 
-
-            boProfessores.ResetaSenha(prof);
-            lblStatus.Text = "Senha resetada com sucesso!";
+//            boProfessores.ResetaSenha(prof);
+            lblStatus.Text = "Senha resetada com sucesso: nova senha "+newPassword;
             lblStatus.Visible = true;
         }
         catch (ArgumentException ex)
         {
             Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
         }
-        catch (Exception )
+        catch (Exception ex)
         {
-            ScriptManager.RegisterClientScriptBlock(this, GetType(), "Erro", "alert('Impossível resetar senha. Verifique se o usuário não está bloqueado');", true);
+            //ScriptManager.RegisterClientScriptBlock(this, GetType(), "Erro", "alert('Impossível resetar senha. Verifique se o usuário não está bloqueado');", true);
+			//ScriptManager.RegisterClientScriptBlock(this, GetType(), "Erro", "alert('"+ex.Message+"')");//Impossível resetar senha. Verifique se o usuário não está bloqueado');", true);
+			Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
         }
 
     

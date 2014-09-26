@@ -1,6 +1,5 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" 
-         CodeFile="SelecionaTurma.aspx.cs" Inherits="Docentes_SelecionaTurma" 
-         Title="Sistema de Alocação de Recursos Computacionais - FACIN" %>
+<%@ page language="C#" debug="true" masterpagefile="~/Master/Master.master" autoeventwireup="true" Inherits="Docentes_SelecionaTurma" CodeFile="SelecionaTurma.aspx.cs" 
+ title="Sistema de Alocação de Recursos Computacionais - FACIN" %>
          
 <%@ Import Namespace="BusinessData.Entities" %>
 
@@ -14,7 +13,7 @@
     <ContentTemplate>
     <br />
         <div align="center"> 
-            
+            			
             <asp:Label Visible="False" CssClass="ms-toolbar" ID="lblRotulo" runat="server" Text="Foram feitas propostas de troca de recursos para as seguintes aulas:">
             </asp:Label><br />
             <br />
@@ -194,9 +193,12 @@
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>
-            
+            		
         </asp:GridView>
             <br />
+			<!--p>Obs: Conforme comunicado, as áreas antigas do Moodle serão automaticamente migradas para o novo semestre.<br/>
+			Se você não deseja manter as suas áreas, favor informar a <a href="mailto:coordacad.facin@pucrs.br">Coordenação Acadêmica</a>.</p!-->
+			<asp:Button Visible="true" cssclass="ms-toolbar" id="butMoodle" runat="server" OnClick="butMoodle_Click" Text="Clique aqui para solicitar a criação de áreas Moodle para as suas turmas"/>
             <br />
             
             <div align="left">

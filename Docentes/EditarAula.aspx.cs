@@ -31,6 +31,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     Calendario cal;
     private int cont = 1;
     Guid dummyGuid = new Guid();
+	bool facin = true;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -76,18 +77,28 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                         catch (Exception)
                         {
                             Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inválido!");
-                        }
-
-                        lblTitulo.Text = listaAulas[0].TurmaId.Disciplina.Nome + " Turma-" + listaAulas[0].TurmaId.Numero;
+                        }                        
 
                         foreach (Aula a in listaAulas)
                         {
                             categorias.Add(a.CategoriaAtividade.Id);
                             argb.Add(a.CategoriaAtividade.Cor);
                         }
-
-                        dgAulas.DataSource = listaAulas;                        
+						
+						Disciplina disc = listaAulas[0].TurmaId.Disciplina;
+						CategoriaDisciplina cat = disc.Categoria;
+						//lblTitulo.text += " " + cat.Descricao;
+						
+						// Mega gambiarra master extended++
+						// TODO: retirar assim que possível!
+						if(cat.Descricao.IndexOf("Outras Unidades") != -1)
+							facin = false;
+						lblTitulo.Text = listaAulas[0].TurmaId.Disciplina.Nome + " - Turma " + listaAulas[0].TurmaId.Numero;//+ " " + facin;
+						Session["facin"] = facin;
+						
+						dgAulas.DataSource = listaAulas;                        
                         dgAulas.DataBind();
+
                     }
                 }
             }
@@ -187,13 +198,24 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                                 e.Item.Enabled = false;
                                 txtDescricao.Text = c.Descricao;
                                 lblCorDaData.Text = "True";
+								break;
                             }
                             else
                             {
-                                lblDescData.Text = c.Descricao;
-                                txtDescricao.Text = c.Descricao + "\n" + txtDescricao.Text;
-                                e.Item.BackColor = c.Cor;
-                                lblCorDaData.Text = "True";
+								facin = (bool) Session["facin"];
+								if(facin) {
+									lblDescData.Text = c.Descricao;
+									txtDescricao.Text = c.Descricao;// + " "+facin; // + " - " + txtDescricao.Text;
+									//txtDescricao.Text = txtDescricao.Text;
+									e.Item.BackColor = c.Cor;
+									lblCorDaData.Text = "True";
+								}
+								else {
+								    e.Item.BackColor = cor;								
+									lblCorDaData.Text = "False";
+								}
+								lbl.Text = (cont++).ToString();
+								break;
                             }
                 }
                 else
@@ -245,6 +267,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             aulaBo.UpdateAula(aula);
 
             txtDescricao.Text = lblDescData.Text + "\n" + descricao;
+			//txtDescricao.Text = descricao;
 
             // abre a popup de selecao de recursos
             string id = lblaulaId.Text;
@@ -286,7 +309,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
                 aulaBo.UpdateAula(aula);
 
-                txtDescricao.Text = lblDescData.Text + "\n" + descricao;
+                //txtDescricao.Text = lblDescData.Text + "\n" + descricao;
+				txtDescricao.Text = descricao;
                 lblResultado.Text = "Alteração realizada com sucesso!";
 
             }
@@ -353,7 +377,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             aulaBo.UpdateAula(aula);
 
-            txtDescricao.Text = lblDescData.Text + "\n" + descricao;
+            //txtDescricao.Text = lblDescData.Text + "\n" + descricao;
+			txtDescricao.Text = descricao;
         }
 
         lblResultado.Text = "Alteração realizada com sucesso!";
@@ -545,7 +570,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         
         aulaBo.UpdateAula(aula);        
 
-        txtDescricao.Text = lblDescData.Text + "\n" + descricao;
+        //txtDescricao.Text = lblDescData.Text + "\n" + descricao;
+		txtDescricao.Text = descricao;
     }
 
 }

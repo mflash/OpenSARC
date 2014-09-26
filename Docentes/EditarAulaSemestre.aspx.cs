@@ -31,6 +31,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     Calendario cal;
     private int cont = 1;  // contador de aulas (SEM feriados)
     private int cont2 = 2; // contador de aulas (incluindo feriados)
+	bool facin = true;
 
 
     protected void Page_Load(object sender, EventArgs e)
@@ -81,7 +82,15 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                         Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inválido!");
                     }
                     Disciplina d = listaAulas[0].TurmaId.Disciplina;
-                    lblTitulo.Text = d.Cod + "-" + d.Cred + " " + d.Nome + ", turma " + listaAulas[0].TurmaId.Numero;
+					CategoriaDisciplina cat = d.Categoria;
+					
+					// Mega gambiarra master extended++
+					// TODO: retirar assim que possível!
+					if(cat.Descricao.IndexOf("Outras Unidades") != -1)
+							facin = false;
+					Session["facin"] = facin;
+					
+                    lblTitulo.Text = d.Cod + "-" + d.Cred + " " + d.Nome + ", turma " + listaAulas[0].TurmaId.Numero;//" "+facin;
 
                     foreach (Aula a in listaAulas)
                     {
@@ -196,19 +205,36 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 {
                     foreach (CategoriaData c in listCData)
                         if (c.Id == data.Categoria.Id)
-                        {
-                            e.Item.BackColor = c.Cor;
-                            lblCorDaData.Text = "True";
+                        {                      
                             if (!c.DiaLetivo)
                             {
-                                e.Item.Enabled = false;
+								e.Item.BackColor = c.Cor;
+								e.Item.Enabled = false;
+								lblCorDaData.Text = "True";                                
                                 txtDescricao.Text = c.Descricao;
                             }
-                            else
+							else
+                            {
+								facin = (bool) Session["facin"];
+								if(facin) {
+									lblDescData.Text = c.Descricao;
+									txtDescricao.Text = c.Descricao;// + " "+facin; // + " - " + txtDescricao.Text;
+									//txtDescricao.Text = txtDescricao.Text;
+									e.Item.BackColor = c.Cor;
+									lblCorDaData.Text = "True";
+								}
+								else {
+								    e.Item.BackColor = cor;								
+									lblCorDaData.Text = "False";
+								}
+								lbl.Text = (cont++).ToString();
+								break;
+                            }
+                            /*else
                             {
                                 lblDescData.Text = c.Descricao;
                                 txtDescricao.Text = c.Descricao + "\n" + txtDescricao.Text;
-                            }
+                            }*/
                         }
                 }
                 else

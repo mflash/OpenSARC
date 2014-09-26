@@ -32,6 +32,9 @@ public partial class Admin_ControleEstados : System.Web.UI.Page
         {
             AtualizaBotoes();
         }
+		Calendario meucal = (Calendario)Session["Calendario"];
+		Response.Write(meucal.Ano + "<br/>");
+		Response.Write(meucal.Semestre + "<br/>");
     }
 
     protected void btnAbrirSolicitacaoRecursos_Click(object sender, EventArgs e)
@@ -109,9 +112,10 @@ public partial class Admin_ControleEstados : System.Web.UI.Page
 
     private void IniciarThread()
     {
-        Thread td = new Thread(new ParameterizedThreadStart(DistribuirRecursos));
-        td.Priority = ThreadPriority.Lowest;
-        td.Start((Calendario)Session["Calendario"]);
+        //Thread td = new Thread(new ParameterizedThreadStart(DistribuirRecursos));
+        //td.Priority = ThreadPriority.Lowest;
+        //td.Start((Calendario)Session["Calendario"]);
+		DistribuirRecursos((Calendario)Session["Calendario"]);
         Response.Redirect("Results.aspx");
     }
 
@@ -123,7 +127,7 @@ public partial class Admin_ControleEstados : System.Web.UI.Page
         {
             Session["Complete"] = true;
         }
-        lblResultado.Text = "Distribuição Concluída!";
+        //lblResultado.Text = "Distribuição Concluída!";
         AlterarEstadoParaDistribuido();
     }
 

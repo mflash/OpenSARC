@@ -33,7 +33,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     private int cont2 = 2; // contador de aulas (incluindo feriados)
 	bool facin = true;
 
-
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -99,6 +98,18 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     }
                     dgAulas.DataSource = listaAulas;
                     dgAulas.DataBind();
+
+                    // Monta dicionário com bloqueio de recursos devido a uso de outros
+                    Dictionary<Guid, Tuple<Guid,Guid>> blocks = new Dictionary<Guid, Tuple<Guid,Guid>>();
+                    List<Recurso> listRec = recursosBO.GetRecursos();
+                    foreach (Recurso r in listRec) {
+                        if(r.Bloqueia1 != Guid.Empty || r.Bloqueia2 != Guid.Empty)
+                        {
+                            //System.Diagnostics.Debug.WriteLine("block: " + r.Id + " -> " + r.Bloqueia1 + ", " + r.Bloqueia2);
+                            blocks.Add(r.Id, new Tuple<Guid,Guid>(r.Bloqueia1, r.Bloqueia2));
+                        }
+                    }
+                    Session["blocks"] = blocks;
                 }
             }
         }
@@ -163,7 +174,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             listCData = cdataBo.GetCategoriaDatas();
 
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
-
 
             List<Recurso> livres = recursosBO.GetRecursosDisponiveis(dataAtual, lblHora.Text);
             livres.Sort();
@@ -297,8 +307,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 		Label lblHora = (Label) grid.FindControl("lblHora");
 		Label lblaulaId = (Label) grid.FindControl("lblAulaId");
 		
-
-
 		List<string> recursos = new List<string>();
 		CheckBoxList cbRecursos = (CheckBoxList) grid.FindControl("cbRecursos");
 		foreach(ListItem rec in cbRecursos.Items)
@@ -578,6 +586,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         string horario = ((Label)grid.FindControl("lblHora")).Text;
         string aulaString = ((Label)grid.FindControl("lblAulaId")).Text;
 
+        // TODO: for-each para alocar todos os recursos dependentes (Sessions["blocks"])
+        //       remover também da ddl
         alocar(recString, dataString, horario, aulaString);
 
         AtualizaComponentes(grid, dataString, horario, aulaString);

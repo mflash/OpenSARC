@@ -183,11 +183,12 @@ public partial class Alocacoes_GerenciarRecursos : System.Web.UI.Page
 
                 lblAulaIdEventoId.Text = horariosEvento[e.Item.ItemIndex].EventoId.EventoId.ToString();
                 lblTipo.Text = "Ev";
-                if (horariosEvento[e.Item.ItemIndex].HorarioInicio == "EE")
-                {
-                    lblHorario.Text = "E";
-                }
-                else lblHorario.Text = horariosEvento[e.Item.ItemIndex].HorarioInicio;
+                //if (horariosEvento[e.Item.ItemIndex].HorarioInicio == "EX")
+                //{
+                    //lblHorario.Text = "EE1";
+                //}
+                //else
+                lblHorario.Text = horariosEvento[e.Item.ItemIndex].HorarioInicio;
 
 
                 //preeche label dos recursos alocados

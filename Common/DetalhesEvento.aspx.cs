@@ -62,11 +62,13 @@ public partial class Secretarios_DetalhesEvento : System.Web.UI.Page
             Label lblHorario = (Label)e.Item.FindControl("lblHorario");
 
             List<HorariosEvento> horariosEvento = (List<HorariosEvento>)dgHorariosEvento.DataSource;
-            if (horariosEvento[e.Item.ItemIndex].HorarioInicio == "EE")
-            {
-                lblHorario.Text = "E";
-            }
-            else lblHorario.Text = horariosEvento[e.Item.ItemIndex].HorarioInicio;
+            // Comentado porque o horário "E" não faz mais sentido...
+            //if (horariosEvento[e.Item.ItemIndex].HorarioInicio == "EE")
+            //{
+            //    lblHorario.Text = "E";
+            //}
+            //else
+            lblHorario.Text = horariosEvento[e.Item.ItemIndex].HorarioInicio;
 
             DateTime data = Convert.ToDateTime(lblData.Text);
 

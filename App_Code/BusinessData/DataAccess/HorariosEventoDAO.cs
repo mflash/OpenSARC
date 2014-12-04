@@ -201,10 +201,11 @@ namespace BusinessData.DataAccess
                     HorariosEvento heAux = null;
                     foreach (HorariosEvento he in listaAux)
                     {
-                        if (he.HorarioInicio == "E ")
-                            he.HorarioInicio = "EE";
-                        if (he.HorarioFim == "E ")
-                            he.HorarioFim = "EE";
+                        // A princípio, este ajuste não é mais necessário
+                        //if (he.HorarioInicio == "E ")
+                        //    he.HorarioInicio = "EE";
+                        //if (he.HorarioFim == "E ")
+                        //    he.HorarioFim = "EE";
                         string[] lista = HorariosEvento.HorariosEntre(he.HorarioInicio, he.HorarioFim);
                         foreach (string s in lista)
                         {

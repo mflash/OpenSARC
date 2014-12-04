@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.Common;
 using BusinessData.Entities;
 using System.Data.SqlClient;
+using System.Diagnostics;
 
 
 namespace BusinessData.DataAccess
@@ -165,6 +166,7 @@ namespace BusinessData.DataAccess
 
         public List<Recurso> GetRecursosDisponiveis(DateTime data, string horarioPUCRS, Guid categoriaRecursoId)
         {
+            //Debug.WriteLine(data.ToShortDateString() + " - " + horarioPUCRS + " " + categoriaRecursoId);
             DbCommand cmd = baseDados.GetStoredProcCommand("GetRecursosDisponiveisDataHorarioCategoria");
             baseDados.AddInParameter(cmd,"@Data",DbType.DateTime,data);
             baseDados.AddInParameter(cmd,"@HOrario",DbType.String,horarioPUCRS);

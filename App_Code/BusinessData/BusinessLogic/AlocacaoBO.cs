@@ -100,7 +100,7 @@ namespace BusinessData.BusinessLogic
             DateTime data = cal.InicioG1;
             Alocacao alocacao;
 
-            string[] listaHorarios = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "P" };
+            string[] listaHorarios = { "A", "B", "C", "D", "E", "X", "F", "G", "H", "I", "J", "K", "L", "M", "N", "P" };
 
             while (data != cal.FimG2)
             {

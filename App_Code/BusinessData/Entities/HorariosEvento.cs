@@ -7,7 +7,7 @@ namespace BusinessData.Entities
 {
     public class HorariosEvento : IEquatable<HorariosEvento>, IComparable<HorariosEvento>,ICloneable
     {
-        static string[] HORARIOSFACIN = { "AB", "CD", "EE", "FG", "HI", "JK", "LM", "NP" };
+        static string[] horariosPUCRS = Distribuicao.Entities.Horarios.horariosPUCRS;
         private Guid horariosEventoId;
         private Evento eventoId;
         private DateTime data;
@@ -64,16 +64,16 @@ namespace BusinessData.Entities
         public static string[] HorariosEntre(string horarioInicial, string horarioFim)
         {
             int indice = 0;
-            for (; indice < HORARIOSFACIN.Length; indice++)
+            for (; indice < horariosPUCRS.Length; indice++)
             {
-                if (horarioInicial.Equals(HORARIOSFACIN[indice]))
+                if (horarioInicial.Equals(horariosPUCRS[indice]))
                     break;
             }
 
             int final = 0;
-            for (; final < HORARIOSFACIN.Length; final++)
+            for (; final < horariosPUCRS.Length; final++)
             {
-                if (horarioFim.Equals(HORARIOSFACIN[final]))
+                if (horarioFim.Equals(horariosPUCRS[final]))
                     break;
             }
 
@@ -83,7 +83,7 @@ namespace BusinessData.Entities
 
             for (int i = 0; i <= tam; i++)
             {
-                horarios[i] = HORARIOSFACIN[indice++];
+                horarios[i] = horariosPUCRS[indice++];
             }
 
             return horarios;

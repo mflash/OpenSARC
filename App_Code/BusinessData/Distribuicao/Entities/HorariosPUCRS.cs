@@ -6,11 +6,13 @@ namespace BusinessData.Distribuicao.Entities
 {
     public class Horarios
     {
+        public static string[] horariosPUCRS = { "AB", "CD", "EX", "FG", "HI", "JK", "LM", "NP" };
+
         public enum HorariosPUCRS
         {
             AB,
             CD,
-            EE,
+            EX,
             FG,
             HI,
             JK,
@@ -24,14 +26,14 @@ namespace BusinessData.Distribuicao.Entities
             {
                 case "AB": return HorariosPUCRS.AB;
                 case "CD": return HorariosPUCRS.CD;
-                case "EE": return HorariosPUCRS.EE;
+                case "EX": return HorariosPUCRS.EX;
                 case "FG": return HorariosPUCRS.FG;
                 case "HI": return HorariosPUCRS.HI;
                 case "JK": return HorariosPUCRS.JK;
                 case "LM": return HorariosPUCRS.LM;
                 case "NP": return HorariosPUCRS.NP;
             }
-            throw new Exception("String em formato invalido");
+            throw new Exception("String em formato invalido: "+ aux);
         }
         public static DateTime ParseToDateTime(string s)
         {
@@ -46,7 +48,7 @@ namespace BusinessData.Distribuicao.Entities
                     data = data.AddHours(9);
                     data = data.AddMinutes(50);
                     return data;
-                case "EE":
+                case "EX":
                     data = data.AddHours(11);
                     data = data.AddMinutes(35);
                     return data;
@@ -70,7 +72,7 @@ namespace BusinessData.Distribuicao.Entities
                     data = data.AddMinutes(15);
                     return data;
             }
-            throw new Exception("String em formato invalido");
+            throw new Exception("String em formato invalido:" + aux);
         }
     }
 }

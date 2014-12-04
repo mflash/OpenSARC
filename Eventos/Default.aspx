@@ -68,7 +68,7 @@
                         Inicio:<asp:DropDownList ID="ddlInicio" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlInicio_SelectedIndexChanged">
                             <asp:ListItem>AB</asp:ListItem>
                             <asp:ListItem>CD</asp:ListItem>
-                            <asp:ListItem>EE</asp:ListItem>
+                            <asp:ListItem>EX</asp:ListItem>
                             <asp:ListItem>FG</asp:ListItem>
                             <asp:ListItem>HI</asp:ListItem>
                             <asp:ListItem>JK</asp:ListItem>
@@ -163,7 +163,7 @@
                         Início:<asp:DropDownList ID="ddlHoraInicio" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlHoraInicio_SelectedIndexChanged">
                             <asp:ListItem>AB</asp:ListItem>
                             <asp:ListItem>CD</asp:ListItem>
-                            <asp:ListItem>EE</asp:ListItem>
+                            <asp:ListItem>EX</asp:ListItem>
                             <asp:ListItem>FG</asp:ListItem>
                             <asp:ListItem>HI</asp:ListItem>
                             <asp:ListItem>JK</asp:ListItem>

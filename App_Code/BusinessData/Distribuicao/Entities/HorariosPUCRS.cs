@@ -6,7 +6,7 @@ namespace BusinessData.Distribuicao.Entities
 {
     public class Horarios
     {
-        public static const string[] horariosPUCRS = { "AB", "CD", "EX", "FG", "HI", "JK", "LM", "NP" };
+        public static string[] horariosPUCRS = { "AB", "CD", "EX", "FG", "HI", "JK", "LM", "NP" };
 
         public enum HorariosPUCRS
         {

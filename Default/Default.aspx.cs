@@ -203,6 +203,10 @@ public partial class _Default : System.Web.UI.Page
             }        
 		
 		List<Alocacao> filtradaAtual = ProcuraProximoHorario(listaAlocacoes, ref pos);
+        foreach (Alocacao aloc in filtradaAtual)
+        {
+            System.Diagnostics.Debug.WriteLine(">>> "+aloc.Recurso.ToString());
+        }
 		if (filtradaAtual != null && filtradaAtual.Count != 0)
         {
 			//Response.Write("pos="+pos+"<br/>");

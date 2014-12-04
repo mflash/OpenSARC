@@ -145,11 +145,23 @@ namespace BusinessData.DataAccess
                     FaculdadesDAO vinculosDAO = new FaculdadesDAO();
                     CategoriaRecursoDAO categoriarecursoDAO = new CategoriaRecursoDAO();
 
+                    int bl1 = leitor.GetOrdinal("Bloqueia1");
+                    int bl2 = leitor.GetOrdinal("Bloqueia2");
+
+                    Guid block1 = Guid.Empty;
+                    if(!leitor.IsDBNull(bl1))
+                        block1 = leitor.GetGuid(bl1);
+
+                    Guid block2 = Guid.Empty;
+                    if(!leitor.IsDBNull(bl2))
+                        block2 = leitor.GetGuid(bl2);
+
                     aux = Recurso.GetRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")),
                                              leitor.GetString(leitor.GetOrdinal("Descricao")),
                                              vinculosDAO.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("FaculdadeId"))),
                                              categoriarecursoDAO.GetCategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaRecursoId"))),
                                              leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel")),
+                                             block1, block2,
                                              listaHB);
                 }
             }
@@ -223,6 +235,17 @@ namespace BusinessData.DataAccess
                 {
                     while (leitor.Read())
                     {
+                        int bl1 = leitor.GetOrdinal("Bloqueia1");
+                        int bl2 = leitor.GetOrdinal("Bloqueia2");
+
+                        Guid block1 = Guid.Empty;
+                        if (!leitor.IsDBNull(bl1))
+                            block1 = leitor.GetGuid(bl1);
+
+                        Guid block2 = Guid.Empty;
+                        if (!leitor.IsDBNull(bl2))
+                            block2 = leitor.GetGuid(bl2);
+
                         recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
                         listaHB = this.GetHorarioBloqueadoByRecurso(recursoId);
                         aux = Recurso.GetRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")),
@@ -230,6 +253,7 @@ namespace BusinessData.DataAccess
                                                  vinculosDAO.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("FaculdadeId"))),
                                                  categoriarecursoDAO.GetCategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaRecursoId"))),
                                                  leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel")),
+                                                 block1, block2,
                                                  listaHB);
                         listaAux.Add(aux);
                     }
@@ -267,11 +291,24 @@ namespace BusinessData.DataAccess
                     {
                         recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
                         listaHB = this.GetHorarioBloqueadoByRecurso(recursoId);
+
+                        int bl1 = leitor.GetOrdinal("Bloqueia1");
+                        int bl2 = leitor.GetOrdinal("Bloqueia2");
+
+                        Guid block1 = Guid.Empty;
+                        if (!leitor.IsDBNull(bl1))
+                            block1 = leitor.GetGuid(bl1);
+
+                        Guid block2 = Guid.Empty;
+                        if (!leitor.IsDBNull(bl2))
+                            block2 = leitor.GetGuid(bl2);
+
                         aux = Recurso.GetRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")),
                                                  leitor.GetString(leitor.GetOrdinal("Descricao")),
                                                  vinculosDAO.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("Vinculo"))),
                                                  cat,
                                                  leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel")),
+                                                 block1, block2,
                                                  listaHB);
                         listaAux.Add(aux);
                     }
@@ -297,12 +334,13 @@ namespace BusinessData.DataAccess
                 FaculdadesDAO faculDao = new FaculdadesDAO();
                 CategoriaRecursoDAO categoriaDao = new CategoriaRecursoDAO();
                 List<HorarioBloqueado> listaHB = new List<HorarioBloqueado>();
-
+               
                 using (IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
                     while (leitor.Read())
                     {
                         Guid recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
+
                         listaHB = this.GetHorarioBloqueadoByRecurso(recursoId);
                         Faculdade facul = faculDao.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("Vinculo")));
                         CategoriaRecurso categoria = categoriaDao.GetCategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaId")));
@@ -310,7 +348,18 @@ namespace BusinessData.DataAccess
                         string descricao = leitor.GetString(leitor.GetOrdinal("Descricao"));
                         bool disponivel = leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel"));
 
-                        aux = Recurso.GetRecurso(recursoId, descricao, facul, categoria, disponivel,listaHB);
+                        int bl1 = leitor.GetOrdinal("Bloqueia1");
+                        int bl2 = leitor.GetOrdinal("Bloqueia2");
+
+                        Guid block1 = Guid.Empty;
+                        if (!leitor.IsDBNull(bl1))
+                            block1 = leitor.GetGuid(bl1);
+
+                        Guid block2 = Guid.Empty;
+                        if (!leitor.IsDBNull(bl2))
+                            block2 = leitor.GetGuid(bl2);
+
+                        aux = Recurso.GetRecurso(recursoId, descricao, facul, categoria, disponivel,block1,block2,listaHB);
                         resultado.Add(aux);
                     }
                 }
@@ -345,7 +394,18 @@ namespace BusinessData.DataAccess
                         string descricao = leitor.GetString(leitor.GetOrdinal("Descricao"));
                         bool disponivel = leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel"));
 
-                        aux = Recurso.GetRecurso(recursoId, descricao, facul, categoria, disponivel,listaHB);
+                        int bl1 = leitor.GetOrdinal("Bloqueia1");
+                        int bl2 = leitor.GetOrdinal("Bloqueia2");
+
+                        Guid block1 = Guid.Empty;
+                        if (!leitor.IsDBNull(bl1))
+                            block1 = leitor.GetGuid(bl1);
+
+                        Guid block2 = Guid.Empty;
+                        if (!leitor.IsDBNull(bl2))
+                            block2 = leitor.GetGuid(bl2);
+
+                        aux = Recurso.GetRecurso(recursoId, descricao, facul, categoria, disponivel, block1, block2, listaHB);
                         resultado.Add(aux);
                     }
                 }

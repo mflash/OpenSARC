@@ -105,7 +105,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     foreach (Recurso r in listRec) {
                         if(r.Bloqueia1 != Guid.Empty || r.Bloqueia2 != Guid.Empty)
                         {
-                            //System.Diagnostics.Debug.WriteLine("block: " + r.Id + " -> " + r.Bloqueia1 + ", " + r.Bloqueia2);
+                            System.Diagnostics.Debug.WriteLine("block: " + r.Id + " -> " + r.Bloqueia1 + ", " + r.Bloqueia2);
                             blocks.Add(r.Id, new Tuple<Guid,Guid>(r.Bloqueia1, r.Bloqueia2));
                         }
                     }

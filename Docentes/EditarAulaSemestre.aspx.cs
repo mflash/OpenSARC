@@ -105,7 +105,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     foreach (Recurso r in listRec) {
                         if(r.Bloqueia1 != Guid.Empty || r.Bloqueia2 != Guid.Empty)
                         {
-                            System.Diagnostics.Debug.WriteLine("block: " + r.Id + " -> " + r.Bloqueia1 + ", " + r.Bloqueia2);
+                            //System.Diagnostics.Debug.WriteLine("block: " + r.Id + " -> " + r.Bloqueia1 + ", " + r.Bloqueia2);
                             blocks.Add(r.Id, new Tuple<Guid,Guid>(r.Bloqueia1, r.Bloqueia2));
                         }
                     }
@@ -608,10 +608,30 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         DateTime data = Convert.ToDateTime(dataString);
 
         //FIXME: pode ocorrer um problema se outro usuário selecionar o recurso antes...
-        Aula aula = aulaBo.GetAulaById(aulaId);
+        Aula aula = aulaBo.GetAulaById(aulaId);        
+
         Recurso rec = recursosBO.GetRecursoById(recId);
+        System.Diagnostics.Debug.WriteLine("Alocando: " + rec.Descricao);
         Alocacao aloc = new Alocacao(rec, data, horario, aula, null);
         alocBO.UpdateAlocacao(aloc);
+
+        // Verifica se algum outro recurso depende deste, em caso positivo aloca também
+        Dictionary<Guid, Tuple<Guid, Guid>> blocks = (Dictionary<Guid, Tuple<Guid, Guid>>)Session["blocks"];
+        Tuple<Guid, Guid> bloqueados = blocks[recId];
+        if(bloqueados.Item1 != Guid.Empty)
+        {
+            rec = recursosBO.GetRecursoById(bloqueados.Item1);
+            System.Diagnostics.Debug.WriteLine("Bloq. dependente: " + rec.Descricao);
+            aloc = new Alocacao(rec, data, horario, aula, null);
+            alocBO.UpdateAlocacao(aloc);            
+        }
+        if (bloqueados.Item2 != Guid.Empty)
+        {
+            rec = recursosBO.GetRecursoById(bloqueados.Item2);
+            System.Diagnostics.Debug.WriteLine("Bloq. dependente: " + rec.Descricao);
+            aloc = new Alocacao(rec, data, horario, aula, null);
+            alocBO.UpdateAlocacao(aloc);            
+        }
     }
 
     // Deleta o(s) recurso(s) selecionado(s)

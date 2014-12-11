@@ -591,8 +591,21 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         AtualizaComponentes(grid, dataString, horario, aulaString);
 
+        Dictionary<Guid, Tuple<Guid, Guid>> blocks = (Dictionary<Guid, Tuple<Guid, Guid>>)Application["blocks"];
+        Tuple<Guid, Guid> bloqueados = null;
+        Guid key = new Guid(ddlDisponiveis.SelectedValue);
         // Remove recurso do dropdown de seleção
         ddlDisponiveis.Items.Remove(ddlDisponiveis.Items.FindByValue(ddlDisponiveis.SelectedValue));
+
+        // Se esse recurso bloqueia algum(s) outro(s), retira do dropdown tambem
+        if (blocks.ContainsKey(key))
+        {
+            bloqueados = blocks[key];
+            if (bloqueados.Item1 != Guid.Empty)
+                ddlDisponiveis.Items.Remove(ddlDisponiveis.Items.FindByValue(bloqueados.Item1.ToString()));
+            if (bloqueados.Item2 != Guid.Empty)
+                ddlDisponiveis.Items.Remove(ddlDisponiveis.Items.FindByValue(bloqueados.Item2.ToString()));
+        }
         ddlDisponiveis.SelectedIndex = 0;
 				
 		// E atualiza o BD com as alteracoes na grade
@@ -614,6 +627,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Alocacao aloc = new Alocacao(rec, data, horario, aula, null);
         alocBO.UpdateAlocacao(aloc);
 
+        /* Nao e' mais necessario: o DAO foi alterado para verificar isso (GetRecursosDisponiveis)
+         *
         // Verifica se algum outro recurso depende deste, em caso positivo aloca também
         Dictionary<Guid, Tuple<Guid, Guid>> blocks = (Dictionary<Guid, Tuple<Guid, Guid>>) Application["blocks"];
         Tuple<Guid, Guid> bloqueados = blocks[recId];
@@ -631,6 +646,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             aloc = new Alocacao(rec, data, horario, aula, null);
             alocBO.UpdateAlocacao(aloc);            
         }
+         */
     }
 
     // Deleta o(s) recurso(s) selecionado(s)

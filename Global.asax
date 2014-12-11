@@ -6,8 +6,11 @@
     {
         BusinessData.BusinessLogic.RecursosBO recursosBO = new BusinessData.BusinessLogic.RecursosBO();
         // Monta dicionário com bloqueio de recursos devido a uso de outros
+        Dictionary<Guid, BusinessData.Entities.Recurso> todos = new Dictionary<Guid, BusinessData.Entities.Recurso>();
         Dictionary<Guid, Tuple<Guid, Guid>> blocks = new Dictionary<Guid, Tuple<Guid, Guid>>();
         List<BusinessData.Entities.Recurso> listRec = recursosBO.GetRecursos();
+        foreach (BusinessData.Entities.Recurso r in listRec)
+            todos.Add(r.Id, r);
         foreach (BusinessData.Entities.Recurso r in listRec)
         {
             if (r.Bloqueia1 != Guid.Empty || r.Bloqueia2 != Guid.Empty)

@@ -299,6 +299,7 @@ namespace BusinessData.DataAccess
 
         public List<Recurso> GetRecursosDisponiveis(DateTime data, string hora)
         {
+            List<Recurso> alocados = GetRecursosAlocados(data, hora);
             try
             {
                 DbCommand cmd = baseDados.GetStoredProcCommand("RecursosSelectDisponiveis");
@@ -313,9 +314,21 @@ namespace BusinessData.DataAccess
                
                 using (IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
+                    //Debug.WriteLine("Total de alocados:" + alocados.Count);
                     while (leitor.Read())
                     {
                         Guid recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
+                        // Verifica se algum dos recursos alocados bloqueia este recurso
+                        bool block = false;
+                        foreach (Recurso alocado in alocados)
+                            // Em caso positivo, nao insere este na lista de disponiveis
+                            if (alocado.Bloqueia1 == recursoId || alocado.Bloqueia2 == recursoId)
+                            {
+                                //Debug.WriteLine("Bloqueado: " + recursoId + " por " + alocado.Descricao);
+                                block = true;
+                                break;
+                            }
+                        if (block) continue;
 
                         listaHB = this.GetHorarioBloqueadoByRecurso(recursoId);
                         Faculdade facul = faculDao.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("Vinculo")));
@@ -328,6 +341,48 @@ namespace BusinessData.DataAccess
                         Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
 
                         aux = Recurso.GetRecurso(recursoId, descricao, facul, categoria, disponivel,block1,block2,listaHB);
+                        resultado.Add(aux);
+                    }
+                }
+                return resultado;
+            }
+            catch (SqlException ex)
+            {
+                throw new DataAccessException(ErroMessages.GetErrorMessage(ex.Number), ex);
+            }
+        }
+
+        public List<Recurso> GetRecursosAlocados(DateTime data, string hora)
+        {
+            try
+            {
+                DbCommand cmd = baseDados.GetStoredProcCommand("RecursosSelectAlocadosByDataHora");
+                baseDados.AddInParameter(cmd, "@Data", DbType.DateTime, data);
+                baseDados.AddInParameter(cmd, "@Horario", DbType.String, hora);
+
+                List<Recurso> resultado = new List<Recurso>();
+                Recurso aux = null;
+                FaculdadesDAO faculDao = new FaculdadesDAO();
+                CategoriaRecursoDAO categoriaDao = new CategoriaRecursoDAO();
+                List<HorarioBloqueado> listaHB = new List<HorarioBloqueado>();
+
+                using (IDataReader leitor = baseDados.ExecuteReader(cmd))
+                {
+                    while (leitor.Read())
+                    {
+                        Guid recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
+
+                        listaHB = this.GetHorarioBloqueadoByRecurso(recursoId);
+                        Faculdade facul = faculDao.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("Vinculo")));
+                        CategoriaRecurso categoria = categoriaDao.GetCategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaId")));
+
+                        string descricao = leitor.GetString(leitor.GetOrdinal("Descricao"));
+                        bool disponivel = leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel"));
+
+                        Guid block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
+                        Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
+
+                        aux = Recurso.GetRecurso(recursoId, descricao, facul, categoria, disponivel, block1, block2, listaHB);
                         resultado.Add(aux);
                     }
                 }

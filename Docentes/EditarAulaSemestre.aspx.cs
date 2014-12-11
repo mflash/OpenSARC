@@ -100,16 +100,17 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     dgAulas.DataBind();
 
                     // Monta dicionário com bloqueio de recursos devido a uso de outros
-                    Dictionary<Guid, Tuple<Guid,Guid>> blocks = new Dictionary<Guid, Tuple<Guid,Guid>>();
-                    List<Recurso> listRec = recursosBO.GetRecursos();
-                    foreach (Recurso r in listRec) {
-                        if(r.Bloqueia1 != Guid.Empty || r.Bloqueia2 != Guid.Empty)
-                        {
-                            //System.Diagnostics.Debug.WriteLine("block: " + r.Id + " -> " + r.Bloqueia1 + ", " + r.Bloqueia2);
-                            blocks.Add(r.Id, new Tuple<Guid,Guid>(r.Bloqueia1, r.Bloqueia2));
-                        }
-                    }
-                    Session["blocks"] = blocks;
+                    // Movido para Global.asax (Application_Start)
+                    //Dictionary<Guid, Tuple<Guid,Guid>> blocks = new Dictionary<Guid, Tuple<Guid,Guid>>();
+                    //List<Recurso> listRec = recursosBO.GetRecursos();
+                    //foreach (Recurso r in listRec) {
+                    //    if(r.Bloqueia1 != Guid.Empty || r.Bloqueia2 != Guid.Empty)
+                    //    {
+                    //        //System.Diagnostics.Debug.WriteLine("block: " + r.Id + " -> " + r.Bloqueia1 + ", " + r.Bloqueia2);
+                    //        blocks.Add(r.Id, new Tuple<Guid,Guid>(r.Bloqueia1, r.Bloqueia2));
+                    //    }
+                    //}
+                    //Session["blocks"] = blocks;
                 }
             }
         }
@@ -586,8 +587,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         string horario = ((Label)grid.FindControl("lblHora")).Text;
         string aulaString = ((Label)grid.FindControl("lblAulaId")).Text;
 
-        // TODO: for-each para alocar todos os recursos dependentes (Sessions["blocks"])
-        //       remover também da ddl
         alocar(recString, dataString, horario, aulaString);
 
         AtualizaComponentes(grid, dataString, horario, aulaString);
@@ -616,7 +615,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         alocBO.UpdateAlocacao(aloc);
 
         // Verifica se algum outro recurso depende deste, em caso positivo aloca também
-        Dictionary<Guid, Tuple<Guid, Guid>> blocks = (Dictionary<Guid, Tuple<Guid, Guid>>)Session["blocks"];
+        Dictionary<Guid, Tuple<Guid, Guid>> blocks = (Dictionary<Guid, Tuple<Guid, Guid>>) Application["blocks"];
         Tuple<Guid, Guid> bloqueados = blocks[recId];
         if(bloqueados.Item1 != Guid.Empty)
         {

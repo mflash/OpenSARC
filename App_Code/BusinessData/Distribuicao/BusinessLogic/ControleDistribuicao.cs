@@ -30,7 +30,6 @@ namespace BusinessData.Distribuicao.BusinessLogic
                 satTurmas.Add(t, new SatisfacaoTurma(t));
             }
             
-
             //Para cada prioridade de requisicao
             for (int prioridadePedidos = 1; prioridadePedidos <= calAtual.Categorias.Count; prioridadePedidos++)
             {

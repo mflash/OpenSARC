@@ -82,10 +82,11 @@ namespace BusinessData.DataAccess
 
         public void UpdateAlocacao(Alocacao alocacao)
         {
-            // a, b, c, d, e, f, g, h, i, j, k, l, m, n, p
+            // a, b, c, d, e, x, f, g, h, i, j, k, l, m, n, p
 
-            string aux = alocacao.Horario;
-            for (char c = aux[0]; c <= aux[aux.Length-1]; c++)
+            //string aux = alocacao.Horario;
+            //for (char c = aux[0]; c <= aux[aux.Length-1]; c++)
+            foreach(char c in alocacao.Horario)
             {
                 if ((alocacao.Aula != null) && (alocacao.Evento != null))
                     throw new Exception("Dados Inválidos!");

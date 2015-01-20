@@ -334,11 +334,22 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
 
                 if (trans[e.Item.ItemIndex].EventoTransferiu == null)
                 {
-					if(trans[e.Item.ItemIndex].TurmaTransferiu != null)
-                    lblAutor.Text = trans[e.Item.ItemIndex].TurmaTransferiu.Professor.Nome;
+                    if (trans[e.Item.ItemIndex].TurmaTransferiu != null)
+                    {
+                        string nome = "(Desconhecido)";
+                        Professor prof = trans[e.Item.ItemIndex].TurmaTransferiu.Professor;
+                        if (prof != null)
+                            nome = prof.Nome;
+                        lblAutor.Text = nome;
+                    }
                 }
                 else
                 {
+                    if (trans[e.Item.ItemIndex].EventoTransferiu.AutorId == null)
+                    {
+                        lblAutor.Text = "(Desconhecido)";
+                    }
+                    else
                     lblAutor.Text = trans[e.Item.ItemIndex].EventoTransferiu.AutorId.Nome;
                 }
 

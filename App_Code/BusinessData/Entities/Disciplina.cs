@@ -109,6 +109,7 @@ namespace BusinessData.Entities
 
                 if (horario.Length == 1) continue;
                 if (horario == "NP") continue;
+                if (horario == "EX") continue;
                 else
                 {
                     if (!(horario[0] < horario[1] && horario[1] - horario[0] <= 1))

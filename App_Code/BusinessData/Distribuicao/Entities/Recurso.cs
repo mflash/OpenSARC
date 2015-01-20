@@ -15,6 +15,12 @@ namespace BusinessData.Distribuicao.Entities
             this.rec = rec;
             alocacoes = new List<BusinessData.Entities.Alocacao>();
         }
+
+        public BusinessData.Entities.Recurso EntidadeRecurso
+        {
+            get { return rec; }
+        }
+
         public ICollection<BusinessData.Entities.Alocacao> Alocacoes
         {
             get { return alocacoes; }

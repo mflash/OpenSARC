@@ -14,6 +14,14 @@ namespace BusinessData.Distribuicao.Entities
         private Guid id;
         private int prioridade;
         private bool estaAtendido;
+        private BusinessData.Entities.Recurso recurso;
+
+        // Retorna o recurso que atendeu esta requisição, se houver
+        public BusinessData.Entities.Recurso Recurso
+        {
+            get { return recurso;  }
+            set { recurso = value; }
+        }
 
         public bool EstaAtendido
         {
@@ -32,8 +40,6 @@ namespace BusinessData.Distribuicao.Entities
             get { return id; }
             set { id = value; }
         }
-
-        
 
         public Horarios.HorariosPUCRS Horario
         {
@@ -68,6 +74,7 @@ namespace BusinessData.Distribuicao.Entities
             this.CategoriaRecurso = cat;
             this.Prioridade = prioridade;
             this.EstaAtendido = estaAtendido;
+            this.Recurso = null;
         }
     }
 }

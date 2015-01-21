@@ -19,17 +19,19 @@
                 <a href="../Alocacoes/Default.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Visualizar Alocações</span></a>
                     <a href="../Alocacoes/GerenciarRecursos.aspx" class="ms-SPLink">
-                    <span style="color: #3966bf">Gerenciar Recursos</span></a>
+                    <span style="color: #3966bf">Gerenciar Recursos</span></a><br />
                 <a href="../Docentes/AterarSenha.aspx" class="ms-SPLink">
-                    <span style="color: #3966bf">Alterar Senha</span></a>
+                    <span style="color: #3966bf">Alterar Senha</span></a><br />
                     <a href="../Secretarios/VisualizarAtividades.aspx" class="ms-SPLink">
-                    <span style="color: #3966bf">Visualizar Atividades</span></a>
+                    <span style="color: #3966bf">Visualizar Atividades</span></a><br />
                     <a href="../Usuarios/GerenciarUsuarios.aspx" class="ms-SPLink">
-                    <span style="color: #3966bf">Gerenciar Usuários</span></a>
+                    <span style="color: #3966bf">Gerenciar Usuários</span></a><br />
                     <a href="../Secretarios/PersonificarProfessor.aspx" class="ms-SPLink">
-                    <span style="color: #3966bf">Personificar Professor</span></a>
-                    <a href="../Common/RelatorioDeAcessos.aspx" class="ms-SPLink">
-                    <span style="color: #3966bf">Relatório de Acessos</span></a>
+                    <span style="color: #3966bf">Personificar Professor</span></a><br />
+                    <!--a href="../Common/RelatorioDeAcessos.aspx" class="ms-SPLink">
+                    <span style="color: #3966bf">Relatório de Acessos</span></!-->
+                    <!--a href="../Turmas/VerificaTurmas.aspx" class="ms-SPLink">
+                    <span style="color: #3966bf">Verificar preenchimento</span></a><br /!-->
 
     
         <table border="0" cellpadding="0" cellspacing="0" class="ms-navheader" width="100%">

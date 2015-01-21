@@ -175,7 +175,9 @@
             <a href="../Turmas/CadastroTurma2.aspx" class="ms-SPLink">
                 <span style="color: #3966bf">Cadastrar</span></a>
             <a href="../Turmas/ListaTurmas.aspx" class="ms-SPLink">
-                <span style="color: #3966bf">Listar</span></a></td>
+                <span style="color: #3966bf">Listar</span></a>
+            <a href="../Turmas/VerificaTurmas.aspx" class="ms-SPLink">
+                <span style="color: #3966bf">Verificar preenchimento</span></a></td>
     </tr>
     <tr>
         <td style="height: 19px; width: 341px;">

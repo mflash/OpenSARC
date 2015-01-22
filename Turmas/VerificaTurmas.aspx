@@ -56,6 +56,12 @@ AutoGenerateColumns="False" DataKeyNames="Id"
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>   
 
+<asp:BoundField DataField="RecursosOK" HeaderText="Recursos">
+<ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center"></ItemStyle>
+
+<HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
+</asp:BoundField>
+
 <asp:BoundField DataField="AulasOK" HeaderText="Aulas">
 <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center"></ItemStyle>
 

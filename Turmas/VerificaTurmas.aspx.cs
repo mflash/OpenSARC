@@ -29,28 +29,33 @@ public class TurmaVerifica
     public string AulasOK { get; set; }
     public string ProvasOK { get; set; }
     public string TrabalhosOK { get; set; }
+    public string RecursosOK { get; set; }
 }
 
 public partial class Pagina2 : System.Web.UI.Page
 {
     private AulaBO aulaBo;
-//    private TurmaBO turmaBo;
-//    private CategoriaDataBO catDataBo;
-//    private CategoriaAtividadeBO categoriaAtivBo;
-//    List<CategoriaAtividade> listaAtividades;
+    private RequisicoesBO reqBo;
+    private Calendario cal;
+    private HashSet<Guid> reqTurmas;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
             aulaBo = new AulaBO();
-//            turmaBo = new TurmaBO();
-//            catDataBo = new CategoriaDataBO();
-            //RequisicoesBO reqBo = new RequisicoesBO();
-//            categoriaAtivBo = new CategoriaAtividadeBO();
-//            listaAtividades = categoriaAtivBo.GetCategoriaAtividade();
+            reqBo = new RequisicoesBO();            
             try
             {
-                Calendario cal = (Calendario)Session["Calendario"];
+                cal = (Calendario)Session["Calendario"];
+                
+                // Obtém as requisições do semestre (todas)
+                IList<Requisicao> listaReq = reqBo.GetRequisicoesPorCalendario(cal);
+
+                // Cria um conjunto para armazenar os números das turmas com pedidos de recursos
+                reqTurmas = new HashSet<Guid>();
+                foreach (Requisicao req in listaReq)
+                    reqTurmas.Add(req.Aula.TurmaId.Id);
+
                 TurmaBO turma = new TurmaBO();
                 List<Turma> listaTurma = turma.GetTurmas(cal);
                 listaTurma.Sort();
@@ -74,8 +79,8 @@ public partial class Pagina2 : System.Web.UI.Page
                             Professor = t.Professor,
                             Curso = t.Curso
                         };
-                        verificaTurma(ref nova, t.Disciplina.G2);
-                        turmas.Add(nova);
+                        if(verificaTurma(ref nova, t.Disciplina.G2))
+                            turmas.Add(nova);
                     }
                     grvListaTurmas.RowDataBound += grvListaTurmas_RowDataBound;
                     grvListaTurmas.DataSource = turmas;
@@ -97,7 +102,7 @@ public partial class Pagina2 : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            for (int pos = 6; pos <= 9; pos++)
+            for (int pos = 6; pos <= 10; pos++)
                 if (e.Row.Cells[pos].Text == "OK" || e.Row.Cells[pos].Text == "N/A")
                     e.Row.Cells[pos].ForeColor = System.Drawing.Color.Green;
                 else
@@ -105,12 +110,22 @@ public partial class Pagina2 : System.Web.UI.Page
         }
     }
 
-    private void verificaTurma(ref TurmaVerifica nova, bool temG2)
+    private bool verificaTurma(ref TurmaVerifica nova, bool temG2)
     {
+        nova.G2OK = "NÃO";
+        nova.AulasOK = "NÃO";
+        nova.ProvasOK = "NÃO";
+        nova.TrabalhosOK = "NÃO";
+        nova.RecursosOK = "NÃO";
+
         if(nova.Disciplina.Nome.ToLower().StartsWith("trabalho de conclusão")) {
-            nova.G2OK = nova.AulasOK = nova.ProvasOK = nova.TrabalhosOK = "N/A";
-            return;
+            nova.G2OK = nova.AulasOK = nova.ProvasOK = nova.TrabalhosOK = nova.RecursosOK = "N/A";
+            return false;
         } 
+
+        if(nova.Curso.Nome.Contains("PPG")) {
+            nova.G2OK = nova.AulasOK = nova.ProvasOK = nova.TrabalhosOK = "N/A";        
+        }
 
         List<Aula> listaAulas = null;
         try
@@ -122,15 +137,14 @@ public partial class Pagina2 : System.Web.UI.Page
             Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inválido!");
         }
 
-        nova.G2OK = "NÃO";
-        nova.AulasOK = "NÃO"; 
-        nova.ProvasOK = "NÃO";
-        nova.TrabalhosOK = "NÃO";
+        // Se a turma está no conjunto, é porque há pelo menos uma solicitação de recurso
+        if (reqTurmas.Contains(nova.Id))
+            nova.RecursosOK = "OK";
 
         int totalAulas = listaAulas.Count;
         int preenchidas = 0;
         foreach (Aula aula in listaAulas)
-        {
+        {        
             if (aula.DescricaoAtividade.Trim().Length > 3)
                 preenchidas++;
             if (aula.CategoriaAtividade.Descricao == "Prova de G2")
@@ -145,8 +159,14 @@ public partial class Pagina2 : System.Web.UI.Page
         if (perc > 0.5)
             nova.AulasOK = "OK";// (" + (int)perc * 100 + "%)";
 
-        if (!temG2 || nova.Curso.Nome == "PPGCC")
+        if (!temG2)
             nova.G2OK = "N/A";
+
+        // Se pelo menos um dos itens estiver com "NÃO", o preenchimento não foi concluído (teoricamente...)
+        if (nova.AulasOK == "NÃO" || nova.G2OK == "NÃO" || nova.ProvasOK == "NÃO" || nova.TrabalhosOK == "NÃO"
+            || nova.RecursosOK == "NÃO")
+            return true;
+        return false;
     }
 
     protected void lbtnVoltar_Click(object sender, EventArgs e)

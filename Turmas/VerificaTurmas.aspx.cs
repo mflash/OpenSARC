@@ -67,6 +67,8 @@ public partial class Pagina2 : System.Web.UI.Page
                 else
                 {
                     List<TurmaVerifica> turmas = new List<TurmaVerifica>();
+                    int totalTurmas = listaTurma.Count;
+                    int totalOK = 0;
                     foreach (Turma t in listaTurma)
                     {
                         TurmaVerifica nova = new TurmaVerifica
@@ -79,9 +81,15 @@ public partial class Pagina2 : System.Web.UI.Page
                             Professor = t.Professor,
                             Curso = t.Curso
                         };
-                        if(verificaTurma(ref nova, t.Disciplina.G2))
+                        if (verificaTurma(ref nova, t.Disciplina.G2))
+                        {
                             turmas.Add(nova);
+                            totalOK++;
+                        }
                     }
+                    double percPreench = totalOK / (double)totalTurmas * 100;
+                    lblPercentual.Text = "Percentual de preenchimento: " + percPreench + " (" + totalOK + " de " + totalTurmas + ")";
+
                     grvListaTurmas.RowDataBound += grvListaTurmas_RowDataBound;
                     grvListaTurmas.DataSource = turmas;
                     grvListaTurmas.DataBind();

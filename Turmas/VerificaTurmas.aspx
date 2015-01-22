@@ -15,7 +15,8 @@
     <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel1">
     </asp:UpdateProgress>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>
+        <ContentTemplate>            
+<asp:Label ID="lblPercentual" runat="server" CssClass="lblstatus" Text="Percentual de preenchimento: "></asp:Label><br />
 &nbsp;<table style="WIDTH: 806px; HEIGHT: 71px" align="left"><tbody><tr><td style="WIDTH: 292px">
 <asp:GridView id="grvListaTurmas" runat="server" Width="781px" 
 AutoGenerateColumns="False" DataKeyNames="Id" 

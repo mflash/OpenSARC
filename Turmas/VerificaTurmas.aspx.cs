@@ -66,9 +66,17 @@ public partial class Pagina2 : System.Web.UI.Page
                 }
                 else
                 {
-                    List<TurmaVerifica> turmas = new List<TurmaVerifica>();
-                    int totalTurmas = listaTurma.Count;
-                    int totalFalta = 0;
+                    // Turmas sem solicitações de recursos, não teóricas e não de pós
+                    List<TurmaVerifica> turmasRecursos = new List<TurmaVerifica>();
+                    // Turmas restantes (todas as outras)
+                    List<TurmaVerifica> turmasRestante = new List<TurmaVerifica>();
+                    // Total de turmas restantes
+                    int totalTurmasRestante = 0;
+                    // Total de turmas que deveriam solicitar recursos
+                    int totalTurmasRecursos = 0;
+                    // Total de turmas com falta de preenchimento em algum aspecto
+                    int totalRestanteFalta = 0;
+                    // Total de turmas sem solicitação de recursos
                     int totalRecursosFalta = 0;
                     foreach (Turma t in listaTurma)
                     {
@@ -82,23 +90,53 @@ public partial class Pagina2 : System.Web.UI.Page
                             Professor = t.Professor,
                             Curso = t.Curso
                         };
+                        // "teorica" representa turmas teóricas ou de algum pós
+                        bool teorica = nova.Disciplina.Categoria.Descricao.Contains("Teórica") ||
+                            nova.Disciplina.Categoria.Descricao.Contains("PPG") ||
+                            nova.Curso.Nome.Contains("PPG");
+
+                        // Se a turma não é "teórica", ela deveria solicitar recursos
+                        if (!teorica)
+                            totalTurmasRecursos++;
+                        else
+                            // Caso contrário, conta nas demais
+                            totalTurmasRestante++;
+
+                        // Verifica o preenchimento dos dados, retorna true se
+                        // a turma está incompleta
                         if (verificaTurma(ref nova, t.Disciplina.G2))
                         {
-                            turmas.Add(nova);
-                            totalFalta++;
-                            if (nova.RecursosOK == "NÃO" && !nova.Disciplina.Categoria.Descricao.Contains("Teórica"))
+                            // Se a turma deveria solicitar recursos e não o fez,
+                            // conta mais uma e adiciona na lista de pendentes
+                            if (nova.RecursosOK == "NÃO" && !teorica)
+                            {
+                                turmasRecursos.Add(nova);
                                 totalRecursosFalta++;
+                            }
+                            // Se a turma não precisa solicitar recursos, conta
+                            // nas restantes e adiciona na lista
+                            if(teorica)
+                            {
+                                turmasRestante.Add(nova);
+                                totalRestanteFalta++;
+                            }
                         }
                     }
-                    double percPreench = (totalTurmas-totalFalta) / (double)totalTurmas;
-                    lblPercentual.Text = String.Format("Preenchimento geral: {0:P} (faltam {1} de {2})", percPreench, totalFalta, totalTurmas);
-//                    lblPercentual.Text = "Percentual de preenchimento: " + percPreench + " (" + totalFalta + " de " + totalTurmas + ")";
-                    double percRecursos = (totalTurmas - totalRecursosFalta) / (double)totalTurmas;
-                    lblPercentualRecursos.Text = String.Format("Solicitações de recursos (excluindo teóricas): {0:P} (faltam {1} de {2})", percRecursos, totalRecursosFalta, totalTurmas);
+
+                    // Calcula os percentuais
+                    double percRecursos = totalRecursosFalta / (double)totalTurmasRecursos;
+                    lblPercentualRecursos.Text = String.Format("Turmas sem solicitações de recursos (excluindo teóricas e pós): {1} de {2} ({0:P})", percRecursos, totalRecursosFalta, totalTurmasRecursos);
+
+                    double percPreench = totalRestanteFalta / (double)totalTurmasRestante;
+                    lblPercentualGeral.Text = String.Format("Demais turmas com pendências: {1} de {2} ({0:P})", percPreench, totalRestanteFalta, totalTurmasRestante);
 
                     grvListaTurmas.RowDataBound += grvListaTurmas_RowDataBound;
-                    grvListaTurmas.DataSource = turmas;
+                    grvListaTurmas.DataSource = turmasRecursos;
                     grvListaTurmas.DataBind();
+
+                    grvListaTurmasGeral.RowDataBound += grvListaTurmasGeral_RowDataBound;
+                    grvListaTurmasGeral.DataSource = turmasRestante;
+                    grvListaTurmasGeral.DataBind();
                 }
             }
             catch (BusinessData.DataAccess.DataAccessException ex)
@@ -112,15 +150,28 @@ public partial class Pagina2 : System.Web.UI.Page
         }
     }
 
+    void SetRowColor(GridViewRow row)
+    {
+        for (int pos = 6; pos <= 10; pos++)
+            if (row.Cells[pos].Text == "OK" || row.Cells[pos].Text == "N/A")
+                row.Cells[pos].ForeColor = System.Drawing.Color.Green;
+            else
+                row.Cells[pos].ForeColor = System.Drawing.Color.Red;
+    }
+
+    void grvListaTurmasGeral_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            SetRowColor(e.Row);
+        }
+    }
+
     void grvListaTurmas_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            for (int pos = 6; pos <= 10; pos++)
-                if (e.Row.Cells[pos].Text == "OK" || e.Row.Cells[pos].Text == "N/A")
-                    e.Row.Cells[pos].ForeColor = System.Drawing.Color.Green;
-                else
-                    e.Row.Cells[pos].ForeColor = System.Drawing.Color.Red;
+            SetRowColor(e.Row);
         }
     }
 

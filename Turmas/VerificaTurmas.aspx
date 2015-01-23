@@ -16,8 +16,8 @@
     </asp:UpdateProgress>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>            
-<asp:Label ID="lblPercentual" runat="server" CssClass="lblstatus" Text="Percentual de preenchimento geral: "></asp:Label><br />
-<asp:Label ID="lblPercentualRecursos" runat="server" CssClass="lblstatus" Text="Percentual de solicitações de recursos: "></asp:Label><br />
+            <br />
+<asp:Label ID="lblPercentualRecursos" runat="server" CssClass="UserSectionTitle" Text="Percentual de solicitações de recursos: "></asp:Label><br />
 &nbsp;<table style="WIDTH: 806px; HEIGHT: 71px" align="left"><tbody><tr><td style="WIDTH: 292px">
 <asp:GridView id="grvListaTurmas" runat="server" Width="781px" 
 AutoGenerateColumns="False" DataKeyNames="Id" 
@@ -97,10 +97,74 @@ AutoGenerateColumns="False" DataKeyNames="Id"
 </td>
 </tr>
 <tr>
-<td style="WIDTH: 292px" colspan="1" rowspan="1">
-<asp:Label id="lblStatus" runat="server" CssClass="lblstatus" Visible="False"></asp:Label></td><td style="WIDTH: 3px">
-</td>
+<td style="WIDTH: 292px" colspan="1">
+    <asp:Label ID="lblPercentualGeral" runat="server" CssClass="ms-TPTitle" Text="Demais turmas com pendências"></asp:Label>
+    </td><td style="WIDTH: 3px">
+        &nbsp;</td>
 </tr>
+                <tr>
+                    <td colspan="1" style="WIDTH: 292px">
+                        <asp:GridView ID="grvListaTurmasGeral" runat="server" AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="Id" Width="781px">
+                            <Columns>
+                                <asp:BoundField DataField="Id" HeaderText="ID" Visible="False">
+                                <ControlStyle Width="100px" />
+                                <ItemStyle CssClass="ms-toolbar" />
+                                <HeaderStyle CssClass="ms-wikieditthird" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="Numero" HeaderText="Número">
+                                <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
+                                <HeaderStyle CssClass="ms-wikieditthird" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="Disciplina" HeaderText="Disciplina">
+                                <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
+                                <HeaderStyle CssClass="ms-wikieditthird" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="DataHora" HeaderText="Data &amp; Hora">
+                                <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
+                                <HeaderStyle CssClass="ms-wikieditthird" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="Professor" HeaderText="Professor">
+                                <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
+                                <HeaderStyle CssClass="ms-wikieditthird" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="Curso" HeaderText="Curso">
+                                <ControlStyle Width="300px" />
+                                <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
+                                <HeaderStyle CssClass="ms-wikieditthird" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="RecursosOK" HeaderText="Recursos">
+                                <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
+                                <HeaderStyle CssClass="ms-wikieditthird" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="AulasOK" HeaderText="Aulas">
+                                <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
+                                <HeaderStyle CssClass="ms-wikieditthird" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="ProvasOK" HeaderText="Provas">
+                                <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
+                                <HeaderStyle CssClass="ms-wikieditthird" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="TrabalhosOK" HeaderText="Trab">
+                                <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
+                                <HeaderStyle CssClass="ms-wikieditthird" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="G2OK" HeaderText="G2">
+                                <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
+                                <HeaderStyle CssClass="ms-wikieditthird" />
+                                </asp:BoundField>
+                            </Columns>
+                            <HeaderStyle CssClass="cabecalhoTabela" />
+                            <AlternatingRowStyle CssClass="linhaAlternadaTabela" />
+                        </asp:GridView>
+                    </td>
+                    <td style="WIDTH: 3px">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="1" rowspan="1" style="WIDTH: 292px">
+                        <asp:Label ID="lblStatus" runat="server" CssClass="lblstatus" Visible="False"></asp:Label>
+                    </td>
+                    <td style="WIDTH: 3px"></td>
+                </tr>
 <tr>
 <td style="WIDTH: 292px" colspan="1" rowspan="1">
 <asp:LinkButton id="LinkButton1" runat="server" CssClass="ms-toolbar" OnClick="lbtnVoltar_Click">

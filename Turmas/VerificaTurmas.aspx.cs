@@ -68,7 +68,8 @@ public partial class Pagina2 : System.Web.UI.Page
                 {
                     List<TurmaVerifica> turmas = new List<TurmaVerifica>();
                     int totalTurmas = listaTurma.Count;
-                    int totalOK = 0;
+                    int totalFalta = 0;
+                    int totalRecursosFalta = 0;
                     foreach (Turma t in listaTurma)
                     {
                         TurmaVerifica nova = new TurmaVerifica
@@ -84,11 +85,16 @@ public partial class Pagina2 : System.Web.UI.Page
                         if (verificaTurma(ref nova, t.Disciplina.G2))
                         {
                             turmas.Add(nova);
-                            totalOK++;
+                            totalFalta++;
+                            if (nova.RecursosOK == "NÃO")// && !nova.Disciplina.Categoria.Descricao.Contains("Teórica"))
+                                totalRecursosFalta++;
                         }
                     }
-                    double percPreench = totalOK / (double)totalTurmas * 100;
-                    lblPercentual.Text = "Percentual de preenchimento: " + percPreench + " (" + totalOK + " de " + totalTurmas + ")";
+                    double percPreench = (totalTurmas-totalFalta) / (double)totalTurmas;
+                    lblPercentual.Text = String.Format("Preenchimento geral: {0:P} (faltam {1} de {2})", percPreench, totalFalta, totalTurmas);
+//                    lblPercentual.Text = "Percentual de preenchimento: " + percPreench + " (" + totalFalta + " de " + totalTurmas + ")";
+                    double percRecursos = (totalTurmas - totalRecursosFalta) / (double)totalTurmas;
+                    lblPercentualRecursos.Text = String.Format("Solicitações de recursos: {0:P} (faltam {1} de {2})", percRecursos, totalRecursosFalta, totalTurmas);
 
                     grvListaTurmas.RowDataBound += grvListaTurmas_RowDataBound;
                     grvListaTurmas.DataSource = turmas;

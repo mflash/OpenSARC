@@ -86,7 +86,7 @@ public partial class Pagina2 : System.Web.UI.Page
                         {
                             turmas.Add(nova);
                             totalFalta++;
-                            if (nova.RecursosOK == "NÃO")// && !nova.Disciplina.Categoria.Descricao.Contains("Teórica"))
+                            if (nova.RecursosOK == "NÃO" && !nova.Disciplina.Categoria.Descricao.Contains("Teórica"))
                                 totalRecursosFalta++;
                         }
                     }
@@ -94,7 +94,7 @@ public partial class Pagina2 : System.Web.UI.Page
                     lblPercentual.Text = String.Format("Preenchimento geral: {0:P} (faltam {1} de {2})", percPreench, totalFalta, totalTurmas);
 //                    lblPercentual.Text = "Percentual de preenchimento: " + percPreench + " (" + totalFalta + " de " + totalTurmas + ")";
                     double percRecursos = (totalTurmas - totalRecursosFalta) / (double)totalTurmas;
-                    lblPercentualRecursos.Text = String.Format("Solicitações de recursos: {0:P} (faltam {1} de {2})", percRecursos, totalRecursosFalta, totalTurmas);
+                    lblPercentualRecursos.Text = String.Format("Solicitações de recursos (excluindo teóricas): {0:P} (faltam {1} de {2})", percRecursos, totalRecursosFalta, totalTurmas);
 
                     grvListaTurmas.RowDataBound += grvListaTurmas_RowDataBound;
                     grvListaTurmas.DataSource = turmas;

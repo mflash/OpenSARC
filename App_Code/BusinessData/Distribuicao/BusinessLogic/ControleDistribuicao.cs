@@ -8,12 +8,14 @@ using System.Diagnostics;
 //using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Net;
 using System.Web.Security;
+using System.Web;
+using System.Web.UI;
 
 namespace BusinessData.Distribuicao.BusinessLogic
 {
     public class ControleDistribuicao
     {
-        public void DistribuirRecursos(int ano, int semestre)
+        public void DistribuirRecursos(int ano, int semestre, bool simula)
         {
            ControleCalendario calendarios = new ControleCalendario();
            ControleRequisicoes controleRequisicoes = new ControleRequisicoes();
@@ -39,7 +41,7 @@ namespace BusinessData.Distribuicao.BusinessLogic
                 foreach (CategoriaRecurso cat in calAtual.Categorias)
                 {
                     //Inicializa os dados
-                    Debug.WriteLine("  Categoria: " + cat.Descricao);
+                    //Debug.WriteLine("  Categoria: " + cat.Descricao);
                     foreach (TurmaDistribuicao turma in calAtual.Turmas)
                     {
                         satTurmas[turma].Atendimentos = 0;
@@ -77,13 +79,13 @@ namespace BusinessData.Distribuicao.BusinessLogic
                         satTurmas[req.Turma].Prioridade = prioridadeAux / soma;
                     }
 
-                    Debug.WriteLine("*** PROCESSAMENTO DOS DIAS ***");
+                    //Debug.WriteLine("*** PROCESSAMENTO DOS DIAS ***");
                     int totalDias = calAtual.Dias.Count;
                     int curDia = 1;
                     foreach (Dia dia in calAtual.Dias)
                     {
-                        if(curDia++ % 30 == 0)
-                            Debug.WriteLine(">>> Dia: " + dia.Data);
+                        //if(curDia++ % 30 == 0)
+                        //    Debug.WriteLine(">>> Dia: " + dia.Data);
                         foreach (Horarios.HorariosPUCRS horario in dia.Horarios)
                         {
                             //Debug.WriteLine("Horario: " + horario.ToString());
@@ -114,7 +116,7 @@ namespace BusinessData.Distribuicao.BusinessLogic
                                         rec.EntidadeRecurso.Id == bloqueia2)
                                     {
                                         // Não podemos utilizá-lo!
-                                        Debug.WriteLine("!!! Recurso " + rec.EntidadeRecurso.Descricao + " bloqueado por dependência");
+                                        //Debug.WriteLine("!!! Recurso " + rec.EntidadeRecurso.Descricao + " bloqueado por dependência");
                                         bloqueado = true;
                                         break;
                                     }
@@ -263,13 +265,22 @@ namespace BusinessData.Distribuicao.BusinessLogic
                         else if(aloc.Evento != null)
                             aux = aloc.Evento.Descricao + "("+aloc.Evento.Responsavel+")";
                         
-                        Debug.WriteLine(" Alocando: "+aloc.Data.ToShortDateString()+
-                            " "+aloc.Horario.ToString()+" - "+aux);
-                        //controleAlocacoes.UpdateAlocacao(aloc);
+                        //Debug.WriteLine(" Alocando: "+aloc.Data.ToShortDateString()+
+                        //    " "+aloc.Horario.ToString()+" - "+aux);
+                        // Se não está simulando, aloca recurso
+                        if(!simula)
+                            controleAlocacoes.UpdateAlocacao(aloc);
                     }
                 }
             }
-            return;
+
+            // Salva as requisições para exibir estatísticas no final
+            HttpContext.Current.Session["ReqResult"] = calAtual.Requisicoes;
+
+            // Se está simulando, não há mais nada a fazer
+            if (simula)
+                return;
+
             BusinessData.BusinessLogic.RequisicoesBO cReq = new BusinessData.BusinessLogic.RequisicoesBO();
             foreach (Requisicao req in calAtual.Requisicoes)
             {

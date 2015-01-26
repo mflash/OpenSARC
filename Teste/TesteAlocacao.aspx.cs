@@ -25,7 +25,7 @@ public partial class Teste_TesteEvento : System.Web.UI.Page
     protected void btnInserir_Click(object sender, EventArgs e)
     {
         ControleDistribuicao distrib = new ControleDistribuicao();
-        distrib.DistribuirRecursos(2050, 2);
+        distrib.DistribuirRecursos(2050, 2, true);
         //    try
     //    {
             

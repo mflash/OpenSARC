@@ -68,13 +68,15 @@ public partial class Admin_ControleEstados : System.Web.UI.Page
                 {
                     btnAbrirSolicitacaoRecursos.Enabled = false;
                     btnIniciarSemestre.Text = "Liberar Acesso";
-                    btnIniciarSemestre.Enabled = true; 
+                    btnIniciarSemestre.Enabled = true;
+                    checkSimula.Enabled = false; // já foram distribuídos, não pode mais simular
                 }
                 else
                 {
                     btnAbrirSolicitacaoRecursos.Enabled = true;
                     btnIniciarSemestre.Text = "Iniciar Semestre";
                     btnIniciarSemestre.Enabled = true;
+                    checkSimula.Enabled = true; // Ainda não foram distribuídos, é possível simular
                 }
                 btnFecharAcesso.Enabled = false;
                 break;
@@ -86,19 +88,21 @@ public partial class Admin_ControleEstados : System.Web.UI.Page
                 btnAbrirSolicitacaoRecursos.Enabled = false;
                 btnFecharAcesso.Enabled = true;
                 btnIniciarSemestre.Enabled = false;
+                checkSimula.Enabled = false; // já foram distribuídos, não pode mais simular
                 break;
         }
     }
     protected void btnIniciarSemestre_Click(object sender, EventArgs e)
     {
+        bool simula = checkSimula.Checked;
         if(!controladorConfig.IsRecursosDistribuidos((Calendario)Session["Calendario"]))
         {
-            btnIniciarSemestre.Enabled = false;
+            if(!simula) btnIniciarSemestre.Enabled = false;
             lock (Session.SyncRoot)
             {
                 Session["Complete"] = false;
             }
-            IniciarThread();
+            IniciarThread(simula);
         }
         else
         {
@@ -110,25 +114,25 @@ public partial class Admin_ControleEstados : System.Web.UI.Page
 
     //Controle de Threads
 
-    private void IniciarThread()
+    private void IniciarThread(bool simula)
     {
         //Thread td = new Thread(new ParameterizedThreadStart(DistribuirRecursos));
         //td.Priority = ThreadPriority.Lowest;
         //td.Start((Calendario)Session["Calendario"]);
-		DistribuirRecursos((Calendario)Session["Calendario"]);
+		DistribuirRecursos((Calendario)Session["Calendario"], simula);
         Response.Redirect("Results.aspx");
     }
 
-    private void DistribuirRecursos(object calendario)
+    private void DistribuirRecursos(object calendario, bool simula)
     {
         Calendario cal = (Calendario)calendario;
-        cDistr.DistribuirRecursos(cal.Ano, cal.Semestre);
+        cDistr.DistribuirRecursos(cal.Ano, cal.Semestre, simula);
         lock (Session.SyncRoot)
         {
             Session["Complete"] = true;
         }
         //lblResultado.Text = "Distribuição Concluída!";
-        AlterarEstadoParaDistribuido();
+        if(!simula) AlterarEstadoParaDistribuido();
     }
 
     private void AlterarEstadoParaDistribuido()

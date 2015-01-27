@@ -72,23 +72,32 @@ public partial class Admin_Results : System.Web.UI.Page
             {
                 Guid id = req.Turma.EntidadeTurma.Id;
                 string atual = req.Turma.EntidadeTurma.Id + req.Dia.Data.ToShortDateString() + req.Horario;
-                // Se a turma estiver no dicionário (todas devem estar) e o horário
+                // Se a turma estiver no dicionário (todas devem estar) e a turma+dia+horário
                 // do último recurso atendido não for o mesmo, conta essa requisição
                 // como válida
-                if (satTurmas.ContainsKey(id) && !atual.Equals(ant))
+                if (satTurmas.ContainsKey(id))// && !atual.Equals(ant))
                 {
-                    //if (req.Turma.EntidadeTurma.Disciplina.Nome.Contains("Interface") &&
-                    //  req.Turma.EntidadeTurma.Professor.Nome.Contains("Campos"))
-                    //    Debug.WriteLine(req.Prioridade + ": " + req.Dia.Data.ToShortDateString() + " " +
-                    //        " - " + req.Horario + " - " +
-                    //        req.CategoriaRecurso.Descricao + " - " + req.EstaAtendido);
+                    /*
+                    if (req.Turma.EntidadeTurma.Disciplina.Nome.Contains("Nome da Disciplina") &&
+                      req.Turma.EntidadeTurma.Professor.Nome.Contains("Nome do Professor"))
+                    {
+                        Debug.WriteLine(req.Prioridade + ": " + req.Dia.Data.ToShortDateString() + " " +
+                            " - " + req.Horario + " - " +
+                            req.CategoriaRecurso.Descricao + " - " + req.EstaAtendido);
+                        Debug.WriteLine("   atual: " + atual);
+                        Debug.WriteLine("   ant:   " + ant);
+                    }
+                     */
 
-                    satTurmas[id].Pedidos++;
+                    if(!atual.Equals(ant))
+                       satTurmas[id].Pedidos++;                    
                     if (req.EstaAtendido)
                     {
                         satTurmas[id].Atendimentos++;
-                        ant = req.Turma.EntidadeTurma.Id + req.Dia.Data.ToShortDateString() + req.Horario;
+//                        if (atual.Equals(ant))
+//                            satTurmas[id].Pedidos--;
                     }
+                    ant = req.Turma.EntidadeTurma.Id + req.Dia.Data.ToShortDateString() + req.Horario;
                 }
             }
 

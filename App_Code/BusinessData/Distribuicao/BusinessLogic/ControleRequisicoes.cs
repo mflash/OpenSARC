@@ -13,7 +13,6 @@ namespace BusinessData.Distribuicao.BusinessLogic
             ColecaoRequisicoes colAux = new ColecaoRequisicoes();
             BusinessData.BusinessLogic.RequisicoesBO controleRequisicoes = new BusinessData.BusinessLogic.RequisicoesBO();
 
-
             ICollection<BusinessData.Entities.Requisicao> requisicoes = controleRequisicoes.GetRequisicoesPorCalendario(cal);
 
             Requisicao aux;

@@ -51,7 +51,7 @@ public partial class Admin_Results : System.Web.UI.Page
         else
         {
             //            pnlAguarde.Visible = false;
-            lblStatus.Text = "Recursos distribuidos com sucesso!";
+            lblStatus.Text = "Recursos distribuidos com sucesso (N/S = recursos não solicitados)";
             lblStatus.Visible = true;
             lbtnVoltar.Visible = true;
 
@@ -115,6 +115,16 @@ public partial class Admin_Results : System.Web.UI.Page
                     satisfDouble = atend / (double)pedidos;
                     satisf = String.Format("{0:P}", satisfDouble);
                 }
+                bool dadosOK = t.EntidadeTurma.Disciplina.Categoria.Descricao.Contains("Teórica") ||
+                            t.EntidadeTurma.Disciplina.Categoria.Descricao.Contains("PPG") ||
+                            t.EntidadeTurma.Curso.Nome.Contains("PPG") ||
+                            t.EntidadeTurma.Curso.Nome.StartsWith("Física");
+
+                // Recursos não foram solicitados para essa turma, mas deveriam ter sido
+                if(!dadosOK && pedidos == 0) {
+                    satisfDouble = 0;
+                    satisf = "N/S";
+                }
 
                 listaTurmas.Add(new TurmaRelat
                 {
@@ -144,7 +154,9 @@ public partial class Admin_Results : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            double satisf = double.Parse(e.Row.Cells[8].Text.Replace("%", "")) / 100;
+            double satisf = 0;
+            if(e.Row.Cells[8].Text != "N/S")
+                satisf = double.Parse(e.Row.Cells[8].Text.Replace("%", "")) / 100;
             //            double satisf = Double.Parse(e.Row.Cells[1].Text);
             if (satisf >= 0.8)
                 e.Row.Cells[8].ForeColor = System.Drawing.Color.Green;

@@ -93,7 +93,8 @@ public partial class Pagina2 : System.Web.UI.Page
                         // "teorica" representa turmas teóricas ou de algum pós
                         bool teorica = nova.Disciplina.Categoria.Descricao.Contains("Teórica") ||
                             nova.Disciplina.Categoria.Descricao.Contains("PPG") ||
-                            nova.Curso.Nome.Contains("PPG");
+                            nova.Curso.Nome.Contains("PPG") ||
+                            nova.Curso.Nome.StartsWith("Física");
 
                         // Se a turma não é "teórica", ela deveria solicitar recursos
                         if (!teorica)

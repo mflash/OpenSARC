@@ -33,11 +33,17 @@ namespace BusinessData.Distribuicao.BusinessLogic
             {
                 satTurmas.Add(t, new SatisfacaoTurma(t));
             }
-            
+
+            int maxPri = 0;
+            foreach(Requisicao r in calAtual.Requisicoes)
+                if(r.Prioridade > maxPri)
+                    maxPri = r.Prioridade;
+
+            Debug.WriteLine("Prioridade máxima: " + maxPri);
             //Para cada prioridade de requisicao
-            for (int prioridadePedidos = 1; prioridadePedidos <= calAtual.Categorias.Count; prioridadePedidos++)
+            for (int prioridadePedidos = 1; prioridadePedidos <= maxPri; /*calAtual.Categorias.Count*/ prioridadePedidos++)
             {
-                Debug.WriteLine("Prioridade: " + prioridadePedidos + " de "+calAtual.Categorias.Count);
+                Debug.WriteLine("Prioridade: " + prioridadePedidos + " de "+maxPri);//calAtual.Categorias.Count);
                 foreach (CategoriaRecurso cat in calAtual.Categorias)
                 {
                     //Inicializa os dados

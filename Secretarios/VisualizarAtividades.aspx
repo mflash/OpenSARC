@@ -24,15 +24,6 @@
     <br />
     <asp:HiddenField ID="hdfIdsSelecionados" runat="server" />
     <asp:HiddenField ID="hdfIdCalendario" runat="server" />
-    <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana" 
-        Font-Size="8pt" Height="600px" Width="100%">
-        <LocalReport ReportPath="Secretarios\Report.rdlc">
-            <DataSources>
-                <rsweb:ReportDataSource DataSourceId="ObjectDataSource2" 
-                    Name="SARCFACINDataSet_CriaRelatorioAtividades" />
-            </DataSources>
-        </LocalReport>
-    </rsweb:ReportViewer>
     <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" 
         OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" 
         TypeName="BusinessData.Reports.SARCFACINDataSetTableAdapters.CriaRelatorioAtividadesTableAdapter">

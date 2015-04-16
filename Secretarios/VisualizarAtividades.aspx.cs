@@ -23,7 +23,7 @@ public partial class Secretarios_VisualizarAtividades : System.Web.UI.Page
     {
         hdfIdsSelecionados.Value = GetSelectedIDs();   
         //GridView1.DataSource =  adap.GetData(GetSelectedIDs(), ((Calendario)Session["Calendario"]).Id);
-        ReportViewer1.LocalReport.Refresh();       
+        //ReportViewer1.LocalReport.Refresh();       
         
     }
 

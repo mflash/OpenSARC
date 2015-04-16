@@ -178,12 +178,26 @@ namespace BusinessData.DataAccess
 
             Recurso aux;
             List<Recurso> listaRecursos = new List<Recurso>();
+            List<Recurso> alocados = GetRecursosAlocados(data, horarioPUCRS);
             try
             {
                 using(IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
                     while(leitor.Read())
                     {
+                        Guid recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
+                        // Verifica se algum dos recursos alocados bloqueia este recurso
+                        bool block = false;
+                        foreach (Recurso alocado in alocados)
+                            // Em caso positivo, nao insere este na lista de disponiveis
+                            if (alocado.Bloqueia1 == recursoId || alocado.Bloqueia2 == recursoId)
+                            {
+                                //Debug.WriteLine("Bloqueado: " + recursoId + " por " + alocado.Descricao);
+                                block = true;
+                                break;
+                            }
+                        if (block) continue;
+
                         aux = new Recurso();
                         CategoriaRecurso catRec = new CategoriaRecurso(categoriaRecursoId, leitor.GetString(leitor.GetOrdinal("CategoriaRecursoDescricao")));
                         Faculdade facul = Faculdade.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("FaculdadeId")), leitor.GetString(leitor.GetOrdinal("FaculdadeNome")));                       
@@ -192,7 +206,7 @@ namespace BusinessData.DataAccess
                         aux.EstaDisponivel = leitor.GetBoolean(leitor.GetOrdinal("RecursoEstaDisponivel"));
                         List<HorarioBloqueado> listaHB = this.GetHorarioBloqueadoByRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")));
                         aux.HorariosBloqueados = listaHB;
-                        aux.Id = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
+                        aux.Id = recursoId; // leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
                         aux.Vinculo = facul;
 
                         listaRecursos.Add(aux);

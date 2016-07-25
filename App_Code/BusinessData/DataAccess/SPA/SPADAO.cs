@@ -80,6 +80,7 @@ namespace BusinessData.DataAccess.SPA
                         string numero = leitor.GetString(leitor.GetOrdinal("TURMA"));
                         int num = Convert.ToInt32(numero.Substring(0, 3));
                         string datahora = leitor.GetValue(leitor.GetOrdinal("HORARIO")).ToString();
+                        datahora = datahora.Replace("EF", "EX");
                         string codigoCurso;
                         string disciplinaCodigo;
                         string matriculaProfessor;

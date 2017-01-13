@@ -26,7 +26,7 @@ CodeFile="ListaProfessores.aspx.cs" Inherits="Professores_ListaProfessores" Titl
 <TD>
 <asp:GridView id="grvListaProfessores" 
 runat="server" AutoGenerateColumns="False" Width="636px" AllowSorting="True" DataKeyNames="Id"
- OnRowDeleting="grvListaProfessores_RowDeleting" OnRowEditing="grvListaProfessores_RowEditing">
+ OnRowDeleting="grvListaProfessores_RowDeleting" OnRowEditing="grvListaProfessores_RowEditing" AlternatingRowStyle-BackColor="#E0E0E0">
  <Columns>
 <asp:BoundField DataField="Id" Visible="False" HeaderText="Id"></asp:BoundField>
 <asp:BoundField DataField="Matricula" HeaderText="Matr&#237;cula">

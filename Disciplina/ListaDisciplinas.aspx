@@ -22,14 +22,14 @@ CodeFile="ListaDisciplinas.aspx.cs" Inherits="Disciplina_ListaDisciplinas" Title
 <tr>
 <td > 
 <asp:GridView id="grvListaDisciplinas" 
-runat="server" DataKeyNames="cod" OnRowEditing="grvListaDisciplinas_RowEditing" Width="497px"
- AutoGenerateColumns="False" OnRowDeleting="grvListaDisciplinas_RowDeleting">
+runat="server" DataKeyNames="cod" OnRowEditing="grvListaDisciplinas_RowEditing" Width="600px"
+ AutoGenerateColumns="False" OnRowDeleting="grvListaDisciplinas_RowDeleting" AlternatingRowStyle-BackColor="#E0E0E0">
  <Columns>
 <asp:BoundField DataField="cod" HeaderText="C&#243;digo">
 </asp:BoundField>
 <asp:BoundField DataField="cred" HeaderText="Cr&#233;ditos">
 </asp:BoundField>
-<asp:BoundField DataField="nome" HeaderText="Nome">
+<asp:BoundField DataField="nome" HeaderText="Nome"><ItemStyle width="200px" />
 </asp:BoundField>
 <asp:BoundField DataField="G2PorExtenso" HeaderText="G2">
 </asp:BoundField>

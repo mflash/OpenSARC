@@ -39,7 +39,7 @@ public partial class Pagina6 : System.Web.UI.Page
         {
             Calendario cal = (Calendario)Session["Calendario"];
             ddlDisciplina.DataSource = discBO.GetDisciplinas(cal);
-            ddlDisciplina.DataTextField = "Nome";
+            ddlDisciplina.DataTextField = "NomeCodCred";
             ddlDisciplina.DataValueField = "Cod";
             ddlDisciplina.DataBind();
         }

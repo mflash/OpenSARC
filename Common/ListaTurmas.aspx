@@ -21,7 +21,7 @@
         <ContentTemplate>
 &nbsp;<table style="WIDTH: 514px; HEIGHT: 71px" align="left"><tbody><tr><td style="WIDTH: 292px">
 <asp:GridView id="grvListaTurmas" runat="server" Width="720px" 
-AutoGenerateColumns="False" DataKeyNames="Id" AllowSorting="True"><Columns>
+AutoGenerateColumns="False" DataKeyNames="Id" AllowSorting="True" AlternatingRowStyle-BackColor="#E0E0E0"><Columns>
 <asp:BoundField DataField="Id" Visible="False" HeaderText="ID">
 <ControlStyle Width="100px"></ControlStyle>
 
@@ -32,17 +32,10 @@ AutoGenerateColumns="False" DataKeyNames="Id" AllowSorting="True"><Columns>
 <asp:BoundField DataField="Numero" HeaderText="N&#250;mero">
 <ItemStyle CssClass="ms-toolbar"></ItemStyle>
 
-<HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
-</asp:BoundField>
-<asp:BoundField DataField="Calendario" HeaderText="Calend&#225;rio">
-<ControlStyle Width="200px"></ControlStyle>
-
-<ItemStyle CssClass="ms-toolbar"></ItemStyle>
-
 <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Left"></HeaderStyle>
 </asp:BoundField>
-<asp:BoundField DataField="Disciplina" HeaderText="Disciplina">
-<ItemStyle CssClass="ms-toolbar"></ItemStyle>
+<asp:BoundField DataField="Disciplina.NomeCodCred" HeaderText="Disciplina">
+<ItemStyle Width="250px" CssClass="ms-toolbar"></ItemStyle>
 
     <ControlStyle Width="120px" />
 

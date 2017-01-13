@@ -93,7 +93,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 						// TODO: retirar assim que possível!
 						if(cat.Descricao.IndexOf("Outras Unidades") != -1)
 							facin = false;
-						lblTitulo.Text = listaAulas[0].TurmaId.Disciplina.Nome + " - Turma " + listaAulas[0].TurmaId.Numero;//+ " " + facin;
+						lblTitulo.Text = listaAulas[0].TurmaId.Disciplina.NomeCodCred + " - Turma " + listaAulas[0].TurmaId.Numero;//+ " " + facin;
 						Session["facin"] = facin;
 						
 						dgAulas.DataSource = listaAulas;                        

@@ -130,7 +130,7 @@
                      Width="100%" 
                      HorizontalAlign="Center"  
                      OnItemDataBound="dgAlocacoes_ItemDataBound"
-                     Visible="False" >
+                     Visible="False" AlternatingItemStyle-BackColor="#E0E0E0">
         
             <ItemStyle CssClass="ms-toolbar"  HorizontalAlign="Center"/>
             <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Center" />

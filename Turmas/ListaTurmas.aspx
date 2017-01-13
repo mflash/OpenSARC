@@ -23,7 +23,7 @@
 <asp:GridView id="grvListaTurmas" runat="server" Width="781px" 
 AutoGenerateColumns="False" OnRowDeleting="grvListaTurmas_RowDeleting" 
                     OnRowEditing="grvListaTurmas_RowEditing" DataKeyNames="Id" 
-                    AllowSorting="True" >
+                    AllowSorting="True" AlternatingRowStyle-BackColor="#E0E0E0">
                     <Columns>
 <asp:BoundField DataField="Id" Visible="False" HeaderText="ID">
 <ControlStyle Width="100px"></ControlStyle>
@@ -39,7 +39,11 @@ AutoGenerateColumns="False" OnRowDeleting="grvListaTurmas_RowDeleting"
 </asp:BoundField>
 <asp:BoundField DataField="Calendario" HeaderText="Calend&#225;rio">
 <ControlStyle Width="200px"></ControlStyle>
+<ItemStyle CssClass="ms-toolbar"></ItemStyle>
 
+<HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Left"></HeaderStyle>
+</asp:BoundField>
+<asp:BoundField DataField="Disciplina.CodCred" HeaderText="Cod+Cred">
 <ItemStyle CssClass="ms-toolbar"></ItemStyle>
 
 <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Left"></HeaderStyle>

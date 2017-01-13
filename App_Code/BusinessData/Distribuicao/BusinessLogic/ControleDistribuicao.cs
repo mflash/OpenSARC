@@ -47,7 +47,7 @@ namespace BusinessData.Distribuicao.BusinessLogic
                 foreach (CategoriaRecurso cat in calAtual.Categorias)
                 {
                     //Inicializa os dados
-                    //Debug.WriteLine("  Categoria: " + cat.Descricao);
+                    Debug.WriteLine("\n\n **************** Categoria: " + cat.Descricao+"\n\n");
                     foreach (TurmaDistribuicao turma in calAtual.Turmas)
                     {
                         satTurmas[turma].Atendimentos = 0;
@@ -55,14 +55,14 @@ namespace BusinessData.Distribuicao.BusinessLogic
                         satTurmas[turma].Prioridade = 0;
                     }
 
-//                    Debug.WriteLine("Obtendo requisições para categoria e prioridade...");
+                    Debug.WriteLine("Obtendo requisições para categoria e prioridade...");
                     requisicoes = calAtual.Requisicoes.GetRequisicoes(prioridadePedidos, cat, calAtual.Dias);
 
                     soma = 0.0;
                     double prioridadeAux = 0.0;
                     List<double> listaPrioridadesAux = new List<double>();
 
-  //                  Debug.WriteLine("Calculando total de requisições para as turmas...");
+                    Debug.WriteLine("Calculando total de requisições para as turmas...");
                     //Calcula o numero de requisicoes para as turmas
                     foreach (Requisicao req in requisicoes)
                     {
@@ -78,23 +78,23 @@ namespace BusinessData.Distribuicao.BusinessLogic
 
                     //Normaliza as prioridades entre categorias de disciplina e categorias de recurso atual para
                     //um total de 100%
-    //                Debug.WriteLine("Normalizando prioridades...");
+                    Debug.WriteLine("Normalizando prioridades...");
                     foreach (Requisicao req in requisicoes)
                     {
                         prioridadeAux = req.Turma.EntidadeTurma.Disciplina.Categoria.Prioridades[req.CategoriaRecurso.EntidadeCategoria];
                         satTurmas[req.Turma].Prioridade = prioridadeAux / soma;
                     }
 
-                    //Debug.WriteLine("*** PROCESSAMENTO DOS DIAS ***");
+                    Debug.WriteLine("*** PROCESSAMENTO DOS DIAS ***");
                     int totalDias = calAtual.Dias.Count;
                     int curDia = 1;
                     foreach (Dia dia in calAtual.Dias)
                     {
                         //if(curDia++ % 30 == 0)
-                        //    Debug.WriteLine(">>> Dia: " + dia.Data);
+                            Debug.WriteLine(">>> Dia: " + dia.Data);
                         foreach (Horarios.HorariosPUCRS horario in dia.Horarios)
                         {
-                            //Debug.WriteLine("Horario: " + horario.ToString());
+                            Debug.WriteLine("Horario: " + horario.ToString());
                             // Todos os recursos disponíveis nesta categoria, dia e horário
                             //Debug.WriteLine("   Obtendo recursos disponíveis (sem filtrar)");
                             List<Recurso> auxRecursosDisponiveis = cat.GetRecursosDisponiveis(dia.Data, horario.ToString());
@@ -271,8 +271,8 @@ namespace BusinessData.Distribuicao.BusinessLogic
                         else if(aloc.Evento != null)
                             aux = aloc.Evento.Descricao + "("+aloc.Evento.Responsavel+")";
                         
-                        //Debug.WriteLine(" Alocando: "+aloc.Data.ToShortDateString()+
-                        //    " "+aloc.Horario.ToString()+" - "+aux);
+                        Debug.WriteLine(" Alocando: "+aloc.Data.ToShortDateString()+
+                            " "+aloc.Horario.ToString()+" - "+aux);
                         // Se não está simulando, aloca recurso
                         if(!simula)
                             controleAlocacoes.UpdateAlocacao(aloc);

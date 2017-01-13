@@ -153,7 +153,7 @@ public partial class Pagina2 : System.Web.UI.Page
 
     void SetRowColor(GridViewRow row)
     {
-        for (int pos = 6; pos <= 10; pos++)
+        for (int pos = 7; pos <= 11; pos++)
             if (row.Cells[pos].Text == "OK" || row.Cells[pos].Text == "N/A")
                 row.Cells[pos].ForeColor = System.Drawing.Color.Green;
             else

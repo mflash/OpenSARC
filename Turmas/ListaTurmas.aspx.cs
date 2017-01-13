@@ -32,7 +32,7 @@ public partial class Pagina2 : System.Web.UI.Page
                 }
                 else
                 {
-                    grvListaTurmas.DataSource = listaTurma;
+                    grvListaTurmas.DataSource = listaTurma;                   
                     grvListaTurmas.DataBind();
                 }
             }

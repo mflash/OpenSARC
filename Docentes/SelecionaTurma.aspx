@@ -159,21 +159,27 @@
         OnRowEditing="grvListaTurmas_RowEditing" >
           <Columns>
                 <asp:BoundField HeaderText="Id" DataField="Id" Visible="false">
-                </asp:BoundField>
+                </asp:BoundField>                                
                 
-                <asp:BoundField HeaderText="Curso" DataField="Curso" >
-                <ControlStyle Width="100px"></ControlStyle>
+                <asp:BoundField HeaderText="CodCred" DataField="Disciplina.CodCred">
+                <ControlStyle Width="80px"></ControlStyle>
                 <ItemStyle CssClass="ms-toolbar"></ItemStyle>
                 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
                 </asp:BoundField>
-                
+
                 <asp:BoundField HeaderText="Disciplina" DataField="Disciplina">
-                <ControlStyle Width="100px"></ControlStyle>
+                <ControlStyle Width="120px"></ControlStyle>
                 <ItemStyle CssClass="ms-toolbar"></ItemStyle>
                 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
                 </asp:BoundField>
                 
                 <asp:BoundField HeaderText="Turma" DataField="Numero">
+                <ControlStyle Width="100px"></ControlStyle>
+                <ItemStyle CssClass="ms-toolbar"></ItemStyle>
+                <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
+                </asp:BoundField>
+
+                <asp:BoundField HeaderText="Curso" DataField="Curso" >
                 <ControlStyle Width="100px"></ControlStyle>
                 <ItemStyle CssClass="ms-toolbar"></ItemStyle>
                 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>

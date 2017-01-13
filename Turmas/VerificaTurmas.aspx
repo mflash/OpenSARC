@@ -18,8 +18,8 @@
         <ContentTemplate>            
             <br />
 <asp:Label ID="lblPercentualRecursos" runat="server" CssClass="UserSectionTitle" Text="Percentual de solicitações de recursos: "></asp:Label><br />
-&nbsp;<table style="WIDTH: 806px; HEIGHT: 71px" align="left"><tbody><tr><td style="WIDTH: 292px">
-<asp:GridView id="grvListaTurmas" runat="server" Width="781px" 
+&nbsp;<table style="WIDTH: 906px; HEIGHT: 71px" align="left"><tbody><tr><td style="WIDTH: 292px">
+<asp:GridView id="grvListaTurmas" runat="server" Width="900px" 
 AutoGenerateColumns="False" DataKeyNames="Id" 
                     AllowSorting="True" >
                     <Columns>
@@ -35,7 +35,11 @@ AutoGenerateColumns="False" DataKeyNames="Id"
 
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
+<asp:BoundField DataField="Disciplina.CodCred" HeaderText="Cod + Cred">
+<ItemStyle Width="80px" CssClass="ms-toolbar" HorizontalAlign="Center"></ItemStyle>
 
+<HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
+</asp:BoundField>
 <asp:BoundField DataField="Disciplina" HeaderText="Disciplina">
 <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center"></ItemStyle>
 
@@ -104,7 +108,7 @@ AutoGenerateColumns="False" DataKeyNames="Id"
 </tr>
                 <tr>
                     <td colspan="1" style="WIDTH: 292px">
-                        <asp:GridView ID="grvListaTurmasGeral" runat="server" AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="Id" Width="781px">
+                        <asp:GridView ID="grvListaTurmasGeral" runat="server" AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="Id" Width="900px">
                             <Columns>
                                 <asp:BoundField DataField="Id" HeaderText="ID" Visible="False">
                                 <ControlStyle Width="100px" />
@@ -113,6 +117,10 @@ AutoGenerateColumns="False" DataKeyNames="Id"
                                 </asp:BoundField>
                                 <asp:BoundField DataField="Numero" HeaderText="Número">
                                 <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
+                                <HeaderStyle CssClass="ms-wikieditthird" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="Disciplina.CodCred" HeaderText="Cod + Cred">
+                                <ItemStyle Width="80px" CssClass="ms-toolbar" HorizontalAlign="Center" />
                                 <HeaderStyle CssClass="ms-wikieditthird" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="Disciplina" HeaderText="Disciplina">

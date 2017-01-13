@@ -26,6 +26,16 @@ namespace BusinessData.Entities
             set { cred = value; }
         }
 
+        public String CodCred
+        {
+            get { return String.Format("{0}-{1:D2}", Cod, Cred); }
+        }
+
+        public String NomeCodCred
+        {
+            get { return CodCred + " - " + Nome; }
+        }
+
         public string Nome
         {
             get { return nome; }

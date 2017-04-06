@@ -43,7 +43,7 @@ public partial class Pagina2 : System.Web.UI.Page
         if (!IsPostBack)
         {
             aulaBo = new AulaBO();
-            reqBo = new RequisicoesBO();            
+            reqBo = new RequisicoesBO();           
             try
             {
                 cal = (Calendario)Session["Calendario"];

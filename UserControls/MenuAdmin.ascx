@@ -135,7 +135,12 @@
                 <span style="color: #3966bf">Listar</span></a>
                 <a href="../Alocacoes/GerenciarRecursos.aspx" class="ms-SPLink">
                 <span style="color: #3966bf">Gerenciar Recursos</span>
-                </a></td>
+                </a>
+            <a href="../Recursos/ConsultaAcessos.aspx" class="ms-SPLink">
+                <span style="color: #3966bf">Consultar Acessos (Linux)</span>
+                </a>
+        </td>
+
                 
     </tr>
     <tr>

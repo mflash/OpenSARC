@@ -193,7 +193,10 @@
                 </tr>
             </table>
             <a href="../ImportarDados/Importar.aspx" class="ms-SPLink">
-                <span style="color: #3966bf">Importar</span></a></td>
+                <span style="color: #3966bf">Importar</span></a><br />
+            <a href="../ImportarDados/ImportarXLSX.aspx" class="ms-SPLink">
+                <span style="color: #3966bf">Importar XLSX</span></a>
+        </td>
     </tr>
     <tr>
         <td style="height: 19px; width: 341px;">

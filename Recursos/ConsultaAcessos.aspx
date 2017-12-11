@@ -15,21 +15,24 @@
 </asp:BoundField>
 
 <asp:HyperLinkField
+            DataNavigateUrlFields="Host"
+            DataNavigateUrlFormatString="~\Recursos/ConsultaAcessos.aspx?Host={0}"
+            DataTextField="Host"
+            HeaderText="Host"
+            SortExpression="Host" />
+
+<asp:HyperLinkField
             DataNavigateUrlFields="Sala"
             DataNavigateUrlFormatString="~\Recursos/ConsultaAcessos.aspx?Sala={0}"
             DataTextField="Sala"
             HeaderText="Sala"
             SortExpression="Sala" />
 
-<asp:BoundField DataField="Ok" HeaderText="Válidos">
+<asp:BoundField DataField="Pos" HeaderText="Pos">
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
 
-<asp:BoundField DataField="Fail" HeaderText="Inválidos">
-<HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
-</asp:BoundField>
-
-<asp:BoundField DataField="PercOK" HeaderText="% Sucesso">
+<asp:BoundField DataField="Fail" HeaderText="Falhas">
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
 
@@ -98,6 +101,9 @@
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
 
+<asp:BoundField DataField="Mac" HeaderText="MAC">
+<HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
+</asp:BoundField>
 </Columns>
 
                             <FooterStyle BackColor="#CCCCCC" />

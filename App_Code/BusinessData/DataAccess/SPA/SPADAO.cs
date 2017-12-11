@@ -7,6 +7,7 @@ using System.Data;
 using BusinessData.Entities;
 using System.IO;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace BusinessData.DataAccess.SPA
 {
@@ -159,13 +160,13 @@ namespace BusinessData.DataAccess.SPA
                     Entities.Calendario cal = caDAO.GetCalendario(calendarioId);
 
                     while (leitor.Read())
-                    {
-
-                        string numero = leitor.GetString(leitor.GetOrdinal("TURMA"));
-                        int num = Convert.ToInt32(numero.Substring(0, 3));
-
+                    {                        
                         //Disciplina - Turmas.CODIGO
                         string disciplinaCodigo = leitor.GetValue(leitor.GetOrdinal("CODIGO")).ToString();
+                        Debug.WriteLine("Cod: "+disciplinaCodigo);
+                        string numero = leitor.GetString(leitor.GetOrdinal("TURMA"));
+                        Debug.WriteLine("Turma:"+ numero);
+                        int num = Convert.ToInt32(numero.Substring(0, 3));
 
                         Entities.Disciplina discip = disciDAO.GetDisciplina(disciplinaCodigo, calendarioId);
 

@@ -23,7 +23,8 @@
                                 RememberMeText="Lembrar de mim da próxima vez." UserNameLabelText="Usuário:"
                                 UserNameRequiredErrorMessage="Informe usuário." Width="852px" DestinationPageUrl="~/Default/SelecionarCalendario.aspx"
                                 OnLoginError="loginEntrada_LoginError" TitleText="Informe seu usuário e senha no OpenSARC:"
-                                AccessKey="M" BorderPadding="3" EnableTheming="True" Orientation="Horizontal">
+                                AccessKey="M" BorderPadding="3" EnableTheming="True" Orientation="Horizontal"
+                                OnAuthenticate="loginEntrada_Authenticate">
                                 <TitleTextStyle CssClass="ms-toolbar" Font-Bold="False" Font-Names="Verdana" Font-Size="12px" />
                                 <CheckBoxStyle CssClass="ms-toolbar" />
                                 <InstructionTextStyle CssClass="ms-toolbar" />

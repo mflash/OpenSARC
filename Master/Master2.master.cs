@@ -129,6 +129,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
     
     protected void lsLogin_LoggedOut(object sender, EventArgs e)
     {
+        FormsAuthentication.SignOut();
         Session.Clear();
         Response.Redirect("~/Default/Default.aspx");
     }

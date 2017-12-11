@@ -12,6 +12,7 @@ using System.Security;
 using System.Net.Mail;
 using System.Configuration;
 using System.Web.Security;
+using System.Diagnostics;
 
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
@@ -91,11 +92,35 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 					
                     lblTitulo.Text = d.Cod + "-" + d.Cred + " " + d.Nome + ", turma " + listaAulas[0].TurmaId.Numero;//" "+facin;
 
+                    int horasRelogioEsperadas = d.Cred * 15;
+                    int durPeriodo = 50;
+                    if (listaAulas[0].Hora == "JK" || listaAulas[0].Hora == "LM" || listaAulas[0].Hora == "NP"
+                       || listaAulas[1].Hora == "JK" || listaAulas[1].Hora == "LM" || listaAulas[1].Hora == "NP"
+                       || listaAulas[1].Hora == "JK" || listaAulas[2].Hora == "LM" || listaAulas[2].Hora == "NP")
+                        durPeriodo = 45;
+
+                    int totalAulas = 0;
+                    bool emG2 = false;
                     foreach (Aula a in listaAulas)
                     {
                         categorias.Add(a.CategoriaAtividade.Id);
                         argb.Add(a.CategoriaAtividade.Cor);
+                        if (a.Data >= cal.InicioG2)
+                        {
+                            //if (a.CategoriaAtividade.Descricao == "Prova de G2")                            
+                            //Debug.WriteLine("EM G2");
+                            emG2 = true;
+                        }
+                        if (!a.DescricaoAtividade.StartsWith("Feriado") && !a.DescricaoAtividade.StartsWith("Suspensão")
+                            && a.CategoriaAtividade.Descricao != "Prova de G2" && !emG2)
+                            totalAulas++;                                                
                     }
+                    int totalEfetivo = totalAulas * 2 * durPeriodo / 60;
+                    int complementares = horasRelogioEsperadas - totalEfetivo;
+                    if (complementares < 0) complementares = 0;
+                    lblHoras.Text = "Duração do período: " + durPeriodo + " - Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + totalEfetivo
+                        + " - <b>Previsão de horas extraclasse: " + (horasRelogioEsperadas - totalEfetivo) + "</B>";
+
                     dgAulas.DataSource = listaAulas;
                     dgAulas.DataBind();
 
@@ -591,7 +616,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         AtualizaComponentes(grid, dataString, horario, aulaString);
 
-        Dictionary<Guid, Tuple<Guid, Guid>> blocks = (Dictionary<Guid, Tuple<Guid, Guid>>)Application["blocks"];
+        Dictionary<Guid, Tuple<Guid, Guid>> blocks = (Dictionary<Guid, Tuple<Guid, Guid>>)Session["blocks"];
         Tuple<Guid, Guid> bloqueados = null;
         Guid key = new Guid(ddlDisponiveis.SelectedValue);
         // Remove recurso do dropdown de seleção
@@ -630,7 +655,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         /* Nao e' mais necessario: o DAO foi alterado para verificar isso (GetRecursosDisponiveis)
          *
         // Verifica se algum outro recurso depende deste, em caso positivo aloca também
-        Dictionary<Guid, Tuple<Guid, Guid>> blocks = (Dictionary<Guid, Tuple<Guid, Guid>>) Application["blocks"];
+        Dictionary<Guid, Tuple<Guid, Guid>> blocks = (Dictionary<Guid, Tuple<Guid, Guid>>) Session["blocks"];
         Tuple<Guid, Guid> bloqueados = blocks[recId];
         if(bloqueados.Item1 != Guid.Empty)
         {

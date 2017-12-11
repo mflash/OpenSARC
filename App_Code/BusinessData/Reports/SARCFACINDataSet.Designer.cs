@@ -10,6 +10,7 @@
 
 #pragma warning disable 1591
 
+using System.Diagnostics;
 namespace BusinessData.Reports {
     
     
@@ -953,6 +954,7 @@ namespace BusinessData.Reports.SARCFACINDataSetTableAdapters {
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
         public virtual SARCFACINDataSet.CriaRelatorioAtividadesDataTable GetData(string IDsCategorias, global::System.Nullable<global::System.Guid> IDCalendario) {
+            Debug.WriteLine("GetData: " + IDsCategorias + " - " + IDCalendario);
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((IDsCategorias == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;

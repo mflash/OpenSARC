@@ -94,7 +94,7 @@ public partial class Pagina2 : System.Web.UI.Page
                         bool teorica = nova.Disciplina.Categoria.Descricao.Contains("Teórica") ||
                             nova.Disciplina.Categoria.Descricao.Contains("PPG") ||
                             nova.Curso.Nome.Contains("PPG") ||
-                            nova.Curso.Nome.StartsWith("Física");
+                            nova.Disciplina.Categoria.Descricao == "AGES";
 
                         // Se a turma não é "teórica", ela deveria solicitar recursos
                         if (!teorica)

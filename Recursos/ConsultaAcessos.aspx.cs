@@ -12,10 +12,10 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
 {
     public class Acessos
     {
+        public string Host { get; set; }
         public string Sala { get; set; }
-        public int Ok { get; set; }
+        public string Pos { get; set; }
         public int Fail { get; set; }
-        public float PercOK { get; set; }
     }
 
     public class Details
@@ -27,6 +27,7 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
         public string Pos { get; set; }
         public string OkUser { get; set; }
         public string OkHost { get; set; }
+        public string Mac { get; set; }
     }
 
     private List<Acessos> listaAcessos;
@@ -34,8 +35,11 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
 
     private SortedDictionary<string, Acessos> dic;
 
+    private String db;
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        db = "SARCFACINcs"; // Session["DB"].ToString();
         string sala = Request.QueryString["sala"];
         string user = Request.QueryString["user"];
         string host = Request.QueryString["host"];
@@ -75,8 +79,8 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
 
     private List<Details> PreencheDetalhesSala(string sala)
     {
-        List<Details> lista = new List<Details>();
-        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SARCFACINcs"].ConnectionString))
+        List<Details> lista = new List<Details>();        
+        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings[db].ConnectionString))
         {
             con.Open();
 
@@ -126,7 +130,7 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
     private List<Details> PreencheDetalhesUser(string user)
     {
         List<Details> lista = new List<Details>();
-        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SARCFACINcs"].ConnectionString))
+        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings[db].ConnectionString))
         {
             con.Open();
 
@@ -177,11 +181,11 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
     private List<Details> PreencheDetalhesHost(string host)
     {
         List<Details> lista = new List<Details>();
-        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SARCFACINcs"].ConnectionString))
+        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings[db].ConnectionString))
         {
             con.Open();
 
-            string sql = "select salas.sala, usuario, datahora, salas.pos, status "
+            string sql = "select salas.sala, usuario, datahora, salas.pos, status, mac "
                        + "from Loggin logg "
                        + "inner join Loggin_Salas salas on logg.host = salas.host "
                        + "where logg.host = '" + host + "' and datalength(usuario) > 0 "
@@ -198,6 +202,9 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
                         DateTime datahora = reader.GetDateTime(2);
                         string pos = reader.GetString(3);
                         string status = reader.GetString(4);
+                        string mac = "?";
+                        if(!reader.IsDBNull(5))
+                            mac = reader.GetString(5);
                         Details temp = new Details
                         {
                             Host = host,
@@ -205,7 +212,8 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
                             User = user,
                             Datahora = datahora,
                             Pos = pos,
-                            OkHost = status
+                            OkHost = status,
+                            Mac = mac
                         };
                         /*if (!VerificaAcesso(temp))
                             temp.Ok = "NÃO";
@@ -232,7 +240,7 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
     private void VerificaAcesso(Details aux)
     {
         string d = aux.Datahora.ToString("yyyy-MM-dd hh:mm:ss");
-        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SARCFACINcs"].ConnectionString))
+        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings[db].ConnectionString))
         {
             con.Open();            
             string sql = "select host, usuario, datahora from Loggin where status = 'OK' and host = '" + aux.Host + "' and datahora > '" + d+"'";
@@ -258,7 +266,7 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
             }
         }
 
-        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SARCFACINcs"].ConnectionString))
+        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings[db].ConnectionString))
         {
             con.Open();            
             string sql = "select host, usuario, datahora from Loggin where status = 'OK' and usuario = '" + aux.User + "' and datahora > '" + d + "'";
@@ -290,32 +298,46 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
     {
         List<Acessos> lista = new List<Acessos>();
         dic = new SortedDictionary<string, Acessos>();
-        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SARCFACINcs"].ConnectionString))
+        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings[db].ConnectionString))
         {
             con.Open();
 
-            string sql = "select salas.sala, count(logg.host) "
-                       + "from Loggin logg "
-                       + "inner join Loggin_Salas salas on logg.host = salas.host "
-                       + "where status = 'OK' "
-                       + "group by salas.sala";
+            string sql = @"SELECT logg.host, sala, pos, COUNT(logg.host) totalfail
+FROM Loggin_Salas salas
+inner join Loggin logg
+on salas.host = logg.host
+where status='FAIL'
+and datalength(logg.usuario) > 0
+and logg.datahora > DATEADD(day,-7,DATEADD(day,datediff(day,0,getdate()),0))
+and logg.host not in (
+select host from Loggin
+where datahora > logg.datahora
+and status = 'OK'
+)
+group by logg.host, sala, pos
+order by totalfail desc";
+
             using (SqlCommand selCommand = new SqlCommand(sql, con))
-            {                
+            {
                 try
-                {                    
+                {
                     SqlDataReader reader = selCommand.ExecuteReader();
-                    while(reader.Read()) {                       
-                        string sala = reader.GetString(0);
-                        int totalSala = reader.GetInt32(1);
+                    while (reader.Read())
+                    {
+                        string host = reader.GetString(0);
+                        string sala = reader.GetString(1);
+                        string pos = reader.GetString(2);
+                        int totalSala = reader.GetInt32(3);
                         Acessos temp = new Acessos
                         {
-                            Sala = sala,                            
-                            Ok = totalSala 
+                            Host = host,
+                            Sala = sala,
+                            Pos = pos,
+                            Fail = totalSala
                         };
-                        //lista.Add(temp);
-                        dic.Add(sala, temp);
-                    }                    
-                    //Response.Redirect("login.aspx");
+                        lista.Add(temp);
+                        //dic.Add(sala, temp);
+                    }
                     reader.Close();
                 }
                 catch (Exception ex)
@@ -327,51 +349,7 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
                     //con.Close();                    
                 }
             }
-
-            // Verifica FAIL
-            sql = "select salas.sala, count(logg.host) "
-                + "from Loggin logg "
-                + "inner join Loggin_Salas salas on logg.host = salas.host "
-                + "where status = 'FAIL' "
-                + "and datalength(logg.usuario) > 0"
-                + "group by salas.sala";
-            using (SqlCommand selCommand = new SqlCommand(sql, con))
-            {
-                try
-                {
-                    SqlDataReader reader = selCommand.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        string sala = reader.GetString(0);
-                        int totalSala = reader.GetInt32(1);
-                        Acessos temp = dic[sala];
-                        temp.Fail = totalSala;
-                        //Acessos temp = new Acessos
-                        //{
-                        //    Sala = sala,
-                        //    PercOK = totalSala
-                        //};
-                        //lista.Add(temp);
-                    }
-                    //Response.Redirect("login.aspx");
-                }
-                catch (Exception ex)
-                {
-                    Response.Write("<b>something really bad happened.....Please try again</b> ");
-                }
-                finally
-                {
-                    con.Close();
-                }
-            }
+            return lista;
         }
-        foreach (var keyval in dic)
-        {
-            Acessos temp = keyval.Value;
-            temp.PercOK = ((float)temp.Ok / (temp.Fail+temp.Ok)) * 100;
-            lista.Add(temp);
-            //Debug.WriteLine(keyval.Value.Sala + " - " + keyval.Value.Fail);
-        }
-        return lista;
     }
 }

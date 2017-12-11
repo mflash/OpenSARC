@@ -84,6 +84,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
 
     <div align="left" class="ms-menutoolbar" style="width: 100%; height: 14px">
         <asp:Label ID="lblTitulo" runat="server" CssClass="ms-WPTitle" Text="Aulas"></asp:Label>
+        <asp:Label ID="lblHoras" runat="server" CssClass="ms-toolbar" Text="Horas-relogio:"></asp:Label>
     </div>
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>

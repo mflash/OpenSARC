@@ -6,6 +6,7 @@ using System.Data.Common;
 using BusinessData.Entities;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System.Data.SqlClient;
+using System.Web;
 
 namespace BusinessData.DataAccess
 {
@@ -620,7 +621,47 @@ namespace BusinessData.DataAccess
             }
         }
 
+        internal List<Alocacao> GetAlocacoes(DateTime data)
+        {
+            List<Alocacao> lista = new List<Alocacao>();
 
+            DbCommand cmd = baseDados.GetStoredProcCommand("AlocacaoSelectTodos");
+            baseDados.AddInParameter(cmd, "@Data", DbType.DateTime, data);
+
+            AulasDAO aulaDAO = new AulasDAO();
+            EventoDAO eventoDAO = new EventoDAO();
+            RecursosDAO recDAO = new RecursosDAO();
+
+            using (IDataReader leitor = baseDados.ExecuteReader(cmd))
+            {
+                Alocacao aloc;
+
+                while (leitor.Read())
+                {
+                    Aula au = null;
+                    Recurso rec = null;
+                    Evento evento = null;
+
+                    rec = recDAO.GetRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")));
+
+                    Guid? aulaId = leitor["AulaId"] as Guid?;
+                    if (aulaId.HasValue)
+                        au = aulaDAO.GetAula(leitor.GetGuid(leitor.GetOrdinal("AulaId")));
+
+                    Guid? eventoId = leitor["EventoId"] as Guid?;
+                    if (eventoId.HasValue)
+                        evento = eventoDAO.GetEvento(leitor.GetGuid(leitor.GetOrdinal("EventoId")));
+
+                    string hora = (string)leitor["Horario"];
+
+                    aloc = new Alocacao(rec, data, hora, au, evento);
+
+                    lista.Add(aloc);
+                }
+            }
+            return lista;
+            
+        }
     }
     
 }

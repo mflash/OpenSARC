@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.Common;
 using BusinessData.Entities;
 using System.Data.SqlClient;
+using System.Web;
 
 namespace BusinessData.DataAccess
 {
@@ -90,7 +91,7 @@ namespace BusinessData.DataAccess
             }
             catch (SqlException ex)
             {
-                throw new DataAccessException(ErroMessages.GetErrorMessage(ex.Number), ex);
+                throw new DataAccessException(ErroMessages.GetErrorMessage(ex.Number)+":"+disciplina.Cod, ex);
             }
         }
 
@@ -107,7 +108,7 @@ namespace BusinessData.DataAccess
             }
             catch (SqlException ex)
             {
-                throw new DataAccessException(ErroMessages.GetErrorMessage(ex.Number), ex);
+                throw new DataAccessException(ErroMessages.GetErrorMessage(ex.Number)+":"+disciplina.Cod, ex);
             }
         }
 

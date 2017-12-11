@@ -14,6 +14,9 @@ using BusinessData.Entities;
 using BusinessData.DataAccess;
 using BusinessData.Distribuicao.Entities;
 using System.Collections.Generic;
+using System.Net;
+using System.Text;
+using System.IO;
 
 public partial class _Default : System.Web.UI.Page
 {
@@ -42,8 +45,8 @@ public partial class _Default : System.Web.UI.Page
             }
 
             //ACESSOS
-            Acesso a = new Acesso(Guid.NewGuid(), DateTime.Now);
-            AcessosBO controladorAcessos = new AcessosBO();
+            //Acesso a = new Acesso(Guid.NewGuid(), DateTime.Now);
+            //AcessosBO controladorAcessos = new AcessosBO();
             //controladorAcessos.InserirAcesso(a);
 			
 			
@@ -62,9 +65,39 @@ public partial class _Default : System.Web.UI.Page
         
     }
 
+    protected bool moodleAuth(String user, String pass)
+    {
+        var request = WebRequest.Create("https://moodle.pucrs.br/cead/sarcauth.php");
+        // All teacher user ids start with "10"... but in Moodle we use the old format (without "10")
+        if (user.StartsWith("10"))
+            user = user.Substring(2);
+        var postdata = "user="+user+"&pass="+pass;
+        var data = Encoding.ASCII.GetBytes(postdata);
+        request.Method = "POST";
+        request.ContentType = "application/x-www-form-urlencoded";
+        request.ContentLength = data.Length;
+
+        using (var stream = request.GetRequestStream())
+        {
+            stream.Write(data, 0, data.Length);
+        }
+
+        var response = request.GetResponse();
+        var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+        if (responseString == "FAIL\n")
+            return false;
+        return true;
+    }
+
     protected void loginEntrada_Authenticate(object sender, AuthenticateEventArgs e)
     {
-
+        if(Membership.ValidateUser(loginEntrada.UserName, loginEntrada.Password))
+            e.Authenticated = true;
+        else if (moodleAuth(loginEntrada.UserName, loginEntrada.Password))
+            e.Authenticated = true;
+        else
+            e.Authenticated = false;
     }
 
     protected void dgAlocacoes_ItemDataBound(object sender, DataGridItemEventArgs e)

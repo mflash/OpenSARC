@@ -20,8 +20,10 @@ public partial class Secretarios_VisualizarAtividades : System.Web.UI.Page
         }
     }
     protected void btnGerarRelatorio_Click(object sender, EventArgs e)
-    {
-        hdfIdsSelecionados.Value = GetSelectedIDs();   
+    {                
+        hdfIdsSelecionados.Value = GetSelectedIDs();        
+        hdfIdCalendario.Value = (Session["Calendario"] as Calendario).Id.ToString();
+        GridView1.DataBind();
         //GridView1.DataSource =  adap.GetData(GetSelectedIDs(), ((Calendario)Session["Calendario"]).Id);
         //ReportViewer1.LocalReport.Refresh();       
         

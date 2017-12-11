@@ -25,11 +25,6 @@ CodeFile="Cadastro.aspx.cs" Inherits="Cursos_Cadastro" Title="Sistema de Alocaçã
 <asp:TextBox id="txtCodigo" runat="server" Width="200px"></asp:TextBox>
     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtCodigo"
         CssClass="ms-toolbar" ErrorMessage="Digite um código.">*</asp:RequiredFieldValidator>
-    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" 
-    runat="server" ControlToValidate="txtCodigo"
-        CssClass="ms-toolbar" 
-        ErrorMessage="O código deve ser preenchido apenas com números, no formato 12/1." 
-        ValidationExpression="[0-9]+/[0-9]+">*</asp:RegularExpressionValidator>
         </TD>
         </TR>
         <TR>

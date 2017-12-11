@@ -208,5 +208,17 @@ namespace BusinessData.BusinessLogic
                 throw ex;
             }
         }
+
+        internal List<Alocacao> GetAlocacoes(DateTime data)
+        {
+            try
+            {
+                return dao.GetAlocacoes(data);
+            }
+            catch (DataAccessException ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -32,10 +32,15 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     private int cont = 1;
     Guid dummyGuid = new Guid();
 	bool facin = true;
+    bool semRecursos = true;
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        string cs = ConfigurationManager.ConnectionStrings["SARCFACINcs"].ConnectionString;
+        if (cs.Contains("SARCDEV"))
+        {
+            semRecursos = false;            
+        }
         try
         {
             if (!IsPostBack)
@@ -169,11 +174,22 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             }
 
             DropDownList ddlCategoriaRecurso = (DropDownList)e.Item.FindControl("ddlRecurso");
-            ddlCategoriaRecurso.SelectedIndex = 0;
-            ddlCategoriaRecurso.DataSource = listCatRecursos;
-            ddlCategoriaRecurso.DataTextField = "Descricao";
-            ddlCategoriaRecurso.DataValueField = "Id";
-            ddlCategoriaRecurso.DataBind();
+            if (semRecursos)
+            {
+                dgAulas.Columns[8].Visible = false;
+                dgAulas.Columns[9].Visible = false;
+                dgAulas.Columns[10].Visible = false;
+                //ddlCategoriaRecurso.Visible = false;
+                //lblRecursosSelecionados.Visible = false;
+            }
+            else
+            {
+                ddlCategoriaRecurso.SelectedIndex = 0;
+                ddlCategoriaRecurso.DataSource = listCatRecursos;
+                ddlCategoriaRecurso.DataTextField = "Descricao";
+                ddlCategoriaRecurso.DataValueField = "Id";
+                ddlCategoriaRecurso.DataBind();
+            }
 
 //            ddlCategoriaRecurso.Items.Remove("Laboratório");
 

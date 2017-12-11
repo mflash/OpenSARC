@@ -14,19 +14,21 @@ public partial class Teste_Loggin : System.Web.UI.Page
         string host = Request["host"];
         string user = Request["user"];
         string status = Request["status"];
+        string mac = Request["mac"];
         DateTime datetime = DateTime.Now;
 
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SARCFACINcs"].ConnectionString))
         {
             con.Open();
 
-            string inse = "insert into Loggin (host, usuario, datahora, status) values(@h, @u, @d, @s)";
+            string inse = "insert into Loggin (host, usuario, datahora, status, mac) values(@h, @u, @d, @s, @m)";
             using (SqlCommand insertlog = new SqlCommand(inse, con))
             {
                 insertlog.Parameters.AddWithValue("@h", host);
                 insertlog.Parameters.AddWithValue("@u", user);
                 insertlog.Parameters.AddWithValue("@d", datetime);
                 insertlog.Parameters.AddWithValue("@s", status);
+                insertlog.Parameters.AddWithValue("@m", mac);
 
                 try
                 {

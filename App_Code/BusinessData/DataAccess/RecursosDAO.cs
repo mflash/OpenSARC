@@ -7,6 +7,7 @@ using System.Data.Common;
 using BusinessData.Entities;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Web;
 
 
 namespace BusinessData.DataAccess
@@ -23,7 +24,8 @@ namespace BusinessData.DataAccess
         {
             try
             {
-                baseDados = DatabaseFactory.CreateDatabase("SARCFACINcs");
+                String db = DatabaseSelect.Instance.DB;                
+                baseDados = DatabaseFactory.CreateDatabase(db);
             }
             catch (SqlException ex)
             {

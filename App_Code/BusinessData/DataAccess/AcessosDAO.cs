@@ -6,6 +6,7 @@ using Microsoft.Practices.EnterpriseLibrary.Data;
 using System.Data.SqlClient;
 using System.Data.Common;
 using System.Data;
+using System.Web;
 
 namespace BusinessData.DataAccess
 {
@@ -16,7 +17,7 @@ namespace BusinessData.DataAccess
         public AcessosDAO()
         {
             try
-            {
+            {                
                 baseDados = DatabaseFactory.CreateDatabase("SARCFACINcs");
             }
             catch (SqlException ex)

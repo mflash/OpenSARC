@@ -6,10 +6,12 @@ using System.Data.Common;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Practices.EnterpriseLibrary.Data;
+using System.Web;
+using System.Web.SessionState;
 
 namespace BusinessData.DataAccess
 {
-    public class TrocaDAO
+    public class TrocaDAO : IRequiresSessionState 
     {
         private Database baseDados;
 

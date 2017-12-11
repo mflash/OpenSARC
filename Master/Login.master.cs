@@ -15,7 +15,14 @@ using System.Collections.Generic;
 public partial class Master_MasterFacin : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
-    {
+    {        
+        String unit = "Faculdade de Informática";
+        string host = Request.Url.Host;
+        if (host == "ecplan.pucrs.br")
+            unit = "Escrita Criativa";
+        else if (host == "gsplan.pucrs.br")
+            unit = "Gastronomia";
+        lblLogin.Text = "Bem-vindo ao OpenSARC! versão: 20170728 - "+unit;
         /*
         if (Session["Calendario"] != null)
         {

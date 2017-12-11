@@ -120,7 +120,7 @@ namespace BusinessData.BusinessLogic
                     MembershipUser muser = Membership.GetUser(professor.Id);
                     try
                     {
-                        this.SendNewPessoa(muser, senha);
+                        //this.SendNewPessoa(muser, senha);
                     }
                     catch (Exception )
                     {

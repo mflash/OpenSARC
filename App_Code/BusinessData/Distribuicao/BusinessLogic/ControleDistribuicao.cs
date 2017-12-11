@@ -10,6 +10,7 @@ using System.Net;
 using System.Web.Security;
 using System.Web;
 using System.Web.UI;
+using BusinessData.BusinessLogic;
 
 namespace BusinessData.Distribuicao.BusinessLogic
 {
@@ -40,6 +41,15 @@ namespace BusinessData.Distribuicao.BusinessLogic
                     maxPri = r.Prioridade;
 
             Debug.WriteLine("Prioridade máxima: " + maxPri);
+
+            AlocacaoBO controleAloc = new AlocacaoBO();
+            List<BusinessData.Entities.Alocacao> todasAloc = controleAloc.GetAlocacoes(calAtual.InicioG1);
+            HashSet<String> indisponiveis = new HashSet<string>();
+            foreach(BusinessData.Entities.Alocacao aloc in todasAloc)
+            {
+                indisponiveis.Add(aloc.Data.ToString()+aloc.Horario.ToString()+aloc.Recurso.Descricao);
+            }
+            return;
             //Para cada prioridade de requisicao
             for (int prioridadePedidos = 1; prioridadePedidos <= maxPri; /*calAtual.Categorias.Count*/ prioridadePedidos++)
             {
@@ -94,9 +104,9 @@ namespace BusinessData.Distribuicao.BusinessLogic
                             Debug.WriteLine(">>> Dia: " + dia.Data);
                         foreach (Horarios.HorariosPUCRS horario in dia.Horarios)
                         {
-                            Debug.WriteLine("Horario: " + horario.ToString());
+                            //Debug.WriteLine("Horario: " + horario.ToString());
                             // Todos os recursos disponíveis nesta categoria, dia e horário
-                            //Debug.WriteLine("   Obtendo recursos disponíveis (sem filtrar)");
+                            //Debug.WriteLine("   Obtendo recursos disponíveis (sem filtrar)");                            
                             List<Recurso> auxRecursosDisponiveis = cat.GetRecursosDisponiveis(dia.Data, horario.ToString());
                             // Todas as requisições neste dia e horário
                             //Debug.WriteLine("   Obtendo requisições neste dia e horário...");

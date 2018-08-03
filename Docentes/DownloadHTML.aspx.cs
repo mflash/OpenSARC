@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using BusinessData.BusinessLogic;
 using BusinessData.Entities;
+using System.Text.RegularExpressions;
 
 public partial class Docentes_DownloadHTML : System.Web.UI.Page
 {
@@ -51,7 +52,7 @@ public partial class Docentes_DownloadHTML : System.Web.UI.Page
             }
             Turma turma = listaAulas[0].TurmaId;
             Disciplina disciplina = turma.Disciplina;
-            titulo = disciplina.Cod + "-"+disciplina.Cred + " " +disciplina.Nome + " (" + turma.Numero + ")";
+            titulo = disciplina.Cod + "-" + disciplina.Cred + " " + disciplina.Nome + " (" + turma.Numero + ") - " + Regex.Replace(turma.Sala, "32/A", "32");
 
             txtSaida.Write("<html>\n");
             txtSaida.Write("<head>\n</head>\n");

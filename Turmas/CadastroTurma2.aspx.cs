@@ -100,7 +100,7 @@ public partial class Pagina6 : System.Web.UI.Page
             if (!achou)
             {
                 int testaCreditos = Disciplina.GetNumeroDeCreditos(txtDataHora.Text);
-                if (testaCreditos == disc.Cred)
+                if (testaCreditos == disc.Cred || testaCreditos == disc.Cred+1)
                 {
                     string dh = txtDataHora.Text;
                     Turma t = Turma.NewTurma(numero, cal, disc, dh, prof, curso);

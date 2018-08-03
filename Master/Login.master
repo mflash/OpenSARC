@@ -85,7 +85,7 @@ function confirm_delete()
 		                        </td>
 	    	                    <td valign="top" class="ms-titlearea" style="height: 21px">
         <asp:Label ID="lblLogin" runat="server" CssClass="ms-WPTitle" 
-            Text="Bem-vindo ao OpenSARC! versão: 20170710 - Escrita Criativa"></asp:Label>
+            Text="Bem-vindo ao OpenSARC! versão: 20180109"></asp:Label>
 		                        </td>
 	                        </tr>
 	                    

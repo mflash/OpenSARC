@@ -196,6 +196,9 @@
                 <span style="color: #3966bf">Importar</span></a><br />
             <a href="../ImportarDados/ImportarXLSX.aspx" class="ms-SPLink">
                 <span style="color: #3966bf">Importar XLSX</span></a>
+            <a href="../ImportarDados/ImportarAcad.aspx" class="ms-SPLink">
+                <span style="color: #3966bf">Importar Acadêmico</span></a>
+            <br />
         </td>
     </tr>
     <tr>

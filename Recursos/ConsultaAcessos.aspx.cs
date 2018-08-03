@@ -28,12 +28,22 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
         public string OkUser { get; set; }
         public string OkHost { get; set; }
         public string Mac { get; set; }
+        public String Obs { get; set; }
+    }
+
+    public class Maquina
+    {
+        public string Mac { get; set; }
+        public string Sala { get; set; }
+        public string Host { get; set; }
+        public string Pos { get; set; }
     }
 
     private List<Acessos> listaAcessos;
     private List<Details> listaDetails;
 
     private SortedDictionary<string, Acessos> dic;
+    private SortedDictionary<string, Maquina> maquinas;
 
     private String db;
 
@@ -88,6 +98,7 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
                        + "from Loggin logg "
                        + "inner join Loggin_Salas salas on logg.host = salas.host "
                        + "where status = 'FAIL' and sala = '"+sala+"' and datalength(usuario) > 0 "
+                       + "and datahora > '2017-12-31' "
                        + "order by datahora desc";
             using (SqlCommand selCommand = new SqlCommand(sql, con))
             {
@@ -134,7 +145,7 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
         {
             con.Open();
 
-            string sql = "select logg.host, salas.sala, datahora, salas.pos, status from Loggin logg inner join Loggin_Salas salas on logg.host = salas.host where usuario = '"+user+"' order by datahora desc";
+            string sql = "select logg.host, salas.sala, datahora, salas.pos, status from Loggin logg inner join Loggin_Salas salas on logg.host = salas.host where usuario = '"+user+"' and datahora > '2017-12-31' order by datahora desc";
             using (SqlCommand selCommand = new SqlCommand(sql, con))
             {
                 try
@@ -189,6 +200,8 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
                        + "from Loggin logg "
                        + "inner join Loggin_Salas salas on logg.host = salas.host "
                        + "where logg.host = '" + host + "' and datalength(usuario) > 0 "
+                       + "and usuario <> 'gtitadm' "
+                       + "and datahora > '2017-12-31' "
                        + "order by datahora desc";
             using (SqlCommand selCommand = new SqlCommand(sql, con))
             {
@@ -205,6 +218,7 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
                         string mac = "?";
                         if(!reader.IsDBNull(5))
                             mac = reader.GetString(5);
+                        mac = mac.ToUpper();
                         Details temp = new Details
                         {
                             Host = host,
@@ -215,6 +229,20 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
                             OkHost = status,
                             Mac = mac
                         };
+                        if (maquinas.ContainsKey(mac))
+                        {
+                            Maquina maq = maquinas[mac];
+                            if (maq != null)
+                            {
+                                if (maq.Sala != sala || maq.Pos != pos)
+                                    temp.Obs = maq.Host + " - " + maq.Sala + " (" + maq.Pos + ")";
+                                else
+                                    temp.Obs = "";
+                            }
+                        }
+                        else
+                            temp.Obs = "No info";
+
                         /*if (!VerificaAcesso(temp))
                             temp.Ok = "NÃO";
                         else
@@ -298,6 +326,7 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
     {
         List<Acessos> lista = new List<Acessos>();
         dic = new SortedDictionary<string, Acessos>();
+        maquinas = new SortedDictionary<string, Maquina>();
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings[db].ConnectionString))
         {
             con.Open();
@@ -349,6 +378,42 @@ order by totalfail desc";
                     //con.Close();                    
                 }
             }
+
+            sql = @"select macaddr, host, sala, pos from Loggin_Salas where macaddr is not null";
+            using (SqlCommand selCommand = new SqlCommand(sql, con))
+            {
+                try
+                {
+                    SqlDataReader reader = selCommand.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        string mac = reader.GetString(0);
+                        string host = reader.GetString(1);
+                        string sala = reader.GetString(2);
+                        string pos = reader.GetString(3);
+                        Maquina temp = new Maquina
+                        {
+                            Mac = mac,
+                            Host = host,
+                            Sala = sala,
+                            Pos = pos
+                        };
+                        maquinas.Add(mac, temp);
+                        //lista.Add(temp);
+                        //dic.Add(sala, temp);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Response.Write("<b>something really bad happened.....Please try again</b> ");
+                }
+                finally
+                {
+                    //con.Close();                    
+                }
+            }
+
             return lista;
         }
     }

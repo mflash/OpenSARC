@@ -4402,3 +4402,5 @@ padding:0px;
     background-color:#fff;
     border:solid 1px #000;
 }
+
+.striped tr:nth-child(even) {background-color: #f2f2f2;}

@@ -60,8 +60,10 @@ namespace BusinessData.Entities
             set { curso = value; }
         }
 
+        public string Sala { get; set; }
+
         public Turma() { }
-        public Turma(Guid id,int num, Calendario calend, Disciplina disc, string dh, Professor prof, Curso curso)
+        public Turma(Guid id,int num, Calendario calend, Disciplina disc, string dh, Professor prof, Curso curso, string sala = "N/A")
         {
             Id = id;
             Numero = num;
@@ -70,11 +72,12 @@ namespace BusinessData.Entities
             DataHora = dh;
             Professor = prof;
             Curso = curso;
+            Sala = sala;
         }
 
-        public static Turma GetTurma(Guid id, int num, Calendario calend, Disciplina disc, string dh, Professor prof, Curso curso)
+        public static Turma GetTurma(Guid id, int num, Calendario calend, Disciplina disc, string dh, Professor prof, Curso curso, string sala="N/A")
         {
-            return new Turma(id,num, calend, disc, dh, prof, curso);
+            return new Turma(id,num, calend, disc, dh, prof, curso, sala);
         }
 
         /// <summary>
@@ -86,9 +89,9 @@ namespace BusinessData.Entities
         /// <param name="dh">DataHora</param>
         /// <param name="prof">Professor</param>
         /// <returns></returns>
-        public static Turma NewTurma(int numero, Calendario calendario, Disciplina disciplina, string dh, Professor prof, Curso curso)
+        public static Turma NewTurma(int numero, Calendario calendario, Disciplina disciplina, string dh, Professor prof, Curso curso, string sala = "N/A")
         {
-            return new Turma(Guid.NewGuid(),numero, calendario, disciplina, dh, prof, curso);
+            return new Turma(Guid.NewGuid(),numero, calendario, disciplina, dh, prof, curso, sala);
         }
 
         #region IEquatable<Turma> Members
@@ -113,5 +116,10 @@ namespace BusinessData.Entities
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return disciplina.Cod + numero;
+        }
     }
 }

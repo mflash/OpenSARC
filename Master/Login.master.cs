@@ -16,13 +16,16 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
     {        
-        String unit = "Faculdade de Informática";
+        String unit = "Escola Politécnica";
         string host = Request.Url.Host;
         if (host == "ecplan.pucrs.br")
             unit = "Escrita Criativa";
         else if (host == "gsplan.pucrs.br")
             unit = "Gastronomia";
-        lblLogin.Text = "Bem-vindo ao OpenSARC! versão: 20170728 - "+unit;
+
+        string buildDate = String.Format("{0}",
+            System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString());
+        lblLogin.Text = "Bem-vindo ao OpenSARC! versão: "+ buildDate +" - "+unit;
         /*
         if (Session["Calendario"] != null)
         {

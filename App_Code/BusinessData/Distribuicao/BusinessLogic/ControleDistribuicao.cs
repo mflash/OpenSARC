@@ -49,7 +49,7 @@ namespace BusinessData.Distribuicao.BusinessLogic
             {
                 indisponiveis.Add(aloc.Data.ToString()+aloc.Horario.ToString()+aloc.Recurso.Descricao);
             }
-            return;
+            //return;
             //Para cada prioridade de requisicao
             for (int prioridadePedidos = 1; prioridadePedidos <= maxPri; /*calAtual.Categorias.Count*/ prioridadePedidos++)
             {

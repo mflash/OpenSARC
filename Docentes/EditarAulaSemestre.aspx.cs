@@ -13,6 +13,7 @@ using System.Net.Mail;
 using System.Configuration;
 using System.Web.Security;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
@@ -89,8 +90,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 					if(cat.Descricao.IndexOf("Outras Unidades") != -1)
 							facin = false;
 					Session["facin"] = facin;
-					
-                    lblTitulo.Text = d.Cod + "-" + d.Cred + " " + d.Nome + ", turma " + listaAulas[0].TurmaId.Numero;//" "+facin;
+
+                    lblTitulo.Text = d.Cod + "-" + d.Cred + " " + d.Nome + ", turma " + listaAulas[0].TurmaId.Numero + " - " + Regex.Replace(listaAulas[0].TurmaId.Sala, "32/A", "32");//" "+facin;                    
 
                     int horasRelogioEsperadas = d.Cred * 15;
                     int durPeriodo = 50;
@@ -101,6 +102,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
                     int totalAulas = 0;
                     bool emG2 = false;
+                    bool haG2 = false;
+                    int totalFeriados = 0;
                     foreach (Aula a in listaAulas)
                     {
                         categorias.Add(a.CategoriaAtividade.Id);
@@ -111,18 +114,57 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                             //Debug.WriteLine("EM G2");
                             emG2 = true;
                         }
+                        if (a.DescricaoAtividade.StartsWith("Feriado") || a.DescricaoAtividade.StartsWith("Suspensão"))
+                            totalFeriados++;
+                        if (a.CategoriaAtividade.Descricao == "Prova de G2")
+                            haG2 = true;
                         if (!a.DescricaoAtividade.StartsWith("Feriado") && !a.DescricaoAtividade.StartsWith("Suspensão")
                             && a.CategoriaAtividade.Descricao != "Prova de G2" && !emG2)
                             totalAulas++;                                                
                     }
+                    // Contando mais uma aula por causa da G2 que pulamos antes
+                    if(haG2)
+                        totalAulas++;
                     int totalEfetivo = totalAulas * 2 * durPeriodo / 60;
                     int complementares = horasRelogioEsperadas - totalEfetivo;
                     if (complementares < 0) complementares = 0;
-                    lblHoras.Text = "Duração do período: " + durPeriodo + " - Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + totalEfetivo
-                        + " - <b>Previsão de horas extraclasse: " + (horasRelogioEsperadas - totalEfetivo) + "</B>";
+                    //lblHoras.Text = "Duração do período: " + durPeriodo + " - Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + totalEfetivo
+                    //    + " - <b>Previsão de horas extraclasse: " + (horasRelogioEsperadas - totalEfetivo) + "</B>";
+                    
+//                    int minutosEsperados = horasRelogioEsperadas * 60;
+                    int minutosFeriado = durPeriodo * totalFeriados * 2;
+                    int minutosEsperados = durPeriodo * 2 * 18 * d.Cred/2;
+                    int horasMinistradas = (minutosEsperados - minutosFeriado) / 60;
+                    int extraClasse = horasRelogioEsperadas - horasMinistradas;
+                    Debug.WriteLine("Minutos feriado: " + minutosFeriado);
+                    Debug.WriteLine("Minutos esperados: " + minutosEsperados);                    
+
+                    lblHoras.Text = "Duração do período: " + durPeriodo + " - Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + horasMinistradas
+                        + " - <b>Previsão de horas extraclasse: " + extraClasse + "</B>";
 
                     dgAulas.DataSource = listaAulas;
                     dgAulas.DataBind();
+
+
+                    if (Session["blocks"] == null)
+                    {
+                        //BusinessData.BusinessLogic.RecursosBO recursosBO = new BusinessData.BusinessLogic.RecursosBO();
+                        // Monta dicionário com bloqueio de recursos devido a uso de outros
+                        Dictionary<Guid, BusinessData.Entities.Recurso> todos = new Dictionary<Guid, BusinessData.Entities.Recurso>();
+                        Dictionary<Guid, Tuple<Guid, Guid>> blocks = new Dictionary<Guid, Tuple<Guid, Guid>>();
+                        List<BusinessData.Entities.Recurso> listRec = recursosBO.GetRecursos();
+                        foreach (BusinessData.Entities.Recurso r in listRec)
+                            todos.Add(r.Id, r);
+                        foreach (BusinessData.Entities.Recurso r in listRec)
+                        {
+                            if (r.Bloqueia1 != Guid.Empty || r.Bloqueia2 != Guid.Empty)
+                            {
+                                //System.Diagnostics.Debug.WriteLine("block: " + r.Id + " -> " + r.Bloqueia1 + ", " + r.Bloqueia2);
+                                blocks.Add(r.Id, new Tuple<Guid, Guid>(r.Bloqueia1, r.Bloqueia2));
+                            }
+                        }
+                        Session["blocks"] = blocks;
+                    }
 
                     // Monta dicionário com bloqueio de recursos devido a uso de outros
                     // Movido para Global.asax (Application_Start)

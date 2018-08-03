@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using BusinessData.DataAccess;
 using System.Drawing;
 using System.IO;
+using System.Text.RegularExpressions;
 
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
@@ -98,7 +99,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 						// TODO: retirar assim que possível!
 						if(cat.Descricao.IndexOf("Outras Unidades") != -1)
 							facin = false;
-						lblTitulo.Text = listaAulas[0].TurmaId.Disciplina.NomeCodCred + " - Turma " + listaAulas[0].TurmaId.Numero;//+ " " + facin;
+                        lblTitulo.Text = listaAulas[0].TurmaId.Disciplina.NomeCodCred + " - Turma " + listaAulas[0].TurmaId.Numero + " - " + Regex.Replace(listaAulas[0].TurmaId.Sala, "32/A", "32");
 						Session["facin"] = facin;
 						
 						dgAulas.DataSource = listaAulas;                        

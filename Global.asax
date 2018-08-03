@@ -53,7 +53,7 @@
 
     void Session_Start(object sender, EventArgs e) 
     {
-        // Code that runs when a new session is started
+        // Code that runs when a new session is started        
         DatabaseSelect();
         BusinessData.BusinessLogic.RecursosBO recursosBO = new BusinessData.BusinessLogic.RecursosBO();
         // Monta dicionário com bloqueio de recursos devido a uso de outros
@@ -71,6 +71,7 @@
             }
         }
         Session["blocks"] = blocks;
+        //System.Diagnostics.Debug.WriteLine("Blocks:"+todos.Count);
     }
 
     void Session_End(object sender, EventArgs e) 

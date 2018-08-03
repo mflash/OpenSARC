@@ -79,7 +79,9 @@ namespace BusinessData.DataAccess.SPA
                         Professor prof = null;
 
                         string numero = leitor.GetString(leitor.GetOrdinal("TURMA"));
-                        int num = Convert.ToInt32(numero.Substring(0, 3));
+                        int num = 1;
+                        if(numero.Length >= 3)
+                            num = Convert.ToInt32(numero.Substring(0, 3));
                         string datahora = leitor.GetValue(leitor.GetOrdinal("HORARIO")).ToString();
                         datahora = datahora.Replace("EF", "EX");
                         string codigoCurso;

@@ -104,6 +104,10 @@
 <asp:BoundField DataField="Mac" HeaderText="MAC">
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
+
+<asp:BoundField DataField="Obs" HeaderText="Obs">
+<HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
+</asp:BoundField>
 </Columns>
 
                             <FooterStyle BackColor="#CCCCCC" />

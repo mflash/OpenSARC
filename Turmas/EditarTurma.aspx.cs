@@ -100,7 +100,7 @@ public partial class Pagina6 : System.Web.UI.Page
                 
                 
                 int testaCreditos = Disciplina.GetNumeroDeCreditos(txtDataHora.Text);
-                if (testaCreditos == disc.Cred)
+                if (testaCreditos == disc.Cred || testaCreditos == disc.Cred+1)
                 {
                     turma.Disciplina = disc;
                     turma.Numero = Convert.ToInt32(txtNumero.Text);

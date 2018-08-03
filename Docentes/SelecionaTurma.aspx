@@ -202,9 +202,9 @@
             		
         </asp:GridView>
             <br />
-			<!--p>Obs: Conforme comunicado, as áreas antigas do Moodle serão automaticamente migradas para o novo semestre.<br/>
-			Se você não deseja manter as suas áreas, favor informar a <a href="mailto:coordacad.facin@pucrs.br">Coordenação Acadêmica</a>.</p!-->
-			<asp:Button Visible="true" cssclass="ms-toolbar" id="butMoodle" runat="server" OnClick="butMoodle_Click" Text="Clique aqui para solicitar a criação de áreas Moodle para as suas turmas"/>
+			<p><strong>Obs: Conforme comunicado, serão criadas/migradas as áreas Moodle para todas as disciplinas da Escola.<br/>
+            Se houver algum erro ou inconsistência nas suas disciplinas, entre em contato com recursos.politecnica@pucrs.br</strong></p>
+			<asp:Button Visible="false" cssclass="ms-toolbar" id="butMoodle" runat="server" OnClick="butMoodle_Click" Text="Clique aqui para solicitar a criação de áreas Moodle para as suas turmas"/>
             <br />
             
             <div align="left">

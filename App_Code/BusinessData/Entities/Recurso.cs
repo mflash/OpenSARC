@@ -8,11 +8,13 @@ namespace BusinessData.Entities
     {
         private Guid id;
         private string descricao;
+        private String abrev;
+        private char tipo;
         private Faculdade vinculo;
         private CategoriaRecurso categoria;
         private bool estaDisponivel;
         private Guid bloqueia1, bloqueia2; // guids do(s) recurso(s) que são bloqueados por este
-        private List<HorarioBloqueado> horariosBloqueados;
+        private List<HorarioBloqueado> horariosBloqueados;        
 
         public Recurso() {}
 
@@ -55,11 +57,17 @@ namespace BusinessData.Entities
         public Guid Bloqueia1 { get; set; }
         public Guid Bloqueia2 { get; set; }
 
-        private Recurso(Guid id, string descricao, Faculdade vinculo, CategoriaRecurso categoria, bool estaDisponivel, 
+        public String Abrev { get; set; }
+
+        public char Tipo { get; set; }
+
+        private Recurso(Guid id, string descricao, String abrev, char tipo, Faculdade vinculo, CategoriaRecurso categoria, bool estaDisponivel, 
             Guid bloq1, Guid bloq2, List<HorarioBloqueado> listaHB)
         {
             Id = id;
             Descricao = descricao;
+            Abrev = abrev;
+            Tipo = tipo;
             Vinculo = vinculo;
             Categoria = categoria;
             EstaDisponivel = estaDisponivel;
@@ -74,10 +82,10 @@ namespace BusinessData.Entities
         /// <param name="id">Id</param>
         /// <param name="nome">Nome</param>
         /// <returns></returns>
-        public static Recurso GetRecurso(Guid id, string descricao, Faculdade vinculo, CategoriaRecurso categoria, bool estaDisponivel,
+        public static Recurso GetRecurso(Guid id, string descricao, String abrev, char tipo, Faculdade vinculo, CategoriaRecurso categoria, bool estaDisponivel,
             Guid bloq1, Guid bloq2, List<HorarioBloqueado> listaHB)
         {
-            return new Recurso(id, descricao, vinculo, categoria, estaDisponivel, bloq1, bloq2, listaHB);
+            return new Recurso(id, descricao, abrev, tipo, vinculo, categoria, estaDisponivel, bloq1, bloq2, listaHB);
         }
 
         /// <summary>
@@ -85,9 +93,9 @@ namespace BusinessData.Entities
         /// </summary>
         /// <param name="nome">Nome do Recurso</param>
         /// <returns></returns>
-        public static Recurso NewRecurso(string descricao, Faculdade vinculo, CategoriaRecurso categoria, bool estaDisponivel, List<HorarioBloqueado> listaHB)
+        public static Recurso NewRecurso(string descricao, string abrev, char tipo, Faculdade vinculo, CategoriaRecurso categoria, bool estaDisponivel, List<HorarioBloqueado> listaHB)
         {
-            return new Recurso(Guid.NewGuid(), descricao, vinculo, categoria, estaDisponivel, Guid.NewGuid(), Guid.NewGuid(), listaHB);
+            return new Recurso(Guid.NewGuid(), descricao, abrev, tipo, vinculo, categoria, estaDisponivel, Guid.NewGuid(), Guid.NewGuid(), listaHB);
         }
 
         #region IComparable<Recurso> Members

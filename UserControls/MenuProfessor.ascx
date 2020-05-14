@@ -47,6 +47,8 @@
                     <span style="color: #3966bf">Visualizar Alocações</span></a>
                 <a href="../Common/ListaTurmas.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Listar Turmas</span></a>
+                <a href="../Alocacoes/nova_grade_2020.png" class="ms-SPLink" target="_blank">
+                    <span style="color: #3966bf">Nova grade de horários</span></a>
                </td>
         </tr>
 </table>

@@ -10,6 +10,13 @@ using System.Web.UI.WebControls;
 
 public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
 {
+    public class Resumo
+    {
+        public string Sala { get; set; }
+        public string Hosts { get; set; }
+        public int Fail { get; set; }
+    }
+
     public class Acessos
     {
         public string Host { get; set; }
@@ -39,28 +46,33 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
         public string Pos { get; set; }
     }
 
-    private List<Acessos> listaAcessos;
+    private List<Resumo> listaResumo;
     private List<Details> listaDetails;
 
-    private SortedDictionary<string, Acessos> dic;
+    private SortedDictionary<string, Resumo> dic;
     private SortedDictionary<string, Maquina> maquinas;
 
     private String db;
 
+    private String dataBase;
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        DateTime data = DateTime.Now;
+        dataBase = String.Format("{0}-{1}-{2}", data.Year, data.Month > 7 ? "8" : "1", 1);
+
         db = "SARCFACINcs"; // Session["DB"].ToString();
         string sala = Request.QueryString["sala"];
         string user = Request.QueryString["user"];
         string host = Request.QueryString["host"];
-        listaAcessos = PreencheAcessos();
-        grvAccessStats.DataSource = listaAcessos;
+        listaResumo = PreencheAcessos();
+        grvAccessStats.DataSource = listaResumo;
         grvAccessStats.DataBind();
         lblSala.Text = "";
 
         if(sala != null)
         {
-            lblSala.Text = "Sala: "+sala;
+            //lblSala.Text = "Sala: "+sala;
             listaDetails = PreencheDetalhesSala(sala);
             grvDetails.DataSource = listaDetails;
             grvDetails.DataBind();
@@ -98,7 +110,7 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
                        + "from Loggin logg "
                        + "inner join Loggin_Salas salas on logg.host = salas.host "
                        + "where status = 'FAIL' and sala = '"+sala+"' and datalength(usuario) > 0 "
-                       + "and datahora > '2017-12-31' "
+                       + "and datahora > '"+dataBase+"' "
                        + "order by datahora desc";
             using (SqlCommand selCommand = new SqlCommand(sql, con))
             {
@@ -145,7 +157,7 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
         {
             con.Open();
 
-            string sql = "select logg.host, salas.sala, datahora, salas.pos, status from Loggin logg inner join Loggin_Salas salas on logg.host = salas.host where usuario = '"+user+"' and datahora > '2017-12-31' order by datahora desc";
+            string sql = "select logg.host, salas.sala, datahora, salas.pos, status from Loggin logg inner join Loggin_Salas salas on logg.host = salas.host where usuario = '"+user+"' and datahora > '"+dataBase+"' order by datahora desc";
             using (SqlCommand selCommand = new SqlCommand(sql, con))
             {
                 try
@@ -201,7 +213,7 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
                        + "inner join Loggin_Salas salas on logg.host = salas.host "
                        + "where logg.host = '" + host + "' and datalength(usuario) > 0 "
                        + "and usuario <> 'gtitadm' "
-                       + "and datahora > '2017-12-31' "
+                       + "and datahora > '"+dataBase+"' "
                        + "order by datahora desc";
             using (SqlCommand selCommand = new SqlCommand(sql, con))
             {
@@ -322,10 +334,10 @@ public partial class Recursos_ConsultaAcessos : System.Web.UI.Page
     }
 
 
-    private List<Acessos> PreencheAcessos()
+    private List<Resumo> PreencheAcessos()
     {
         List<Acessos> lista = new List<Acessos>();
-        dic = new SortedDictionary<string, Acessos>();
+        dic = new SortedDictionary<string, Resumo>();
         maquinas = new SortedDictionary<string, Maquina>();
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings[db].ConnectionString))
         {
@@ -365,6 +377,20 @@ order by totalfail desc";
                             Fail = totalSala
                         };
                         lista.Add(temp);
+                        if (dic.ContainsKey(sala))
+                        {
+                            Resumo res = dic[sala];
+                            res.Fail += totalSala;
+                            res.Hosts += ", " + host + " (" + totalSala + ")";
+                        }
+                        else
+                        {
+                            Resumo res = new Resumo();
+                            res.Sala = sala;
+                            res.Fail = totalSala;
+                            res.Hosts = host + " (" + totalSala + ")";
+                            dic.Add(sala, res);
+                        }
                         //dic.Add(sala, temp);
                     }
                     reader.Close();
@@ -414,7 +440,7 @@ order by totalfail desc";
                 }
             }
 
-            return lista;
+            return new List<Resumo>(dic.Values).OrderByDescending(v => v.Fail).ToList<Resumo>();
         }
     }
 }

@@ -6,6 +6,7 @@
 <p>
     <asp:Button ID="butImportAcad" runat="server" Text="Iniciar" OnClick="butImportAcad_Click" />
 </p>
+    <asp:CheckBox ID="checkSimul" runat="server" Text="Simular apenas" />
     <div id="output" runat="server" style="font-size: 14px;">
     </div>
 <p>

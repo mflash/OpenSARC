@@ -7,6 +7,7 @@
     <asp:Button ID="butImportXLSX" runat="server" OnClick="butImportXLSX_Click" Text="Iniciar" />
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <asp:Button ID="butClearDB" runat="server" OnClick="butClearDB_Click" Text="Limpar profs" />
+    <asp:Button ID="butClearTurmas" runat="server" OnClick="butClearTurmas_Click" Text="Limpar turmas" />
 </p>
     <div id="output" runat="server"></div>
 <p>

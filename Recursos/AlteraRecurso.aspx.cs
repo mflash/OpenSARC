@@ -30,6 +30,10 @@ public partial class Recursos_AlteraRecurso : System.Web.UI.Page
                     {
                         Recurso recurso = recursosBO.GetRecursoById(new Guid(Request.QueryString["GUID"]));
 
+                        String cod = recurso.Id.ToString().Substring(9, 4).ToUpper();
+                        barcodelink.NavigateUrl = @"https://www.cognex.com/api/Sitecore/Barcode/Get?data="+cod+@"&code=BCL_CODE128&width=300&imageType=JPG&foreColor=%23000000&backColor=%23FFFFFF&rotation=RotateNoneFlipNone";
+                        barcodelink.Target = "_blank";
+
                         FaculdadesBO vinculos = new FaculdadesBO();
                         ddlVinculo.DataSource = vinculos.GetFaculdades();
                         ddlVinculo.DataTextField = "Nome";

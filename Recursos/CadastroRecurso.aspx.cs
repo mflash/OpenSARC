@@ -67,8 +67,8 @@ public partial class Pagina6 : System.Web.UI.Page
             Faculdade vinculo = faculBO.GetFaculdadeById(new Guid(ddlVinculo.SelectedValue));
 
             if (listaHorarios.Count != 0)
-                recurso = Recurso.NewRecurso(txtDescricao.Text, vinculo, categoriaRecurso, Convert.ToBoolean(Convert.ToInt16(rblDisponivel.SelectedValue)), listaHorarios);
-            else recurso = Recurso.NewRecurso(txtDescricao.Text, vinculo, categoriaRecurso, Convert.ToBoolean(Convert.ToInt16(rblDisponivel.SelectedValue)), null);
+                recurso = Recurso.NewRecurso(txtDescricao.Text, txtAbrev.Text, txtTipo.Text[0], vinculo, categoriaRecurso, Convert.ToBoolean(Convert.ToInt16(rblDisponivel.SelectedValue)), listaHorarios);
+            else recurso = Recurso.NewRecurso(txtDescricao.Text, txtAbrev.Text, txtTipo.Text[0], vinculo, categoriaRecurso, Convert.ToBoolean(Convert.ToInt16(rblDisponivel.SelectedValue)), null);
 
             recursoBO.InsereRecurso(recurso, cal);
 

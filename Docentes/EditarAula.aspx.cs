@@ -15,6 +15,7 @@ using BusinessData.DataAccess;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
@@ -99,8 +100,61 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 						// TODO: retirar assim que possível!
 						if(cat.Descricao.IndexOf("Outras Unidades") != -1)
 							facin = false;
+
+                        Disciplina d = listaAulas[0].TurmaId.Disciplina;
                         lblTitulo.Text = listaAulas[0].TurmaId.Disciplina.NomeCodCred + " - Turma " + listaAulas[0].TurmaId.Numero + " - " + Regex.Replace(listaAulas[0].TurmaId.Sala, "32/A", "32");
 						Session["facin"] = facin;
+
+                        int horasRelogioEsperadas = d.Cred * 15;
+                        int durPeriodo = 45;
+                        /*                    if (listaAulas[0].Hora == "JK" || listaAulas[0].Hora == "LM" || listaAulas[0].Hora == "NP"
+                                               || listaAulas[1].Hora == "JK" || listaAulas[1].Hora == "LM" || listaAulas[1].Hora == "NP"
+                                               || listaAulas[1].Hora == "JK" || listaAulas[2].Hora == "LM" || listaAulas[2].Hora == "NP")
+                                                durPeriodo = 45;*/
+
+                        int totalAulas = 0;
+                        bool emG2 = false;
+                        bool haG2 = false;
+                        int totalFeriados = 0;
+                        foreach (Aula a in listaAulas)
+                        {
+                            categorias.Add(a.CategoriaAtividade.Id);
+                            argb.Add(a.CategoriaAtividade.Cor);
+                            if (a.Data >= cal.InicioG2)
+                            {
+                                //if (a.CategoriaAtividade.Descricao == "Prova de G2")                            
+                                //Debug.WriteLine("EM G2");
+                                emG2 = true;
+                            }
+                            if (a.DescricaoAtividade.StartsWith("Feriado") || a.DescricaoAtividade.StartsWith("Suspensão"))
+                                totalFeriados++;
+                            if (a.CategoriaAtividade.Descricao == "Prova de G2")
+                                haG2 = true;
+                            if (!a.DescricaoAtividade.StartsWith("Feriado") && !a.DescricaoAtividade.StartsWith("Suspensão")
+                                && a.CategoriaAtividade.Descricao != "Prova de G2" && !emG2)
+                                totalAulas++;
+                        }
+                        // Contando mais uma aula por causa da G2 que pulamos antes
+//                        if (haG2)
+//                            totalAulas++;
+                        int totalEfetivo = totalAulas * 2 * durPeriodo / 60;
+                        int complementares = horasRelogioEsperadas - totalEfetivo;
+                        if (complementares < 0) complementares = 0;
+                        //lblHoras.Text = "Duração do período: " + durPeriodo + " - Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + totalEfetivo
+                        //    + " - <b>Previsão de horas extraclasse: " + (horasRelogioEsperadas - totalEfetivo) + "</B>";
+
+                        //                    int minutosEsperados = horasRelogioEsperadas * 60;
+                        int minutosFeriado = durPeriodo * totalFeriados * 2;
+                        int minutosEsperados = durPeriodo * 2 * 18 * d.Cred / 2;
+                        minutosFeriado = 0;
+                        int horasMinistradas = (minutosEsperados - minutosFeriado) / 60;
+                        int extraClasse = horasRelogioEsperadas -horasMinistradas;
+                        Debug.WriteLine("Total aulas: " + totalAulas);
+                        Debug.WriteLine("Minutos feriado: " + minutosFeriado);
+                        Debug.WriteLine("Minutos esperados: " + minutosEsperados);
+
+                        lblHoras.Text = "- Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + totalEfetivo
+                            + " - <b>Previsão de horas para TDE: " + complementares + "</B>";
 						
 						dgAulas.DataSource = listaAulas;                        
                         dgAulas.DataBind();

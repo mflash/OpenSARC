@@ -135,6 +135,7 @@ CodeFile="AlteraRecurso.aspx.cs" Inherits="Recursos_AlteraRecurso" Title="Sistem
                 Text="Confirmar" Width="75px" Height="20px">
                 </asp:Button></td>
                 <td style="WIDTH: 267px; HEIGHT: 26px">&nbsp;
+                    <asp:HyperLink ID="barcodelink" runat="server" CssClass="ms-toolbar">Gerar código de barra...</asp:HyperLink>
                 </td>
                 </tr>
                 <tr>

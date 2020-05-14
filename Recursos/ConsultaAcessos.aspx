@@ -1,7 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="ConsultaAcessos.aspx.cs" Inherits="Recursos_ConsultaAcessos" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" Runat="Server">
-<table>
+    <h3><asp:Label ID="lblSala" Text=""  runat ="server"></asp:Label></h3>
+    <table class="ms-form">
                     <tr>
                         <td>    
     <asp:GridView ID="grvAccessStats" AutoGenerateColumns="False" DataKeyNames="Sala" 
@@ -9,31 +10,27 @@
                             <Columns>
 
 <asp:BoundField DataField="Id" Visible="False" HeaderText="ID">
-<ControlStyle Width="100px"></ControlStyle>
 <ItemStyle CssClass="ms-btoolbar"></ItemStyle>
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
-
-<asp:HyperLinkField
-            DataNavigateUrlFields="Host"
-            DataNavigateUrlFormatString="~\Recursos/ConsultaAcessos.aspx?Host={0}"
-            DataTextField="Host"
-            HeaderText="Host"
-            SortExpression="Host" />
 
 <asp:HyperLinkField
             DataNavigateUrlFields="Sala"
             DataNavigateUrlFormatString="~\Recursos/ConsultaAcessos.aspx?Sala={0}"
             DataTextField="Sala"
             HeaderText="Sala"
-            SortExpression="Sala" />
+            SortExpression="Sala">
+<ControlStyle Width="50px"></ControlStyle>
+<ItemStyle Width="50px"></ItemStyle>
+</asp:HyperLinkField>
 
-<asp:BoundField DataField="Pos" HeaderText="Pos">
-<HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
-</asp:BoundField>
+<asp:Boundfield
+            DataField="Hosts"
+            HeaderText="Hosts"
+            SortExpression="Hosts" />
 
-<asp:BoundField DataField="Fail" HeaderText="Falhas">
-<HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
+<asp:BoundField DataField="Fail" HeaderText="Falhas" SortExpression="Fail">
+<ItemStyle CssClass="ms-btoolbar"></ItemStyle>
 </asp:BoundField>
 
 </Columns>
@@ -51,12 +48,7 @@
                             <SortedDescendingHeaderStyle BackColor="#383838" />
 </asp:GridView>
                             </td>
-                        <td rowspan="4">
-        <asp:Image ID="imgMapa" ImageUrl="" runat="server" /></td>
-    </tr>
-    <tr><td>&nbsp;</td></tr>
-    <tr><td><asp:Label ID="lblSala" Text ="Sala:" runat="server"/></td></tr>
-    <tr><td>
+    <td>            
             <asp:GridView ID="grvDetails" AutoGenerateColumns="False" DataKeyNames="Host" 
                     AllowSorting="True" runat="server" BackColor="White" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CellPadding="3" ForeColor="Black" GridLines="Vertical">                    
                             <Columns>
@@ -123,6 +115,8 @@
                             <SortedDescendingHeaderStyle BackColor="#383838" />
 </asp:GridView>
         </td>
+                                <td>
+        <asp:Image ID="imgMapa" ImageUrl="" runat="server" /></td>
     </tr>
     </table>
 

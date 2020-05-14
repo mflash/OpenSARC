@@ -43,7 +43,7 @@ public partial class Alocacoes_Default : System.Web.UI.Page
     private void PopulaRecursos()
     {
         ddlRecursos.Items.Clear();
-        ddlRecursos.Items.Add("Selecione");
+//        ddlRecursos.Items.Add("Selecione");
         try
         {
         ddlRecursos.DataSource = controladorRecursos.GetRecursos();
@@ -51,6 +51,7 @@ public partial class Alocacoes_Default : System.Web.UI.Page
         ddlRecursos.DataValueField = "Id";
         ddlRecursos.DataTextField = "Descricao";
         ddlRecursos.DataBind();
+        ddlRecursos.Items.Insert(0, "Disponíveis");
         }
         catch (FormatException)
         {
@@ -120,6 +121,7 @@ public partial class Alocacoes_Default : System.Web.UI.Page
         {
             //if (ddlCategorias.SelectedIndex != 0)
             //{
+                // Selecionou um recurso especifico?
                 if (ddlRecursos.SelectedIndex != 0)
                 {
                     Guid recursoId = new Guid(ddlRecursos.SelectedValue);
@@ -164,6 +166,14 @@ public partial class Alocacoes_Default : System.Web.UI.Page
                 {
                     dgAlocacoes.Visible = false;
                     lblStatus.Text = "Selecione um Recurso Válido.";
+                    BusinessData.Entities.Calendario cal = (BusinessData.Entities.Calendario) Session["Calendario"];
+
+//                    AulaBO aulaBo = new AulaBO();
+//                    List<Aula> aulas = aulaBo.
+//                    foreach (Aula aula in aulas)
+//                    {
+//                        lblStatus.Text += aula.Data.ToShortDateString() + "<br>";
+//                    }
                 }
             //}
             //else

@@ -94,11 +94,11 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     lblTitulo.Text = d.Cod + "-" + d.Cred + " " + d.Nome + ", turma " + listaAulas[0].TurmaId.Numero + " - " + Regex.Replace(listaAulas[0].TurmaId.Sala, "32/A", "32");//" "+facin;                    
 
                     int horasRelogioEsperadas = d.Cred * 15;
-                    int durPeriodo = 50;
-                    if (listaAulas[0].Hora == "JK" || listaAulas[0].Hora == "LM" || listaAulas[0].Hora == "NP"
+                    int durPeriodo = 45;
+/*                    if (listaAulas[0].Hora == "JK" || listaAulas[0].Hora == "LM" || listaAulas[0].Hora == "NP"
                        || listaAulas[1].Hora == "JK" || listaAulas[1].Hora == "LM" || listaAulas[1].Hora == "NP"
                        || listaAulas[1].Hora == "JK" || listaAulas[2].Hora == "LM" || listaAulas[2].Hora == "NP")
-                        durPeriodo = 45;
+                        durPeriodo = 45;*/
 
                     int totalAulas = 0;
                     bool emG2 = false;
@@ -123,8 +123,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                             totalAulas++;                                                
                     }
                     // Contando mais uma aula por causa da G2 que pulamos antes
-                    if(haG2)
-                        totalAulas++;
+                    //if(haG2)
+                    //    totalAulas++;
                     int totalEfetivo = totalAulas * 2 * durPeriodo / 60;
                     int complementares = horasRelogioEsperadas - totalEfetivo;
                     if (complementares < 0) complementares = 0;
@@ -139,8 +139,11 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     Debug.WriteLine("Minutos feriado: " + minutosFeriado);
                     Debug.WriteLine("Minutos esperados: " + minutosEsperados);                    
 
-                    lblHoras.Text = "Duração do período: " + durPeriodo + " - Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + horasMinistradas
-                        + " - <b>Previsão de horas extraclasse: " + extraClasse + "</B>";
+                    //lblHoras.Text = "Duração do período: " + durPeriodo + " - Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + horasMinistradas
+                    //    + " - <b>Previsão de horas extraclasse: " + extraClasse + "</B>";
+
+                    lblHoras.Text = "- Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + totalEfetivo
+                        + " - <b>Previsão de horas para TDE: " + complementares + "</B>";
 
                     dgAulas.DataSource = listaAulas;
                     dgAulas.DataBind();
@@ -165,6 +168,14 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                         }
                         Session["blocks"] = blocks;
                     }
+
+                    // Gera link para HTML
+                    Link1.NavigateUrl = "~/Default/Export.aspx?id=" + idturma + "&ano=" + cal.Ano + "&sem=" + cal.Semestre;
+                    string navlink ="/Default/ExportIcal.aspx?id=" + idturma + "&ano=" + cal.Ano + "&sem=" + cal.Semestre;
+                    Link2.NavigateUrl = "https://www.google.com/calendar/render?cid=" +
+                        Server.UrlEncode("http://"+Request.Url.Host+navlink);
+                    Link3.NavigateUrl = "webcal://" + Request.Url.Host + navlink;
+                    Link4.NavigateUrl = "~" + navlink;
 
                     // Monta dicionário com bloqueio de recursos devido a uso de outros
                     // Movido para Global.asax (Application_Start)
@@ -289,7 +300,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 								e.Item.BackColor = c.Cor;
 								e.Item.Enabled = false;
 								lblCorDaData.Text = "True";                                
-                                txtDescricao.Text = c.Descricao;
+                                txtDescricao.Text = c.Descricao + (txtDescricao.Text != "Feriado" ? " (era "+txtDescricao.Text+")" : "");
                             }
 							else
                             {
@@ -339,6 +350,12 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             argb.RemoveAt(0);
         }
 
+    }
+
+    protected void btnExportarHTML_Click(object sender, EventArgs e)
+    {
+        AtualizaTodaGrade();
+        ExportarHtml();
     }
 	
 	protected void butTransferir_Click(object sender, EventArgs e)
@@ -488,12 +505,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     protected void btnSalvarTudo_Click(object sender, EventArgs e)
     {
 		AtualizaTodaGrade();
-    }
-
-    protected void btnExportarHTML_Click(object sender, EventArgs e)
-    {
-        AtualizaTodaGrade();
-        ExportarHtml();
     }
 
     protected void ExportarHtml()

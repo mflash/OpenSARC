@@ -6,7 +6,7 @@ CodeFile="CadastroRecurso.aspx.cs" Inherits="Pagina6" Title="Sistema de Alocação
 
 <asp:Content ID="phTitulo" runat="server" ContentPlaceHolderID="cphTitulo">
     <div align="left" class="ms-menutoolbar" style="width: 100%; height: 14px">
-        <asp:Label ID="Label6" runat="server" CssClass="ms-WPTitle" Text="CADASTAR RECURSO"></asp:Label></div>
+        <asp:Label ID="Label6" runat="server" CssClass="ms-WPTitle" Text="CADASTRAR RECURSO"></asp:Label></div>
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
     <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel1">
@@ -50,6 +50,20 @@ CodeFile="CadastroRecurso.aspx.cs" Inherits="Pagina6" Title="Sistema de Alocação
                                                         ControlToValidate="txtDescricao"
                                                         CssClass="ms-toolbar" 
                                                         ErrorMessage="Digite uma descrição." ValidationGroup="Confirmar">*</asp:RequiredFieldValidator>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ms-toolbar" style="WIDTH: 48px; HEIGHT: 16px">Abreviação</td>
+                            <td style="WIDTH: 267px; HEIGHT: 16px">
+                                <asp:TextBox ID="txtAbrev" runat="server" Columns="10" CssClass="ms-toobar" Height="20px" ValidationGroup="Confirmar" Width="160px"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtAbrev" CssClass="ms-toolbar" ErrorMessage="Digite uma abreviação (max. 10 caracteres)." ValidationGroup="Confirmar">*</asp:RequiredFieldValidator>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ms-toolbar" style="WIDTH: 48px; HEIGHT: 16px">Tipo:</td>
+                            <td style="WIDTH: 267px; HEIGHT: 16px">
+                                <asp:TextBox ID="txtTipo" runat="server" Columns="10" CssClass="ms-toobar" Height="20px" ValidationGroup="Confirmar" Width="40px"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtTipo" CssClass="ms-toolbar" ErrorMessage="Digite um tipo (A, K, L, , N ou S)" ValidationGroup="Confirmar">*</asp:RequiredFieldValidator>
                             </td>
                         </tr>
                         <tr>

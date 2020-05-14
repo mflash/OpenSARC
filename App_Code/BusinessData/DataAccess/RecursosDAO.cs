@@ -109,6 +109,8 @@ namespace BusinessData.DataAccess
                 DbCommand cmd = baseDados.GetStoredProcCommand("RecursosInsere");
                 baseDados.AddInParameter(cmd, "@RecursoId", DbType.Guid, recurso.Id);
                 baseDados.AddInParameter(cmd, "@Descricao", DbType.String, recurso.Descricao);
+                baseDados.AddInParameter(cmd, "@Abrev", DbType.String, recurso.Abrev);
+                baseDados.AddInParameter(cmd, "@Tipo", DbType.AnsiStringFixedLength, recurso.Tipo);
                 baseDados.AddInParameter(cmd, "@Vinculo", DbType.Guid, recurso.Vinculo.Id);
                 baseDados.AddInParameter(cmd, "@EstaDisponivel", DbType.Boolean, recurso.EstaDisponivel);
                 baseDados.AddInParameter(cmd, "@CategoriaId", DbType.Guid, recurso.Categoria.Id);
@@ -152,6 +154,8 @@ namespace BusinessData.DataAccess
 
                     aux = Recurso.GetRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")),
                                              leitor.GetString(leitor.GetOrdinal("Descricao")),
+                                             leitor.GetString(leitor.GetOrdinal("Abrev")),
+                                             leitor.GetString(leitor.GetOrdinal("Tipo"))[0],
                                              vinculosDAO.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("FaculdadeId"))),
                                              categoriarecursoDAO.GetCategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaRecursoId"))),
                                              leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel")),
@@ -243,13 +247,20 @@ namespace BusinessData.DataAccess
                 {
                     while (leitor.Read())
                     {                       
+                        //Guid block1 = new Guid("00000000-0000-0000-0000-000000000000");
+                        //if(!Convert.IsDBNull(leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"))))
                         Guid block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
-                        Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
 
+                        //Guid block2 = new Guid("00000000-0000-0000-0000-000000000000");
+                        //if(!Convert.IsDBNull(leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"))))
+                        Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
+                        
                         recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
                         listaHB = this.GetHorarioBloqueadoByRecurso(recursoId);
                         aux = Recurso.GetRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")),
                                                  leitor.GetString(leitor.GetOrdinal("Descricao")),
+                                                 leitor.GetString(leitor.GetOrdinal("Abrev")),
+                                                 leitor.GetString(leitor.GetOrdinal("Tipo"))[0],
                                                  vinculosDAO.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("FaculdadeId"))),
                                                  categoriarecursoDAO.GetCategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaRecursoId"))),
                                                  leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel")),
@@ -297,6 +308,8 @@ namespace BusinessData.DataAccess
 
                         aux = Recurso.GetRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")),
                                                  leitor.GetString(leitor.GetOrdinal("Descricao")),
+                                                 leitor.GetString(leitor.GetOrdinal("Abrev")),
+                                                 leitor.GetString(leitor.GetOrdinal("Tipo"))[0],
                                                  vinculosDAO.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("Vinculo"))),
                                                  cat,
                                                  leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel")),
@@ -352,11 +365,13 @@ namespace BusinessData.DataAccess
                         
                         string descricao = leitor.GetString(leitor.GetOrdinal("Descricao"));
                         bool disponivel = leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel"));
+                        string abrev = leitor.GetString(leitor.GetOrdinal("Abrev"));
+                        char tipo = leitor.GetString(leitor.GetOrdinal("Tipo"))[0];
 
                         Guid block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
                         Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
 
-                        aux = Recurso.GetRecurso(recursoId, descricao, facul, categoria, disponivel,block1,block2,listaHB);
+                        aux = Recurso.GetRecurso(recursoId, descricao, abrev, tipo, facul, categoria, disponivel,block1,block2,listaHB);
                         resultado.Add(aux);
                     }
                 }
@@ -394,11 +409,13 @@ namespace BusinessData.DataAccess
 
                         string descricao = leitor.GetString(leitor.GetOrdinal("Descricao"));
                         bool disponivel = leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel"));
+                        string abrev = leitor.GetString(leitor.GetOrdinal("Abrev"));
+                        char tipo = leitor.GetString(leitor.GetOrdinal("Tipo"))[0];
 
                         Guid block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
                         Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
 
-                        aux = Recurso.GetRecurso(recursoId, descricao, facul, categoria, disponivel, block1, block2, listaHB);
+                        aux = Recurso.GetRecurso(recursoId, descricao, abrev, tipo, facul, categoria, disponivel, block1, block2, listaHB);
                         resultado.Add(aux);
                     }
                 }
@@ -432,11 +449,13 @@ namespace BusinessData.DataAccess
                         CategoriaRecurso categoria = categoriaDao.GetCategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaId")));
                         string descricao = leitor.GetString(leitor.GetOrdinal("Descricao"));
                         bool disponivel = leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel"));
+                        string abrev = leitor.GetString(leitor.GetOrdinal("Abrev"));
+                        char tipo = leitor.GetString(leitor.GetOrdinal("Tipo"))[0];
 
                         Guid block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
                         Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
 
-                        aux = Recurso.GetRecurso(recursoId, descricao, facul, categoria, disponivel, block1, block2, listaHB);
+                        aux = Recurso.GetRecurso(recursoId, descricao, abrev, tipo, facul, categoria, disponivel, block1, block2, listaHB);
                         resultado.Add(aux);
                     }
                 }

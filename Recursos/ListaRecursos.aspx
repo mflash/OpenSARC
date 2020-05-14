@@ -44,13 +44,17 @@ OnRowEditing="grvListaRecursos_RowEditing"><Columns>
 
 <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Left"></HeaderStyle>
 </asp:BoundField>
-<asp:BoundField DataField="Vinculo" HeaderText="V&#237;nculo">
-<ControlStyle Width="150px"></ControlStyle>
-
-<ItemStyle CssClass="ms-toolbar"></ItemStyle>
-
-<HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Left"></HeaderStyle>
+<asp:BoundField DataField="Abrev" HeaderText="Abreviação">
+    <ItemStyle CssClass="ms-toolbar" />
 </asp:BoundField>
+        <asp:BoundField DataField="Tipo" HeaderText="Tipo">
+            <ItemStyle CssClass="ms-toolbar" />
+        </asp:BoundField>
+        <asp:BoundField DataField="Vinculo" HeaderText="Vínculo">
+            <controlstyle width="150px" />
+            <ItemStyle CssClass="ms-toolbar" />
+            <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Left" />
+        </asp:BoundField>
 <asp:CheckBoxField DataField="EstaDisponivel" HeaderText="Disponivel">
 <ControlStyle Width="25px"></ControlStyle>
 

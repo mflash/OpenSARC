@@ -256,4 +256,17 @@ public partial class ImportarDados_ImportarXLSX : System.Web.UI.Page
                 Membership.DeleteUser(u.UserName, true);
         }
     }
+
+    // Apaga todos as turmas do calendario atual
+    protected void butClearTurmas_Click(object sender, EventArgs e)
+    {
+        Calendario calId = (Calendario)(Session["Calendario"]);
+        TurmaBO turmasBO = new TurmaBO();
+        List<Turma> turmasCadastradas = turmasBO.GetTurmas(calId);        
+        foreach (Turma tur in turmasCadastradas)
+        {
+            output.InnerHtml += "Apagando " + tur.Disciplina.CodCred + " - " + tur.Disciplina.Nome + " (" + tur.Numero + ")<br>";
+            turmasBO.DeletaTurma(tur.Id);
+        }
+    }
 }

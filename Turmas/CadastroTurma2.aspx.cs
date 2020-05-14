@@ -38,10 +38,14 @@ public partial class Pagina6 : System.Web.UI.Page
         try
         {
             Calendario cal = (Calendario)Session["Calendario"];
-            ddlDisciplina.DataSource = discBO.GetDisciplinas(cal);
-            ddlDisciplina.DataTextField = "NomeCodCred";
-            ddlDisciplina.DataValueField = "Cod";
-            ddlDisciplina.DataBind();
+            //ddlDisciplina.DataSource = discBO.GetDisciplinas(cal);
+            //ddlDisciplina.DataTextField = "NomeCodCred";
+            //ddlDisciplina.DataValueField = "Cod";
+            //ddlDisciplina.DataBind();
+            cbDisciplina.DataSource = discBO.GetDisciplinas(cal);
+            cbDisciplina.DataTextField = "NomeCodCred";
+            cbDisciplina.DataValueField = "Cod";
+            cbDisciplina.DataBind();
         }
         catch (BusinessData.DataAccess.DataAccessException)
         { }
@@ -51,10 +55,14 @@ public partial class Pagina6 : System.Web.UI.Page
     {
         try
         {
-            ddlProfessor.DataSource = profBO.GetProfessores();
-            ddlProfessor.DataTextField = "Nome";
-            ddlProfessor.DataValueField = "Id";
-            ddlProfessor.DataBind();
+            //ddlProfessor.DataSource = profBO.GetProfessores();
+            //ddlProfessor.DataTextField = "Nome";
+            //ddlProfessor.DataValueField = "Id";
+            //ddlProfessor.DataBind();
+            cbProfessor.DataSource = profBO.GetProfessores();
+            cbProfessor.DataTextField = "Nome";
+            cbProfessor.DataValueField = "Id";
+            cbProfessor.DataBind();
         }
         catch (BusinessData.DataAccess.DataAccessException)
         { }
@@ -64,10 +72,14 @@ public partial class Pagina6 : System.Web.UI.Page
     {
         try
         {
-            ddlCurso.DataSource = cursoBO.GetCursos();
-            ddlCurso.DataTextField = "Nome";
-            ddlCurso.DataValueField = "Codigo";
-            ddlCurso.DataBind();
+            //ddlCurso.DataSource = cursoBO.GetCursos();
+            //ddlCurso.DataTextField = "Nome";
+            //ddlCurso.DataValueField = "Codigo";
+            //ddlCurso.DataBind();
+            cbCurso.DataSource = cursoBO.GetCursos();
+            cbCurso.DataTextField = "Nome";
+            cbCurso.DataValueField = "Codigo";
+            cbCurso.DataBind();
         }
         catch (BusinessData.DataAccess.DataAccessException)
         { }
@@ -84,9 +96,9 @@ public partial class Pagina6 : System.Web.UI.Page
             List<Turma> tumasCadastradas = turmabo.GetTurmas(cal);
 
             int numero = Convert.ToInt32(txtNumero.Text);
-            Disciplina disc = discBO.GetDisciplina(ddlDisciplina.SelectedValue, cal);
-            Professor prof = (Professor)profBO.GetPessoaById(new Guid(ddlProfessor.SelectedValue));
-            Curso curso = cursoBO.GetCursoByCodigo(ddlCurso.SelectedValue);
+            Disciplina disc = discBO.GetDisciplina(cbDisciplina.SelectedValue, cal);
+            Professor prof = (Professor)profBO.GetPessoaById(new Guid(cbProfessor.SelectedValue));
+            Curso curso = cursoBO.GetCursoByCodigo(cbCurso.SelectedValue);
             bool achou = false;
             foreach (Turma t in tumasCadastradas)
             {

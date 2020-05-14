@@ -10,8 +10,8 @@
     </asp:DropDownList>
     <asp:ObjectDataSource ID="ODSProfessores" runat="server" 
         SelectMethod="GetProfessores" 
-        TypeName="BusinessData.BusinessLogic.ProfessoresBO"></asp:ObjectDataSource>
-    <br />
+        TypeName="BusinessData.BusinessLogic.ProfessoresBO"></asp:ObjectDataSource>    
+    <br />    
     <asp:Button ID="btnPersonificar" runat="server" onclick="Button1_Click" Text="Personificar Professor" />
 </asp:Content>
 

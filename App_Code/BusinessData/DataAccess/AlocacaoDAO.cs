@@ -246,6 +246,8 @@ namespace BusinessData.DataAccess
                                 aux.Categoria = catRec;
                                 aux.Descricao = leitor.GetString(leitor.GetOrdinal("Descricao"));
                                 aux.EstaDisponivel = leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel"));
+                                aux.Abrev = leitor.GetString(leitor.GetOrdinal("Abrev"));
+                                aux.Tipo = leitor.GetString(leitor.GetOrdinal("Tipo"))[0];
                                 List<HorarioBloqueado> listaHB = RecDAO.GetHorarioBloqueadoByRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")));
                                 aux.HorariosBloqueados = listaHB;
                                 aux.Id = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
@@ -641,6 +643,10 @@ namespace BusinessData.DataAccess
                     Aula au = null;
                     Recurso rec = null;
                     Evento evento = null;
+
+                    DateTime? dataR = leitor["Data"] as DateTime?;
+                    if (dataR.HasValue)
+                        data = dataR.Value;
 
                     rec = recDAO.GetRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")));
 

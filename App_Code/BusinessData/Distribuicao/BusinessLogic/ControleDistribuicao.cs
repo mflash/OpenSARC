@@ -95,10 +95,16 @@ namespace BusinessData.Distribuicao.BusinessLogic
 
                     Debug.WriteLine("Calculando total de requisições para as turmas...");
                     //Calcula o numero de requisicoes para as turmas
+                    bool temPrioridade = true;
                     foreach (Requisicao req in requisicoes)
                     {
                         satTurmas[req.Turma].Pedidos++;
                         //Calcula o total para a normalizacao
+                        if (!req.Turma.EntidadeTurma.Disciplina.Categoria.Prioridades.ContainsKey(cat.EntidadeCategoria))
+                        {
+                            temPrioridade = false;
+                            break;
+                        }
                         prioridadeAux = req.Turma.EntidadeTurma.Disciplina.Categoria.Prioridades[cat.EntidadeCategoria];
                         if (!listaPrioridadesAux.Contains(prioridadeAux))
                         {
@@ -106,6 +112,7 @@ namespace BusinessData.Distribuicao.BusinessLogic
                             listaPrioridadesAux.Add(prioridadeAux);
                         }
                     }
+                    if (!temPrioridade) continue; // por algum motivo, Categoria.Prioridades nao tem a chave dessa categoria
 
                     //Normaliza as prioridades entre categorias de disciplina e categorias de recurso atual para
                     //um total de 100%

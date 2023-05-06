@@ -70,6 +70,12 @@
                                             <asp:Label ID="lblResponsavel" runat="server"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateColumn>
+
+                                    <asp:TemplateColumn HeaderText="Estado">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblEstado" runat="server"></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateColumn>
                                 </Columns>
                             </asp:DataGrid>
                         </td>
@@ -102,6 +108,11 @@
                                     <asp:TemplateColumn HeaderText="Responsável">
                                         <ItemTemplate>
                                             <asp:Label ID="lblResponsavel" runat="server"></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateColumn>
+                                    <asp:TemplateColumn HeaderText="Estado">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblEstado" runat="server"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateColumn>
                                 </Columns>

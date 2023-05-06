@@ -99,6 +99,7 @@ public partial class Pagina6 : System.Web.UI.Page
             Disciplina disc = discBO.GetDisciplina(cbDisciplina.SelectedValue, cal);
             Professor prof = (Professor)profBO.GetPessoaById(new Guid(cbProfessor.SelectedValue));
             Curso curso = cursoBO.GetCursoByCodigo(cbCurso.SelectedValue);
+            string sala = txtSala.Text;
             bool achou = false;
             foreach (Turma t in tumasCadastradas)
             {
@@ -115,7 +116,7 @@ public partial class Pagina6 : System.Web.UI.Page
                 if (testaCreditos == disc.Cred || testaCreditos == disc.Cred+1)
                 {
                     string dh = txtDataHora.Text;
-                    Turma t = Turma.NewTurma(numero, cal, disc, dh, prof, curso);
+                    Turma t = Turma.NewTurma(numero, cal, disc, dh, prof, curso, sala);
 
                     turmabo.InsereTurma(t,Session["Calendario"] as Calendario);
 

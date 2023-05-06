@@ -68,6 +68,12 @@ AutoGenerateColumns="False" OnRowDeleting="grvListaTurmas_RowDeleting"
 
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
+
+<asp:BoundField DataField="Sala" HeaderText="Sala" SortExpression="Sala">
+<ItemStyle CssClass="ms-toolbar"></ItemStyle>
+<HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
+</asp:BoundField>
+
     <asp:TemplateField ShowHeader="False">
         <EditItemTemplate>
             <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update"

@@ -162,7 +162,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                 </EditItemTemplate>
             </asp:TemplateColumn>
             
-            <asp:TemplateColumn HeaderText="Recurso">
+            <asp:TemplateColumn HeaderText="Tipo de Recurso">
                 <ItemTemplate>
                     <asp:DropDownList ID="ddlRecurso" runat="server" CssClass="ms-toolbar" 
                         onselectedindexchanged="ddlRecurso_SelectedIndexChanged" AutoPostBack=true>
@@ -173,7 +173,30 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                 </EditItemTemplate>
             </asp:TemplateColumn>
                        
-            <asp:TemplateColumn HeaderText="Selecionados" >
+            <asp:TemplateColumn HeaderText="Selecionados " Visible="true">
+                <ItemTemplate>
+						<asp:Panel ID="pnRecursos" runat="server">
+						
+						<table id="tabRecursos" runat="server">												    
+						<tr>
+                            <td>
+                                <asp:CheckBoxList ID="cbRecursos" runat="server" CssClass="UserConfiguration">
+                                </asp:CheckBoxList>
+                            </td>
+						<td>
+						<asp:ImageButton ID="butDeletar" runat="server" onClick="butDeletar_Click"
+                                ImageUrl="~/_layouts/images/CRIT_16.GIF" title="Remover recurso(s)" />
+						    <br />
+						</td>
+						</tr>
+						</table>												
+                         <asp:Label ID="lblRecursosAlocados" runat="server"
+                                Width="250px" visible="false"></asp:Label>                            
+						</asp:Panel>
+                        </ItemTemplate>
+            </asp:TemplateColumn>
+
+            <asp:TemplateColumn HeaderText="Selecionados" visible="false">
                 <ItemTemplate>
                     <asp:Label ID="lblRecursosSelecionados" runat="server"></asp:Label>
                 </ItemTemplate>
@@ -182,7 +205,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
                 </EditItemTemplate>
             </asp:TemplateColumn> 
             
-            <asp:ButtonColumn CommandName="Select" Text="Editar..."></asp:ButtonColumn>
+            <asp:ButtonColumn CommandName="Select" Text="Editar..." Visible="false"></asp:ButtonColumn>
             
             <asp:TemplateColumn HeaderText="CorDaData" Visible="False"> 
                 <ItemTemplate>

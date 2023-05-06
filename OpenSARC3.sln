@@ -1,12 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "opensarc", "http://localhost:55401", "{37FF9FE7-C5D6-45D8-84C2-6805ED5B7D58}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "opensarc", ".", "{37FF9FE7-C5D6-45D8-84C2-6805ED5B7D58}"
 	ProjectSection(WebsiteProperties) = preProject
 		UseIISExpress = "true"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.1"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_55401"
 		Debug.AspNetCompiler.PhysicalPath = "..\opensarc\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55401\"
@@ -21,6 +21,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "opensarc", "http://localhos
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "53162"
 		SlnRelativePath = "..\opensarc\"
 	EndProjectSection
 EndProject
@@ -37,5 +38,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {644DCCB6-E953-44F2-8589-2F5F4CD13CFB}
 	EndGlobalSection
 EndGlobal

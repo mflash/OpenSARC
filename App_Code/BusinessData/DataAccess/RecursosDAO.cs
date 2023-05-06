@@ -149,6 +149,7 @@ namespace BusinessData.DataAccess
                     FaculdadesDAO vinculosDAO = new FaculdadesDAO();
                     CategoriaRecursoDAO categoriarecursoDAO = new CategoriaRecursoDAO();
 
+                    // TODO
                     Guid block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
                     Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
 
@@ -246,14 +247,14 @@ namespace BusinessData.DataAccess
                 using (IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
                     while (leitor.Read())
-                    {                       
-                        //Guid block1 = new Guid("00000000-0000-0000-0000-000000000000");
-                        //if(!Convert.IsDBNull(leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"))))
-                        Guid block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
-
-                        //Guid block2 = new Guid("00000000-0000-0000-0000-000000000000");
-                        //if(!Convert.IsDBNull(leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"))))
-                        Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
+                    {                        
+                        Guid block1 = new Guid();
+                        Guid block2 = new Guid();
+                        if (leitor["Bloqueia1"].GetType() != typeof(DBNull))
+                            block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
+                     
+                        if (leitor["Bloqueia2"].GetType() != typeof(DBNull))
+                            block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
                         
                         recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
                         listaHB = this.GetHorarioBloqueadoByRecurso(recursoId);
@@ -303,6 +304,7 @@ namespace BusinessData.DataAccess
                         recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
                         listaHB = this.GetHorarioBloqueadoByRecurso(recursoId);
 
+                        // TODO
                         Guid block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
                         Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
 
@@ -368,8 +370,12 @@ namespace BusinessData.DataAccess
                         string abrev = leitor.GetString(leitor.GetOrdinal("Abrev"));
                         char tipo = leitor.GetString(leitor.GetOrdinal("Tipo"))[0];
 
-                        Guid block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
-                        Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
+                        Guid block1 = new Guid();
+                        Guid block2 = new Guid();
+                        if(leitor["Bloqueia1"].GetType() != typeof(DBNull))
+                            block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
+                        if (leitor["Bloqueia2"].GetType() != typeof(DBNull))
+                            block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
 
                         aux = Recurso.GetRecurso(recursoId, descricao, abrev, tipo, facul, categoria, disponivel,block1,block2,listaHB);
                         resultado.Add(aux);
@@ -412,6 +418,7 @@ namespace BusinessData.DataAccess
                         string abrev = leitor.GetString(leitor.GetOrdinal("Abrev"));
                         char tipo = leitor.GetString(leitor.GetOrdinal("Tipo"))[0];
 
+                        // TODO
                         Guid block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
                         Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
 
@@ -452,6 +459,7 @@ namespace BusinessData.DataAccess
                         string abrev = leitor.GetString(leitor.GetOrdinal("Abrev"));
                         char tipo = leitor.GetString(leitor.GetOrdinal("Tipo"))[0];
 
+                        // TODO
                         Guid block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
                         Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
 

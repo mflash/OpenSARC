@@ -11,6 +11,7 @@ using BusinessData.DataAccess;
 using System.Net;
 using System.Diagnostics;
 using System.Web.Security;
+using System.Configuration;
 
 namespace BusinessData.BusinessLogic
 {
@@ -126,9 +127,10 @@ namespace BusinessData.BusinessLogic
                 }
 
                 CategoriaAtividade cat = listaAtividades[0];
+                string aulaDefault = ConfigurationManager.AppSettings["AulaDefault"];
                 foreach (CategoriaAtividade categoria in listaAtividades)
                 {
-                    if (categoria.Descricao.Equals("Aula"))
+                    if (categoria.Descricao.Equals(aulaDefault))
                         cat = categoria;
                 }
 
@@ -191,9 +193,10 @@ namespace BusinessData.BusinessLogic
                 }
                 
                 CategoriaAtividade cat = listaAtividades[0];
+                string aulaDefault = ConfigurationManager.AppSettings["AulaDefault"];
                 foreach (CategoriaAtividade categoria in listaAtividades)
                 {
-                    if (categoria.Descricao.Equals("Aula"))
+                    if (categoria.Descricao.Equals(aulaDefault))
                         cat = categoria;
                 }
 

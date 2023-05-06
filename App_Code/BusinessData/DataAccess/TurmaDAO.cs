@@ -74,6 +74,7 @@ namespace BusinessData.DataAccess
             baseDados.AddInParameter(cmd, "@DataHora", DbType.String, turma.DataHora);
             baseDados.AddInParameter(cmd, "@ProfessorId", DbType.Guid, turma.Professor.Id);
             baseDados.AddInParameter(cmd, "@Curso", DbType.String, turma.Curso.Codigo);
+            baseDados.AddInParameter(cmd, "@Sala", DbType.String, turma.Sala);
             try
             {
                 baseDados.ExecuteNonQuery(cmd);

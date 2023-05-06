@@ -161,6 +161,8 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
         const int SALA1 = 12;
         const int SALA2 = 14;
         const int SALA3 = 16;
+        ServicePointManager.Expect100Continue = true;
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         WebClient wc = new WebClient();
         String url = "http://www.politecnica.pucrs.br/academico/sarc/csv.php?GRP=&PREDIO=32"; 
         string data = wc.DownloadString(url);
@@ -264,9 +266,9 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
             string x = nomeprof;
             if (!profs.ContainsKey(x))
             {
-                //novoProf = FindProfEmail(email);
+                novoProf = FindProfEmail(email);
                 //novoProf = FindProf(x);
-                novoProf = FindProfNome(x);
+                //novoProf = FindProfNome(x);
                 if (novoProf == null && matricula != String.Empty)
                 {
                     novoProf = Professor.NewProfessor(matricula, nomeprof, email);
@@ -339,6 +341,13 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
                     novasturmas += String.Format("<br>Nova turma: {0}-{1:D2} {2} ({4}) {5} - {3}",
                         disc.Cod, disc.Cred, disc.Nome, novoProf.Nome, turma, hora);
                     totalTurmasNovas++;
+                }
+                else
+                {
+                    if(!simula)
+                    {
+                        turmasBO.UpdateTurma(novaTurma);
+                    }
                 }
             }
             else

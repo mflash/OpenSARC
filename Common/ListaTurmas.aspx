@@ -56,7 +56,11 @@ AutoGenerateColumns="False" DataKeyNames="Id" AllowSorting="True" AlternatingRow
 
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
- 
+
+<asp:BoundField DataField="Sala" HeaderText="Sala" SortExpression="Sala">
+<ItemStyle CssClass="ms-toolbar"></ItemStyle>
+<HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
+</asp:BoundField>
 </Columns>
 
 <HeaderStyle CssClass="cabecalhoTabela"></HeaderStyle>

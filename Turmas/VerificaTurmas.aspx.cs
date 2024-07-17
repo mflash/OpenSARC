@@ -24,7 +24,7 @@ public class TurmaVerifica
     public Disciplina Disciplina { get; set; }
     public string DataHora { get; set; }
     public Professor Professor { get; set; }
-    public Curso Curso { get; set; }
+    public string CatDisciplina { get; set; }
     public string G2OK { get; set; }
     public string AulasOK { get; set; }
     public string ProvasOK { get; set; }
@@ -38,6 +38,7 @@ public partial class Pagina2 : System.Web.UI.Page
     private RequisicoesBO reqBo;
     private Calendario cal;
     private HashSet<Guid> reqTurmas;
+    private IDictionary<Guid, List<Aula>> aulasTurmas;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -78,6 +79,18 @@ public partial class Pagina2 : System.Web.UI.Page
                     int totalRestanteFalta = 0;
                     // Total de turmas sem solicitação de recursos
                     int totalRecursosFalta = 0;
+
+                    aulasTurmas = new Dictionary<Guid, List<Aula>>();
+                    //IList<Aula> todasAulas = aulaBo.GetAulasByCalendario(cal.Id);
+
+                    //foreach (Turma t in listaTurma)
+                    //    aulasTurmas.Add(t.Id, new List<Aula>());
+
+                    //foreach (Aula a in todasAulas)
+                    //{
+                    //    aulasTurmas[a.TurmaId.Id].Add(a);
+                    //}
+
                     foreach (Turma t in listaTurma)
                     {
                         TurmaVerifica nova = new TurmaVerifica
@@ -88,13 +101,12 @@ public partial class Pagina2 : System.Web.UI.Page
                             Disciplina = t.Disciplina,
                             DataHora = t.DataHora,
                             Professor = t.Professor,
-                            Curso = t.Curso
+                            CatDisciplina = t.Disciplina.Categoria.Descricao
                         };
                         // "teorica" representa turmas teóricas ou de algum pós
-                        bool teorica = nova.Disciplina.Categoria.Descricao.Contains("Teórica") ||
-                            nova.Disciplina.Categoria.Descricao.Contains("PPG") ||
-                            nova.Curso.Nome.Contains("PPG") ||
-                            nova.Disciplina.Categoria.Descricao == "AGES";
+                        bool teorica = nova.CatDisciplina.Contains("Teórica") ||
+                            nova.CatDisciplina.Contains("PPG") ||
+                            nova.CatDisciplina == "AGES";
 
                         // Se a turma não é "teórica", ela deveria solicitar recursos
                         if (!teorica)
@@ -189,7 +201,7 @@ public partial class Pagina2 : System.Web.UI.Page
             return false;
         } 
 
-        if(nova.Curso.Nome.Contains("PPG")) {
+        if(nova.CatDisciplina.Contains("PPG")) {
             nova.G2OK = nova.AulasOK = nova.ProvasOK = nova.TrabalhosOK = "N/A";        
         }
 

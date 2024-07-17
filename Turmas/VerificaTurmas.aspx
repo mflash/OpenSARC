@@ -55,8 +55,8 @@ AutoGenerateColumns="False" DataKeyNames="Id"
 
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
-<asp:BoundField DataField="Curso" HeaderText="Curso">
-<ControlStyle Width="300px"></ControlStyle>
+<asp:BoundField DataField="CatDisciplina" HeaderText="Categoria Disciplina">
+<ControlStyle Width="350px"></ControlStyle>
 <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center"></ItemStyle>
 
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
@@ -135,8 +135,8 @@ AutoGenerateColumns="False" DataKeyNames="Id"
                                 <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
                                 <HeaderStyle CssClass="ms-wikieditthird" />
                                 </asp:BoundField>
-                                <asp:BoundField DataField="Curso" HeaderText="Curso">
-                                <ControlStyle Width="300px" />
+                                <asp:BoundField DataField="CatDisciplina" HeaderText="Categoria Disciplina">
+                                <ControlStyle Width="350px" />
                                 <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center" />
                                 <HeaderStyle CssClass="ms-wikieditthird" />
                                 </asp:BoundField>

@@ -14,6 +14,9 @@ using System.Collections.Generic;
 using BusinessData.DataAccess;
 using BusinessData.Entities.Util;
 using System.Net.Mail;
+using System.IO;
+using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
+using System.Linq;
 //using Microsoft.ReportingServices.Diagnostics;
 
 public partial class Docentes_SelecionaTurma : System.Web.UI.Page
@@ -108,6 +111,10 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
 					// XGH!!!
 					if(cal.Ano == 2011 && cal.Semestre == 2)
 						butMoodle.Visible = true;
+
+                    var motd = File.ReadAllLines(Server.MapPath("motd.html"));
+                    String str = String.Join("\n",motd);
+                    htmlMOTD.Text = str;
                 }
             }
             else

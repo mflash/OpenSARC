@@ -13,7 +13,6 @@
     <ContentTemplate>
     <br />
         <div align="center"> 
-            			
             <asp:Label Visible="False" CssClass="ms-toolbar" ID="lblRotulo" runat="server" Text="Foram feitas propostas de troca de recursos para as seguintes aulas:">
             </asp:Label><br />
             <br />
@@ -72,20 +71,18 @@
                         <asp:Label ID="lblResponsavel" runat="server" ></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateColumn>
-                
-                
-                
+                                
                 <asp:ButtonColumn CommandName="Aceitou" Text="Aceitar"></asp:ButtonColumn>
                 <asp:ButtonColumn CommandName="Recusou" Text="Recusar"></asp:ButtonColumn>
                 
             </Columns>
             </asp:DataGrid>
+            <asp:Literal runat="server" id="htmlMOTD">
+            </asp:Literal>			
         </div>
-        <br />
         <br />
         <div align="center">
         <asp:Label Visible="False" CssClass="ms-toolbar" ID="lblTransfencia" runat="server" Text="O seguintes recursos foram tranferidos para você:"></asp:Label>
-        <br />
         <asp:DataGrid ID="dgTransferencias" 
                      runat="server"       
                      AutoGenerateColumns="False" 

@@ -91,7 +91,7 @@ namespace BusinessData.BusinessLogic
             }   
         }
 
-        public void PreencheCalendarioDeAlocacoes(Entities.Calendario cal, Recurso rec, bool datasOrdenadas)
+        public void PreencheCalendarioDeAlocacoes(Entities.Calendario cal, Recurso rec, bool datasOrdenadas, bool completar=false)
         {
             if (!datasOrdenadas)
             {
@@ -100,13 +100,40 @@ namespace BusinessData.BusinessLogic
             DateTime data = cal.InicioG1;
             Alocacao alocacao;
 
+            Dictionary<DateTime, bool> aloc = new Dictionary<DateTime, bool>();
+
+            Debug.WriteLine("\n****** Recurso: " + rec.Descricao);
+
+            if (completar)
+            {
+                if (rec.EstaDisponivel == false)
+                    return;
+                foreach(Alocacao a in this.GetAlocacoesRecurso(cal, rec.Id))
+                {
+                    if (!aloc.ContainsKey(a.Data))
+                    {
+                        //Debug.WriteLine("Data ja existente: " + a.Data);
+                        aloc.Add(a.Data, true);
+                    }
+                }
+            }
+
             string[] listaHorarios = { "A", "B", "C", "D", "E", "X", "F", "G", "H", "I", "J", "K", "L", "M", "N", "P" };
 
             while (data != cal.FimG2)
             {
+                if(completar)
+                {
+                    if(aloc.ContainsKey(data))
+                    {
+                        data = data.AddDays(1);
+                        continue;
+                    }
+                }
                 foreach (string aux in listaHorarios)
                 {
                     alocacao = Alocacao.newAlocacao(rec, data, aux, null, null);
+                    Debug.WriteLine("   Nova: " + alocacao.Data + " " + alocacao.Horario + " " + alocacao.Recurso.Descricao);
                     this.InsereAlocacao(alocacao);
                 }
                 data = data.AddDays(1);
@@ -114,7 +141,7 @@ namespace BusinessData.BusinessLogic
             }
         }
 
-        public void preencheCalendario(Entities.Calendario cal)
+        public void preencheCalendario(Entities.Calendario cal, bool completar=false)
          {
              cal.Datas.Sort();
              RecursosBO controleRecursos = new RecursosBO();
@@ -122,9 +149,10 @@ namespace BusinessData.BusinessLogic
              
              foreach (Entities.Recurso recursoAux in listaRecursos)
              {
-                 PreencheCalendarioDeAlocacoes(cal, recursoAux,true);
+                 PreencheCalendarioDeAlocacoes(cal, recursoAux,true, completar);
              }
-         }
+             Debug.WriteLine("FIM DA CRIACAO DE ALOCACOES");
+        }
 
         public void esvaziaCalendario()
          {
@@ -173,6 +201,11 @@ namespace BusinessData.BusinessLogic
         public List<Alocacao> GetAlocacoesSemData(Calendario cal, Guid recursoId)
         {
             return dao.GetAlocacoesSemData(cal, recursoId);
+        }
+
+        public List<Alocacao> GetAlocacoesRecurso(Calendario cal, Guid recurso)
+        {
+            return dao.GetAlocacoesRecurso(cal, recurso);
         }
 
         public List<Alocacao> GetAlocacoesSemData(Calendario cal, Professor prof)

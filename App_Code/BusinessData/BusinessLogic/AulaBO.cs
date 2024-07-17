@@ -11,6 +11,9 @@ using BusinessData.DataAccess;
 using System.Net;
 using System.Diagnostics;
 using System.Web.Security;
+using System.Configuration;
+using System.Xml.Schema;
+using System.Data.SqlClient;
 
 namespace BusinessData.BusinessLogic
 {
@@ -60,14 +63,14 @@ namespace BusinessData.BusinessLogic
         {
             if (usr.IsAdmin())
             {
-                try
-                {
+                //try
+                //{
                     dao.RemoveAula(id);
-                }
-                catch (DataAccessException )
-                {
-                    throw;
-                }
+                //}
+                //catch (DataAccessException )
+                //{
+                //    throw;
+                //}
             }
             else
             {
@@ -126,9 +129,10 @@ namespace BusinessData.BusinessLogic
                 }
 
                 CategoriaAtividade cat = listaAtividades[0];
+                string aulaDefault = ConfigurationManager.AppSettings["AulaDefault"];
                 foreach (CategoriaAtividade categoria in listaAtividades)
                 {
-                    if (categoria.Descricao.Equals("Aula"))
+                    if (categoria.Descricao.Equals(aulaDefault))
                         cat = categoria;
                 }
 
@@ -171,6 +175,151 @@ namespace BusinessData.BusinessLogic
                 throw ex;
             }
         }
+        public void ResolveCagada(Calendario cal)
+        {
+            TurmaBO controleTurmas = new TurmaBO();
+            IList<Entities.Turma> turmas = controleTurmas.GetTurmas(cal);
+
+            AulaBO controleAulas = new AulaBO();
+
+            int totalTurmas = turmas.Count;
+            int tot = 1;
+            foreach(Turma turma in turmas)
+            {
+                SortedDictionary<String, List<Aula>> dicRepet = new SortedDictionary<string, List<Aula>>();
+
+                Debug.WriteLine("\nTurma " + tot + " de " + totalTurmas);
+                Debug.WriteLine(turma.Disciplina.Nome + " - " + turma.Numero + " " + turma.Professor.Nome);
+                //Turma turma2 = controleTurmas.GetTurmaById(new Guid("C6B70B0A-1DE1-4DB7-88B6-0891B6567564"));
+                List <Aula> aulas = controleAulas.GetAulas(turma.Id);
+                foreach(Aula aula in aulas) {
+                    string descAula = aula.Data.ToString() + aula.Hora;
+                    //Debug.WriteLine(">>> " + descAula + " " + aula.DescricaoAtividade);
+                    if(!dicRepet.ContainsKey(descAula))
+                    {
+                        dicRepet[descAula] = new List<Aula>();
+                    }
+                    dicRepet[descAula].Add(aula);
+                }
+                foreach(var opa in dicRepet)
+                {
+                    //if(opa.Value.total == 1)
+                    Debug.WriteLine("DATA: " + opa.Key);
+                    foreach(var a in opa.Value)
+                    {
+                        Debug.WriteLine("   " + a.Id + "   " + a.DescricaoAtividade);
+                        if(opa.Value.Count > 1 && a.DescricaoAtividade == String.Empty)
+                        {
+                            bool keepTrying = false;
+                            Debug.WriteLine(" REMOVENDO: " + a.Id);
+                            try
+                            {
+                                controleAulas.DeletaAula((Guid)a.Id);
+                            }
+                            catch(DataAccessException e)
+                            {
+                                Debug.WriteLine("*** ERRO: " + e.Message);
+                                keepTrying = true;
+                            }
+                            if(!keepTrying) break;
+                        }
+                    }
+                }
+                tot++;
+                //break;
+            }
+            Debug.WriteLine("\nFINAL DO PROCESSAMENTO");
+        }
+
+        public void CriarAulasCompletar(Calendario cal)
+        {
+            try
+            {
+                //ordena lista da datas
+                cal.Datas.Sort();
+                //Recebe a lista das turmas
+                TurmaBO contadorroleTurmas = new TurmaBO();
+                IList<Entities.Turma> listaTurmas = contadorroleTurmas.GetTurmas(cal);
+                Util.DataHelper dheper = new BusinessData.Util.DataHelper();
+                //Recebe a lista das atividades
+                CategoriaAtividadeBO contadorroleAtividades = new CategoriaAtividadeBO();
+                IList<CategoriaAtividade> listaAtividades = contadorroleAtividades.GetCategoriaAtividade();
+                if (listaAtividades.Count == 0)
+                {
+                    throw new IndexOutOfRangeException();
+                }
+
+                CategoriaAtividade cat = listaAtividades[0];
+                string aulaDefault = ConfigurationManager.AppSettings["AulaDefault"];
+                foreach (CategoriaAtividade categoria in listaAtividades)
+                {
+                    if (categoria.Descricao.Equals(aulaDefault))
+                        cat = categoria;
+                }
+
+                AulaBO contadorroleAulas = new AulaBO();
+                Aula aulaAux;
+
+                int totalTurmas = listaTurmas.Count;
+                int tot = 1;
+
+                //Percorre todas as turmas na lista
+                foreach (Turma turmaAux in listaTurmas)
+                {
+                    Debug.WriteLine("\nTurma " + tot + " de " + totalTurmas);
+                    Debug.WriteLine(turmaAux.Disciplina.Nome + " - " + turmaAux.Numero + " " + turmaAux.Professor.Nome);
+
+                    List<Aula> todasAulas = this.GetAulas(turmaAux.Id);
+                    Dictionary<String, bool> dicAulas = new Dictionary<String, bool>();
+                    foreach (Aula aula in todasAulas)
+                    {
+                        string descAula = aula.Data.ToString() + aula.Hora;
+                        if (!dicAulas.ContainsKey(descAula)) {
+                            dicAulas.Add(descAula, true);
+                        }
+                    }
+
+                    string horario = turmaAux.DataHora;
+
+                    //dado um horario pucrs(2ab,4cd), exclui os horarios e guarda os dias em array de inteiros
+                    string diasPucrs = Regex.Replace(horario, "[a-zA-Z]", String.Empty);
+
+                    int tamanho = diasPucrs.Length;
+                    int[] dias = new int[tamanho];
+                    for (int i = 0; i < tamanho; i++)
+                    {
+                        dias[i] = Convert.ToInt32(diasPucrs.Substring(i, 1));
+                    }
+
+                    string[] horariosPucrs = horario.Split(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    DateTime aux = cal.InicioG1;
+
+                    while (aux <= cal.FimG2)
+                    {
+                        for (int i = 0; i < dias.Length; i++)
+                        {
+                            if ((int)(aux.DayOfWeek) == (dias[i] - 1))
+                            {
+                                string descAula = aux.ToString() + horariosPucrs[i];
+                                if (dicAulas.ContainsKey(descAula)) // aula ja existe?
+                                    continue;
+                                aulaAux = Aula.newAula(turmaAux, horariosPucrs[i], aux, string.Empty, cat);
+                                Debug.WriteLine("  >>> Criando aula: " + descAula);
+                                this.InsereAula(aulaAux);
+                            }
+                        }
+                        aux = aux.AddDays(1);
+                    }
+                    tot++;
+                }
+            }
+            catch (DataAccessException ex)
+            {
+                throw ex;
+            }
+            Debug.WriteLine("FIM DA CRIACAO DE AULAS");
+        }
 
         public void CriarAulas(Calendario cal)
         {
@@ -191,9 +340,10 @@ namespace BusinessData.BusinessLogic
                 }
                 
                 CategoriaAtividade cat = listaAtividades[0];
+                string aulaDefault = ConfigurationManager.AppSettings["AulaDefault"];
                 foreach (CategoriaAtividade categoria in listaAtividades)
                 {
-                    if (categoria.Descricao.Equals("Aula"))
+                    if (categoria.Descricao.Equals(aulaDefault))
                         cat = categoria;
                 }
 
@@ -240,9 +390,9 @@ namespace BusinessData.BusinessLogic
             }
         }
    
-        public List<Aula> GetAulas()
+        public List<Aula> GetAulasByCalendario(Guid CalendarioId)
         {
-            return dao.GetAulas();
+            return dao.GetAulasByCalendario(CalendarioId);
         }
 
         public List<Aula> GetAulas(Guid TurmaId)

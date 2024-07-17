@@ -24,13 +24,24 @@ namespace BusinessData.BusinessLogic
             configBO = new ConfigBO();
         }
 
-        public void AbreSolicitacaoRecursos(Calendario cal)
+        public void ResolveCagada(Calendario cal)
+        {
+            //aulasBO.CriarAulasCompletar(cal);
+            alocacaoBO.preencheCalendario(cal, true);
+            //aulasBO.ResolveCagada(cal);
+        }
+
+        public void AbreSolicitacaoRecursos(Calendario cal, bool completar=false)
         {
             try
             {
-                aulasBO.CriarAulas(cal);
-                alocacaoBO.preencheCalendario(cal);
-                configBO.setAulasDistribuidas(cal, true);
+                if (completar)
+                    aulasBO.CriarAulasCompletar(cal);
+                else
+                    aulasBO.CriarAulas(cal);
+                alocacaoBO.preencheCalendario(cal, completar);
+                if(!completar)
+                    configBO.setAulasDistribuidas(cal, true);
 
                 //instancia o usuario logado
                 MembershipUser user = Membership.GetUser();

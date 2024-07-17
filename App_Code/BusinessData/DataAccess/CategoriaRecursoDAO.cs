@@ -136,7 +136,7 @@ namespace BusinessData.DataAccess
                     while (leitor.Read())
                     {
                         aux = Entities.CategoriaRecurso.GetCategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaRecursoId")),
-                                                                leitor.GetString(leitor.GetOrdinal("Descricao")));
+                                                                leitor.GetString(leitor.GetOrdinal("Descricao")), leitor.GetBoolean(leitor.GetOrdinal("Disponivel")));
                         listaAux.Add(aux);
                     }
                 }

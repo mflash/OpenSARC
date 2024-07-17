@@ -22,6 +22,8 @@ namespace BusinessData.Distribuicao.BusinessLogic
             foreach (BusinessData.Entities.CategoriaRecurso cat in controleCategoriaRecursos.GetCategoriaRecurso())
             {
                 listaRecursos = new List<Recurso>();
+                if (!cat.Disponivel)
+                    continue;
                 foreach (BusinessData.Entities.Recurso rec in controleRecursos.GetRecursosPorCategoria(cat))
                 {
                     recAux = new Recurso(rec);

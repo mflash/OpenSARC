@@ -6,11 +6,15 @@ namespace BusinessData.Entities
 {
     public class CategoriaRecurso : CategoriaBase, System.IEquatable<CategoriaRecurso>, IComparable<CategoriaRecurso>
     {
+        public bool Disponivel { get; set; }
+
         public CategoriaRecurso() { }
-        public CategoriaRecurso(Guid id, string descricao)
+        public CategoriaRecurso(Guid id, string descricao, bool disponivel=true)
         {
             base.Id = id;
             base.Descricao = descricao;
+            Disponivel = disponivel;
+
         }
 
         /// <summary>
@@ -21,7 +25,12 @@ namespace BusinessData.Entities
         /// <returns></returns>
         public static CategoriaRecurso GetCategoriaRecurso(Guid id, string descricao)
         {
-            return new CategoriaRecurso(id, descricao);
+            return new CategoriaRecurso(id, descricao, true);
+        }
+
+        public static CategoriaRecurso GetCategoriaRecurso(Guid id, string descricao, bool disponivel)
+        {
+            return new CategoriaRecurso(id, descricao, disponivel);
         }
 
         /// <summary>

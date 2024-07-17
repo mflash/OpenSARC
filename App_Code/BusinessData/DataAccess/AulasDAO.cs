@@ -106,9 +106,10 @@ namespace BusinessData.DataAccess
             return aux;
         }
 
-        public List<Aula> GetAulas()
+        public List<Aula> GetAulasByCalendario(Guid id)
         {
-            DbCommand cmd = baseDados.GetStoredProcCommand("AulasSelect");
+            DbCommand cmd = baseDados.GetStoredProcCommand("AulasSelectByCalendario");
+            baseDados.AddInParameter(cmd, "@CalendarioId", DbType.Guid, id);
             List<Entities.Aula> listaAux = new List<BusinessData.Entities.Aula>();
             Entities.Aula aux;
             try

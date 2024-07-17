@@ -357,6 +357,12 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         AtualizaTodaGrade();
         ExportarHtml();
     }
+
+    protected void btnExportarCSV_Click(object sender, EventArgs e)
+    {
+        AtualizaTodaGrade();
+        ExportarCSV();
+    }
 	
 	protected void butTransferir_Click(object sender, EventArgs e)
 	{
@@ -566,6 +572,47 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         }
         Session["DownHtml"] = tabela;
         Response.Redirect("DownloadHtml2.aspx");
+    }
+
+    protected void ExportarCSV()
+    {
+        DataTable tabela = new DataTable();
+
+        foreach (DataGridColumn coluna in dgAulas.Columns)
+        {
+            tabela.Columns.Add(coluna.HeaderText);
+        }
+
+        DataRow dr;
+        Label lblAux;
+        TextBox txtDescricao;
+        DropDownList ddlAtividade;
+        foreach (DataGridItem item in dgAulas.Items)
+        {
+            dr = tabela.NewRow();
+            lblAux = (Label)item.FindControl("lblAula");
+            dr["#"] = lblAux.Text;
+
+            lblAux = (Label)item.FindControl("lblDia");
+            dr["Dia"] = lblAux.Text;
+
+            lblAux = (Label)item.FindControl("lblData");
+            dr["Data"] = lblAux.Text;
+
+            lblAux = (Label)item.FindControl("lblHora");
+            dr["Hora"] = lblAux.Text;
+
+            txtDescricao = (TextBox)item.FindControl("txtDescricao");
+            dr["Descrição"] = txtDescricao.Text;
+
+            ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
+            dr["Atividade"] = ddlAtividade.SelectedItem.Text;
+
+            dr["CorDaData"] = item.BackColor.Name;
+            tabela.Rows.Add(dr);
+        }
+        Session["DownCSV"] = tabela;
+        Response.Redirect("DownloadCSV2.aspx");
     }
 
     // Atualiza o dropdownlist de seleção de recursos e o checkbox list dos selecionados,

@@ -89,7 +89,9 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
     	<asp:Button ID="Button1" runat="server" CssClass="ms-toolbar" OnClick="btnExportarHTML_Click" ToolTip="Faz download de um arquivo HTML com o cronograma"
-                    Text="Exportar HTML" />
+                    Text="Exportar HTML" />&nbsp;&nbsp;&nbsp;
+        <asp:Button ID="Button2" runat="server" CssClass="ms-toolbar" OnClick="btnExportarCSV_Click" ToolTip="Faz download de um arquivo CSV com o cronograma para o sistema de atas"
+                    Text="Exportar CSV/Atas" />&nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="Link1" runat="server" CssClass="ms-toolbar" NavigateUrl="" ToolTip="Este link pode ser usado em qualquer lugar para visualizar o cronograma"
                     Text="Link para HTML" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Label ID="lblCals" runat="server" CssClass="ms-consolestatus" Text="Compartilhar calendário:"></asp:Label>

@@ -16,7 +16,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
-
+using System.Linq;
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
 {          
@@ -35,6 +35,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     Guid dummyGuid = new Guid();
 	bool facin = true;
     bool semRecursos = true;
+    int totalAulas = 0;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -112,7 +113,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                                                || listaAulas[1].Hora == "JK" || listaAulas[2].Hora == "LM" || listaAulas[2].Hora == "NP")
                                                 durPeriodo = 45;*/
 
-                        int totalAulas = 0;
+                        totalAulas = 0;
                         bool emG2 = false;
                         bool haG2 = false;
                         int totalFeriados = 0;
@@ -158,7 +159,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 						
 						dgAulas.DataSource = listaAulas;                        
                         dgAulas.DataBind();
-
                     }
                 }
             }
@@ -189,6 +189,13 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             Label lblCorDaData = (Label)e.Item.FindControl("lblCorDaData");
             Label lblRecursosSelecionados = (Label)e.Item.FindControl("lblRecursosSelecionados");
             Label lblAulaId = (Label)e.Item.FindControl("lblAulaId");
+
+            Panel pnRecursos = (Panel)e.Item.FindControl("pnRecursos");
+            HtmlTable tabRecursos = (HtmlTable)e.Item.FindControl("tabRecursos");
+            int i = tabRecursos.Rows[0].Cells[0].Controls.Count;
+            CheckBoxList cbRecursos = (CheckBoxList)tabRecursos.Rows[0].Cells[0].Controls[1];
+            ImageButton butDel = (ImageButton)e.Item.FindControl("butDeletar");
+
             Color cor = argb[0];
 
             txtDescricao.Attributes.Add("onkeyup", "setDirtyFlag()");
@@ -198,9 +205,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             listCData = cdataBo.GetCategoriaDatas();
             List<Requisicao> listReq = reqBo.GetRequisicoesPorAula(new Guid(lblAulaId.Text), cal);                        
-
-            
-            
 
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
 
@@ -217,10 +221,13 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             listCatRecursos.Insert(0, dummy);
 
             string recursos = "";
+            cbRecursos.Items.Clear();
             foreach (Requisicao r in listReq)
             {
                 if (recursos != String.Empty) recursos += "<br/>";
-                recursos += r.Prioridade + ": " + r.CategoriaRecurso.Descricao;
+                string descr = r.Prioridade + ": " + r.CategoriaRecurso.Descricao;
+                cbRecursos.Items.Add(new ListItem(descr, r.IdRequisicao.ToString()));
+                recursos += descr;
                 listCatRecursos.Remove(listCatRecursos.Find(delegate(CategoriaRecurso cr)
                 {
                     return cr.Descricao == r.CategoriaRecurso.Descricao;
@@ -234,6 +241,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 dgAulas.Columns[8].Visible = false;
                 dgAulas.Columns[9].Visible = false;
                 dgAulas.Columns[10].Visible = false;
+                butDel.Visible = false;
                 //ddlCategoriaRecurso.Visible = false;
                 //lblRecursosSelecionados.Visible = false;
             }
@@ -244,7 +252,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 ddlCategoriaRecurso.DataTextField = "Descricao";
                 ddlCategoriaRecurso.DataValueField = "Id";
                 ddlCategoriaRecurso.DataBind();
+                butDel.Visible = true;
             }
+            if (recursos == String.Empty)
+                butDel.Visible = false;
 
 //            ddlCategoriaRecurso.Items.Remove("Laboratório");
 
@@ -434,7 +445,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             idaula = new Guid(lblAulaId.Text);
             hora = lblHora.Text;
             data = Convert.ToDateTime(lblData.Text);
-            aux = txtDescricao.Text;
+            aux = txtDescricao.Text.Trim();
             descricao = aux.Substring(aux.IndexOf('\n') + 1);
 
             idcategoria = new Guid(ddlAtividade.SelectedValue);
@@ -461,6 +472,17 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     protected void btnExportarHTML_Click(object sender, EventArgs e)
     {
         ExportarHtml();
+    }
+
+    protected void btnExportarCSV_Click(object sender, EventArgs e)
+    {
+        ExportarCSV();
+    }
+
+    protected void btnImportarCSV_Click(object sender, EventArgs e)
+    {
+        
+        ImportarCSV();
     }
 
     private void ExportarHtml()
@@ -540,6 +562,76 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Response.Redirect("DownloadHtml2.aspx");
     }
 
+    // Deleta o(s) recurso(s) selecionado(s)
+    protected void butDeletar_Click(object sender, ImageClickEventArgs e)
+    {
+        ImageButton butDel = (ImageButton)sender;
+
+        // O checkbox list está dentro da célula da tabela...
+        HtmlTableCell cell = (HtmlTableCell)butDel.Parent;
+        CheckBoxList cbList = (CheckBoxList)cell.FindControl("cbRecursos");
+
+        // Para chegar no DataGridItem correspondente... bleargh!
+        DataGridItem grid = (DataGridItem)cell.Parent.Parent.Parent.Parent.Parent;
+
+        DropDownList ddlRecurso = (DropDownList)grid.FindControl("ddlRecurso");
+        string dataString = ((Label)grid.FindControl("lblData")).Text;
+        DateTime data = Convert.ToDateTime(dataString);
+        string horario = ((Label)grid.FindControl("lblHora")).Text;
+        string aulaString = ((Label)grid.FindControl("lblAulaId")).Text;
+
+        Guid aulaId = new Guid(aulaString);
+        Aula aula = aulaBo.GetAulaById(aulaId);
+
+        RequisicoesBO controleRequisicoes = new RequisicoesBO();
+        CategoriaRecursoBO controladorCategorias = new CategoriaRecursoBO();
+
+        // Varre o checkbox list do fim para o início,
+        // e remove todos os recursos selecionados (da tela e do BD)
+
+        // Se so houver um recurso na lista, remove mesmo sem selecionar
+        if (cbList.Items.Count == 1)
+            cbList.Items[0].Selected = true;
+        for (int r = cbList.Items.Count-1; r >=0; r--)
+        {
+            ListItem recurso = cbList.Items[r];
+            if (recurso.Selected)
+            {
+                controleRequisicoes.DeletaRequisicao(new Guid(recurso.Value));
+                cbList.Items.RemoveAt(r);
+            }
+        }
+
+        if (cbList.Items.Count == 0)
+            butDel.Visible = false;
+
+        List<Requisicao> requisicoesExistentes = controleRequisicoes.GetRequisicoesPorAula(aulaId, cal);
+        var reqs = from req in requisicoesExistentes
+                   orderby req.Prioridade
+                   select req;
+
+        List<CategoriaRecurso> listCatRecursos = categoriaRecursoBo.GetCategoriaRecursoSortedByUse();
+        CategoriaRecurso dummy = new CategoriaRecurso(dummyGuid, "Selecionar...");
+        listCatRecursos.Insert(0, dummy);
+
+        int pri = 1;
+        cbList.Items.Clear();
+        foreach (Requisicao req in reqs)
+        {
+            req.Prioridade = pri++;
+            controleRequisicoes.UpdateRequisicoes(req);
+            cbList.Items.Add(new ListItem(req.Prioridade + ": " + req.CategoriaRecurso.Descricao,req.IdRequisicao.ToString()));
+            listCatRecursos.Remove(listCatRecursos.Find(delegate (CategoriaRecurso cr)
+            {
+                return cr.Descricao == req.CategoriaRecurso.Descricao;
+            }
+            ));
+        }
+        ddlRecurso.SelectedIndex = 0;
+        ddlRecurso.DataSource = listCatRecursos;
+        ddlRecurso.DataBind();
+    }
+
     protected void ddlRecurso_SelectedIndexChanged(object sender, EventArgs e)
     {
         DropDownList ddlRecurso = (DropDownList) sender;
@@ -547,6 +639,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         TableCell cell = (TableCell) ddlRecurso.Parent;
         DataGridItem gridItem = (DataGridItem) cell.Parent;
+        ImageButton butDel = (ImageButton)gridItem.FindControl("butDeletar");
 
         // Salva dados digitados
 
@@ -579,17 +672,22 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         // Atualiza label com os recursos selecionados
         Label lblRecursosSelecionados = (Label) gridItem.FindControl("lblRecursosSelecionados");
+        CheckBoxList cbRecursos = (CheckBoxList)gridItem.FindControl("cbRecursos");
         string recursos = "";
+        cbRecursos.Items.Clear();
         foreach (Requisicao r in requisicoesExistentes)
         {
             if (recursos != String.Empty) recursos += "<br/>";
-            recursos += r.Prioridade + ": " + r.CategoriaRecurso.Descricao;
+            string descr = r.Prioridade + ": " + r.CategoriaRecurso.Descricao;
+            recursos += descr;
+            cbRecursos.Items.Add(new ListItem(descr, r.IdRequisicao.ToString()));
         }
         lblRecursosSelecionados.Text = recursos;
 
         // Remove a categoria selecionada do drop down list
         ddlRecurso.Items.Remove(ddlRecurso.Items.FindByValue(ddlRecurso.SelectedValue));
         ddlRecurso.SelectedIndex = 0;
+        butDel.Visible = true;
     }
 
     // Troca de tipo de atividade, atualiza aula e cores na tela
@@ -645,4 +743,149 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 		txtDescricao.Text = descricao;
     }
 
+    protected void ExportarCSV()
+    {
+        DataTable tabela = new DataTable();
+
+        foreach (DataGridColumn coluna in dgAulas.Columns)
+        {
+            tabela.Columns.Add(coluna.HeaderText);
+        }
+
+        DataRow dr;
+        Label lblAux;
+        TextBox txtDescricao;
+        DropDownList ddlAtividade;
+        foreach (DataGridItem item in dgAulas.Items)
+        {
+            dr = tabela.NewRow();
+            lblAux = (Label)item.FindControl("lblAula");
+            dr["#"] = lblAux.Text;
+
+            lblAux = (Label)item.FindControl("lblDia");
+            dr["Dia"] = lblAux.Text;
+
+            lblAux = (Label)item.FindControl("lblData");
+            dr["Data"] = lblAux.Text;
+
+            lblAux = (Label)item.FindControl("lblHora");
+            dr["Hora"] = lblAux.Text;
+
+            txtDescricao = (TextBox)item.FindControl("txtDescricao");
+            dr["Descrição"] = txtDescricao.Text;
+
+            ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
+            dr["Atividade"] = ddlAtividade.SelectedItem.Text;
+
+            dr["CorDaData"] = item.BackColor.Name;
+            tabela.Rows.Add(dr);
+        }
+        Session["DownCSV"] = tabela;
+        Response.Redirect("DownloadCSV2.aspx");
+    }
+
+    protected void ImportarCSV()
+    {
+        if (csvUpload.HasFile)
+        {
+            string folderPath = "c:\\temp";
+//            string folderPath = Server.MapPath("~/AppData");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string pathname = folderPath + "\\" + Path.GetFileName(csvUpload.FileName);
+            Debug.WriteLine("Save pathname: "+pathname);
+            csvUpload.SaveAs(pathname);
+            
+            DataTable dt = ConvertCSVtoDataTable(pathname);
+            if(dt == null)
+            {
+                MessageBox("Formato de arquivo inválido (deve ser CSV do sistema de atas)");
+                return;
+            }
+
+            int cont = 0;
+            foreach (DataGridItem item in dgAulas.Items)
+            {
+                DataRow dr = dt.Rows[cont];
+
+                Label lblAux = (Label)item.FindControl("lblAula");
+                if (lblAux.Text == String.Empty) continue;
+
+                string corData = item.BackColor.Name;
+                if (corData == "LightGray")
+                    break;
+
+                TextBox txtDescricao = (TextBox)item.FindControl("txtDescricao");
+                txtDescricao.Text = (string) dr[6];
+                Debug.WriteLine(cont + ": " + txtDescricao.Text);
+
+                DropDownList ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
+                string atividade = (string) dr[5];
+                int tipoAula = 0;
+                switch (atividade)
+                {
+                    case "2": tipoAula = 4; break;
+                    case "4": tipoAula = 6; break;
+                    case "6": tipoAula = 0; break;
+                    case "7": tipoAula = 8; break;
+                }
+                ddlAtividade.SelectedIndex = tipoAula;
+                cont++;
+                if (cont >= dt.Rows.Count)
+                    break;
+            }
+            SalvarTodos();
+            File.Delete(pathname);
+
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            string message = "Total: " + cont + " de " + dt.Rows.Count;
+            MessageBox(message);
+        }
+        else
+        {
+            MessageBox("Primeiro selecione um arquivo CSV");
+        }
+    }
+
+    protected void MessageBox(string message)
+    {
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        sb.Append("<script type = 'text/javascript'>");
+        sb.Append("window.onload=function(){");
+        sb.Append("alert('");
+        sb.Append(message);
+        sb.Append("')};");
+        sb.Append("</script>");
+
+        ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", sb.ToString());
+    }
+
+    protected DataTable ConvertCSVtoDataTable(string strFilePath)
+    {
+        DataTable dt = new DataTable();
+        using (StreamReader sr = new StreamReader(strFilePath))
+        {
+            string[] headers = sr.ReadLine().Split(';');
+            if (headers[0] != "cdDisciplinaOrigem")
+                return null;
+            foreach (string header in headers)
+            {
+                dt.Columns.Add(header);
+            }
+            while (!sr.EndOfStream)
+            {
+                string[] rows = sr.ReadLine().Split(';');
+                DataRow dr = dt.NewRow();
+                for (int i = 0; i < headers.Length; i++)
+                {
+                    dr[i] = rows[i];
+                }
+                dt.Rows.Add(dr);
+            }
+        }
+        return dt;
+    }
 }

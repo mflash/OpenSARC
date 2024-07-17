@@ -442,6 +442,42 @@ namespace BusinessData.DataAccess
             return lista;
         }
 
+        public List<Alocacao> GetAlocacoesRecurso(Calendario cal, Guid recursoId)
+        {
+            List<Alocacao> lista = new List<Alocacao>();
+
+            var con = new SqlConnection(baseDados.ConnectionString);
+            var cmd = con.CreateCommand();
+            cmd.CommandText = "select * from Alocacao a where a.Data >= @DataInicio and a.RecursoId = (@RecursoId) order by a.Data";
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("@DataInicio", cal.InicioG1);
+            cmd.Parameters.AddWithValue("@RecursoId", recursoId);
+
+//           baseDados.AddInParameter(cmd, "@RecursoId", DbType.Guid, recursoId);
+//            baseDados.AddInParameter(cmd, "@DataInicio", DbType.DateTime, cal.InicioG1);
+//            baseDados.AddInParameter(cmd, "@DataFim", DbType.DateTime, cal.FimG2);
+
+            using (IDataReader leitor = baseDados.ExecuteReader(cmd))
+            {
+
+                Alocacao aloc;
+                DateTime dateTime;
+                string hora;
+
+                while (leitor.Read())
+                {
+                    
+                    hora = (string)leitor.GetString(leitor.GetOrdinal("Horario"));
+                    dateTime = (DateTime)leitor.GetDateTime(leitor.GetOrdinal("Data"));
+
+                    aloc = new Alocacao(null, dateTime, hora, null, null);
+
+                    lista.Add(aloc);
+                }
+            }
+            return lista;
+        }
+
         public List<Alocacao> GetAlocacoesSemData(Calendario cal, Professor prof)
         {
             List<Alocacao> lista = new List<Alocacao>();

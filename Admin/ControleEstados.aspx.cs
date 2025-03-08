@@ -50,6 +50,12 @@ public partial class Admin_ControleEstados : System.Web.UI.Page
         AtualizaBotoes();
     }
 
+    protected void btnCompletarCalendario_Click(object sender, EventArgs e)
+    {
+        //controladorAulas.AbreSolicitacaoRecursos(calAtual, true);
+        controladorAulas.ResolveCagada(calAtual);
+    }
+
     protected void btnFecharAcesso_Click(object sender, EventArgs e)
     {
         Session["AppState"] = AppState.Admin;

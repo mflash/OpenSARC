@@ -114,7 +114,7 @@ public partial class Default_Export : System.Web.UI.Page
                     {
                         aux = rec.Descricao;
                         //Debug.WriteLine("Tipo recurso:" + rec.Tipo);
-                        if (rec.Tipo == 'L' || rec.Tipo == 'A' || rec.Tipo == 'D' || rec.Tipo == 'X')
+                        if (rec.Tipo == 'L' || rec.Tipo == 'A' || rec.Tipo == 'D' || rec.Tipo == 'X' || rec.Descricao.StartsWith("Sala"))
                             recHoje = rec.Descricao;
                     }
                 }
@@ -134,7 +134,7 @@ public partial class Default_Export : System.Web.UI.Page
                         if (c.Id == data.Categoria.Id) { 
                             if (!c.DiaLetivo)
                             {
-                                dr["Descrição"] = c.Descricao + (aula.DescricaoAtividade != "Feriado" ? " (era " + aula.DescricaoAtividade + ")" : "");
+                                dr["Descrição"] = c.Descricao; //+ (aula.DescricaoAtividade != "Feriado" ? " (era " + aula.DescricaoAtividade + ")" : "");
                                 dr["#"] = "";
                                 totalAulas--;
                                 break;

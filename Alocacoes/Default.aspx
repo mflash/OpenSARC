@@ -14,10 +14,10 @@
                 <asp:Label ID="lblDisciplina" runat="server" CssClass="ms-WPTitle" Text="VISUALIZAR RECURSOS ALOCADOS POR:"></asp:Label></div>
             <asp:RadioButtonList ID="rblAlocacoes" runat="server" OnSelectedIndexChanged="rblAlocacoes_SelectedIndexChanged" AutoPostBack="True" BackColor="White" BorderColor="White" CssClass="ms-toolbar">
                 <asp:ListItem Selected="True" Value="Data">Data</asp:ListItem>
-				<asp:ListItem Value="Categoria">Categoria recurso + horário</asp:ListItem>
                 <asp:ListItem Value="Recurso">Recurso</asp:ListItem>
                 <asp:ListItem Value="Professor">Professor</asp:ListItem>
                 <asp:ListItem>Secret&#225;rio</asp:ListItem>
+                <asp:ListItem Value="Todos">Todos</asp:ListItem>
             </asp:RadioButtonList>
             <table id="Table3">
                 <tr>
@@ -130,7 +130,7 @@
                      Width="100%" 
                      HorizontalAlign="Center"  
                      OnItemDataBound="dgAlocacoes_ItemDataBound"
-                     Visible="False" AlternatingItemStyle-BackColor="#E0E0E0">
+                     Visible="True" AlternatingItemStyle-BackColor="#E0E0E0">
         
             <ItemStyle CssClass="ms-toolbar"  HorizontalAlign="Center"/>
             <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Center" />

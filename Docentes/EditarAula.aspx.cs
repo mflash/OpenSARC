@@ -815,22 +815,26 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 if (lblAux.Text == String.Empty) continue;
 
                 string corData = item.BackColor.Name;
-                if (corData == "LightGray")
-                    break;
+                //if (corData == "LightGray")
+                //    break;
+
+                if (corData == "Gold" || corData == "OrangeRed")
+                    continue;
 
                 TextBox txtDescricao = (TextBox)item.FindControl("txtDescricao");
-                txtDescricao.Text = (string) dr[6];
+                txtDescricao.Text = (string) dr[3];
                 Debug.WriteLine(cont + ": " + txtDescricao.Text);
 
                 DropDownList ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
-                string atividade = (string) dr[5];
+                string atividade = (string) dr[2];
                 int tipoAula = 0;
                 switch (atividade)
                 {
-                    case "2": tipoAula = 4; break;
-                    case "4": tipoAula = 6; break;
-                    case "6": tipoAula = 0; break;
-                    case "7": tipoAula = 8; break;
+                    case "2": tipoAula = 4; break; // Prova
+                    case "3": tipoAula = 5; break; // G2
+                    case "4": tipoAula = 6; break; // Prova S
+                    case "6": tipoAula = 0; break; // Aula
+                    case "7": tipoAula = 9; break; // Trabalho
                 }
                 ddlAtividade.SelectedIndex = tipoAula;
                 cont++;

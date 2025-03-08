@@ -439,6 +439,53 @@ namespace BusinessData.DataAccess
                     lista.Add(aloc);
                 }
             }
+            lista.Sort();
+            return lista;
+        }
+
+        public List<Alocacao> GetTodasAlocacoes(Calendario cal)
+        {
+            List<Alocacao> lista = new List<Alocacao>();
+
+            DbCommand cmd = baseDados.GetStoredProcCommand("AlocacaoSelectSemData");
+            baseDados.AddInParameter(cmd, "@DataInicio", DbType.DateTime, cal.InicioG1);
+            baseDados.AddInParameter(cmd, "@DataFim", DbType.DateTime, cal.FimG2);
+
+            AulasDAO aulaDAO = new AulasDAO();
+            EventoDAO eventoDAO = new EventoDAO();
+            RecursosDAO recDAO = new RecursosDAO();
+
+            using (IDataReader leitor = baseDados.ExecuteReader(cmd))
+            {
+
+                Alocacao aloc;
+
+                while (leitor.Read())
+                {
+                    Aula au = null;
+                    Recurso rec = null;
+                    Evento evento = null;
+                    DateTime dateTime = new DateTime();
+
+                    rec = recDAO.GetRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")));
+
+                    Guid? aulaId = leitor["AulaId"] as Guid?;
+                    if (aulaId.HasValue)
+                        au = aulaDAO.GetAula(leitor.GetGuid(leitor.GetOrdinal("AulaId")));
+
+                    Guid? eventoId = leitor["EventoId"] as Guid?;
+                    if (eventoId.HasValue)
+                        evento = eventoDAO.GetEvento(leitor.GetGuid(leitor.GetOrdinal("EventoId")));
+
+                    string hora = (string)leitor["Hora"];
+
+                    dateTime = (DateTime)leitor["Data"];
+
+                    aloc = new Alocacao(rec, dateTime, hora, au, evento);
+
+                    lista.Add(aloc);
+                }
+            }
             return lista;
         }
 
@@ -610,6 +657,13 @@ namespace BusinessData.DataAccess
                     lista.Add(aloc);
                 }
             }
+            lista.Sort((a1, a2) =>
+            {
+                int horarioComp = string.Compare(a1.Horario, a2.Horario, StringComparison.Ordinal);
+                if (horarioComp != 0)
+                    return horarioComp;
+                return string.Compare(a1.Recurso.Descricao, a2.Recurso.Descricao);
+            });
             return lista;
         }
 

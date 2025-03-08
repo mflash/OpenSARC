@@ -62,7 +62,15 @@ namespace BusinessData.Entities
 
         public int CompareTo(Alocacao other)
         {
-            return this.Data.CompareTo(other.Data);
+            if (other == null) return 1;
+
+            int dataComparison = this.Data.CompareTo(other.Data);
+            if (dataComparison != 0)
+            {
+                return dataComparison;
+            }
+
+            return string.Compare(this.Horario, other.Horario, StringComparison.Ordinal);
         }
     }
 }

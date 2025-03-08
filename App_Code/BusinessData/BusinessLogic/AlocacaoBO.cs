@@ -183,6 +183,11 @@ namespace BusinessData.BusinessLogic
              }
          }
 
+        public List<Alocacao> GetAlocacoes(Calendario cal)
+        {
+            return dao.GetTodasAlocacoes(cal);
+        }
+
         public List<Alocacao> GetAlocacoes(Calendario cal, DateTime data, Professor prof)
          {
              return dao.GetAlocacoes(cal, data, prof);

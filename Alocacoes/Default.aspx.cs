@@ -194,6 +194,27 @@ public partial class Alocacoes_Default : System.Web.UI.Page
         }
     }
 
+    private void VisualizarAlocacoesSemData()
+    {
+        List<Alocacao> listaAlocacoes;
+        try
+        {
+            listaAlocacoes = controladorAlocacoes.GetAlocacoes((BusinessData.Entities.Calendario)Session["Calendario"]);
+            if (listaAlocacoes.Count != 0)
+            {
+                dgAlocacoes.DataSource = listaAlocacoes;
+                dgAlocacoes.Visible = true;
+                dgAlocacoes.DataBind();
+                lblStatus.Visible = false;
+            }
+        }
+        catch (System.Data.SqlTypes.SqlTypeException)
+        {
+            dgAlocacoes.Visible = false;
+            lblStatus.Text = "Erro SQL!";
+        }
+    }
+
     protected void btnVisualizarAlocacoes_Click(object sender, EventArgs e)
     {
         switch (rblAlocacoes.SelectedValue)
@@ -213,6 +234,10 @@ public partial class Alocacoes_Default : System.Web.UI.Page
             case "Secretário":
                 lblStatus.Visible = true;
                 VisualizarAlocacoesSecretario();
+                break;
+            case "Todos":
+                lblStatus.Visible = true;
+                VisualizarAlocacoesSemData();
                 break;
         }        
     }

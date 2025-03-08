@@ -1,4 +1,4 @@
-<%-- $Id$ --%>
+Ôªø<%-- $Id$ --%>
 
 <%@ Page Language="C#" MasterPageFile="~/Master/Login.master" AutoEventWireup="true"
     CodeFile="Default.aspx.cs" Inherits="_Default" %>
@@ -12,21 +12,197 @@
         <asp:Timer ID="Timer1" runat="server" Interval="60000" OnTick="Timer1_Tick">
         </asp:Timer>
     </div>
+        <style>
+        /* General Styles */
+        /*body {
+            font-family: Arial, sans-serif;
+            background-color: #ddd;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }*/
+
+        /*body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }*/
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1024px;
+            width: 100%;
+            margin: auto;
+        }
+
+        /* Each row contains category + blocks */
+        .row {
+            display: grid;
+            grid-template-columns: 60px auto;
+            gap: 5px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        /* Fixed Category Column */
+        .category {
+            /*background-color: #777;*/
+            color: black;
+            font-weight: bold;
+            /*padding: 5px;*/
+            text-align: center;
+            /*border: none;*/
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            width: 60px;
+            flex-direction: column;
+        }
+
+        .category img {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Blocks Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 5px;
+            padding-right: 20px;
+        }
+
+        .block {
+            padding: 12px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: transform 0.2s, background-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            min-width: 180px;
+        }
+
+        /* Two-Line Text */
+        .block span {
+            display: block;
+            font-size: 16px;
+            font-weight: normal;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            opacity: 1.0;
+        }
+
+        /* Hover Effect */
+        .block:hover {
+            transform: scale(1.05);
+            filter: brightness(90%);
+        }
+
+        /* Category Colors */
+        .lab { background-color: #97c7a677; font-size: 20px;}
+        .notebook { background-color: #6e90b077; font-size: 20px; }
+        .cabo-hdmi { background-color: #e1c48e77; font-size: 20px; }
+        .cabo-vga { background-color: #df9c7c77; font-size: 20px; }
+        .auditorio { background-color: #d27c6a77; font-size: 20px; }
+        .speaker { background-color: #b65c4677; font-size: 20px; }
+
+        .emusoedisp { border-color: #ffd800ff; border: 5px solid #27b91c; color: black}
+        .emusoereserv { border-color: #ff0000ef; border: 5px solid #ff0000a9; color: black}
+        .dispereserv { border-color: #fff79e; border: 5px solid #ffd800ff; color: black}
+
+        .emusoedisp-legenda { background-color: #27b91c }
+        .emusoereserv-legenda { background-color: #ff0000a9 }
+        .dispereserv-legenda { background-color: #ffd800ff }
+
+        .retirado { color: red }
+        .disponivel { color: black }
+
+        .recurso { color: black}
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            padding: 10px;
+            /*background: #f8f8f8;
+            border-radius: 8px;*/
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid #333;
+        }
+        
+        /*
+        .block::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: pre-line;
+            width: max-content;
+            max-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .block:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+        */
+
+        /* Responsive Adjustments */
+        @media (max-width: 700px) {
+            .row {
+                grid-template-columns: 100px auto;
+            }
+            .category {
+                font-size: 12px;
+                padding: 8px;
+            }
+        }
+    </style>
+
     <table style="width: 100%">
         <tr>
             <td align="center" class="ms-toolbar" style="text-align: center;" valign="top">
                 <div align="center">
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                         <ContentTemplate>
-                            <asp:Login ID="loginEntrada" runat="server" CssClass="ms-toolbar" FailureText="Usu·rio inv·lido ou senha inv·lida."
-                                Font-Bold="False" LoginButtonText="Entrar" PasswordLabelText="Senha:" PasswordRequiredErrorMessage="Senha n„o pode ser nula."
-                                RememberMeText="Lembrar de mim da prÛxima vez." UserNameLabelText="Usu·rio:"
-                                UserNameRequiredErrorMessage="Informe usu·rio." Width="852px" DestinationPageUrl="~/Default/SelecionarCalendario.aspx"
-                                OnLoginError="loginEntrada_LoginError" TitleText="Informe seu usu·rio e senha no OpenSARC:"
+                            <asp:Login ID="loginEntrada" runat="server" CssClass="ms-toolbar" FailureText="Usu√°rio inv√°lido ou senha inv√°lida."
+                                Font-Bold="False" LoginButtonText="Entrar" PasswordLabelText="Senha:" PasswordRequiredErrorMessage="Senha n√£o pode ser nula."
+                                RememberMeText="Lembrar de mim da pr√≥xima vez." UserNameLabelText="Usu√°rio:"
+                                UserNameRequiredErrorMessage="Informe usu√°rio." Width="862px" DestinationPageUrl="~/Default/SelecionarCalendario.aspx"
+                                OnLoginError="loginEntrada_LoginError" TitleText=""
                                 AccessKey="M" BorderPadding="3" EnableTheming="True" Orientation="Horizontal"
-                                OnAuthenticate="loginEntrada_Authenticate">
+                                OnAuthenticate="loginEntrada_Authenticate" PasswordRecoveryIconUrl="~/_layouts/images/attention16by16.gif" PasswordRecoveryUrl="~/Default/ResetSenha.aspx" PasswordRecoveryText="Esqueci">
                                 <TitleTextStyle CssClass="ms-toolbar" Font-Bold="False" Font-Names="Verdana" Font-Size="12px" />
                                 <CheckBoxStyle CssClass="ms-toolbar" />
+                                <HyperLinkStyle CssClass="ms-toolbar" Font-Bold="True" ForeColor="Red" />
                                 <InstructionTextStyle CssClass="ms-toolbar" />
                                 <TextBoxStyle CssClass="ms-toolbar" Width="200px" />
                                 <LoginButtonStyle CssClass="ms-toolbar" />
@@ -41,109 +217,110 @@
     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
         <ContentTemplate>
             <div align="center">
-                <asp:Label ID="lblDataHora" runat="server" CssClass="ms-blogrss"></asp:Label>
-                <table>
-                    <tr>
-                        <td>
-                            <asp:Label ID="lblAtual" runat="server" CssClass="ms-bigcaption"></asp:Label>
-                        </td>
-                        <td>
-                            <asp:DataGrid ID="dgAlocacoes" runat="server" AutoGenerateColumns="False" Width="100%"
-                                HorizontalAlign="Center" OnItemDataBound="dgAlocacoes_ItemDataBound" CellPadding="4"
-                                Visible="False">
-                                <ItemStyle CssClass="ms-btoolbar" HorizontalAlign="Center" />
-                                <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Center" />
-                                <Columns>
-                                    <asp:TemplateColumn HeaderText="Recurso">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblRecurso" runat="server" Text='<%# ((Recurso)Eval("Recurso")).Descricao%>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateColumn>
-                                    <asp:TemplateColumn HeaderText="Disciplina/Evento">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblDisc" runat="server"></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateColumn>
-                                    
-                                    <asp:TemplateColumn HeaderText="Respons·vel">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblResponsavel" runat="server"></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateColumn>
-
-                                    <asp:TemplateColumn HeaderText="Estado">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblEstado" runat="server"></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateColumn>
-                                </Columns>
-                            </asp:DataGrid>
-                        </td>
-                    </tr>
-                </table>
-                <br />
-                <table>
-                    <tr>
-                        <td>
-                            <asp:Label ID="lblProximo" runat="server" CssClass="ms-bigcaption"></asp:Label>
-                        </td>
-                        <td>
-                            <asp:DataGrid ID="dgAlocacoes2" runat="server" AutoGenerateColumns="False" Width="100%"
-                                HorizontalAlign="Center" OnItemDataBound="dgAlocacoes_ItemDataBound" CellPadding="4"
-                                Visible="False">
-                                <ItemStyle CssClass="ms-btoolbar" HorizontalAlign="Center" />
-                                <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Center" />
-                                <Columns>
-                                    <asp:TemplateColumn HeaderText="Recurso">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblRecurso" runat="server" Text='<%# ((Recurso)Eval("Recurso")).Descricao%>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateColumn>
-                                    <asp:TemplateColumn HeaderText="Disciplina/Evento">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblDisc" runat="server"></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateColumn>
-                                    
-                                    <asp:TemplateColumn HeaderText="Respons·vel">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblResponsavel" runat="server"></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateColumn>
-                                    <asp:TemplateColumn HeaderText="Estado">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblEstado" runat="server"></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateColumn>
-                                </Columns>
-                            </asp:DataGrid>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <asp:Label ID="lblStatus" runat="server" CssClass="ms-blogrss"></asp:Label>
-                            <br />
-                        </td>
-                    </tr>
-                </table>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="lblDataHora" runat="server" CssClass="ms-blogrss"></asp:Label>
             </div>
+            <br />
+
+<div class="container" runat="server" id="container">
+    <!-- Labs -->
+    <div class="row">
+        <div class="category"><img src="/srrc/img/lab.png" alt=""> Labs</div>
+        <div class="grid">
+            <div class="block labs">301 <span>D. Ruiz</span></div>
+            <div class="block labs">309 <span>D. Silva</span></div>
+            <div class="block labs">310 <span>D. Silva</span></div>
+            <div class="block labs">311 <span>M. Mangan</span></div>
+            <div class="block labs">312 <span>D. Ruiz</span></div>
+            <div class="block labs">318 <span>D. Venturini</span></div>
+        </div>
+    </div>
+
+    <!-- Notebooks -->
+    <div class="row">
+        <div class="category"><img src="/srrc/img/notebook.png" alt=""> Notebooks</div>
+        <div class="grid">
+            <div class="block notebooks">508 <span>A. Bacelo</span></div>
+            <div class="block notebooks">NB 1 <span>P. Alves</span></div>
+            <div class="block notebooks">NB 2 <span>I. Jauris</span></div>
+            <div class="block notebooks">NB 3 <span>A. Cardona</span></div>
+            <div class="block notebooks">NB 4 <span>A. Cardona</span></div>
+        </div>
+    </div>
+
+    <!-- Kits HDMI -->
+    <div class="row">
+        <div class="category"><img src="/srrc/img/cabo-hdmi.png" alt=""> Kits HDMI</div>
+        <div class="grid">
+            <div class="block kits-hdmi">KH 1 <span>S. Moraes</span></div>
+            <div class="block kits-hdmi">KH 2 <span>P. Carneiro</span></div>
+            <div class="block kits-hdmi">KH 3 <span>C. Marcon</span></div>
+        </div>
+    </div>
+
+    <!-- Kits VGA -->
+    <div class="row">
+        <div class="category"><img src="/srrc/img/cabo-vga.png" alt=""> Kits VGA</div>
+        <div class="grid">
+            <div class="block kits-vga">KC 1 <span>I. Lara</span></div>
+            <div class="block kits-vga">KC 2 <span>P. Carneiro</span></div>
+            <div class="block kits-vga">KC 3 <span>M. Mora</span></div>
+            <div class="block kits-vga">KC 4 <span>V. Venturini</span></div>
+        </div>
+    </div>
+
+    <!-- Auditoriums -->
+    <div class="row">
+        <div class="category"><img src="/srrc/img/auditorio.png" alt=""> Audit√≥rios</div>
+        <div class="grid">
+            <div class="block auditoriums">516 <span>A. Agustin</span></div>
+            <div class="block auditoriums">517 <span>S. Filio</span></div>
+        </div>
+    </div>
+
+    <!-- Sound Boxes -->
+    <div class="row">
+        <div class="category"><img src="/srrc/img/speaker.png" alt=""> Cx de Som</div>
+        <div class="grid">
+            <div class="block speakers">SOM 1 <span>N. Nunes</span></div>
+            <div class="block speakers">SOM 2 <span>V. Villeneuve</span></div>
+            <div class="block speakers">SOM 3 <span>R. Silva</span></div>
+            <div class="block speakers">SOM 4 <span>H. Nunes</span></div>
+        </div>
+    </div>
+</div>
+<div class="legend">
+    <div class="legend-item">
+        <div class="legend-color emusoereserv-legenda"></div>
+        <span>Reservado agora e no pr√≥ximo hor√°rio</span>
+    </div>
+    <div class="legend-item">
+        <div class="legend-color dispereserv-legenda"></div>
+        <span>Livre agora e reservado no pr√≥ximo hor√°rio</span>
+    </div>
+    <div class="legend-item">
+        <div class="legend-color emusoedisp-legenda"></div>
+        <span>Reservado agora e livre no pr√≥ximo hor√°rio</span>
+    </div>
+</div>
         </ContentTemplate>
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="Timer1" EventName="Tick" />
         </Triggers>
     </asp:UpdatePanel>
     <br />
+    <!--meta name="viewport" content="width=device-width, initial-scale=1.0"-->
+    
     <div align="center">
         <p style="padding: 4px; margin: 4px; text-align: center">
-            O OpenSARC È um sistema para alocaÁ„o de recursos computacionais. AlÈm da solicitaÁ„o
-            de recursos durante o perÌodo de planejamento semestral,<br />
-            o sistema permite agendar eventos, consultar datas de avaliaÁıes e trocar e transferir
+            O OpenSARC √© um sistema para aloca√ß√£o de recursos computacionais. Al√©m da solicita√ß√£o
+            de recursos durante o per√≠odo de planejamento semestral,<br />
+            o sistema permite agendar eventos, consultar datas de avalia√ß√µes e trocar e transferir
             recursos durante todo o ano.<br />
             <br />
-            O OpenSARC È <i>software</i> livre. Caso deseje participar, reclamar ou dar sugestıes,
+            O OpenSARC √© <i>software</i> livre. Caso deseje participar, reclamar ou dar sugest√µes,
             visite <a href="https://github.com/mflash/OpenSARC">https://github.com/mflash/OpenSARC</a>.<br />
             <br />
-            Em especial, aguardamos volunt·rios interessados em utilizar o sistema como estudo
+            Em especial, aguardamos volunt√°rios interessados em utilizar o sistema como estudo
             de caso para suas disciplinas de desenvolvimento de <i>software</i>.</p>
     </div>
 </asp:Content>

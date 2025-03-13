@@ -25,7 +25,9 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
 
         string buildDate = String.Format("{0}",
             System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString());
-        lblLogin.Text = "Bem-vindo ao OpenSARC! versão: "+ buildDate +" - "+unit;
+
+        sarcVersao.InnerText = "ver. " + buildDate;
+//        lblLogin.Text = "Bem-vindo ao OpenSARC! versão: "+ buildDate +" - "+unit;
         /*
         if (Session["Calendario"] != null)
         {

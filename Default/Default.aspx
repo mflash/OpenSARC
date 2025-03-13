@@ -8,6 +8,9 @@
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphTitulo">
     <div align="center" class="ms-menutoolbar" style="width: 100%; height: 14px">
         <asp:ScriptManager ID="ScriptManager1" runat="server">
+            <Scripts>
+                <asp:ScriptReference Path="~/Scripts/tooltip.js" />
+            </Scripts>
         </asp:ScriptManager>
         <asp:Timer ID="Timer1" runat="server" Interval="60000" OnTick="Timer1_Tick">
         </asp:Timer>
@@ -70,13 +73,13 @@
         /* Blocks Grid */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 5px;
-            padding-right: 20px;
+            padding-right: 10px;
         }
 
         .block {
-            padding: 12px;
+            padding: 2px;
             text-align: center;
             font-size: 18px;
             font-weight: bold;
@@ -86,24 +89,24 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 50px;
-            min-width: 180px;
+            height: 80px;
+            min-width: 280px;
         }
 
         /* Two-Line Text */
         .block span {
             display: block;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: normal;
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             opacity: 1.0;
         }
 
-        /* Hover Effect */
+        /* Hover Effect
         .block:hover {
             transform: scale(1.05);
             filter: brightness(90%);
-        }
+        }*/
 
         /* Category Colors */
         .lab { background-color: #97c7a677; font-size: 20px;}
@@ -149,31 +152,46 @@
             border: 1px solid #333;
         }
         
-        /*
-        .block::after {
+        /**/
+
+        .block {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .tooltip {
             content: attr(data-tooltip);
             position: absolute;
             bottom: 120%;
             left: 50%;
             transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.75);
-            color: white;
+            background-color: rgba(220, 220, 220, 1);
+            color: black;
             padding: 5px 10px;
             border-radius: 5px;
-            font-size: 12px;
+            font-size: 14px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            line-height: 19px;
             white-space: pre-line;
             width: max-content;
-            max-width: 200px;
+            max-width: 450px;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.2s ease-in-out;
+            transition: opacity 0.1s; /* ease-in-out; */
         }
 
-        .block:hover::after {
+        .block:hover .tooltip,
+        .block.active .tooltip,
+        tooltip.visible {
             opacity: 1;
             visibility: visible;
         }
-        */
+
+        .tooltip.activeLeft {
+            transform: translateX(-70%);
+        }
+
+        /**/
 
         /* Responsive Adjustments */
         @media (max-width: 700px) {

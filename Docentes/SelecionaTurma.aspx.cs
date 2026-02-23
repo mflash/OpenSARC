@@ -1,22 +1,24 @@
+using BusinessData.BusinessLogic;
+using BusinessData.DataAccess;
+using BusinessData.Entities;
+using BusinessData.Entities.Util;
+using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 using System;
-using System.Data;
-using System.Configuration;
 using System.Collections;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net.Mail;
+using System.ServiceModel.Configuration;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-using BusinessData.Entities;
-using BusinessData.BusinessLogic;
-using System.Collections.Generic;
-using BusinessData.DataAccess;
-using BusinessData.Entities.Util;
-using System.Net.Mail;
-using System.IO;
-using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
-using System.Linq;
 //using Microsoft.ReportingServices.Diagnostics;
 
 public partial class Docentes_SelecionaTurma : System.Web.UI.Page
@@ -28,6 +30,11 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
     TransferenciaBO transBO = new TransferenciaBO();
     EventoBO eventoBO = new EventoBO();
     HorariosEventoBO horariosEventoBO = new HorariosEventoBO();
+    DatasBO datasBO = new DatasBO();
+
+    DateTime hoje = DateTime.Today;
+
+    int hojeDiaAno, hojeDiaSemana, inicioSemanaDiaAno, fimSemanaDiaAno;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -58,6 +65,13 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
                     {
                         listaTurmas = turmaBO.GetTurmas(cal, prof);
                         listaTurmas.Sort();
+                        foreach (var t in listaTurmas)
+                        {
+                            string laptop = "\u00a0\u00a0\u00a0\u00a0";
+                            if (t.Notebook)
+                                laptop = "\U0001f5b3 ";
+                            t.Disciplina.Nome = laptop + t.Disciplina.Nome;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -108,13 +122,55 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
                             dgEventos.DataBind();
                         }
                     }
-					// XGH!!!
-					if(cal.Ano == 2011 && cal.Semestre == 2)
-						butMoodle.Visible = true;
 
                     var motd = File.ReadAllLines(Server.MapPath("motd.html"));
-                    String str = String.Join("\n",motd);
+                    String str = String.Join("\n", motd);
                     htmlMOTD.Text = str;
+
+                    List<Aniversario> anivers = datasBO.GetAniversarios();
+
+                    hojeDiaAno = hoje.DayOfYear;
+                    hojeDiaSemana = (int)hoje.DayOfWeek;   // Domingo => 0
+
+                    inicioSemanaDiaAno = hojeDiaAno - hojeDiaSemana;
+                    fimSemanaDiaAno = hojeDiaAno + (6 - hojeDiaSemana);
+
+                    var aniversariosDaSemana = anivers.Where(b => TemAniversarioNaSemana(b.Aniver))
+                        .OrderBy(b => b.Aniver.DayOfYear)
+                        .ToList();
+
+                    string html = "<b><h2>Aniversariantes da Semana</h2></b><table><tr><td>";
+                    bool first = true;
+                    int count = 0;
+                    foreach (var item in aniversariosDaSemana)
+                    {
+                        if (!first)
+                        {
+                            html += ", ";
+                        }
+                        else
+                        {
+                            html += "</td></tr><tr><td>";
+                            first = false;
+                        }
+
+                        string party = "";
+                        if (hoje.Day == item.Aniver.Day && hoje.Month == item.Aniver.Month)
+                            party = "&#x1F389;";
+
+                        DateTime aniv = new DateTime(hoje.Year, item.Aniver.Month, item.Aniver.Day);
+                        string shortDay = aniv.ToString("ddd", CultureInfo.GetCultureInfo("pt-BR"));
+                        string diaMes = aniv.ToString("dd", CultureInfo.InvariantCulture);
+
+                        html += ToProperCase(item.Nome) + party + " (" + diaMes + "/"+  shortDay + ")";
+                        if (++count > 3)
+                        {
+                            count = 0;
+                            first = true;
+                        }
+                    }
+                    html += "</td></tr></table>";
+                    htmlAniver.Text = html;
                 }
             }
             else
@@ -134,6 +190,29 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
         {
             Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
         }
+    }
+
+    public static string ToProperCase(string fullName)
+    {
+        if (string.IsNullOrWhiteSpace(fullName))
+            return fullName;
+
+        return CultureInfo.InvariantCulture.TextInfo
+            .ToTitleCase(fullName.ToLowerInvariant());
+    }
+
+    protected bool TemAniversarioNaSemana(DateTime aniver)
+    {
+        int diaDoAno = aniver.DayOfYear;
+        int totalDiasAno = DateTime.IsLeapYear(aniver.Year) ? 366 : 365;
+
+        if (inicioSemanaDiaAno >= 1)
+            return diaDoAno >= inicioSemanaDiaAno && diaDoAno <= fimSemanaDiaAno;
+
+        // Semana ultrapassa o final do ano
+        return
+            diaDoAno >= 1 && diaDoAno <= fimSemanaDiaAno ||
+            diaDoAno >= totalDiasAno + inicioSemanaDiaAno && diaDoAno <= totalDiasAno;
     }
 
     protected void grvListaTurmas_RowEditing(object sender, GridViewEditEventArgs e)

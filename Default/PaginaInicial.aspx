@@ -12,7 +12,7 @@ CodeFile="PaginaInicial.aspx.cs" Inherits="Default_PaginaInicial"  %>
             </tr>
             <tr>
                 <td align="center">
-                    <img src="../_layouts/images/logo_facin2.GIF" /></td>
+                    <img src="../_layouts/images/ep.png" /></td>
             </tr>
             
         </table>

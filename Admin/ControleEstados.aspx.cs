@@ -12,6 +12,8 @@ using BusinessData.BusinessLogic;
 using BusinessData.Entities;
 using BusinessData.DataAccess;
 using System.Threading;
+using System.Threading.Tasks;
+using BusinessData.Util;
 
 
 public partial class Admin_ControleEstados : System.Web.UI.Page
@@ -21,6 +23,7 @@ public partial class Admin_ControleEstados : System.Web.UI.Page
     Calendario calAtual;
     BusinessData.Distribuicao.BusinessLogic.ControleDistribuicao cDistr;
     bool isAulasDistribuidas;
+    String oldMsgProgresso;
    
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -33,8 +36,8 @@ public partial class Admin_ControleEstados : System.Web.UI.Page
             AtualizaBotoes();
         }
 		Calendario meucal = (Calendario)Session["Calendario"];
-		Response.Write(meucal.Ano + "<br/>");
-		Response.Write(meucal.Semestre + "<br/>");
+		//Response.Write(meucal.Ano + "<br/>");
+		//Response.Write(meucal.Semestre + "<br/>");
     }
 
     protected void btnAbrirSolicitacaoRecursos_Click(object sender, EventArgs e)
@@ -102,6 +105,7 @@ public partial class Admin_ControleEstados : System.Web.UI.Page
             {
                 Session["Complete"] = false;
             }
+            timerProgresso.Enabled = true;
             IniciarThread(simula);
         }
         else
@@ -111,6 +115,21 @@ public partial class Admin_ControleEstados : System.Web.UI.Page
         }
     }
 
+    protected void timerProgresso_Tick(object sender, EventArgs e)
+    {
+        txtProgresso.Text = DebugLog.GetLog();
+        if (DebugLog.IsDone())
+        {
+            // Inject JS redirect
+            ScriptManager.RegisterStartupScript(
+                this,
+                GetType(),
+                "redirectAfterTask",
+                "window.location.href = 'Results.aspx';", // change to your target page
+                true
+            );
+        }
+    }
 
     //Controle de Threads
 
@@ -119,20 +138,47 @@ public partial class Admin_ControleEstados : System.Web.UI.Page
         //Thread td = new Thread(new ParameterizedThreadStart(DistribuirRecursos));
         //td.Priority = ThreadPriority.Lowest;
         //td.Start((Calendario)Session["Calendario"]);
-		DistribuirRecursos((Calendario)Session["Calendario"], simula);
-        Response.Redirect("Results.aspx");
+        Session["ProgressoDistribuicao"] = 0;
+        Calendario calendario = (Calendario)Session["Calendario"];
+        DebugLog.Clear();
+        DebugLog.Write("Iniciando distribuição");
+        Task.Run(() => DistribuirRecursos(calendario, simula));
+        //		DistribuirRecursos((Calendario)Session["Calendario"], simula);
+        //        Response.Redirect("Results.aspx");
+    }
+
+    private void DistribuirRecursosAsync(Calendario calendario, bool simula)
+    {
+        // Exemplo: progresso de 0 a 100
+        for (int progresso = 0; progresso <= 100; progresso += 10)
+        {
+            // Chame o método real de distribuição aqui, passando progresso se possível
+            // cDistr.DistribuirRecursos(calendario.Ano, calendario.Semestre, simula);
+
+            // Salve o progresso na Session (ou outro local)
+            //msgProgresso += "\nAsync update: " + progresso;
+            Session["MsgProgresso"] = "msgProgresso";
+            Session["ProgressoDistribuicao"] = progresso;
+
+            // Simule tempo de processamento
+            Thread.Sleep(500);
+        }
+        Session["Complete"] = true;
+        //if (!simula) AlterarEstadoParaDistribuido();
     }
 
     private void DistribuirRecursos(object calendario, bool simula)
     {
         Calendario cal = (Calendario)calendario;
-        cDistr.DistribuirRecursos(cal.Ano, cal.Semestre, simula);
+        cDistr.DistribuirRecursos(cal.Ano, cal.Semestre, simula, Session);
         lock (Session.SyncRoot)
         {
             Session["Complete"] = true;
         }
         //lblResultado.Text = "Distribuição Concluída!";
         if(!simula) AlterarEstadoParaDistribuido();
+        DebugLog.MarkDone();
+//        Response.Redirect("Results.aspx");
     }
 
     private void AlterarEstadoParaDistribuido()

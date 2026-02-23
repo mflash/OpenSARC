@@ -3,7 +3,19 @@ CodeFile="ControleEstados.aspx.cs" Inherits="Admin_ControleEstados" Title="Siste
 
 <%@ Register Src="../Default/Aguarde.ascx" TagName="Aguarde" TagPrefix="uc1" %>
 <%-- Add content controls here --%>
+
 <asp:Content ID="Content2" runat="server" ContentPlaceHolderID="cphTitulo">
+    <asp:ScriptManager runat="server" />
+    <script>
+        function scrollLog() {
+            var logBox = document.getElementById('<%= txtProgresso.ClientID %>');
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+        Sys.Application.add_load(scrollLog); // after partial update
+    </script>
+
+    <asp:UpdatePanel runat="server" id="upProgresso">
+    <ContentTemplate>
     <div align = "left" class="ms-menutoolbar" style="width: 100%; height: 14px">
     <asp:Label ID="Label1" runat="server" CssClass="ms-WPTitle" Text="CONFIGURAÇÕES DO SEMESTRE"></asp:Label></div>
     <div align="center" style="vertical-align:middle;">        
@@ -28,5 +40,9 @@ CodeFile="ControleEstados.aspx.cs" Inherits="Admin_ControleEstados" Title="Siste
                     </tr>
                 </table>                                          
     </div>
+    <asp:TextBox runat="server" ID="txtProgresso" runat="server" readonline="true" Rows="20" Width="100%" textmode="MultiLine"/>
+    <asp:Timer runat="server" ID="timerProgresso" Interval="1000" OnTick="timerProgresso_Tick" Enabled="false" />
+    </ContentTemplate>
+    </asp:UpdatePanel>
         </asp:Content>
     

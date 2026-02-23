@@ -92,7 +92,10 @@
             <a href="../Professores/CadastroProfessores.aspx" class="ms-SPLink">
                 <span style="color: #3966bf">Cadastrar</span></a>
             <a href="../Professores/ListaProfessores.aspx" class="ms-SPLink">
-                <span style="color: #3966bf">Listar</span></a></td>
+                <span style="color: #3966bf">Listar</span></a>
+            <a href="../Professores/ImportarProfessores.aspx" class="ms-SPLink">
+                <span style="color: #3966bf">Importar</span></a></td>
+        </td>
     </tr>
     <tr>
         <td style="height: 18px; width: 341px;">

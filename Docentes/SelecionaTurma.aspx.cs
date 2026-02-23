@@ -69,7 +69,7 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
                         {
                             string laptop = "\u00a0\u00a0\u00a0\u00a0";
                             if (t.Notebook)
-                                laptop = "\U0001f5b3 ";
+                                laptop = "\U0001f4bb ";
                             t.Disciplina.Nome = laptop + t.Disciplina.Nome;
                         }
                     }

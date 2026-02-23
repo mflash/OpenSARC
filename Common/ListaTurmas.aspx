@@ -20,7 +20,7 @@
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
 &nbsp;<table style="WIDTH: 514px; HEIGHT: 71px" align="left"><tbody><tr><td style="WIDTH: 292px">
-<asp:GridView id="grvListaTurmas" runat="server" Width="720px" 
+<asp:GridView id="grvListaTurmas" runat="server" Width="900px" 
 AutoGenerateColumns="False" DataKeyNames="Id" AllowSorting="True" AlternatingRowStyle-BackColor="#E0E0E0"><Columns>
 <asp:BoundField DataField="Id" Visible="False" HeaderText="ID">
 <ControlStyle Width="100px"></ControlStyle>
@@ -35,9 +35,9 @@ AutoGenerateColumns="False" DataKeyNames="Id" AllowSorting="True" AlternatingRow
 <HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Left"></HeaderStyle>
 </asp:BoundField>
 <asp:BoundField DataField="Disciplina.NomeCodCred" HeaderText="Disciplina">
-<ItemStyle Width="250px" CssClass="ms-toolbar"></ItemStyle>
+<ItemStyle Width="320px" CssClass="ms-toolbar"></ItemStyle>
 
-    <ControlStyle Width="120px" />
+    <ControlStyle Width="140px" />
 
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
@@ -81,12 +81,6 @@ Voltar
 </asp:LinkButton> 
 </td>
 <td style="WIDTH: 3px">
-</td>
-</tr>
-<tr>
-<td style="WIDTH: 292px; HEIGHT: 2px">
-</td>
-<td style="WIDTH: 3px; HEIGHT: 2px">
 </td>
 </tr>
 </tbody>

@@ -71,8 +71,8 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                             Label x = new Label();
                             string laptop = "&nbsp; ";
                             if (t.Notebook)
-                                laptop = "&#x1f5b3; ";
-                            x.Text = laptop+ "<span style=\"padding:2px\"> " + laptop + "<a  href=\"" + baseURL + t.Id + "\">" + "xxx" + getNomeCurtoDisciplina(t.Disciplina) + " - " + t.Numero + "</a></span><br/>";
+                                laptop = "&#x1f4bb; ";
+                            x.Text = "<span style=\"padding:2px\"> " + laptop + "<a  href=\"" + baseURL + t.Id + "\">" + getNomeCurtoDisciplina(t.Disciplina) + " - " + t.Numero + "</a></span><br/>";
                             x.CssClass = "ms-toolbar-small";
 
                             //x.("left=3px;top=3px");

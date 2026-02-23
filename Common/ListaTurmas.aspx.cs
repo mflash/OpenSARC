@@ -25,6 +25,13 @@ public partial class Pagina2 : System.Web.UI.Page
                 TurmaBO turma = new TurmaBO();
                 List<Turma> listaTurma = turma.GetTurmas(cal);
                 listaTurma.Sort();
+                foreach (var t in listaTurma)
+                {
+                    string laptop = "";
+                    if (t.Notebook)
+                        laptop = " \U0001f4bb";
+                    t.Disciplina.Nome = t.Disciplina.Nome + laptop;
+                }
                 if (listaTurma.Count == 0)
                 {
                     lblStatus.Text = "Nenhuma turma cadastrada.";

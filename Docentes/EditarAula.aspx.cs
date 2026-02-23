@@ -166,7 +166,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                         Disciplina d = listaAulas[0].TurmaId.Disciplina;
                         string laptop = "";
                         if (currentTurma.Notebook)
-                            laptop = "&#x1f5b3; ";
+                            laptop = "&#x1f4bb; ";
                         lblTitulo.Text = laptop + listaAulas[0].TurmaId.Disciplina.NomeCodCred + " - Turma " + listaAulas[0].TurmaId.Numero + " - " + Regex.Replace(listaAulas[0].TurmaId.Sala, "32/A", "32");
 						Session["facin"] = facin;
 

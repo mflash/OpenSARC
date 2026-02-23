@@ -96,7 +96,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
                     string laptop = "";
                     if (currentTurma.Notebook)
-                        laptop = "&#x1f5b3; ";
+                        laptop = "&#x1f4bb; ";
                     lblTitulo.Text = laptop + d.Cod + "-" + d.Cred + " " + d.Nome + ", turma " + listaAulas[0].TurmaId.Numero + " - " + Regex.Replace(listaAulas[0].TurmaId.Sala, "32/A", "32");//" "+facin;                    
 
                     int horasRelogioEsperadas = d.Cred * 15;

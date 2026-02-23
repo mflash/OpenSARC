@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master2.master" AutoEventWireup="true" 
+<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" 
 CodeFile="EditarAula.aspx.cs" Inherits="Docentes_EditarAula" Title="Sistema de Alocação de Recursos Computacionais - FACIN" Trace="false" %>
 
 <%@ Register Src="../Default/Aguarde.ascx" TagName="Aguarde" TagPrefix="uc1" %>
@@ -51,7 +51,7 @@ return "Suas alterações não foram salvas. Deseja descartar as alterações feitas?
 
 </script>
 
-    <div align="left" class="ms-menutoolbar" style="width: 100%; height: 14px">
+    <div align="left" class="ms-menutoolbar" style="width: 100%; height: 18px">
         <asp:Label ID="lblTitulo" runat="server" CssClass="ms-WPTitle" Text="Aulas"></asp:Label>
         <asp:Label ID="lblHoras" runat="server" CssClass="ms-toolbar" Text="Horas-relogio:"></asp:Label>
     </div>

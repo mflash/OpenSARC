@@ -18,7 +18,7 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8a1fae2f-e5a9-4a32-8275-75bb1aa945a0}</ProjectGuid>
     <SourceWebPhysicalPath>$(MSBuildThisFileDirectory)</SourceWebPhysicalPath>
-    <SourceWebVirtualPath>/opensarc-jan26</SourceWebVirtualPath>
+    <SourceWebVirtualPath>/opensarc-fev26</SourceWebVirtualPath>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <SourceWebProject>
     </SourceWebProject>

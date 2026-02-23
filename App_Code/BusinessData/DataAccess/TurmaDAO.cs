@@ -38,6 +38,7 @@ namespace BusinessData.DataAccess
             baseDados.AddInParameter(cmd, "@ProfessorId", DbType.Guid, turma.Professor.Id);
             baseDados.AddInParameter(cmd, "@Curso", DbType.String, turma.Curso.Codigo);
             baseDados.AddInParameter(cmd, "@Sala", DbType.String, turma.Sala);
+            baseDados.AddInParameter(cmd, "@Notebook", DbType.Boolean, turma.Notebook);
             try
             {
                 baseDados.ExecuteNonQuery(cmd);
@@ -75,6 +76,7 @@ namespace BusinessData.DataAccess
             baseDados.AddInParameter(cmd, "@ProfessorId", DbType.Guid, turma.Professor.Id);
             baseDados.AddInParameter(cmd, "@Curso", DbType.String, turma.Curso.Codigo);
             baseDados.AddInParameter(cmd, "@Sala", DbType.String, turma.Sala);
+            baseDados.AddInParameter(cmd, "@Notebook", DbType.Boolean, turma.Notebook);
             try
             {
                 baseDados.ExecuteNonQuery(cmd);
@@ -113,12 +115,14 @@ namespace BusinessData.DataAccess
                     if (!leitor.IsDBNull(leitor.GetOrdinal("Sala")))
                         sala = leitor.GetString(leitor.GetOrdinal("Sala"));
 
+                    bool notebook = leitor.GetBoolean(leitor.GetOrdinal("Notebook"));
+
                     aux = Entities.Turma.GetTurma(
                                                    leitor.GetGuid(leitor.GetOrdinal("TurmaId")),
                                                    leitor.GetInt32(leitor.GetOrdinal("Numero")),
                                                    cal, disc,
                                                    leitor.GetString(leitor.GetOrdinal("DataHora")), prof,
-                                                   curso, sala);
+                                                   curso, sala, notebook);
                 }
             }
             catch (SqlException ex)
@@ -154,12 +158,14 @@ namespace BusinessData.DataAccess
                     if (!leitor.IsDBNull(leitor.GetOrdinal("Sala")))
                         sala = leitor.GetString(leitor.GetOrdinal("Sala"));
 
+                    bool notebook = leitor.GetBoolean(leitor.GetOrdinal("Notebook"));
+
                     aux = Entities.Turma.GetTurma(
                                                    leitor.GetGuid(leitor.GetOrdinal("TurmaId")),
                                                    leitor.GetInt32(leitor.GetOrdinal("Numero")),
                                                    cal, disc,
                                                    leitor.GetString(leitor.GetOrdinal("DataHora")), prof,
-                                                   curso, sala);
+                                                   curso, sala, notebook);
                 }
             }
             catch (SqlException ex)
@@ -198,11 +204,13 @@ namespace BusinessData.DataAccess
                         if (!leitor.IsDBNull(leitor.GetOrdinal("Sala")))
                             sala = leitor.GetString(leitor.GetOrdinal("Sala"));
 
+                        bool notebook = leitor.GetBoolean(leitor.GetOrdinal("Notebook"));
+
                         aux = Entities.Turma.GetTurma( leitor.GetGuid(leitor.GetOrdinal("TurmaId")),
                                                        leitor.GetInt32(leitor.GetOrdinal("Numero")),
                                                        cal, disc,
                                                        leitor.GetString(leitor.GetOrdinal("DataHora")),
-                                                       prof, curso, sala);
+                                                       prof, curso, sala, notebook);
                         listaAux.Add(aux);
                     }
                 }
@@ -246,12 +254,14 @@ namespace BusinessData.DataAccess
                         if (!leitor.IsDBNull(leitor.GetOrdinal("Sala")))
                             sala = leitor.GetString(leitor.GetOrdinal("Sala"));
 
+                        bool notebook = leitor.GetBoolean(leitor.GetOrdinal("Notebook"));
+
                         aux = Entities.Turma.GetTurma(
                                                        leitor.GetGuid(leitor.GetOrdinal("TurmaId")),
                                                        leitor.GetInt32(leitor.GetOrdinal("Numero")),
                                                        cal, disc,
                                                        leitor.GetString(leitor.GetOrdinal("DataHora")),
-                                                       prof, curso, sala);
+                                                       prof, curso, sala, notebook);
                         listaAux.Add(aux);
                     }
                 }
@@ -294,12 +304,14 @@ namespace BusinessData.DataAccess
                         if(!leitor.IsDBNull(leitor.GetOrdinal("Sala")))
                             sala = leitor.GetString(leitor.GetOrdinal("Sala"));
 
+                        bool notebook = leitor.GetBoolean(leitor.GetOrdinal("Notebook"));
+
                         aux = Entities.Turma.GetTurma(
                                                        leitor.GetGuid(leitor.GetOrdinal("TurmaId")),
                                                        leitor.GetInt32(leitor.GetOrdinal("Numero")),
                                                        cal, disc,
                                                        leitor.GetString(leitor.GetOrdinal("DataHora")),
-                                                       prof, curso, sala);
+                                                       prof, curso, sala, notebook);
                         listaAux.Add(aux);
                     }
                 }
@@ -349,13 +361,15 @@ namespace BusinessData.DataAccess
                         if (!leitor.IsDBNull(leitor.GetOrdinal("Sala")))
                             sala = leitor.GetString(leitor.GetOrdinal("Sala"));
 
+                        bool notebook = leitor.GetBoolean(leitor.GetOrdinal("Notebook"));
+
                         aux = Turma.GetTurma(leitor.GetGuid(leitor.GetOrdinal("TurmaId")),
                                              leitor.GetInt32(leitor.GetOrdinal("Numero")),
                                              cal,
                                              disc,
                                              leitor.GetString(leitor.GetOrdinal("DataHora")),
                                              professor,
-                                             curso, sala);
+                                             curso, sala, notebook);
                         resultado.Add(aux);
 
                     }
@@ -412,13 +426,15 @@ namespace BusinessData.DataAccess
                         if (!leitor.IsDBNull(leitor.GetOrdinal("Sala")))
                             sala = leitor.GetString(leitor.GetOrdinal("Sala"));
 
+                        bool notebook = leitor.GetBoolean(leitor.GetOrdinal("Notebook"));
+
                         aux = Turma.GetTurma(leitor.GetGuid(leitor.GetOrdinal("TurmaId")),
                                              leitor.GetInt32(leitor.GetOrdinal("Numero")),
                                              cal,
                                              disc,
                                              leitor.GetString(leitor.GetOrdinal("DataHora")),
                                              professor,
-                                             curso, sala);
+                                             curso, sala, notebook);
                         resultado.Add(aux);
 
                     }
@@ -474,13 +490,15 @@ namespace BusinessData.DataAccess
                         if (!leitor.IsDBNull(leitor.GetOrdinal("Sala")))
                             sala = leitor.GetString(leitor.GetOrdinal("Sala"));
 
+                        bool notebook = leitor.GetBoolean(leitor.GetOrdinal("Notebook"));
+
                         aux = Turma.GetTurma(leitor.GetGuid(leitor.GetOrdinal("TurmaId")),
                                              leitor.GetInt32(leitor.GetOrdinal("Numero")),
                                              cal,
                                              disc,
                                              leitor.GetString(leitor.GetOrdinal("DataHora")),
                                              professor,
-                                             curso, sala);
+                                             curso, sala, notebook);
                         resultado.Add(aux);
 
                     }

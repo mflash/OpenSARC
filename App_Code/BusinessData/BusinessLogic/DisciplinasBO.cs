@@ -205,6 +205,17 @@ namespace BusinessData.BusinessLogic
             }
         }
 
+        public int GetMapeamentoDisciplinasAtas(string codigo)
+        {
+            try
+            {
+                return dao.GetMapeamentoDisciplinasAtas(codigo);
+            }
+            catch(DataAccessException)
+            {
+                throw;
+            }
+        }
 
     }
 }

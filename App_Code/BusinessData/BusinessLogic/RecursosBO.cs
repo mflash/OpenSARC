@@ -166,7 +166,8 @@ namespace BusinessData.BusinessLogic
             //{
                 try
                 {
-                    return dao.GetRecursosDisponiveis(data,hora);
+                List<Recurso> disp = dao.GetRecursosDisponiveis(data, hora).FindAll(r => r.VerificaDisponivel(hora));
+                return disp;
                 }
                 catch (DataAccess.DataAccessException )
                 {

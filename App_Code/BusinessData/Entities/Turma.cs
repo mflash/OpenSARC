@@ -15,6 +15,7 @@ namespace BusinessData.Entities
         private string dataHora;
         private Professor professor;
         private Curso curso;
+        private bool notebook;
 
         public Guid Id
         {
@@ -60,10 +61,12 @@ namespace BusinessData.Entities
             set { curso = value; }
         }
 
+        public bool Notebook { get; set; }
+
         public string Sala { get; set; }
 
         public Turma() { }
-        public Turma(Guid id,int num, Calendario calend, Disciplina disc, string dh, Professor prof, Curso curso, string sala = "N/A")
+        public Turma(Guid id,int num, Calendario calend, Disciplina disc, string dh, Professor prof, Curso curso, string sala = "N/A", bool notebook=false)
         {
             Id = id;
             Numero = num;
@@ -73,11 +76,12 @@ namespace BusinessData.Entities
             Professor = prof;
             Curso = curso;
             Sala = sala;
+            Notebook = notebook;
         }
 
-        public static Turma GetTurma(Guid id, int num, Calendario calend, Disciplina disc, string dh, Professor prof, Curso curso, string sala="N/A")
+        public static Turma GetTurma(Guid id, int num, Calendario calend, Disciplina disc, string dh, Professor prof, Curso curso, string sala="N/A", bool notebook= false)
         {
-            return new Turma(id,num, calend, disc, dh, prof, curso, sala);
+            return new Turma(id,num, calend, disc, dh, prof, curso, sala, notebook);
         }
 
         /// <summary>
@@ -89,9 +93,9 @@ namespace BusinessData.Entities
         /// <param name="dh">DataHora</param>
         /// <param name="prof">Professor</param>
         /// <returns></returns>
-        public static Turma NewTurma(int numero, Calendario calendario, Disciplina disciplina, string dh, Professor prof, Curso curso, string sala = "N/A")
+        public static Turma NewTurma(int numero, Calendario calendario, Disciplina disciplina, string dh, Professor prof, Curso curso, string sala = "N/A", bool notebook = false)
         {
-            return new Turma(Guid.NewGuid(),numero, calendario, disciplina, dh, prof, curso, sala);
+            return new Turma(Guid.NewGuid(),numero, calendario, disciplina, dh, prof, curso, sala, notebook);
         }
 
         #region IEquatable<Turma> Members

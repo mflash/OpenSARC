@@ -24,13 +24,6 @@ namespace BusinessData.BusinessLogic
             configBO = new ConfigBO();
         }
 
-        public void ResolveCagada(Calendario cal)
-        {
-            //aulasBO.CriarAulasCompletar(cal);
-            alocacaoBO.preencheCalendario(cal, true);
-            //aulasBO.ResolveCagada(cal);
-        }
-
         public void AbreSolicitacaoRecursos(Calendario cal, bool completar=false)
         {
             try

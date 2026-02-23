@@ -4,6 +4,7 @@ using System.Text;
 using BusinessData.Distribuicao.Entities;
 using BusinessData.BusinessLogic;
 using BusinessData.Distribuicao.Catalogos;
+using BusinessData.Util;
 
 namespace BusinessData.Distribuicao.BusinessLogic
 {
@@ -20,15 +21,20 @@ namespace BusinessData.Distribuicao.BusinessLogic
             ControleTurmas turmas = new ControleTurmas();
             BusinessData.BusinessLogic.CategoriaDisciplinaBO categoriasDeDisciplina = new CategoriaDisciplinaBO();
 
-            List<BusinessData.Entities.CategoriaDisciplina> catalogoCategoriasDisciplina = categoriasDeDisciplina.GetCategoriaDisciplinas(); 
+            List<BusinessData.Entities.CategoriaDisciplina> catalogoCategoriasDisciplina = categoriasDeDisciplina.GetCategoriaDisciplinas();
+            DebugLog.Write("Obtendo dias...");
             ColecaoDias catalogoDias = dias.GetColecaoDias(cal);
             ColecaoCategoriaDeRecursos catalogoCategorias = categorias.GetCategorias();
+            DebugLog.Write("Obtendo turmas...");
             ColecaoTurmas catalogoTurmas = turmas.GetTurmas(cal,catalogoCategoriasDisciplina);
+
+            DebugLog.Write("Obtendo requisições...");
+            ColecaoRequisicoes colReq = requisicoes.GetRequisicoes(cal, catalogoDias, catalogoCategorias, catalogoTurmas);
             
             return new Calendario(
                 cal,
                 catalogoDias,
-                requisicoes.GetRequisicoes(cal,catalogoDias,catalogoCategorias,catalogoTurmas),
+                colReq,
                 catalogoTurmas,
                 catalogoCategorias,
                 catalogoCategoriasDisciplina

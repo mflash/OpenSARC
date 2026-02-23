@@ -11,19 +11,31 @@ using System.Web.Security;
 using System.Web;
 using System.Web.UI;
 using BusinessData.BusinessLogic;
+using BusinessData.Util;
 
 namespace BusinessData.Distribuicao.BusinessLogic
 {
     public class ControleDistribuicao
     {
-        public void DistribuirRecursos(int ano, int semestre, bool simula)
+        private System.Web.SessionState.HttpSessionState session;
+
+        private void ProgressMsg(string msg)
         {
-           ControleCalendario calendarios = new ControleCalendario();
-           ControleRequisicoes controleRequisicoes = new ControleRequisicoes();
+            DebugLog.Write(msg);
+            Debug.WriteLine(msg);
+        }
+
+        public void DistribuirRecursos(int ano, int semestre, bool simula, System.Web.SessionState.HttpSessionState session)
+        {
+            string msg = "";
+            this.session = session;
+            ControleCalendario calendarios = new ControleCalendario();
+            ControleRequisicoes controleRequisicoes = new ControleRequisicoes();
 
             ColecaoRequisicoes requisicoes;
             Calendario calAtual = calendarios.GetCalendario(ano, semestre);
-            Debug.WriteLine("Calendario: " + calAtual.EntidadeCalendario.PorExtenso);
+            ProgressMsg("Calendario: " + calAtual.EntidadeCalendario.PorExtenso);
+
             Random rand = new Random();
             double soma = 0.0;
 
@@ -40,7 +52,7 @@ namespace BusinessData.Distribuicao.BusinessLogic
                 if(r.Prioridade > maxPri)
                     maxPri = r.Prioridade;
 
-            Debug.WriteLine("Prioridade máxima: " + maxPri);
+            ProgressMsg("Prioridade maxima: " + maxPri);
 
             AlocacaoBO controleAloc = new AlocacaoBO();
             List<BusinessData.Entities.Alocacao> todasAloc = controleAloc.GetAlocacoes(calAtual.InicioG1);
@@ -57,6 +69,7 @@ namespace BusinessData.Distribuicao.BusinessLogic
                 { "N", "NP" }, { "P", "NP" }
             };
             Dictionary<String, List<BusinessData.Entities.Recurso>> indisponiveis = new Dictionary<string, List<BusinessData.Entities.Recurso>>();
+            ProgressMsg("Obtendo recursos já alocados em eventos (indisponíveis)");
             foreach(BusinessData.Entities.Alocacao aloc in todasAloc)
             {
                 string key = aloc.Data.ToString() + convHorario[aloc.Horario.ToString()];
@@ -74,11 +87,13 @@ namespace BusinessData.Distribuicao.BusinessLogic
             //Para cada prioridade de requisicao
             for (int prioridadePedidos = 1; prioridadePedidos <= maxPri; /*calAtual.Categorias.Count*/ prioridadePedidos++)
             {
-                Debug.WriteLine("Prioridade: " + prioridadePedidos + " de "+maxPri);//calAtual.Categorias.Count);
+                ProgressMsg("");
+                ProgressMsg("================== PRIORIDADE: " + prioridadePedidos + " de "+maxPri);//calAtual.Categorias.Count);
+                ProgressMsg("");
                 foreach (CategoriaRecurso cat in calAtual.Categorias)
                 {
                     //Inicializa os dados
-                    Debug.WriteLine("\n\n **************** Categoria: " + cat.Descricao+"\n\n");
+                    ProgressMsg("**************** Categoria: " + cat.Descricao);
                     foreach (TurmaDistribuicao turma in calAtual.Turmas)
                     {
                         satTurmas[turma].Atendimentos = 0;
@@ -86,14 +101,14 @@ namespace BusinessData.Distribuicao.BusinessLogic
                         satTurmas[turma].Prioridade = 0;
                     }
 
-                    Debug.WriteLine("Obtendo requisições para categoria e prioridade...");
+                    ProgressMsg("Obtendo requisições para categoria e prioridade...");
                     requisicoes = calAtual.Requisicoes.GetRequisicoes(prioridadePedidos, cat, calAtual.Dias);
 
                     soma = 0.0;
                     double prioridadeAux = 0.0;
                     List<double> listaPrioridadesAux = new List<double>();
 
-                    Debug.WriteLine("Calculando total de requisições para as turmas...");
+                    ProgressMsg("Calculando total de requisições para as turmas...");
                     //Calcula o numero de requisicoes para as turmas
                     bool temPrioridade = true;
                     foreach (Requisicao req in requisicoes)
@@ -116,20 +131,20 @@ namespace BusinessData.Distribuicao.BusinessLogic
 
                     //Normaliza as prioridades entre categorias de disciplina e categorias de recurso atual para
                     //um total de 100%
-                    Debug.WriteLine("Normalizando prioridades...");
+                    ProgressMsg("Normalizando prioridades...");
                     foreach (Requisicao req in requisicoes)
                     {
                         prioridadeAux = req.Turma.EntidadeTurma.Disciplina.Categoria.Prioridades[req.CategoriaRecurso.EntidadeCategoria];
                         satTurmas[req.Turma].Prioridade = prioridadeAux / soma;
                     }
 
-                    Debug.WriteLine("*** PROCESSAMENTO DOS DIAS ***");
+                    ProgressMsg("Processamento dos dias");
                     int totalDias = calAtual.Dias.Count;
                     int curDia = 1;
                     foreach (Dia dia in calAtual.Dias)
                     {
                         //if(curDia++ % 30 == 0)
-                            Debug.WriteLine(">>> Dia: " + dia.Data);
+                        //ProgressMsg(">>> Dia: " + dia.Data);
                         foreach (Horarios.HorariosPUCRS horario in dia.Horarios)
                         {
                             //Debug.WriteLine("Horario: " + horario.ToString());
@@ -306,16 +321,17 @@ namespace BusinessData.Distribuicao.BusinessLogic
                     }
                 }
             }
-            Debug.WriteLine("");
-            Debug.WriteLine("*** FIM DO PROCESSAMENTO ***");
-            Debug.WriteLine("");
+            ProgressMsg("");
+            ProgressMsg(">>>>> FIM DA DISTRIBUIÇÃO");
+            ProgressMsg("");
             //Persiste as alocacoes na base de dados
             BusinessData.BusinessLogic.AlocacaoBO controleAlocacoes = new BusinessData.BusinessLogic.AlocacaoBO();
             foreach (CategoriaRecurso catRec in calAtual.Categorias)
             {
                 foreach (Recurso rec in catRec)
                 {
-                    Debug.WriteLine("Recurso: "+rec.EntidadeRecurso.Descricao);
+                    ProgressMsg("");
+                    ProgressMsg(">>>> Recurso: "+rec.EntidadeRecurso.Descricao);
                     foreach(BusinessData.Entities.Alocacao aloc in rec.Alocacoes)
                     {
                         string aux = "";
@@ -324,7 +340,7 @@ namespace BusinessData.Distribuicao.BusinessLogic
                         else if(aloc.Evento != null)
                             aux = aloc.Evento.Descricao + "("+aloc.Evento.Responsavel+")";
                         
-                        Debug.WriteLine(" Alocando: "+aloc.Data.ToShortDateString()+
+                        ProgressMsg("     Alocando: "+aloc.Data.ToShortDateString()+
                             " "+aloc.Horario.ToString()+" - "+aux);
                         // Se não está simulando, aloca recurso
                         if(!simula)
@@ -332,14 +348,18 @@ namespace BusinessData.Distribuicao.BusinessLogic
                     }
                 }
             }
+            ProgressMsg("");
+            ProgressMsg(">>>> FIM DO PROCESSAMENTO <<<<");
 
             // Salva as requisições para exibir estatísticas no final
-            HttpContext.Current.Session["ReqResult"] = calAtual.Requisicoes;
+            session["ReqResult"] = calAtual.Requisicoes;
 
             // Se está simulando, não há mais nada a fazer
             if (simula)
                 return;
 
+            ProgressMsg("");
+            ProgressMsg("Persistindo estado das requisições...");
             BusinessData.BusinessLogic.RequisicoesBO cReq = new BusinessData.BusinessLogic.RequisicoesBO();
             foreach (Requisicao req in calAtual.Requisicoes)
             {

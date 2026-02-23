@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Web;
+using BusinessData.Entities;
 
 
 namespace BusinessData.DataAccess
@@ -113,5 +114,37 @@ namespace BusinessData.DataAccess
 
             return listaAux;
         }
+
+        public List<Aniversario> GetAniversarios()
+        {
+            DbCommand cmd = baseDados.GetStoredProcCommand("AniversarioSelectAll");
+            Aniversario aux;
+            List<Aniversario> listaAux = new List<Aniversario>();
+            try
+            {
+                using (IDataReader leitor = baseDados.ExecuteReader(cmd))
+                {
+                    try
+                    {
+                        while (leitor.Read())
+                        {
+                            aux = Aniversario.GetAniversario(leitor.GetString(leitor.GetOrdinal("Nome")),
+                                                            leitor.GetDateTime(leitor.GetOrdinal("Aniver")));
+                            listaAux.Add(aux);
+                        }
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        return listaAux;
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DataAccessException(ErroMessages.GetErrorMessage(ex.Number), ex);
+            }
+            return listaAux;
+        }
+
     }
 }

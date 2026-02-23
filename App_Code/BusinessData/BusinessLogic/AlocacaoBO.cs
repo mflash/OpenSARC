@@ -183,6 +183,11 @@ namespace BusinessData.BusinessLogic
              }
          }
 
+        public List<Alocacao> GetAlocacoes(Calendario cal)
+        {
+            return dao.GetTodasAlocacoes(cal);
+        }
+
         public List<Alocacao> GetAlocacoes(Calendario cal, DateTime data, Professor prof)
          {
              return dao.GetAlocacoes(cal, data, prof);
@@ -247,6 +252,19 @@ namespace BusinessData.BusinessLogic
             try
             {
                 return dao.GetAlocacoes(data);
+            }
+            catch (DataAccessException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<Alocacao> GetAlocacoesTurma(Guid guid)
+        {
+            try
+            {
+                return dao.GetAlocacoesTurma(guid);
+
             }
             catch (DataAccessException ex)
             {

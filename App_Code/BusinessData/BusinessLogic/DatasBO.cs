@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Security;
+using BusinessData.Entities;
 
 namespace BusinessData.BusinessLogic
 {
@@ -68,6 +69,18 @@ namespace BusinessData.BusinessLogic
             try
             {
                 return dao.GetDatasByCalendario(id);
+            }
+            catch (DataAccess.DataAccessException )
+            {
+                throw;
+            }
+        }
+
+        public List<Aniversario> GetAniversarios()
+        {
+            try
+            {
+                return dao.GetAniversarios();
             }
             catch (DataAccess.DataAccessException )
             {

@@ -1,11 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using BusinessData.Entities;
 using Microsoft.Practices.EnterpriseLibrary.Data;
+using System;
+using System.Activities.Expressions;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
-using BusinessData.Entities;
 using System.Data.SqlClient;
+using System.Text;
 using System.Web;
 
 namespace BusinessData.DataAccess
@@ -13,6 +15,7 @@ namespace BusinessData.DataAccess
     internal class DisciplinasDAO
     {
         private Database baseDados;
+        private Dictionary<Guid, CategoriaDisciplina> dicCategDisciplinas;
 
         /// <summary>
         /// Cria um novo Objeto de Acesso a Dados para Disciplinas
@@ -22,6 +25,10 @@ namespace BusinessData.DataAccess
             try
             {
                 baseDados = DatabaseFactory.CreateDatabase("SARCFACINcs");
+                CategoriaDisciplinaDAO catDiscipDAO = new CategoriaDisciplinaDAO();
+                dicCategDisciplinas = new Dictionary<Guid, CategoriaDisciplina>();
+                foreach (var item in catDiscipDAO.GetCategoriaDisciplinas())
+                    dicCategDisciplinas.Add(item.Id, item);
             }
             catch (SqlException ex)
             {
@@ -164,7 +171,7 @@ namespace BusinessData.DataAccess
         {
             DbCommand cmd = baseDados.GetStoredProcCommand("DisciplinaSelectByCod");
             baseDados.AddInParameter(cmd, "@DisciplinaCod", DbType.String, cod);
-            CategoriaDisciplinaDAO catdiscipDAO = new CategoriaDisciplinaDAO();
+            //CategoriaDisciplinaDAO catdiscipDAO = new CategoriaDisciplinaDAO();
 
             Entities.Disciplina aux = null;
             Entities.CategoriaDisciplina categoria = null;
@@ -174,8 +181,8 @@ namespace BusinessData.DataAccess
                 {
                     leitor.Read();
 
-
-                    categoria = catdiscipDAO.GetCategoriaDisciplina(leitor.GetGuid(leitor.GetOrdinal("Categoria")));
+                    //categoria = catdiscipDAO.GetCategoriaDisciplina(leitor.GetGuid(leitor.GetOrdinal("Categoria")));
+                    categoria = dicCategDisciplinas[leitor.GetGuid(leitor.GetOrdinal("Categoria"))];
 
                     aux = Entities.Disciplina.GetDisciplina(leitor.GetString(leitor.GetOrdinal("DisciplinaCod")),
                                                             leitor.GetInt32(leitor.GetOrdinal("Cred")),
@@ -214,10 +221,11 @@ namespace BusinessData.DataAccess
                     leitor.Read();
 
                     CalendariosDAO calendariosDAO = new CalendariosDAO();
-                    CategoriaDisciplinaDAO catdiscipDAO = new CategoriaDisciplinaDAO();
+                    //CategoriaDisciplinaDAO catdiscipDAO = new CategoriaDisciplinaDAO();
 
                     Entities.Calendario calendario = calendariosDAO.GetCalendario(calendarioId);
-                    Entities.CategoriaDisciplina categoria = catdiscipDAO.GetCategoriaDisciplina(leitor.GetGuid(leitor.GetOrdinal("Categoria")));
+                    Entities.CategoriaDisciplina categoria = dicCategDisciplinas[leitor.GetGuid(leitor.GetOrdinal("Categoria"))];
+                    //Entities.CategoriaDisciplina categoria = catdiscipDAO.GetCategoriaDisciplina(leitor.GetGuid(leitor.GetOrdinal("Categoria")));
 
                     aux = Entities.Disciplina.GetDisciplina(leitor.GetString(leitor.GetOrdinal("DisciplinaCod")),
                                                             leitor.GetInt32(leitor.GetOrdinal("Cred")),
@@ -244,7 +252,7 @@ namespace BusinessData.DataAccess
         {
             DbCommand cmd = baseDados.GetStoredProcCommand("DisciplinaSelect");
             baseDados.AddInParameter(cmd, "@CalendarioId", DbType.Guid, calendario.Id);
-            CategoriaDisciplinaDAO catdiscipDAO = new CategoriaDisciplinaDAO();
+            //CategoriaDisciplinaDAO catdiscipDAO = new CategoriaDisciplinaDAO();
 
             Entities.Disciplina aux;
             List<Entities.Disciplina> listaAux = new List<Entities.Disciplina>();
@@ -256,7 +264,8 @@ namespace BusinessData.DataAccess
 
                     while (leitor.Read())
                     {
-                        Entities.CategoriaDisciplina categoria = catdiscipDAO.GetCategoriaDisciplina(leitor.GetGuid(leitor.GetOrdinal("Categoria")));
+                        //Entities.CategoriaDisciplina categoria = catdiscipDAO.GetCategoriaDisciplina(leitor.GetGuid(leitor.GetOrdinal("Categoria")));
+                        Entities.CategoriaDisciplina categoria = dicCategDisciplinas[leitor.GetGuid(leitor.GetOrdinal("Categoria"))];
 
                         aux = Entities.Disciplina.GetDisciplina(leitor.GetString(leitor.GetOrdinal("DisciplinaCod")),
                                                                 leitor.GetInt32(leitor.GetOrdinal("Cred")),
@@ -294,15 +303,17 @@ namespace BusinessData.DataAccess
                 using (IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
                     CalendariosDAO calendariosDAO = new CalendariosDAO();
-                    CategoriaDisciplinaDAO catdiscipDAO = new CategoriaDisciplinaDAO();
+                    //CategoriaDisciplinaDAO catdiscipDAO = new CategoriaDisciplinaDAO();
 
                     Calendario calendario = null;
                     CategoriaDisciplina categoria = null;
 
+                    calendario = calendariosDAO.GetCalendario(calendarioId);
+
                     while (leitor.Read())
                     {
-                        calendario = calendariosDAO.GetCalendario(calendarioId);
-                        categoria = catdiscipDAO.GetCategoriaDisciplina(leitor.GetGuid(leitor.GetOrdinal("Categoria")));
+                        categoria = dicCategDisciplinas[leitor.GetGuid(leitor.GetOrdinal("Categoria"))];
+                        //categoria = catdiscipDAO.GetCategoriaDisciplina(leitor.GetGuid(leitor.GetOrdinal("Categoria")));
 
                         aux = Entities.Disciplina.GetDisciplina(leitor.GetString(leitor.GetOrdinal("DisciplinaCod")),
                                                                 leitor.GetInt32(leitor.GetOrdinal("Cred")),
@@ -328,13 +339,14 @@ namespace BusinessData.DataAccess
             DbCommand cmd = baseDados.GetStoredProcCommand("DisciplinaSelectAll");
 
             Disciplina aux;
+
             List<Disciplina> listaAux = new List<Disciplina>();
             try
             {
                 using (IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
                     CalendariosDAO calendariosDAO = new CalendariosDAO();
-                    CategoriaDisciplinaDAO catdiscipDAO = new CategoriaDisciplinaDAO();
+                    //CategoriaDisciplinaDAO catdiscipDAO = new CategoriaDisciplinaDAO();
 
                     Calendario calendario = null;
                     CategoriaDisciplina categoria = null;
@@ -342,7 +354,8 @@ namespace BusinessData.DataAccess
                     while (leitor.Read())
                     {
                         calendario = null;
-                        categoria = catdiscipDAO.GetCategoriaDisciplina(leitor.GetGuid(leitor.GetOrdinal("Categoria")));
+                        //categoria = catdiscipDAO.GetCategoriaDisciplina(leitor.GetGuid(leitor.GetOrdinal("Categoria")));
+                        categoria = dicCategDisciplinas[leitor.GetGuid(leitor.GetOrdinal("Categoria"))];
 
                         aux = Entities.Disciplina.GetDisciplina(leitor.GetString(leitor.GetOrdinal("DisciplinaCod")),
                                                                 leitor.GetInt32(leitor.GetOrdinal("Cred")),
@@ -374,15 +387,11 @@ namespace BusinessData.DataAccess
                 using (IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
                     CalendariosDAO calendariosDAO = new CalendariosDAO();
+                    Calendario calendario = calendariosDAO.GetCalendario(id);
                    
-
-                    Calendario calendario = null;
-                    
-
                     while (leitor.Read())
                     {
-                        
-                        calendario = calendariosDAO.GetCalendario(id);
+                        //calendario = calendariosDAO.GetCalendario(id);
                         aux = this.GetDisciplina(leitor.GetString(leitor.GetOrdinal("DisciplinaCod")), calendario);
 
                         listaAux.Add(aux);
@@ -397,6 +406,35 @@ namespace BusinessData.DataAccess
             return listaAux;
         }
 
-    
+        public int GetMapeamentoDisciplinasAtas(string codigo)
+        {
+            string ano = DateTime.Now.Year.ToString();
+            int mapeamento = -1;
+
+            string cs = ConfigurationManager.ConnectionStrings["OracleCS"].ConnectionString;
+            using (Oracle.ManagedDataAccess.Client.OracleConnection oconn = new Oracle.ManagedDataAccess.Client.OracleConnection(cs))
+            {
+                try
+                {
+                    oconn.Open();
+                    Oracle.ManagedDataAccess.Client.OracleCommand c = oconn.CreateCommand();
+                    c.CommandText = "SELECT DISTINCT CDDISCIPL,CD_DISCIPLINA FROM GRANDEPORTE.EF_DISCIPLINA_TURMA edt where edt.cdano = '" + ano + "' and edt.cddiscipl = '"+codigo+"'";
+
+                    Oracle.ManagedDataAccess.Client.OracleDataReader or = c.ExecuteReader();
+                    while (or.Read())
+                    {
+                        //Response.Write(or.FieldCount + ": "+or.GetString(0) + " " + or.GetString(1) +"<br>");
+                        mapeamento = or.GetInt32(1);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("Erro ao conectar ao banco de dados: " + ex.Message);
+                }
+            }
+            //System.Diagnostics.Debug.WriteLine("Codcreds para mapeamento: " + mapeamentoDisciplinas.Count);
+            return mapeamento;
+        }
+
     }
 }

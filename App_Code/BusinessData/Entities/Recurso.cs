@@ -47,11 +47,25 @@ namespace BusinessData.Entities
             get { return horariosBloqueados; }
             set { horariosBloqueados = value; }
         }
-
         public bool EstaDisponivel
         {
             get { return estaDisponivel; }
             set { estaDisponivel = value; }
+        }
+
+        public bool VerificaDisponivel(string horario)
+        {
+            if (!estaDisponivel)
+                return false;
+
+            foreach (HorarioBloqueado h in HorariosBloqueados)
+            {
+                if (h.HoraInicio[0] <= horario[0] && h.HoraFim[h.HoraFim.Length - 1] >= horario[horario.Length - 1])
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public Guid Bloqueia1 { get; set; }

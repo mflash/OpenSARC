@@ -42,6 +42,7 @@ public partial class Pagina6 : System.Web.UI.Page
                         txtNumero.Text = Convert.ToString(turma.Numero);
                         txtDataHora.Text = turma.DataHora;
                         txtSala.Text = turma.Sala;
+                        chkNotebook.Checked = turma.Notebook;
                         
                         ddlProfessor.DataSource = profBO.GetProfessores();
                         ddlProfessor.DataTextField = "Nome";
@@ -99,6 +100,7 @@ public partial class Pagina6 : System.Web.UI.Page
                 CursosBO cursoBO = new CursosBO();
                 Curso curso = cursoBO.GetCursoByCodigo(ddlCurso.SelectedValue);
                 string sala = txtSala.Text;
+                bool notebook = chkNotebook.Checked;
                 
                 int testaCreditos = Disciplina.GetNumeroDeCreditos(txtDataHora.Text);
                 if (testaCreditos == disc.Cred || testaCreditos == disc.Cred+1)
@@ -109,6 +111,7 @@ public partial class Pagina6 : System.Web.UI.Page
                     turma.Professor = prof;
                     turma.Curso = curso;
                     turma.Sala = sala;
+                    turma.Notebook = notebook;
                     turmaBO.UpdateTurma(turma);
                     lblStatus.Text = "Turma atualizada com sucesso.";
                     lblStatus.Visible = true;

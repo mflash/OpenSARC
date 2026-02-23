@@ -68,6 +68,11 @@ AutoGenerateColumns="False" OnRowDeleting="grvListaTurmas_RowDeleting"
 
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
+<asp:BoundField DataField="Notebook" HeaderText="Uso de Notebook?">
+<ItemStyle CssClass="ms-toolbar"></ItemStyle>
+
+<HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
+</asp:BoundField>
 
 <asp:BoundField DataField="Sala" HeaderText="Sala" SortExpression="Sala">
 <ItemStyle CssClass="ms-toolbar"></ItemStyle>

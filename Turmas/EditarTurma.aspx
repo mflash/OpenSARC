@@ -59,6 +59,12 @@
                                         </asp:DropDownList></td>
                                 </tr>
                                 <tr>
+                                    <td style="width: 20px; height: 16px" class="ms-toolbar">Uso de Notebook:</td>
+                                    <td style="width: 267px; height: 16px">
+                                        <asp:CheckBox ID="chkNotebook" runat="server" CssClass="ms-toolbar">
+                                        </asp:CheckBox></td>
+                                </tr>
+                                <tr>
                                     <td style="width: 20px; height: 16px" class="ms-toolbar">Sala:</td>
                                     <td style="width: 267px; height: 16px">
                                         <asp:TextBox ID="txtSala" runat="server" CssClass="ms-toolbar" Width="200px"></asp:TextBox>

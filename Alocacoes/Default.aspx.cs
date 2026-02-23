@@ -13,13 +13,15 @@ using BusinessData.Entities;
 using BusinessData.DataAccess;
 using System.Collections.Generic;
 using BusinessData.Distribuicao.Entities;
+using System.Linq;
 
 public partial class Alocacoes_Default : System.Web.UI.Page
 {
     private CategoriaRecursoBO controladorCategorias;
     private RecursosBO controladorRecursos;
     private AlocacaoBO controladorAlocacoes;
-    
+    private TurmaBO controladorTurmas;
+
     private void PopulaCategorias()
     {
         try
@@ -28,8 +30,8 @@ public partial class Alocacoes_Default : System.Web.UI.Page
             ddlCategorias.DataValueField = "Id";
             ddlCategorias.DataTextField = "Descricao";
             ddlCategorias.DataBind();
-			
-			ddlCategorias2.DataSource = controladorCategorias.GetCategoriaRecurso();
+
+            ddlCategorias2.DataSource = controladorCategorias.GetCategoriaRecurso();
             ddlCategorias2.DataValueField = "Id";
             ddlCategorias2.DataTextField = "Descricao";
             ddlCategorias2.DataBind();
@@ -42,16 +44,16 @@ public partial class Alocacoes_Default : System.Web.UI.Page
 
     private void PopulaRecursos()
     {
-        ddlRecursos.Items.Clear();
-//        ddlRecursos.Items.Add("Selecione");
+        cbRecurso.Items.Clear();
+        //        ddlRecursos.Items.Add("Selecione");
         try
         {
-        ddlRecursos.DataSource = controladorRecursos.GetRecursos();
+            cbRecurso.DataSource = controladorRecursos.GetRecursos();
             //controladorCategorias.GetCategoriaRecursoById(new Guid(ddlCategorias.SelectedValue)));
-        ddlRecursos.DataValueField = "Id";
-        ddlRecursos.DataTextField = "Descricao";
-        ddlRecursos.DataBind();
-        ddlRecursos.Items.Insert(0, "Disponíveis");
+            cbRecurso.DataValueField = "Id";
+            cbRecurso.DataTextField = "Descricao";
+            cbRecurso.DataBind();
+            //ddlRecursos.Items.Insert(0, "Disponíveis");
         }
         catch (FormatException)
         {
@@ -66,10 +68,10 @@ public partial class Alocacoes_Default : System.Web.UI.Page
     private void PopulaProfessores()
     {
         ProfessoresBO controladorProfessores = new ProfessoresBO();
-        ddlProfessores.DataSource = controladorProfessores.GetProfessores();
-        ddlProfessores.DataTextField = "Nome";
-        ddlProfessores.DataValueField = "Id";
-        ddlProfessores.DataBind();
+        cbProfessor.DataSource = controladorProfessores.GetProfessores();
+        cbProfessor.DataTextField = "Nome";
+        cbProfessor.DataValueField = "Id";
+        cbProfessor.DataBind();
     }
 
     private void PopulaSecretarios()
@@ -80,38 +82,65 @@ public partial class Alocacoes_Default : System.Web.UI.Page
         ddlSecretario.DataValueField = "Id";
         ddlSecretario.DataBind();
     }
-	
-	private void PopulaHorarios()
-	{
-		ddlHorarios.DataSource = Enum.GetNames(typeof(Horarios.HorariosPUCRS));
-		ddlHorarios.DataBind();
-	}
+
+    private void PopulaHorarios()
+    {
+        ddlHorarios.DataSource = Enum.GetNames(typeof(Horarios.HorariosPUCRS));
+        ddlHorarios.DataBind();
+    }
+
+    private class TurmaDescricao
+    {
+        public string Descricao { get; set; }
+        public Guid TurmaId { get; set; }
+    }
+
+    private void PopulaTurmas()
+    {
+        BusinessData.Entities.Calendario cal = (BusinessData.Entities.Calendario)Session["Calendario"];
+        List<Turma> listaTurmas = controladorTurmas.GetTurmas(cal);
+        List<TurmaDescricao> lista = new List<TurmaDescricao>();
+        foreach (var turma in listaTurmas)
+        {
+            lista.Add(new TurmaDescricao
+            {
+                Descricao = turma.Disciplina.NomeCodCred + " (" + turma.Numero + ") - " + turma.Professor.Nome,
+                TurmaId = turma.Id
+            });
+        }
+        cbTurma.DataSource = lista.OrderBy(t => t.Descricao);
+        cbTurma.DataTextField = "Descricao";
+        cbTurma.DataValueField = "TurmaId";
+        cbTurma.DataBind();
+    }
 
     protected void Page_Load(object sender, EventArgs e)
     {
         controladorCategorias = new CategoriaRecursoBO();
         controladorRecursos = new RecursosBO();
         controladorAlocacoes = new AlocacaoBO();
+        controladorTurmas = new TurmaBO();
         if (!IsPostBack)
         {
             PopulaCategorias();
-			PopulaRecursos();
+            PopulaRecursos();
             PopulaProfessores();
             PopulaSecretarios();
-			PopulaHorarios();
+            PopulaHorarios();
+            PopulaTurmas();
         }
     }
 
     protected void ddlCategorias_SelectedIndexChanged(object sender, EventArgs e)
     {
-            PopulaRecursos();
-            lblStatus.Visible = false;
+        PopulaRecursos();
+        lblStatus.Visible = false;
     }
-	
-	protected void ddlCategorias2_SelectedIndexChanged(object sender, EventArgs e)
+
+    protected void ddlCategorias2_SelectedIndexChanged(object sender, EventArgs e)
     {
-            //PopulaRecursos();
-            lblStatus.Visible = false;
+        //PopulaRecursos();
+        lblStatus.Visible = false;
     }
 
     private void VisualizarAlocacoesRecurso()
@@ -121,60 +150,44 @@ public partial class Alocacoes_Default : System.Web.UI.Page
         {
             //if (ddlCategorias.SelectedIndex != 0)
             //{
-                // Selecionou um recurso especifico?
-                if (ddlRecursos.SelectedIndex != 0)
+
+            Guid recursoId = new Guid(cbRecurso.SelectedValue);
+            if (txtData.Text.Length != 0)
+            {
+                DateTime data = DateTime.Parse(txtData.Text);
+                listaAlocacoes = controladorAlocacoes.GetAlocacoes((BusinessData.Entities.Calendario)Session["Calendario"], data, recursoId);
+                if (listaAlocacoes.Count != 0)
                 {
-                    Guid recursoId = new Guid(ddlRecursos.SelectedValue);
-                    if (txtData.Text.Length != 0)
-                    {
-                        DateTime data = DateTime.Parse(txtData.Text);
-                        listaAlocacoes = controladorAlocacoes.GetAlocacoes((BusinessData.Entities.Calendario)Session["Calendario"], data, recursoId);
-                        if (listaAlocacoes.Count != 0)
-                        {
-                            dgAlocacoes.DataSource = listaAlocacoes;
-                            dgAlocacoes.Visible = true;
-                            dgAlocacoes.DataBind();
-                            lblStatus.Visible = false;
-                        }
-                        else
-                        {
-                            lblStatus.Text = "Não existem alocações para este recurso na data selecionada.";
-                            lblStatus.Visible = true;
-                            dgAlocacoes.Visible = false;
-                        }
-                    }
-                    else
-                    {
-                        listaAlocacoes = controladorAlocacoes.GetAlocacoesSemData((BusinessData.Entities.Calendario)Session["Calendario"], recursoId);
-                        if (listaAlocacoes.Count != 0)
-                        {
-                            ((List<Alocacao>)listaAlocacoes).Sort();
-                            dgAlocacoes.DataSource = listaAlocacoes;
-                            dgAlocacoes.Visible = true;
-                            dgAlocacoes.DataBind();
-                            lblStatus.Visible = false;
-                        }
-                        else
-                        {
-                            lblStatus.Text = "Não existem alocações para este recurso.";
-                            lblStatus.Visible = true;
-                            dgAlocacoes.Visible = false;
-                        }
-                    }
+                    dgAlocacoes.DataSource = listaAlocacoes;
+                    dgAlocacoes.Visible = true;
+                    dgAlocacoes.DataBind();
+                    lblStatus.Visible = false;
                 }
                 else
                 {
+                    lblStatus.Text = "Não existem alocações para este recurso na data selecionada.";
+                    lblStatus.Visible = true;
                     dgAlocacoes.Visible = false;
-                    lblStatus.Text = "Selecione um Recurso Válido.";
-                    BusinessData.Entities.Calendario cal = (BusinessData.Entities.Calendario) Session["Calendario"];
-
-//                    AulaBO aulaBo = new AulaBO();
-//                    List<Aula> aulas = aulaBo.
-//                    foreach (Aula aula in aulas)
-//                    {
-//                        lblStatus.Text += aula.Data.ToShortDateString() + "<br>";
-//                    }
                 }
+            }
+            else
+            {
+                listaAlocacoes = controladorAlocacoes.GetAlocacoesSemData((BusinessData.Entities.Calendario)Session["Calendario"], recursoId);
+                if (listaAlocacoes.Count != 0)
+                {
+                    ((List<Alocacao>)listaAlocacoes).Sort();
+                    dgAlocacoes.DataSource = listaAlocacoes;
+                    dgAlocacoes.Visible = true;
+                    dgAlocacoes.DataBind();
+                    lblStatus.Visible = false;
+                }
+                else
+                {
+                    lblStatus.Text = "Não existem alocações para este recurso.";
+                    lblStatus.Visible = true;
+                    dgAlocacoes.Visible = false;
+                }
+            }
             //}
             //else
             //{
@@ -191,6 +204,27 @@ public partial class Alocacoes_Default : System.Web.UI.Page
         {
             dgAlocacoes.Visible = false;
             lblStatus.Text = "Digite uma data válida!";
+        }
+    }
+
+    private void VisualizarAlocacoesSemData()
+    {
+        List<Alocacao> listaAlocacoes;
+        try
+        {
+            listaAlocacoes = controladorAlocacoes.GetAlocacoes((BusinessData.Entities.Calendario)Session["Calendario"]);
+            if (listaAlocacoes.Count != 0)
+            {
+                dgAlocacoes.DataSource = listaAlocacoes;
+                dgAlocacoes.Visible = true;
+                dgAlocacoes.DataBind();
+                lblStatus.Visible = false;
+            }
+        }
+        catch (System.Data.SqlTypes.SqlTypeException)
+        {
+            dgAlocacoes.Visible = false;
+            lblStatus.Text = "Erro SQL!";
         }
     }
 
@@ -214,48 +248,67 @@ public partial class Alocacoes_Default : System.Web.UI.Page
                 lblStatus.Visible = true;
                 VisualizarAlocacoesSecretario();
                 break;
-        }        
+            case "Turma":
+                lblStatus.Visible = true;
+                VisualizarAlocacoesTurma();
+                break;
+                /*
+            case "Todos":
+                lblStatus.Visible = true;
+                VisualizarAlocacoesSemData();
+                break;
+                */
+        }
     }
-    
-	private void hidePanels()
-	{
-		pnlVisualizarPorCategoria.Visible = false;
-		pnlVisualizarPorRecurso.Visible = false;
-		pnlVisualizarPorProfessor.Visible = false;
+
+    private void hidePanels()
+    {
+        pnlVisualizarPorCategoria.Visible = false;
+        pnlVisualizarPorRecurso.Visible = false;
+        pnlVisualizarPorProfessor.Visible = false;
         pnlVisualizarPorSecretario.Visible = false;
-		pnlVisualizarPorHorario.Visible = false;
-	}
-	
+        pnlVisualizarPorHorario.Visible = false;
+        pnlVisualizarPorTurma.Visible = false;
+    }
+
     protected void rblAlocacoes_SelectedIndexChanged(object sender, EventArgs e)
     {
-		hidePanels();
+        hidePanels();
         switch (rblAlocacoes.SelectedValue)
         {
             case "Recurso":
-				pnlVisualizarPorRecurso.Visible = true;                
+                pnlVisualizarPorRecurso.Visible = true;
                 ResetaComponentes();
                 lblOpcional.Visible = true;
                 dgAlocacoes.Visible = false;
                 break;
-			case "Categoria":
-				pnlVisualizarPorHorario.Visible = true;
+            case "Categoria":
+                pnlVisualizarPorHorario.Visible = true;
                 ResetaComponentes();
                 lblOpcional.Visible = true;
                 dgAlocacoes.Visible = false;
                 break;
-            case "Professor":                
-                pnlVisualizarPorProfessor.Visible = true;               
+            case "Professor":
+                pnlVisualizarPorProfessor.Visible = true;
                 ResetaComponentes();
                 lblOpcional.Visible = true;
                 dgAlocacoes.Visible = false;
                 break;
-            case "Data":                
+            case "Data":
                 pnlVisualizarPorSecretario.Visible = false;
                 ResetaComponentes();
                 lblOpcional.Visible = false;
                 dgAlocacoes.Visible = false;
                 break;
-            case "Secretário":                
+            case "Turma":
+                pnlVisualizarPorTurma.Visible = true;
+                ResetaComponentes();
+                txtData.Visible = false;
+                lblData.Visible = false;
+                lblOpcional.Visible = false;
+                dgAlocacoes.Visible = false;
+                break;
+            case "Secretário":
                 pnlVisualizarPorSecretario.Visible = true;
                 ResetaComponentes();
                 lblOpcional.Visible = true;
@@ -263,7 +316,30 @@ public partial class Alocacoes_Default : System.Web.UI.Page
                 break;
         }
     }
-    
+
+    private void VisualizarAlocacoesTurma()
+    {
+        List<Alocacao> listaAlocacoes;
+        if (cbTurma.SelectedIndex != 0)
+        {
+            listaAlocacoes = controladorAlocacoes.GetAlocacoesTurma(new Guid(cbTurma.SelectedValue));
+            if (listaAlocacoes.Count != 0)
+            {
+                ((List<Alocacao>)listaAlocacoes).Sort();
+                dgAlocacoes.DataSource = listaAlocacoes;
+                dgAlocacoes.Visible = true;
+                dgAlocacoes.DataBind();
+                lblStatus.Visible = false;
+            }
+            else
+            {
+                lblStatus.Text = "Não existem alocações para esta turma.";
+                lblStatus.Visible = true;
+                dgAlocacoes.Visible = false;
+            }
+        }
+    }
+
     private void VisualizarAlocacoesProfessor()
     {
         try
@@ -271,52 +347,45 @@ public partial class Alocacoes_Default : System.Web.UI.Page
             List<Alocacao> listaAlocacoes;
             ProfessoresBO controladorProfessores = new ProfessoresBO();
             Professor prof;
-            if (ddlProfessores.SelectedIndex != 0)
+
+            if (txtData.Text.Length == 0)
             {
-                if (txtData.Text.Length == 0)
+                prof = (Professor)controladorProfessores.GetPessoaById(new Guid(cbProfessor.SelectedValue));
+                listaAlocacoes = controladorAlocacoes.GetAlocacoesSemData((BusinessData.Entities.Calendario)Session["Calendario"], prof);
+                if (listaAlocacoes.Count != 0)
                 {
-                    prof = (Professor)controladorProfessores.GetPessoaById(new Guid(ddlProfessores.SelectedValue));
-                    listaAlocacoes = controladorAlocacoes.GetAlocacoesSemData((BusinessData.Entities.Calendario)Session["Calendario"], prof);
-                    if (listaAlocacoes.Count != 0)
-                    {
-                        ((List<Alocacao>)listaAlocacoes).Sort();
-                        dgAlocacoes.DataSource = listaAlocacoes;
-                        dgAlocacoes.Visible = true;
-                        dgAlocacoes.DataBind();
-                        lblStatus.Visible = false;
-                    }
-                    else
-                    {
-                        lblStatus.Text = "Não existem alocações para este professor.";
-                        lblStatus.Visible = true;
-                        dgAlocacoes.Visible = false;
-                    }
+                    ((List<Alocacao>)listaAlocacoes).Sort();
+                    dgAlocacoes.DataSource = listaAlocacoes;
+                    dgAlocacoes.Visible = true;
+                    dgAlocacoes.DataBind();
+                    lblStatus.Visible = false;
                 }
                 else
                 {
-                    prof = (Professor)controladorProfessores.GetPessoaById(new Guid(ddlProfessores.SelectedValue));
-                    listaAlocacoes = controladorAlocacoes.GetAlocacoes((BusinessData.Entities.Calendario)Session["Calendario"], DateTime.Parse(txtData.Text), prof);
-                    if (listaAlocacoes.Count != 0)
-                    {
-                        dgAlocacoes.DataSource = listaAlocacoes;
-                        dgAlocacoes.Visible = true;
-                        dgAlocacoes.DataBind();
-                        lblStatus.Visible = false;
-                    }
-                    else
-                    {
-                        lblStatus.Text = "Não existem alocações para este professor na data selecionada.";
-                        lblStatus.Visible = true;
-                        dgAlocacoes.Visible = false;
-                    }
+                    lblStatus.Text = "Não existem alocações para este professor.";
+                    lblStatus.Visible = true;
+                    dgAlocacoes.Visible = false;
                 }
             }
             else
             {
-                dgAlocacoes.Visible = false;
-                lblStatus.Visible = true;
-                lblStatus.Text = "Selecione um professor.";
+                prof = (Professor)controladorProfessores.GetPessoaById(new Guid(cbProfessor.SelectedValue));
+                listaAlocacoes = controladorAlocacoes.GetAlocacoes((BusinessData.Entities.Calendario)Session["Calendario"], DateTime.Parse(txtData.Text), prof);
+                if (listaAlocacoes.Count != 0)
+                {
+                    dgAlocacoes.DataSource = listaAlocacoes;
+                    dgAlocacoes.Visible = true;
+                    dgAlocacoes.DataBind();
+                    lblStatus.Visible = false;
+                }
+                else
+                {
+                    lblStatus.Text = "Não existem alocações para este professor na data selecionada.";
+                    lblStatus.Visible = true;
+                    dgAlocacoes.Visible = false;
+                }
             }
+
         }
         catch (FormatException)
         {
@@ -433,7 +502,7 @@ public partial class Alocacoes_Default : System.Web.UI.Page
     }
 
     protected void dgAlocacoes_ItemDataBound(object sender, DataGridItemEventArgs e)
-    { 
+    {
         if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
         {
             Label lblTurmaEvento = (Label)e.Item.FindControl("lblTurmaEvento");
@@ -441,7 +510,7 @@ public partial class Alocacoes_Default : System.Web.UI.Page
             Label lblDisc = (Label)e.Item.FindControl("lblDisc");
             Label lblResponsavel = (Label)e.Item.FindControl("lblResponsavel");
             Label lblCurso = (Label)e.Item.FindControl("lblCurso");
-            
+
             Alocacao aloc = (Alocacao)e.Item.DataItem;
 
             if (aloc.Aula != null)
@@ -449,12 +518,12 @@ public partial class Alocacoes_Default : System.Web.UI.Page
                 lblDiscCod.Text = aloc.Aula.TurmaId.Disciplina.Cod.ToString();
                 lblDisc.Text = aloc.Aula.TurmaId.Disciplina.Nome + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
                 //lblTurmaEvento.Text = aloc.Aula.TurmaId.Numero.ToString(); ;
-                if(aloc.Aula.TurmaId.Professor != null)
+                if (aloc.Aula.TurmaId.Professor != null)
                     lblResponsavel.Text = aloc.Aula.TurmaId.Professor.Nome;
-                if(aloc.Aula.TurmaId.Curso != null)
+                if (aloc.Aula.TurmaId.Curso != null)
                     lblCurso.Text = aloc.Aula.TurmaId.Curso.Nome;
             }
-            else 
+            else
             {
                 lblDisc.Text = aloc.Evento.Titulo;
                 lblResponsavel.Text = aloc.Evento.AutorId.Nome;
@@ -467,11 +536,13 @@ public partial class Alocacoes_Default : System.Web.UI.Page
         txtData.Text = "";
         lblStatus.Text = "";
         lblStatus.Visible = true;
+        lblData.Visible = true;
+        txtData.Visible = true;
         dgAlocacoes.Visible = false;
         ddlCategorias.SelectedIndex = 0;
-		ddlCategorias2.SelectedIndex = 0;
-        ddlProfessores.SelectedIndex = 0;
-        ddlRecursos.SelectedIndex = 0;
+        ddlCategorias2.SelectedIndex = 0;
+        cbProfessor.SelectedIndex = 0;
+        cbRecurso.SelectedIndex = 0;
     }
 
     protected void lbtnVoltar_Click(object sender, EventArgs e)

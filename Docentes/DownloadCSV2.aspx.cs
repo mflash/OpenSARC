@@ -29,7 +29,8 @@ public partial class Docentes_DownloadCSV2 : System.Web.UI.Page
         }
 
         DataTable tabela = Session["DownCSV"] as DataTable;
-        Dictionary<String, int> mapeamentoDisciplinas = Session["codcreds"] as Dictionary<String, int>;
+        DisciplinasBO disciplinasBO = new DisciplinasBO();
+        //Dictionary<String, int> mapeamentoDisciplinas = Session["codcreds"] as Dictionary<String, int>;
 
         MemoryStream ms = new MemoryStream();
         StreamWriter sw = new StreamWriter(ms, Encoding.UTF8);
@@ -52,9 +53,12 @@ public partial class Docentes_DownloadCSV2 : System.Web.UI.Page
             }
             Turma turma = listaAulas[0].TurmaId;
             Disciplina disciplina = turma.Disciplina;
+            string codigo = turma.Disciplina.Cod;
+            int codDisciplinaAtas = disciplinasBO.GetMapeamentoDisciplinasAtas(codigo);
+
             titulo = String.Format("{0}-{1:d2}-{2}", disciplina.Cod, disciplina.Cred, turma.Numero); //+ " " + disciplina.Nome + " (" + turma.Numero + ") - " + Regex.Replace(turma.Sala, "32/A", "32");
 
-            int codDisciplinaAtas = mapeamentoDisciplinas[disciplina.Cod];
+//            int codDisciplinaAtas = mapeamentoDisciplinas[disciplina.Cod];
             string cred = string.Format("{0:D2}", disciplina.Cred);
 
             bool longa = false;
@@ -80,7 +84,7 @@ public partial class Docentes_DownloadCSV2 : System.Web.UI.Page
                         tipoAula = "6"; break;
                     case "Prova": tipoAula = "2"; break;
                     case "Prova de Substituição": tipoAula = "4"; break;
-                    case "Jornada/Semana Acadêmica": tipoAula = "6"; break;
+                    case "Evento Acadêmico": tipoAula = "6"; break;
                     case "Trabalho": tipoAula = "7"; break;
                 }
 

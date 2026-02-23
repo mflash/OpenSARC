@@ -114,7 +114,8 @@ public partial class Default_Export : System.Web.UI.Page
                     {
                         aux = rec.Descricao;
                         //Debug.WriteLine("Tipo recurso:" + rec.Tipo);
-                        if (rec.Tipo == 'L' || rec.Tipo == 'A' || rec.Tipo == 'D' || rec.Tipo == 'X')
+                        if (rec.Tipo == 'L' || rec.Tipo == 'A' || rec.Tipo == 'D' || rec.Tipo == 'X' || rec.Descricao.StartsWith("Sala")
+                            || rec.Descricao.StartsWith("Retirar"))
                             recHoje = rec.Descricao;
                     }
                 }
@@ -134,7 +135,7 @@ public partial class Default_Export : System.Web.UI.Page
                         if (c.Id == data.Categoria.Id) { 
                             if (!c.DiaLetivo)
                             {
-                                dr["Descrição"] = c.Descricao + (aula.DescricaoAtividade != "Feriado" ? " (era " + aula.DescricaoAtividade + ")" : "");
+                                dr["Descrição"] = c.Descricao; //+ (aula.DescricaoAtividade != "Feriado" ? " (era " + aula.DescricaoAtividade + ")" : "");
                                 dr["#"] = "";
                                 totalAulas--;
                                 break;
@@ -146,6 +147,8 @@ public partial class Default_Export : System.Web.UI.Page
 
                 if (recHoje == string.Empty)
                     recHoje = sala;
+                else if (recHoje.StartsWith("Retirar"))
+                    recHoje = sala + " - " + recHoje;
 
                 if (notset)
                 {// && hoje.Date == aula.Data.Date)
@@ -179,31 +182,32 @@ public partial class Default_Export : System.Web.UI.Page
                     }
                     long tickDiff = aula.Data.Ticks - hoje.Ticks;
                     //Debug.WriteLine("Tickdiff: "+tickDiff);
-//                    hoje.
+                    //                    hoje.
                     TimeSpan ts = TimeSpan.FromTicks(tickDiff);
                     //Debug.WriteLine("Timespan diff: " + ts.Duration().TotalHours);
-                    if (tickDiff >= 0 || ts.Duration().TotalHours<1)
+                    if (tickDiff >= 0 || ts.Duration().TotalHours < 1)
                     {
                         lblProx.Text = aula.Data.Date.ToShortDateString() + " [" + dr["Dia"] + " " + aula.Hora + "] - " + aula.DescricaoAtividade
                             + " (" + recHoje + ")";
                         TimeSpan diff = aula.Data.Subtract(hoje);
-                        int roundedDays = (int) Math.Round(diff.TotalDays);
-//                        lblProx.Text += diff.TotalDays + " - " + diff.TotalHours + " - " + diff.TotalMinutes + " -> "+Math.Round(diff.TotalDays);
+                        int roundedDays = (int)Math.Round(diff.TotalDays);
+                        //                        lblProx.Text += diff.TotalDays + " - " + diff.TotalHours + " - " + diff.TotalMinutes + " -> "+Math.Round(diff.TotalDays);
                         //lblProx.Text += " -> " + aula.Data.ToString() + " - " + hoje.ToString();
                         /**/
-                        if (roundedDays > 0) {
+                        if (roundedDays > 0)
+                        {
                             if (roundedDays == 1)
                                 lblProx.Text += " - amanhã";
                             else
                                 lblProx.Text += " - daqui a " + roundedDays + " dias";
-                        }                            
+                        }
                         else if (diff.Hours > 0)
                             lblProx.Text += " - começa em " + diff.Hours + " hora" + (diff.Hours > 1 ? "s" : "");
                         else if (diff.Minutes > 0)
                             lblProx.Text += " - começa em " + diff.Minutes + " minuto" + (diff.Minutes > 1 ? "s" : "");
                         else if (diff.Minutes < 0)
                             lblProx.Text += " - começou há " + (-diff.Minutes) + " minuto" + (diff.Minutes < 1 ? "s" : "");
-                         /**/
+                        /**/
 
                         //lblProx.Text += " - " + diff.Days + " dias, " + diff.Hours + " horas, " + diff.Minutes + " minutos";
                         dr["Prox"] = "X"; // marca como a próxima aula na tabela

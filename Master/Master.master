@@ -39,6 +39,14 @@
 .picker-target-simple .preselect .line1{font-weight:bold}
 .picker-target-simple .active .action,.picker-target-simple .preselect .action{background-color:#ccc;color:white}        
         
+        .auto-style1 {
+            width: 153px;
+        }
+        .auto-style2 {
+            height: 86px;
+            width: 4px;
+        }
+        
     </style>
     <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
     <link href="../datepicker.css" rel="stylesheet" type="text/css" />
@@ -85,12 +93,12 @@ function confirm_delete()
 	                <td class="ms-leftareacell" valign="top" id="LeftNavigationAreaCell" style="width: 118px; height: 100%">
 	                    <table class="ms-nav" width="100%" style="height: 100%" cellpadding="0" cellspacing="0">
 		                    <tr>
-		                        <td style="width: 132px">
+		                        <td class="auto-style1">
 		                            <table style="height: 100%" class="ms-navframe" cellpadding="0" cellspacing="0" border="0">
 		                                <tr valign="top">
-			                                <td style="height: 86px; width: 4px;"></td>
+			                                <td class="auto-style2"></td>
 			                                    <td valign="top" 
-                                                style="padding: 4px; margin: 4px; height: 86px; width: 90%;">
+                                                style="padding: 2px; margin: 2px; height: 86px; width: 98%;">
                                                     &nbsp;<br />
                                                           <br />
                                                  <asp:PlaceHolder ID="phMenu" runat="server"></asp:PlaceHolder>

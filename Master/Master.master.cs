@@ -69,7 +69,10 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                         {
 
                             Label x = new Label();
-                            x.Text = "<span style=\"padding:4px\"> <a  href=\"" + baseURL + t.Id + "\">" + getNomeCurtoDisciplina(t.Disciplina) + " - " + t.Numero + "</a></span><br/>";
+                            string laptop = "&nbsp;&nbsp;&nbsp;";
+                            if (t.Notebook)
+                                laptop = "&#x1f5b3;";
+                            x.Text = "<span style=\"padding:1px\">" + laptop + "&nbsp;<a  href=\"" + baseURL + t.Id + "\">" + getNomeCurtoDisciplina(t.Disciplina) + " - " + t.Numero + "</a></span><br/>";
                             x.CssClass = "ms-toolbar-small";
 
                             //x.("left=3px;top=3px");
@@ -119,6 +122,8 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             }
             curto += palCurta + " ";
         }
+        if (curto.Length > 28)
+            curto = curto.Substring(0, 28);
         return curto;
     }
 

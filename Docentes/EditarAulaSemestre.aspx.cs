@@ -14,12 +14,14 @@ using System.Configuration;
 using System.Web.Security;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Microsoft.Practices.ObjectBuilder2;
 
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
 {
     AulaBO aulaBo = new AulaBO();
     TurmaBO turmaBo = new TurmaBO();
+    Turma currentTurma = null;
     CategoriaDataBO cdataBo = new CategoriaDataBO();
     RequisicoesBO reqBo = new RequisicoesBO();
     CategoriaAtividadeBO categoriaBo = new CategoriaAtividadeBO();
@@ -61,6 +63,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     try
                     {
                         idturma = new Guid(Request.QueryString["GUID"]);
+                        currentTurma = turmaBo.GetTurmaById(idturma);
                     }
                     catch (FormatException)
                     {
@@ -91,7 +94,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 							facin = false;
 					Session["facin"] = facin;
 
-                    lblTitulo.Text = d.Cod + "-" + d.Cred + " " + d.Nome + ", turma " + listaAulas[0].TurmaId.Numero + " - " + Regex.Replace(listaAulas[0].TurmaId.Sala, "32/A", "32");//" "+facin;                    
+                    string laptop = "";
+                    if (currentTurma.Notebook)
+                        laptop = "&#x1f5b3; ";
+                    lblTitulo.Text = laptop + d.Cod + "-" + d.Cred + " " + d.Nome + ", turma " + listaAulas[0].TurmaId.Numero + " - " + Regex.Replace(listaAulas[0].TurmaId.Sala, "32/A", "32");//" "+facin;                    
 
                     int horasRelogioEsperadas = d.Cred * 15;
                     int durPeriodo = 45;
@@ -255,11 +261,35 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
 
             List<Recurso> livres = recursosBO.GetRecursosDisponiveis(dataAtual, lblHora.Text);
+            Recurso retirarNotebook = null;
+            if (currentTurma.Notebook)
+            {
+                List<Recurso> livres2 = new List<Recurso>();
+                foreach (var item in livres)
+                {
+                    if (item.Tipo != 'L' && item.Tipo != 'D' && !item.Descricao.StartsWith("LAPRO"))
+                        livres2.Add(item);
+                    if (item.Descricao.StartsWith("Retirar"))
+                        retirarNotebook = item;
+                }
+                livres = livres2;
+            }
+            else
+            {
+                livres.Remove(livres.Find(delegate (Recurso r)
+                {
+                    return r.Descricao == "Retirar notebook";
+                }
+                ));
+            }
+
             livres.Sort();
             Recurso dummy = new Recurso();
             dummy.Descricao = "Selecionar...";
             dummy.Id = dummyGuid;
             livres.Insert(0, dummy);
+            if (currentTurma.Notebook && retirarNotebook != null)
+                livres.Insert(1, retirarNotebook);
             DropDownList ddlDisponiveis = (DropDownList)e.Item.FindControl("ddlDisponiveis");
             ddlDisponiveis.DataValueField = "Id";
             ddlDisponiveis.DataTextField = "Descricao";
@@ -841,8 +871,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         ddlDisponiveis.DataBind();
 		
 		AtualizaTodaGrade();
-        if(listaRecLib.Count > 0)
-            EnviarEmailLiberacao("professores@inf.pucrs.br", listaRecLib, data, horario);
+        //if(listaRecLib.Count > 0)
+        //    EnviarEmailLiberacao("professores@inf.pucrs.br", listaRecLib, data, horario);
     }
 
     private void EnviarEmailLiberacao(string pessoa, List<Recurso> liberados , DateTime data, String horario)

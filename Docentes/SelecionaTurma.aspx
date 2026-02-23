@@ -78,7 +78,9 @@
             </Columns>
             </asp:DataGrid>
             <asp:Literal runat="server" id="htmlMOTD">
-            </asp:Literal>			
+            </asp:Literal>	
+            <asp:Literal runat="server" ID="htmlAniver">
+            </asp:Literal>
         </div>
         <br />
         <div align="center">
@@ -199,7 +201,7 @@
             		
         </asp:GridView>
             <br />
-			<p><strong>Obs: Conforme comunicado, serão criadas/migradas as áreas Moodle para todas as disciplinas da Escola.<br/>
+			<p><strong>Obs: Conforme comunicado, serão criadas (vazias) as áreas Moodle para todas as disciplinas da Escola.<br/>
             Se houver algum erro ou inconsistência nas suas disciplinas, entre em contato com recursos.politecnica@pucrs.br</strong></p>
 			<asp:Button Visible="false" cssclass="ms-toolbar" id="butMoodle" runat="server" OnClick="butMoodle_Click" Text="Clique aqui para solicitar a criação de áreas Moodle para as suas turmas"/>
             <br />

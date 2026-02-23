@@ -22,6 +22,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 {          
     AulaBO aulaBo = new AulaBO();
     TurmaBO turmaBo = new TurmaBO();
+    Turma currentTurma = null;
     CategoriaDataBO cdataBo = new CategoriaDataBO();
     RequisicoesBO reqBo = new RequisicoesBO();
     CategoriaAtividadeBO categoriaBo = new CategoriaAtividadeBO();
@@ -30,6 +31,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     List<Color> argb = new List<Color>();
     List<CategoriaData> listCData = new List<CategoriaData>();
     List<CategoriaAtividade> listaAtividades = new List<CategoriaAtividade>();
+    List<CategoriaRecurso> listCatRecursosDisp;
     Calendario cal;
     private int cont = 1;
     Guid dummyGuid = new Guid();
@@ -66,6 +68,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                         try
                         {
                             idturma = new Guid(Request.QueryString["GUID"]);
+                            currentTurma = turmaBo.GetTurmaById(idturma);
                         }
                         catch (FormatException)
                         {
@@ -85,15 +88,73 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                         catch (Exception)
                         {
                             Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inválido!");
-                        }                        
+                        }
 
                         foreach (Aula a in listaAulas)
                         {
                             categorias.Add(a.CategoriaAtividade.Id);
                             argb.Add(a.CategoriaAtividade.Cor);
                         }
-						
-						Disciplina disc = listaAulas[0].TurmaId.Disciplina;
+
+                        listCatRecursosDisp = categoriaRecursoBo.GetCategoriaRecursoSortedByUse();
+                        CategoriaRecurso dummy = new CategoriaRecurso(dummyGuid, "Selecionar...");
+                        listCatRecursosDisp.Insert(0, dummy);
+
+                        CategoriaRecurso retirarNote = null;
+                        if (currentTurma.Notebook)
+                        {
+                            List<CategoriaRecurso> listaAux = new List<CategoriaRecurso>();
+                            foreach (var item in listCatRecursosDisp)
+                            {
+                                if (item.Descricao.StartsWith("La") || item.Descricao == "Sala de aula - Lab")
+                                    continue;
+                                if (item.Descricao.StartsWith("Retirar"))
+                                {
+                                    retirarNote = item;
+                                    continue;
+                                }
+                                listaAux.Add(item);
+                            }
+                            listCatRecursosDisp = listaAux;
+                            if (retirarNote != null)
+                                listCatRecursosDisp.Insert(1, retirarNote);
+                            //// Retira as categorias de laboratórios
+                            //listCatRecursos.Remove(listCatRecursos.Find(delegate (CategoriaRecurso cr)
+                            //{
+                            //    return cr.Descricao.StartsWith("La") || cr.Descricao == "Sala de Aula - Lab";
+                            //}
+                            //));
+                        }
+                        else
+                        {
+                            listCatRecursosDisp.Remove(listCatRecursosDisp.Find(delegate (CategoriaRecurso cr)
+                            {
+                                return cr.Descricao == "Retirar note";
+                            }
+                            ));
+                        }
+
+                        //HashSet<String> pilotoLabs = new HashSet<String>()
+                        //{
+                        //    "4645H11", "9890111", "4611F12", "4645G14", "4611C30", "9871630",
+                        //    "9890630", "9870831"
+                        //};
+                        //Debug.WriteLine("Turma:" + listaAulas[0].TurmaId.ToString());
+                        //if (!pilotoLabs.Contains(listaAulas[0].TurmaId.ToString()))
+                        //{
+                        //    int pos = 0;
+                        //    foreach (var item in listCatRecursosDisp)
+                        //    {
+                        //        if (item.Descricao.Equals("Labs móveis"))
+                        //        {
+                        //            listCatRecursosDisp.RemoveAt(pos);
+                        //            break;
+                        //        }
+                        //        pos++;
+                        //    }
+                        //}
+
+                        Disciplina disc = listaAulas[0].TurmaId.Disciplina;
 						CategoriaDisciplina cat = disc.Categoria;
 						//lblTitulo.text += " " + cat.Descricao;
 						
@@ -103,7 +164,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 							facin = false;
 
                         Disciplina d = listaAulas[0].TurmaId.Disciplina;
-                        lblTitulo.Text = listaAulas[0].TurmaId.Disciplina.NomeCodCred + " - Turma " + listaAulas[0].TurmaId.Numero + " - " + Regex.Replace(listaAulas[0].TurmaId.Sala, "32/A", "32");
+                        string laptop = "";
+                        if (currentTurma.Notebook)
+                            laptop = "&#x1f5b3; ";
+                        lblTitulo.Text = laptop + listaAulas[0].TurmaId.Disciplina.NomeCodCred + " - Turma " + listaAulas[0].TurmaId.Numero + " - " + Regex.Replace(listaAulas[0].TurmaId.Sala, "32/A", "32");
 						Session["facin"] = facin;
 
                         int horasRelogioEsperadas = d.Cred * 15;
@@ -200,7 +264,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             txtDescricao.Attributes.Add("onkeyup", "setDirtyFlag()");
 
-            Label lbl = (Label)e.Item.FindControl("lblAula");
+            System.Web.UI.WebControls.Label lbl = (System.Web.UI.WebControls.Label)e.Item.FindControl("lblAula");
             lbl.Text = "";
 
             listCData = cdataBo.GetCategoriaDatas();
@@ -215,10 +279,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             ddlAtividade.SelectedValue = categorias[0].ToString();
 
-            List<CategoriaRecurso> listCatRecursos = categoriaRecursoBo.GetCategoriaRecursoSortedByUse();
+            List<CategoriaRecurso> listCatRecursos = new List<CategoriaRecurso>( listCatRecursosDisp);
             // listCatRecursos.Sort();
-            CategoriaRecurso dummy = new CategoriaRecurso(dummyGuid, "Selecionar...");
-            listCatRecursos.Insert(0, dummy);
 
             string recursos = "";
             cbRecursos.Items.Clear();
@@ -234,7 +296,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 }
                 ));             
             }
-
+            
             DropDownList ddlCategoriaRecurso = (DropDownList)e.Item.FindControl("ddlRecurso");
             if (semRecursos)
             {
@@ -815,22 +877,26 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 if (lblAux.Text == String.Empty) continue;
 
                 string corData = item.BackColor.Name;
-                if (corData == "LightGray")
-                    break;
+                //if (corData == "LightGray")
+                //    break;
+
+                if (corData == "Gold" || corData == "OrangeRed")
+                    continue;
 
                 TextBox txtDescricao = (TextBox)item.FindControl("txtDescricao");
-                txtDescricao.Text = (string) dr[6];
+                txtDescricao.Text = (string) dr[3];
                 Debug.WriteLine(cont + ": " + txtDescricao.Text);
 
                 DropDownList ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
-                string atividade = (string) dr[5];
+                string atividade = (string) dr[2];
                 int tipoAula = 0;
                 switch (atividade)
                 {
-                    case "2": tipoAula = 4; break;
-                    case "4": tipoAula = 6; break;
-                    case "6": tipoAula = 0; break;
-                    case "7": tipoAula = 8; break;
+                    case "2": tipoAula = 4; break; // Prova
+                    case "3": tipoAula = 5; break; // G2
+                    case "4": tipoAula = 6; break; // Prova S
+                    case "6": tipoAula = 0; break; // Aula
+                    case "7": tipoAula = 9; break; // Trabalho
                 }
                 ddlAtividade.SelectedIndex = tipoAula;
                 cont++;

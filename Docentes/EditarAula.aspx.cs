@@ -892,9 +892,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 int tipoAula = 0;
                 switch (atividade)
                 {
-                    case "2": tipoAula = 4; break; // Prova
-                    case "3": tipoAula = 5; break; // G2
-                    case "4": tipoAula = 6; break; // Prova S
+                    case "0": tipoAula = 0; break; // Aula
+                    case "2": tipoAula = 5; break; // Prova
+                    case "3": tipoAula = 6; break; // G2
+                    case "4": tipoAula = 7; break; // Prova S
                     case "6": tipoAula = 0; break; // Aula
                     case "7": tipoAula = 9; break; // Trabalho
                 }

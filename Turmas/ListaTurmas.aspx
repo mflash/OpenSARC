@@ -20,7 +20,8 @@
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
 &nbsp;<table style="WIDTH: 806px; HEIGHT: 71px" align="left"><tbody><tr><td style="WIDTH: 292px">
-<asp:GridView id="grvListaTurmas" runat="server" Width="781px" 
+    <asp:CheckBox runat="server" ID="chkMostrarNotes" CssClass="ms-WPTitle" Text="Apenas turmas com notebooks" AutoPostBack="true" />
+<asp:GridView id="grvListaTurmas" runat="server" Width="900px" 
 AutoGenerateColumns="False" OnRowDeleting="grvListaTurmas_RowDeleting" 
                     OnRowEditing="grvListaTurmas_RowEditing" DataKeyNames="Id" 
                     AllowSorting="True" AlternatingRowStyle-BackColor="#E0E0E0">
@@ -37,22 +38,22 @@ AutoGenerateColumns="False" OnRowDeleting="grvListaTurmas_RowDeleting"
 
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
-<asp:BoundField DataField="Calendario" HeaderText="Calend&#225;rio">
-<ControlStyle Width="200px"></ControlStyle>
-<ItemStyle CssClass="ms-toolbar"></ItemStyle>
 
-<HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Left"></HeaderStyle>
-</asp:BoundField>
-<asp:BoundField DataField="Disciplina.CodCred" HeaderText="Cod+Cred">
+<asp:BoundField DataField="Disciplina.CodCred" HeaderText="CodCred">
 <ItemStyle CssClass="ms-toolbar"></ItemStyle>
-
-<HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Left"></HeaderStyle>
+<HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Left" Width="60px"></HeaderStyle>
 </asp:BoundField>
-<asp:BoundField DataField="Disciplina" HeaderText="Disciplina">
+
+<asp:BoundField DataField="Infra" HeaderText="Infra">
 <ItemStyle CssClass="ms-toolbar"></ItemStyle>
-
-<HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
+<HeaderStyle CssClass="ms-wikieditthird" HorizontalAlign="Left" Width="30px"></HeaderStyle>
 </asp:BoundField>
+
+<asp:BoundField DataField="Disciplina" HeaderText="Disciplina" ControlStyle-Width="280px">
+<ItemStyle CssClass="ms-toolbar"></ItemStyle>
+<HeaderStyle CssClass="ms-wikieditthird" Width="280px"></HeaderStyle>
+</asp:BoundField>
+
 <asp:BoundField DataField="DataHora" HeaderText="Data &amp; Hora">
 <ItemStyle CssClass="ms-toolbar"></ItemStyle>
 
@@ -64,11 +65,6 @@ AutoGenerateColumns="False" OnRowDeleting="grvListaTurmas_RowDeleting"
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
 <asp:BoundField DataField="Curso" HeaderText="Curso">
-<ItemStyle CssClass="ms-toolbar"></ItemStyle>
-
-<HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
-</asp:BoundField>
-<asp:BoundField DataField="Notebook" HeaderText="Uso de Notebook?">
 <ItemStyle CssClass="ms-toolbar"></ItemStyle>
 
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>

@@ -11,42 +11,87 @@ using System.Web.UI.HtmlControls;
 using BusinessData.BusinessLogic;
 using BusinessData.Entities;
 using System.Security;
+using Remotion.Collections;
+using System.Text.RegularExpressions;
 
 public partial class Pagina2 : System.Web.UI.Page
 {
+    class TurmaInfra : Turma
+    {
+        public TurmaInfra(Turma t)
+        {
+            this.Disciplina = t.Disciplina;
+            this.Sala = t.Sala;
+            this.Curso = t.Curso;
+            this.Professor = t.Professor;
+            this.DataHora = t.DataHora;
+            this.Numero = t.Numero;
+        }
+
+        public string Infra { get; set; }
+    };
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        
-        if (!IsPostBack)
+
+        //if (!IsPostBack)
+        //{
+        try
         {
-            try
-            {
-                Calendario cal = (Calendario)Session["Calendario"];
-                TurmaBO turma = new TurmaBO();
-                List<Turma> listaTurma = turma.GetTurmas(cal);
-                listaTurma.Sort();
-                if (listaTurma.Count == 0)
+            Calendario cal = (Calendario)Session["Calendario"];
+            TurmaBO turma = new TurmaBO();
+            List<Turma> listaTurma = turma.GetTurmas(cal);
+            listaTurma.Sort();
+            var setSalasClimatizadas = new HashSet<string>
+                    { "32/A/310", "32/A/301", "32/A/410", "32/A/508", "32/A/211.04" };
+            var regexSalas = new List<string>
                 {
-                    lblStatus.Text = "Nenhuma turma cadastrada.";
-                    lblStatus.Visible = true;
-                }
+                    "15/*", "30/C/*", "30/D/*", "32/A/107*", "32/A/51[3456]"
+                };
+            List<TurmaInfra> listTurmaInfra = new List<TurmaInfra>();
+            foreach (var t in listaTurma)
+            {
+                if (chkMostrarNotes.Checked && !t.Notebook)
+                    continue;
+                string laptop = "";
+                if (t.Notebook)
+                    laptop = "\U0001f4bb";
+                if (setSalasClimatizadas.Contains(t.Sala))
+                    laptop += "\u2744";
                 else
-                {
-                    grvListaTurmas.DataSource = listaTurma;                   
-                    grvListaTurmas.DataBind();
-                }
+                    foreach (var r in regexSalas)
+                        if (Regex.IsMatch(t.Sala, r))
+                        {
+                            laptop += "\u2744";
+                            break;
+                        }
+                TurmaInfra turmaInfra = new TurmaInfra(t);
+                turmaInfra.Infra = laptop;
+                listTurmaInfra.Add(turmaInfra);
+//                t.Disciplina.Nome = laptop + t.Disciplina.Nome;
             }
-            catch (BusinessData.DataAccess.DataAccessException ex)
+            if (listTurmaInfra.Count == 0)
             {
-                Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
+                lblStatus.Text = "Nenhuma turma cadastrada.";
+                lblStatus.Visible = true;
             }
-            catch (Exception ex)
+            else
             {
-                Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
+                grvListaTurmas.DataSource = listTurmaInfra;
+                grvListaTurmas.DataBind();
             }
         }
+        catch (BusinessData.DataAccess.DataAccessException ex)
+        {
+            Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
+        }
+        catch (Exception ex)
+        {
+            Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
+        }
+        // }
     }
-    
+
     protected void grvListaTurmas_RowEditing(object sender, GridViewEditEventArgs e)
     {
 
@@ -89,7 +134,7 @@ public partial class Pagina2 : System.Web.UI.Page
             Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
         }
     }
-   
+
 
     protected void lbtnVoltar_Click(object sender, EventArgs e)
     {

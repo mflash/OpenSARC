@@ -20,6 +20,7 @@ public partial class Pagina2 : System.Web.UI.Page
     {
         public TurmaInfra(Turma t)
         {
+            this.Id = t.Id;
             this.Disciplina = t.Disciplina;
             this.Sala = t.Sala;
             this.Curso = t.Curso;

@@ -48,6 +48,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         }
         try
         {
+            listCData = cdataBo.GetCategoriaDatas();
             if (!IsPostBack)
             {
                 if (Session["AppState"] != null && ((AppState)Session["AppState"]) == AppState.Admin)
@@ -267,7 +268,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             System.Web.UI.WebControls.Label lbl = (System.Web.UI.WebControls.Label)e.Item.FindControl("lblAula");
             lbl.Text = "";
 
-            listCData = cdataBo.GetCategoriaDatas();
             List<Requisicao> listReq = reqBo.GetRequisicoesPorAula(new Guid(lblAulaId.Text), cal);                        
 
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);

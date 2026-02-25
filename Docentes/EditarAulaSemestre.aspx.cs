@@ -41,6 +41,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     {
         try
         {
+            listCData = cdataBo.GetCategoriaDatas();
+
             if (IsPostBack)
                 return;
 
@@ -256,7 +258,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             Label lbl = (Label)e.Item.FindControl("lblAula");
             lbl.Text = "";
 
-            listCData = cdataBo.GetCategoriaDatas();
+            //listCData = cdataBo.GetCategoriaDatas();
 
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
 

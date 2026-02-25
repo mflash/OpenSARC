@@ -13,12 +13,17 @@ namespace BusinessData.DataAccess
     internal class AulasDAO
     {
         private Database baseDados;
+        private Dictionary<Guid, CategoriaAtividade> dicCategAtiv;
 
         public AulasDAO()
         {
             try
             {
                 baseDados = DatabaseFactory.CreateDatabase("SARCFACINcs");
+                dicCategAtiv = new Dictionary<Guid, CategoriaAtividade>();
+                CategoriaAtividadeDAO catDAO = new CategoriaAtividadeDAO();
+                foreach (var item in catDAO.GetCategoriaAtividade())
+                    dicCategAtiv[item.Id] = item;
             }
             catch (SqlException ex)
             {
@@ -140,7 +145,7 @@ namespace BusinessData.DataAccess
             return listaAux;
         }
 
-        public List<Aula> GetAulas (Guid TurmaId)
+        public List<Aula> GetAulas(Guid TurmaId)
         {
             try
             {
@@ -161,19 +166,20 @@ namespace BusinessData.DataAccess
                 {
                     while (leitor.Read())
                     {
-                        cate = catDAO.GetCategoriaAtividadeById(leitor.GetGuid(leitor.GetOrdinal("CategoriaAtividadeId")));
+                        //cate = catDAO.GetCategoriaAtividadeById(leitor.GetGuid(leitor.GetOrdinal("CategoriaAtividadeId")));
+                        cate = dicCategAtiv[leitor.GetGuid(leitor.GetOrdinal("CategoriaAtividadeId"))];
 
-                            aux = Aula.GetAula(leitor.GetGuid(leitor.GetOrdinal("AulaId")),
-                                               turma,
-                                               leitor.GetString(leitor.GetOrdinal("Hora")),
-                                               leitor.GetDateTime(leitor.GetOrdinal("Data")),
-                                               leitor.GetString(leitor.GetOrdinal("DescricaoAtividade")),
-                                               cate);
-                            resultado.Add(aux);
+                        aux = Aula.GetAula(leitor.GetGuid(leitor.GetOrdinal("AulaId")),
+                                           turma,
+                                           leitor.GetString(leitor.GetOrdinal("Hora")),
+                                           leitor.GetDateTime(leitor.GetOrdinal("Data")),
+                                           leitor.GetString(leitor.GetOrdinal("DescricaoAtividade")),
+                                           cate);
+                        resultado.Add(aux);
 
-                   }
+                    }
                 }
-                
+
                 return resultado;
 
             }
@@ -198,10 +204,10 @@ namespace BusinessData.DataAccess
                 using (IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
                     leitor.Read();
-            
+
                     TurmaDAO turmas = new TurmaDAO();
                     Turma turma = turmas.GetTurma(turmaId);
-                    
+
                     CategoriaAtividadeDAO categoriaAtividades = new CategoriaAtividadeDAO();
                     CategoriaAtividade categoriaAtividade = categoriaAtividades.GetCategoriaAtividadeById(leitor.GetGuid(leitor.GetOrdinal("CategoriaAtividadeId")));
                     aux = Aula.GetAula(leitor.GetGuid(leitor.GetOrdinal("AulaId")),

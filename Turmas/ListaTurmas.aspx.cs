@@ -47,7 +47,7 @@ public partial class Pagina2 : System.Web.UI.Page
                     { "32/A/310", "32/A/301", "32/A/410", "32/A/508", "32/A/211.04" };
             var regexSalas = new List<string>
                 {
-                    "15/*", "30/C/*", "30/D/*", "32/A/107*", "32/A/51[3456]"
+                    "11/*", "15/*", "30/[ABCDF]/*", "32/A/10[789]*", "32/A/51[34567]"
                 };
             List<TurmaInfra> listTurmaInfra = new List<TurmaInfra>();
             foreach (var t in listaTurma)

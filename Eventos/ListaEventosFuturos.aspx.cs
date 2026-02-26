@@ -68,15 +68,14 @@ public partial class Eventos_ListaEventosFuturos : System.Web.UI.Page
             if (evento.AutorId.Equals(pessoa))
             {
                 eventoBO.DeletaEvento(evento.EventoId);
-                lblStatus.Text = "Evento excluído com sucesso";
-                lblStatus.Visible = true;
+                cardDatas.Visible = false;
                 PopulaListaEventos();
                 grdDatas.Visible = false;
+                MostrarAlerta("Evento excluído com sucesso!", "success");
             }
             else
             {
-                lblStatus.Text = "Evento deve ser excluído pelo seu autor.";
-                lblStatus.Visible = true;
+                MostrarAlerta("Evento deve ser excluído pelo seu autor.", "warning");
             }
         }
         catch (DataAccessException ex)
@@ -105,14 +104,12 @@ public partial class Eventos_ListaEventosFuturos : System.Web.UI.Page
                     Response.Redirect("~/Eventos/EditarEventosFuturos.aspx?GUID=" + id.ToString());
                 else
                 {
-                    lblStatus.Text = "Evento não pode ser editado, pois ele já ocorreu ou está ocorrendo.";
-                    lblStatus.Visible = true;
+                    MostrarAlerta("Evento não pode ser editado, pois ele já ocorreu ou está ocorrendo.", "warning");
                 }
             }
             else
             {
-                lblStatus.Text = "Evento deve ser editado pelo seu autor.";
-                lblStatus.Visible = true;
+                MostrarAlerta("Evento deve ser editado pelo seu autor.", "warning");
             }
         }
         catch (BusinessData.DataAccess.DataAccessException ex)
@@ -142,13 +139,14 @@ public partial class Eventos_ListaEventosFuturos : System.Web.UI.Page
                 grdDatas.DataBind();
                 grdDatas.Visible = true;
                 lblDatas.Visible = true;
+                cardDatas.Visible = true;
                 lblStatus.Visible = false;
             }
             else
             {
-                lblStatus.Text = "Nenhhuma data para o evento.";
-                lblStatus.Visible = true;
+                MostrarAlerta("Nenhuma data para o evento.", "info");
                 grdDatas.Visible = false;
+                cardDatas.Visible = false;
                 lblDatas.Visible = false;
             }
         }
@@ -220,5 +218,24 @@ public partial class Eventos_ListaEventosFuturos : System.Web.UI.Page
             return false;
         else
             return true;
+    }
+
+    private void MostrarAlerta(string mensagem, string tipo)
+    {
+        string icone = tipo == "success" ? "check-circle" : 
+                       tipo == "warning" ? "exclamation-triangle" : 
+                       tipo == "error" ? "x-circle" : "info-circle";
+
+        string mensagemEscapada = mensagem.Replace("'", "\\'");
+
+        string script = "Swal.fire({" +
+                       "icon: '" + tipo + "'," +
+                       "title: '" + mensagemEscapada + "'," +
+                       "showConfirmButton: true," +
+                       "confirmButtonText: 'OK'," +
+                       "confirmButtonColor: '#2563eb'" +
+                       "});";
+
+        ScriptManager.RegisterStartupScript(this, GetType(), "MostrarAlerta", script, true);
     }
 }

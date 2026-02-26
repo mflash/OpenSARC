@@ -134,6 +134,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                             }
                             ));
                         }
+                        Session["ListCatRecursosDisp"] = listCatRecursosDisp;
 
                         //HashSet<String> pilotoLabs = new HashSet<String>()
                         //{
@@ -247,6 +248,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     {
         if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
         {
+            e.Item.CssClass = e.Item.CssClass.Replace("table-light", "").Trim();
             DropDownList ddlAtividade = (DropDownList)e.Item.FindControl("ddlAtividade");          
             Label lblData = (Label)e.Item.FindControl("lblData");
             TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
@@ -256,9 +258,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             Label lblAulaId = (Label)e.Item.FindControl("lblAulaId");
 
             Panel pnRecursos = (Panel)e.Item.FindControl("pnRecursos");
-            HtmlTable tabRecursos = (HtmlTable)e.Item.FindControl("tabRecursos");
-            int i = tabRecursos.Rows[0].Cells[0].Controls.Count;
-            CheckBoxList cbRecursos = (CheckBoxList)tabRecursos.Rows[0].Cells[0].Controls[1];
+            //HtmlTable tabRecursos = (HtmlTable)e.Item.FindControl("tabRecursos");
+            //int i = tabRecursos.Rows[0].Cells[0].Controls.Count;
+            CheckBoxList cbRecursos = (CheckBoxList) pnRecursos.FindControl("cbRecursos");
             ImageButton butDel = (ImageButton)e.Item.FindControl("butDeletar");
 
             Color cor = argb[0];
@@ -323,11 +325,15 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             lblRecursosSelecionados.Text = recursos;
 
+            Color corFinal = cor;
+
             //Data data = null;
             //verifica as datas para pintar as linhas
             if ((dataAtual >= cal.InicioG2))
             {
-                e.Item.BackColor = Color.LightGray;
+                corFinal = Color.LightGray;
+//                e.Item.Attributes["style"] = "background-color: LightGray !important;";
+                //e.Item.BackColor = Color.LightGray;
             }
             else
             {
@@ -338,7 +344,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                         if (c.Id == data.Categoria.Id)
                             if (!c.DiaLetivo)
                             {
-                                e.Item.BackColor = c.Cor;
+                                corFinal = c.Cor;
+//                                e.Item.BackColor = c.Cor;
                                 e.Item.Enabled = false;
                                 txtDescricao.Text = c.Descricao;
                                 lblCorDaData.Text = "True";
@@ -350,12 +357,14 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 								if(facin) {
 									lblDescData.Text = c.Descricao;
 									txtDescricao.Text = c.Descricao;// + " "+facin; // + " - " + txtDescricao.Text;
-									//txtDescricao.Text = txtDescricao.Text;
-									e.Item.BackColor = c.Cor;
+                                                                    //txtDescricao.Text = txtDescricao.Text;
+                                    corFinal = c.Cor;
+									//e.Item.BackColor = c.Cor;
 									lblCorDaData.Text = "True";
 								}
 								else {
-								    e.Item.BackColor = cor;								
+                                    corFinal = cor;
+								    //e.Item.BackColor = cor;								
 									lblCorDaData.Text = "False";
 								}
 								lbl.Text = (cont++).ToString();
@@ -364,10 +373,18 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 }
                 else
                 {
-                    e.Item.BackColor = cor;
+                    corFinal = cor;
+                    //e.Item.BackColor = cor;
                     lblCorDaData.Text = "False";
                     lbl.Text = (cont++).ToString();
                 }
+            }
+
+            // Aplica a cor final em TODAS as células da linha
+            string corHtml = ColorTranslator.ToHtml(corFinal);
+            foreach (TableCell cell in e.Item.Cells)
+            {
+                cell.Attributes["style"] = string.Format("background-color: {0} !important;", corHtml);
             }
 
             categorias.RemoveAt(0);
@@ -630,11 +647,11 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         ImageButton butDel = (ImageButton)sender;
 
         // O checkbox list está dentro da célula da tabela...
-        HtmlTableCell cell = (HtmlTableCell)butDel.Parent;
+        Panel cell = (Panel) butDel.Parent;
         CheckBoxList cbList = (CheckBoxList)cell.FindControl("cbRecursos");
 
         // Para chegar no DataGridItem correspondente... bleargh!
-        DataGridItem grid = (DataGridItem)cell.Parent.Parent.Parent.Parent.Parent;
+        DataGridItem grid = (DataGridItem)cell.Parent.Parent; //.Parent.Parent.Parent;
 
         DropDownList ddlRecurso = (DropDownList)grid.FindControl("ddlRecurso");
         string dataString = ((Label)grid.FindControl("lblData")).Text;
@@ -672,9 +689,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                    orderby req.Prioridade
                    select req;
 
-        List<CategoriaRecurso> listCatRecursos = categoriaRecursoBo.GetCategoriaRecursoSortedByUse();
-        CategoriaRecurso dummy = new CategoriaRecurso(dummyGuid, "Selecionar...");
-        listCatRecursos.Insert(0, dummy);
+        List<CategoriaRecurso> listCatRecursos = (List<CategoriaRecurso>) Session["ListCatRecursosDisp"];
+           // "; // categoriaRecursoBo.GetCategoriaRecursoSortedByUse();
+        //CategoriaRecurso dummy = new CategoriaRecurso(dummyGuid, "Selecionar...");
+        //listCatRecursos.Insert(0, dummy);
 
         int pri = 1;
         cbList.Items.Clear();
@@ -756,15 +774,28 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     protected void ddlAtividade_SelectedIndexChanged(object sender, EventArgs e)
     {
         DropDownList ddlAtividade = (DropDownList)sender;
-        string ativString = ddlAtividade.SelectedValue;
-
         TableCell cell = (TableCell)ddlAtividade.Parent;
         DataGridItem gridItem = (DataGridItem)cell.Parent;
 
-        // Salva dados digitados
+        // Pega a nova categoria selecionada
+        Guid idcategoria = new Guid(ddlAtividade.SelectedValue);
+        CategoriaAtividade categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
 
+        // Aplica a cor na linha (se não for dia especial)
+        Label lblCorDaData = (Label)gridItem.FindControl("lblCorDaData");
+        if (gridItem.BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
+        {
+            // Aplica a cor em TODAS as células da linha
+            string corHtml = ColorTranslator.ToHtml(categoria.Cor);
+            foreach (TableCell c in gridItem.Cells)
+            {
+                c.Attributes["style"] = string.Format("background-color: {0} !important;", corHtml);
+            }
+            //gridItem.BackColor = categoria.Cor;
+        }
+
+        // Salva tudo
         SalvarTodos();
-//        SalvaDados(gridItem);
     }
 
     // Salva os dados da linha corrente (chamados pelos eventos de select das drop down lists, etc)

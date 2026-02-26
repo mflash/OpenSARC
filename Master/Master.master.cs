@@ -25,7 +25,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
 
             //ASP.default_selecionacalendario_ascx calendar = (ASP.default_selecionacalendario_ascx)LoadControl("~/Default/SelecionaCalendario.ascx");
             Default_SelecionaCalendario_ calendar = (Default_SelecionaCalendario_)LoadControl("~/UserControls/SelecionaCalendario.ascx");
-            calendar.CalendarioSelecionado += new EventHandler(calendar_CalendarioSelecionado);
+            
             phCalendario.Controls.Add(calendar);
 
             Label userEmail = new Label();
@@ -39,12 +39,14 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             if (Roles.IsUserInRole("Admin"))
             {
                 Control menu = LoadControl("~/UserControls/MenuAdmin.ascx");
+                calendar.CalendarioSelecionado += new EventHandler(calendar_CalendarioSelecionadoAdmin);
                 phMenu.Controls.Add(menu);
             }
             else if (Roles.IsUserInRole("Professor"))
             {
                 if (Session["AppState"] != null && ((AppState)Session["AppState"]) != AppState.Admin)
                 {
+                    calendar.CalendarioSelecionado += new EventHandler(calendar_CalendarioSelecionado);
                     ProfessoresBO controleProfessores = new ProfessoresBO();
                     TurmaBO turmaBO = new TurmaBO();
                     Control menu = LoadControl("~/UserControls/MenuProfessor.ascx");
@@ -67,16 +69,27 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                         listaTurmas.Sort();
                         foreach (Turma t in listaTurmas)
                         {
-
-                            Label x = new Label();
-                            string laptop = "&nbsp;&nbsp;&nbsp;&nbsp;";
+                            Literal li = new Literal();
+                            string laptop = "";
                             if (t.Notebook)
-                                laptop = "&#x1f4bb;";
-                            x.Text = "<span style=\"padding:1px\">" + laptop + "&nbsp;<a  href=\"" + baseURL + t.Id + "\">" + getNomeCurtoDisciplina(t.Disciplina) + " - " + t.Numero + "</a></span><br/>";
-                            x.CssClass = "ms-toolbar-small";
-
-                            //x.("left=3px;top=3px");
-                            menu.Controls.AddAt(pos++, x);
+                                laptop = "<i class='bi bi-laptop me-1'></i>";
+                            else
+                                laptop = "<span class='d-inline-block me-1' style='width:1em;'></span>"; // Espaço com largura fixa
+                            
+                            li.Text = string.Format(
+                                "<li class='nav-item'>" +
+                                "<a href='{0}{1}' class='nav-link sarc-nav-link py-1 px-2 tiny-text'>" +
+                                "{2}<span class='sarc-link-label'>{3} - {4}</span>" +
+                                "</a>" +
+                                "</li>",
+                                baseURL,
+                                t.Id,
+                                laptop,
+                                getNomeCurtoDisciplina(t.Disciplina),
+                                t.Numero
+                            );
+                            
+                            menu.Controls.AddAt(pos++, li);
                         }
                     }
                     finally
@@ -129,9 +142,14 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
 
     void calendar_CalendarioSelecionado(object sender, EventArgs e)
     {
+        Response.Redirect("../Docentes/SelecionaTurma.aspx");
+    }
+
+    void calendar_CalendarioSelecionadoAdmin(object sender, EventArgs e)
+    {
         Response.Redirect("../Default/PaginaInicial.aspx");
     }
-    
+
     protected void lsLogin_LoggedOut(object sender, EventArgs e)
     {
         FormsAuthentication.SignOut();

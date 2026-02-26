@@ -1,175 +1,338 @@
-<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Master.master.cs" Inherits="Master_MasterFacin" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Master.master.cs" Inherits="Master_MasterFacin" %>
 <%@ Register Src="../UserControls/SelecionaCalendario.ascx" TagName="SelecionaCalendario" TagPrefix="uc3" %>
 <%@ Register Src="../UserControls/MenuProfessor.ascx" TagName="MenuProfessor" TagPrefix="uc2" %>
 <%@ Register Src="../UserControls/MenuAdmin.ascx" TagName="MenuAdmin" TagPrefix="uc1" %>
 <%@ Register Assembly="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
     Namespace="System.Web.UI" TagPrefix="asp" %>
-    
-<DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"-->
-<html>
-<!--html xmlns="http://www.w3.org/1999/xhtml"-->
-<head runat="server">
-    <title>Open SARC</title>
-    <style type="text/css">
-        @import url("~/CORE.CSS")
-    </style>
-    <style type="text/css">
-        @import url("~/datepicker.css")
-        .style1
-        {
-            vertical-align: top;
-            height: 100%;
-            width: 100%;
-            border-left: 1px solid #6f9dd9;
-            border-right: 1px solid #6f9dd9;
-            border-top: 1px solid #6f9dd9;
-            padding: 10px;
-            background-color: #ffffff;
-        }
 
-.picker-target-simple{height:80px;overflow-y:auto;background-color:#fff;padding:2px 8px;font-size:83%;border-left:1px solid #cce;margin-right:1px;cursor:pointer;border-right:1px solid #fff;border-top:1px solid #fff;border-bottom:1px solid #fff}
-.picker-target-simple.focused{border:1px solid #619ac9}
-.picker-target-simple .row{cursor:pointer;line-height:150%;padding:0px 0px 2px 0px}
-.picker-target-simple .action{width:6px;font-size:9px;border:1px solid #999;font-weight:bold;background-color:#fff;padding:0px 4px 0px 4px;color:#555;margin-left:5px}
-.picker-target-simple .selected{background-color:#f0f0f0;border-bottom:1px solid #fff}
-.picker-target-simple .selected .line1{font-weight:bold}
-.picker-target-simple .active{background-color:#d4e3ff;color:#000;text-decoration:line-through;padding-left:2px;margin-left:-2px;padding-right:2px;margin-right:-2px}
-.picker-target-simple .active .line2{color:#fff}
-.picker-target-simple .preselect{background-color:#d4e3ff;border:1px solid black;padding-top:2px}
-.picker-target-simple .preselect .line1{font-weight:bold}
-.picker-target-simple .active .action,.picker-target-simple .preselect .action{background-color:#ccc;color:white}        
-        
-        .auto-style1 {
-            width: 153px;
-        }
-        .auto-style2 {
-            height: 86px;
-            width: 4px;
-        }
-        
-    </style>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open SARC</title>
+
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+    <!-- Estilos originais preservados -->
     <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
     <link href="../datepicker.css" rel="stylesheet" type="text/css" />
-    <link rel="shortcut icon" href="../_layouts/logo/favicon.ico"/>
+    <link rel="shortcut icon" href="../_layouts/logo/favicon.ico" />
+
+    <style type="text/css">
+        /* =============================================
+           Design Tokens
+        ============================================= */
+        :root {
+            --sarc-primary:       #2563eb;  /* azul moderno */
+            --sarc-primary-dark:  #1e40af;
+            --sarc-primary-light: #eff6ff;
+            --sarc-accent:        #0ea5e9;
+            --sarc-text:          #1e293b;
+            --sarc-text-muted:    #64748b;
+            --sarc-border:        #e2e8f0;
+            --sarc-bg:            #f1f5f9;
+            --sarc-sidebar-bg:    #1e293b;  /* sidebar escura */
+            --sarc-sidebar-text:  #cbd5e1;
+            --sarc-sidebar-hover: #2563eb;
+            --sarc-topbar-bg:     #ffffff;
+            --sarc-radius:        0.5rem;
+            --sarc-shadow:        0 1px 4px rgba(0,0,0,0.08);
+        }
+
+        /* =============================================
+           Base
+        ============================================= */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            font-size: 0.9rem;
+            background-color: var(--sarc-bg);
+            color: var(--sarc-text);
+            margin: 0;
+        }
+
+        a {
+            color: var(--sarc-primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--sarc-primary-dark);
+            text-decoration: underline;
+        }
+
+        /* =============================================
+           Topbar
+        ============================================= */
+        .sarc-topbar {
+            background-color: var(--sarc-primary);
+            background-image: linear-gradient(135deg, var(--sarc-primary) 0%, var(--sarc-primary-dark) 100%);
+            color: #fff;
+            padding: 0 1.25rem;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* mudou de 'flex-start' para 'space-between' */
+            box-shadow: var(--sarc-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .sarc-topbar .sarc-logo {
+            height: 34px;
+        }
+
+        .sarc-topbar .sarc-app-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.02em;
+            margin-left: 0.75rem;
+        }
+
+        /* Links e separadores na topbar */
+        .sarc-topbar-link {
+            color: #ffffff !important;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .sarc-topbar-link:hover {
+            opacity: 0.85;
+            text-decoration: none !important;
+        }
+
+        .sarc-topbar-separator {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.75rem;
+        }
+
+        /* Estilo para o calendário no topbar */
+        .sarc-topbar .ms-toolbar,
+        .sarc-topbar label,
+        .sarc-topbar select {
+            color: #ffffff;
+            font-size: 0.85rem;
+        }
+
+        .sarc-topbar select {
+            background-color: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #ffffff;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .sarc-topbar select:focus {
+            background-color: rgba(255,255,255,0.25);
+            color: #000000;
+            outline: none;
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        /* =============================================
+           Layout principal
+        ============================================= */
+        .sarc-wrapper {
+            display: flex;
+            min-height: calc(100vh - 52px - 40px);
+        }
+
+        /* =============================================
+
+           Sidebar
+        ============================================= */
+        .sarc-sidebar {
+            width: 210px;
+            min-width: 210px;
+            background-color: var(--sarc-sidebar-bg);
+            color: var(--sarc-sidebar-text);
+            padding: 1rem 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tiny-text {
+          font-size: 0.55rem;
+        }
+
+        /* links e controles dentro do menu herdam a cor da sidebar */
+        .sarc-sidebar a,
+        .sarc-sidebar .ms-navitem,
+        .sarc-sidebar span {
+            color: var(--sarc-sidebar-text);
+            font-size: 0.85rem;
+        }
+
+        .sarc-sidebar a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* =============================================
+           Área de conteúdo
+        ============================================= */
+        .sarc-content {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            background-color: #fff;
+            border-left: 1px solid var(--sarc-border);
+        }
+
+        /* =============================================
+           Barra de ações (calendário + usuário)
+        ============================================= */
+        .sarc-actionbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--sarc-primary-light);
+            border: 1px solid var(--sarc-border);
+            border-radius: var(--sarc-radius);
+            padding: 0.4rem 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: var(--sarc-text-muted);
+        }
+
+        .sarc-actionbar a {
+            color: var(--sarc-primary);
+            font-weight: 500;
+        }
+
+        .sarc-actionbar a:hover {
+            color: var(--sarc-primary-dark);
+        }
+
+        .sarc-actionbar .separator {
+            color: var(--sarc-border);
+            margin: 0 0.25rem;
+        }
+
+        /* =============================================
+           Rodapé
+        ============================================= */
+        .sarc-footer {
+            text-align: center;
+            padding: 0.6rem 1rem;
+            font-size: 0.78rem;
+            color: var(--sarc-text-muted);
+            background-color: var(--sarc-topbar-bg);
+            border-top: 1px solid var(--sarc-border);
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+
+        /* =============================================
+           Picker styles — preservados
+        ============================================= */
+        .picker-target-simple { height: 80px; overflow-y: auto; background-color: #fff; padding: 2px 8px; font-size: 83%; border-left: 1px solid #cce; margin-right: 1px; cursor: pointer; border-right: 1px solid #fff; border-top: 1px solid #fff; border-bottom: 1px solid #fff }
+        .picker-target-simple.focused { border: 1px solid #619ac9 }
+        .picker-target-simple .row { cursor: pointer; line-height: 150%; padding: 0px 0px 2px 0px }
+        .picker-target-simple .action { width: 6px; font-size: 9px; border: 1px solid #999; font-weight: bold; background-color: #fff; padding: 0px 4px 0px 4px; color: #555; margin-left: 5px }
+        .picker-target-simple .selected { background-color: #f0f0f0; border-bottom: 1px solid #fff }
+        .picker-target-simple .selected .line1 { font-weight: bold }
+        .picker-target-simple .active { background-color: #dbeafe; color: #1e40af; text-decoration: line-through; padding-left: 2px; margin-left: -2px; padding-right: 2px; margin-right: -2px }
+        .picker-target-simple .active .line2 { color: #93c5fd }
+        .picker-target-simple .preselect { background-color: #dbeafe; border: 1px solid #2563eb; padding-top: 2px }
+        .picker-target-simple .preselect .line1 { font-weight: bold }
+        .picker-target-simple .active .action, .picker-target-simple .preselect .action { background-color: #93c5fd; color: white }
+    </style>
 </head>
-
 <body>
-<script  type="text/javascript" language="javascript">
-function confirm_delete()
-{
-  if (confirm("Confirma a exclus�o?")==true)
-    return true;
-  else
-    return false;
-}
-</script>
-  <!--div align=right><font color="red"><b>AVISO: este sistema &eacute; apenas para testes - as modifica&ccedil;&otilde;es n&atilde;o afetam as reservas do semestre!</b></font></div!-->
-  <form id="Form1" runat="server">
+    <script type="text/javascript">
+        function confirm_delete() {
+            return confirm("Confirma a exclusão?");
+        }
+    </script>
 
-  <table class="ms-main" cellpadding="0" cellspacing="0" border="0" width="100%" 
-      style="height: 95%">
-    <tr style="height:100%">
-	    <td style="height: 100%">
-	        <table width="100%" cellspacing="0" cellpadding="0" style="height: 100%">
-	            <tr>
-                    <td class="ms-titleareaframe" colspan="2" style="height: 20px">
-                        <img alt="" src="../_layouts/logo/opensarc-logo.gif" style="left: 3px; position: absolute; top: 3px"/>
-                    </td>
-	                <td valign="top" id="onetidPageTitleAreaFrame" class='ms-pagetitleareaframe' nowrap style="height: 20px; width: 669px;">
-	                    <table id="onetidPageTitleAreaTable" cellpadding="0" cellspacing="0" width="100%" border="0" style="height: 12px">
-    	                    <tr>
-	    	                    <td valign="top" class="ms-titlearea" style="height: 21px">
-		    	                    &nbsp;
-		                        </td>
-	                        </tr>
-	                    
-	                    </table>
-                    </td>
-	                <td class="ms-titlearearight" style="width: 31px; height: 20px;">
-		                <div class="ms-titleareaframe" style='height:100%'></div>
-		            </td>
-	            </tr>
-	            <tr>
-	                <td class="ms-leftareacell" valign="top" id="LeftNavigationAreaCell" style="width: 118px; height: 100%">
-	                    <table class="ms-nav" width="100%" style="height: 100%" cellpadding="0" cellspacing="0">
-		                    <tr>
-		                        <td class="auto-style1">
-		                            <table style="height: 100%" class="ms-navframe" cellpadding="0" cellspacing="0" border="0">
-		                                <tr valign="top">
-			                                <td class="auto-style2"></td>
-			                                    <td valign="top" 
-                                                style="padding: 2px; margin: 2px; height: 86px; width: 98%;">
-                                                    &nbsp;<br />
-                                                          <br />
-                                                 <asp:PlaceHolder ID="phMenu" runat="server"></asp:PlaceHolder>
-			                                    </td>
-		                                 </tr>
-		                                 <tr>
-		                                    <td colspan="2" align="center" valign="bottom">
-                                            
- 
-                                            <img src="/_layouts/images/blank.gif" width="138" height="1" alt=""/></td></tr>
-		                            </table>
-		                        </td>
-		                        <td></td>
-		                    </tr>
-	                    </table>
-	                </td>
-	            <td style="width: 12px">
-	                <div class="ms-pagemargin">
-	                <img src="/_layouts/images/blank.gif" width="10" height="1" alt=""/></div>
-		        </td>
-               <td class='ms-bodyareacell' valign="top" style="width: 100%px">
-        		<table id="MSO_ContentTable" width="100%" style="height: 100%" border="0" cellspacing="0" cellpadding="0" class="ms-propertysheet">
-		            <tr>
-			            <td class='style1' valign="top">
-                        <div style="text-align: justify"> 
-                            <div  style="width: 100%; height: 29px; text-align:justify" id="DIV1" >
-                                <table style="width: 100%; height: 20px;">
-                                    <tr>
-                                        <td style="width: 60%; height: 20px;">
-                                            <asp:PlaceHolder ID="phCalendario" runat="server"></asp:PlaceHolder>
-                                            
-                                        </td>
-                                        <td style="height: 20px; text-align: right;">
-                                            
-                                            <asp:PlaceHolder ID="phActiveUser" runat="server"></asp:PlaceHolder>
-                                       
-                                             | <span class="ms-toolbar"> <a href="https://github.com/mflash/OpenSARC/wiki/Manual" target="_manual">Ajuda</a></span> | <asp:LoginStatus accesskey="R" ID="lsLogin" loginText="Entrar" logoutText="Sair" runat="server" OnLoggedOut="lsLogin_LoggedOut" CssClass="ms-toolbar"/> 
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <asp:ContentPlaceHolder ID="cphTitulo" runat="server">
-                            <asp:ScriptManager ID="ScriptManager1" runat="server">
-                            </asp:ScriptManager>
-                            </asp:ContentPlaceHolder>
-                            <br />
-                        </div>
-			            </td>
-		            </tr>
-		        </table>
-       	    </td>
-	            <td class="ms-rightareacell" style="width: 31px"><div class="ms-pagemargin">
-	            <img src="/_layouts/images/blank.gif" width="10" height="1" alt=""/></div>
-		        </td>
-	        </tr>
-            <tr>
-	            <td class="ms-pagebottommarginleft" style="width: 118px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
-	            <td class="ms-pagebottommargin" style="width: 12px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
-	            <td class="ms-bodyareapagemargin" 
-                    style="height: 11px; width: 669px; text-align: center;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/>
-	            <td class="ms-pagebottommarginright" style="width: 31px; height: 11px;"><img src="/_layouts/images/blank.gif" width="1" height="10" alt=""/></td>
-            </tr>
-	     </table>
-	    </td>
-	</tr>
-  </table>
-  </form>
-  <div class="ms-toolbar" style="text-align: center">
-&copy; 
-                    2011 OpenSARC, <a href="https://github.com/mflash/OpenSARC">
-                    https://github.com/mflash/OpenSARC</a> - <a href="https://github.com/mflash/OpenSARC/wiki/Sobre..." class="ms-toolbar">Sobre...</a></div>
+    <form id="Form1" runat="server">
+
+        <!-- ═══════════════════════════════════════
+             TOPBAR
+        ═══════════════════════════════════════ -->
+        <header class="sarc-topbar">
+            <div class="d-flex align-items-center">
+                <img alt="OpenSARC" src="../_layouts/logo/opensarc-logo.gif" />
+                <span class="sarc-app-title">OpenSARC</span>
+            </div>
+            
+            <!-- Calendário, usuário e ações movidos para cá -->
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center gap-2">
+                    <asp:PlaceHolder ID="phCalendario" runat="server" />
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <asp:PlaceHolder ID="phActiveUser" runat="server" />
+                    <span class="sarc-topbar-separator">|</span>
+                    <a href="https://github.com/mflash/OpenSARC/wiki/Manual" target="_manual" class="sarc-topbar-link">
+                        <i class="bi bi-question-circle me-1"></i>Ajuda
+                    </a>
+                    <span class="sarc-topbar-separator">|</span>
+                    <asp:LoginStatus
+                        AccessKey="R"
+                        ID="lsLogin"
+                        LoginText="Entrar"
+                        LogoutText="Sair"
+                        runat="server"
+                        OnLoggedOut="lsLogin_LoggedOut"
+                        CssClass="sarc-topbar-link" />
+                </div>
+            </div>
+        </header>
+
+        <!-- ═══════════════════════════════════════
+             WRAPPER: Sidebar + Conteúdo
+        ═══════════════════════════════════════ -->
+        <div class="sarc-wrapper">
+
+            <!-- SIDEBAR -->
+            <nav class="sarc-sidebar">
+                <asp:PlaceHolder ID="phMenu" runat="server" />
+            </nav>
+
+            <!-- CONTEÚDO PRINCIPAL -->
+            <main class="sarc-content">
+
+                <!-- Barra de ações REMOVIDA (agora está no topbar) -->
+
+                <!-- Conteúdo da página filha -->
+                <asp:ContentPlaceHolder ID="cphTitulo" runat="server">
+                    <asp:ScriptManager ID="ScriptManager1" runat="server" />
+                </asp:ContentPlaceHolder>
+
+            </main>
+        </div>
+
+        <!-- ═══════════════════════════════════════
+             RODAPÉ
+        ═══════════════════════════════════════ -->
+        <footer class="sarc-footer">
+            <i class="bi bi-c-circle"></i>
+            2011 OpenSARC &nbsp;&mdash;&nbsp;
+            <a href="https://github.com/mflash/OpenSARC">github.com/mflash/OpenSARC</a>
+            &nbsp;&mdash;&nbsp;
+            <a href="https://github.com/mflash/OpenSARC/wiki/Sobre...">Sobre...</a>
+        </footer>
+
+    </form>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

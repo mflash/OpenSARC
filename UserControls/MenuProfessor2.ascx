@@ -1,4 +1,4 @@
-<%@ control language="C#" autoeventwireup="true" CodeFile="MenuAdmin.ascx.cs" Inherits="Default_MenuAdmin" %>
+<%@ control language="C#" autoeventwireup="true" CodeFile="MenuAdmin2.ascx.cs" Inherits="Default_MenuAdmin" %>
 <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
 <link href="../CORE.CSS" rel="stylesheet" type="text/css" />
 <br /><div class="ms-quickLaunch">

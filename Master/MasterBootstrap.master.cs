@@ -56,9 +56,9 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                     AppState estado = (AppState)Session["AppState"];
                     string baseURL = "../Docentes/";
                     if (estado == AppState.Requisicoes)
-                        baseURL += "EditarAula.aspx?GUID=";
+                        baseURL += "EditarAula2.aspx?GUID=";
                     if (estado == AppState.AtivoSemestre)
-                        baseURL += "EditarAulaSemestre.aspx?GUID=";
+                        baseURL += "EditarAulaSemestre2.aspx?GUID=";
 
                     try
                     {

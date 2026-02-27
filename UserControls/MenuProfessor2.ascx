@@ -16,7 +16,7 @@
                         </td><br/>
                     </tr>
                 </table>
-                <a accesskey="T" href="../Docentes/SelecionaTurma.aspx" class="ms-SPLink">
+                <a accesskey="T" href="../Docentes/SelecionaTurma2.aspx" class="ms-SPLink">
                     <span style="color: #3966bf" >Turmas/Eventos<br/></span></a><br/>
 <span style="color: #3966bf"><asp:PlaceHolder ID="phClassListing" runat="server"></asp:PlaceHolder></span>
                 <br/><a href="../Docentes/AterarSenha.aspx" class="ms-SPLink"><span style="color: #3966bf">Alterar Senha<br/></span></a>
@@ -28,11 +28,11 @@
                         </td><br/>
                     </tr>
                 </table>
-                <a href="../Eventos/Default.aspx" class="ms-SPLink">
+                <a href="../Eventos/Default2.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Cadastrar</span></a><br/>
-                <a href="../Eventos/ListaEventos.aspx" class="ms-SPLink">
+                <a href="../Eventos/ListaEventos2.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Listar Todos</span></a><br/>
-                <a href="../Eventos/ListaEventosFuturos.aspx" class="ms-SPLink">
+                <a href="../Eventos/ListaEventosFuturos2.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Listar Futuros</span></a><br/>
                     
                     
@@ -43,9 +43,9 @@
                         </td><br/>
                     </tr>
                 </table>
-                <a href="../Alocacoes/Default.aspx" class="ms-SPLink">
+                <a href="../Alocacoes/Default2.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Visualizar Alocações</span></a>
-                <a href="../Common/ListaTurmas.aspx" class="ms-SPLink">
+                <a href="../Common/ListaTurmas2.aspx" class="ms-SPLink">
                     <span style="color: #3966bf">Listar Turmas</span></a><br />
                 <a href="../Alocacoes/nova_grade_2020.png" class="ms-SPLink" target="_blank">
                     <span style="color: #3966bf">Nova grade de horários</span></a>

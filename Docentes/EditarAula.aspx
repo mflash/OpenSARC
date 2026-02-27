@@ -220,18 +220,23 @@
                     <asp:TemplateColumn HeaderText="Selecionados" Visible="true">
                         <ItemTemplate>
                             <asp:Panel ID="pnRecursos" runat="server">
-                                <div class="d-flex align-items-start gap-2">
-                                    <asp:CheckBoxList ID="cbRecursos" runat="server"
-                                        CssClass="form-control form-control-sm" />
-                                    <asp:ImageButton ID="butDeletar" runat="server"
-                                        onClick="butDeletar_Click"
-                                        ImageUrl="~/_layouts/images/CRIT_16.GIF"
-                                        title="Remover recurso(s)" />
+                                <div class="recursos-container">
+                                    <asp:CheckBoxList ID="cbRecursos" runat="server" 
+                                        CssClass="recursos-list" 
+                                        RepeatLayout="UnorderedList">
+                                    </asp:CheckBoxList>
+                                    <asp:LinkButton ID="butDeletar" runat="server"
+                                        OnClick="butDeletar_Click"
+                                        CssClass="btn btn-sm btn-outline-danger recursos-delete-btn"
+                                        ToolTip="Remover recurso(s) selecionado(s)">
+                                        <i class="bi bi-trash"></i>
+                                    </asp:LinkButton>
                                 </div>
                                 <asp:Label ID="lblRecursosAlocados" runat="server"
                                     Width="250px" Visible="false" />
                             </asp:Panel>
                         </ItemTemplate>
+                        <ItemStyle Width="250px" VerticalAlign="Middle" />
                     </asp:TemplateColumn>
 
                     <asp:TemplateColumn HeaderText="Selecionados" Visible="false">
@@ -240,7 +245,7 @@
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="TextBox7" runat="server" CssClass="form-control form-control-sm" />
-                        </EditItemTemplate>
+    </EditItemTemplate>
                     </asp:TemplateColumn>
 
                     <asp:ButtonColumn CommandName="Select" Text="Editar..." Visible="false" />
@@ -275,4 +280,90 @@
     </Triggers>
     </asp:UpdatePanel>
 
+    <style>
+        /* Container principal dos recursos */
+        .recursos-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            justify-content: space-between;
+            padding: 0.25rem;
+        }
+
+        /* Lista de recursos */
+        .recursos-list {
+            padding-left: 0;
+            list-style: none;
+            margin-bottom: 0;
+            flex: 1;
+        }
+
+        /* Estiliza cada item da CheckBoxList */
+        .recursos-list li {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .recursos-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .recursos-list li:hover {
+            background: #e9ecef;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Estiliza o checkbox */
+        .recursos-list input[type="checkbox"] {
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-right: 0.75rem;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        /* Estiliza o label */
+        .recursos-list label {
+            cursor: pointer;
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 0;
+            flex-grow: 1;
+            font-size: 0.875rem;
+        }
+
+        /* Botão de deletar (LinkButton) */
+        .recursos-delete-btn {
+            flex-shrink: 0;
+            align-self: flex-start;
+            padding: 0.375rem 0.5rem;
+            line-height: 1;
+            border-radius: 0.25rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .recursos-delete-btn:hover {
+            background-color: #dc3545 !important;
+            color: white !important;
+            border-color: #dc3545 !important;
+            text-decoration: none;
+        }
+
+        /* Ícone dentro do botão */
+        .recursos-delete-btn i {
+            font-size: 1rem;
+            pointer-events: none;
+        }
+    </style>
 </asp:Content>
+
+

@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true"
- CodeFile="ListaTurmas.aspx.cs" Inherits="Pagina2" Title="Sistema de Alocação de Recursos - FACIN" %>
+ CodeFile="ListaTurmas2.aspx.cs" Inherits="Pagina2" Title="Sistema de Alocação de Recursos - FACIN" %>
 
 <%@ Register Src="../UserControls/SelecionaCalendario.ascx" TagName="SelecionaCalendario"
     TagPrefix="uc2" %>

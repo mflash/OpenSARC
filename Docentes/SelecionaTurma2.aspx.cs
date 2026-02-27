@@ -44,7 +44,7 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
             {
                 if (Session["Calendario"] == null)
                 {
-                    Response.Redirect("../Default/SelecionarCalendario.aspx");
+                    Response.Redirect("../Default/SelecionarCalendario2.aspx");
                 }
                 if (Session["AppState"] != null && ((AppState)Session["AppState"]) == AppState.Admin)
                 {
@@ -177,7 +177,7 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
             {
                 if (Session["Calendario"] == null)
                 {
-                    Response.Redirect("../Default/SelecionarCalendario.aspx");
+                    Response.Redirect("../Default/SelecionarCalendario2.aspx");
                 }
 
                 VerificaTrocas();

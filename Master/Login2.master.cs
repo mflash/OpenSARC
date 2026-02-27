@@ -15,7 +15,20 @@ using System.Collections.Generic;
 public partial class Master_MasterFacin : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
-    {
+    {        
+        String unit = "Escola Politécnica";
+        string host = Request.Url.Host;
+        if (host == "ecplan.pucrs.br")
+            unit = "Escrita Criativa";
+        else if (host == "gsplan.pucrs.br")
+            unit = "Gastronomia";
+
+        string buildDate = String.Format("{0}",
+            System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString());
+
+        sarcVersao.InnerText = "ver. " + buildDate;
+//        lblLogin.Text = "Bem-vindo ao OpenSARC! versão: "+ buildDate +" - "+unit;
+        /*
         if (Session["Calendario"] != null)
         {
             Label lbl = new Label();
@@ -25,7 +38,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
 
             //ASP.default_selecionacalendario_ascx calendar = (ASP.default_selecionacalendario_ascx)LoadControl("~/Default/SelecionaCalendario.ascx");
             Default_SelecionaCalendario_ calendar = (Default_SelecionaCalendario_)LoadControl("~/UserControls/SelecionaCalendario.ascx");
-            
+            calendar.CalendarioSelecionado += new EventHandler(calendar_CalendarioSelecionado);
             phCalendario.Controls.Add(calendar);
 
             Label userEmail = new Label();
@@ -38,18 +51,16 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             }
             if (Roles.IsUserInRole("Admin"))
             {
-                Control menu = LoadControl("~/UserControls/MenuAdmin2.ascx");
-                calendar.CalendarioSelecionado += new EventHandler(calendar_CalendarioSelecionadoAdmin);
+                Control menu = LoadControl("~/UserControls/MenuAdmin.ascx");
                 phMenu.Controls.Add(menu);
             }
             else if (Roles.IsUserInRole("Professor"))
             {
                 if (Session["AppState"] != null && ((AppState)Session["AppState"]) != AppState.Admin)
                 {
-                    calendar.CalendarioSelecionado += new EventHandler(calendar_CalendarioSelecionado);
                     ProfessoresBO controleProfessores = new ProfessoresBO();
                     TurmaBO turmaBO = new TurmaBO();
-                    Control menu = LoadControl("~/UserControls/MenuProfessor2.ascx");
+                    Control menu = LoadControl("~/UserControls/MenuProfessor.ascx");
                     Calendario cal = (Calendario)Session["Calendario"];
                     //MembershipUser user = Membership.GetUser();
                     Guid professorId = new Guid(user.ProviderUserKey.ToString());
@@ -58,9 +69,9 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                     AppState estado = (AppState)Session["AppState"];
                     string baseURL = "../Docentes/";
                     if (estado == AppState.Requisicoes)
-                        baseURL += "EditarAula2.aspx?GUID=";
+                        baseURL += "EditarAula.aspx?GUID=";
                     if (estado == AppState.AtivoSemestre)
-                        baseURL += "EditarAulaSemestre2.aspx?GUID=";
+                        baseURL += "EditarAulaSemestre.aspx?GUID=";
 
                     try
                     {
@@ -69,27 +80,13 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                         listaTurmas.Sort();
                         foreach (Turma t in listaTurmas)
                         {
-                            Literal li = new Literal();
-                            string laptop = "";
-                            if (t.Notebook)
-                                laptop = "<i class='bi bi-laptop me-1'></i>";
-                            else
-                                laptop = "<span class='d-inline-block me-1' style='width:1em;'></span>"; // Espaço com largura fixa
-                            
-                            li.Text = string.Format(
-                                "<li class='nav-item'>" +
-                                "<a href='{0}{1}' class='nav-link sarc-nav-link py-1 px-2 tiny-text'>" +
-                                "{2}<span class='sarc-link-label'>{3} - {4}</span>" +
-                                "</a>" +
-                                "</li>",
-                                baseURL,
-                                t.Id,
-                                laptop,
-                                getNomeCurtoDisciplina(t.Disciplina),
-                                t.Numero
-                            );
-                            
-                            menu.Controls.AddAt(pos++, li);
+
+                            Label x = new Label();
+                            x.Text = "<span style=\"padding:4px\"> <a  href=\"" + baseURL + t.Id + "\">" + getNomeCurtoDisciplina(t.Disciplina) + " - " + t.Numero + "</a> </span>";
+                            x.CssClass = "ms-toolbar-small";
+
+                            //x.("left=3px;top=3px");
+                            menu.Controls.AddAt(pos++, x);
                         }
                     }
                     finally
@@ -102,18 +99,19 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             {
                 if (Session["AppState"] != null && ((AppState)Session["AppState"]) != AppState.Admin)
                 {
-                    Control menu = LoadControl("~/UserControls/MenuSecretario2.ascx");
+                    Control menu = LoadControl("~/UserControls/MenuSecretario.ascx");
                     phMenu.Controls.Add(menu);
                 }
             }
         }
+         */
     }
 
     /*
      * Retorna um nome curto para a disciplina, se o tamanho passar de 20 caracteres
      * (o que cabe no menu lateral com fonte 7, mais o número da turma)
      */
-    string getNomeCurtoDisciplina(Disciplina disc)
+    public string getNomeCurtoDisciplina(Disciplina disc)
     {
         string nome = disc.Nome;
         if (nome.Length <= 20)
@@ -128,31 +126,23 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                 // Pega as 3 primeiras letras da palavra
                 palCurta = pal.Substring(0, 3);
                 // Se terminar com uma vogal, acrescenta mais uma letra
-                if (palCurta[2] == 'a' || palCurta[2] == 'á' || palCurta[2]== 'ê' || palCurta[2] == 'e' || palCurta[2] == 'i' || palCurta[2] == 'o'
+                if (palCurta[2] == 'a' || palCurta[2] == 'á' || palCurta[2] == 'e' || palCurta[2] == 'i' || palCurta[2] == 'o'
                     || palCurta[2] == 'u')
                     palCurta = pal.Substring(0, 4);
                 palCurta += ". ";
             }
             curto += palCurta + " ";
         }
-        if (curto.Length > 28)
-            curto = curto.Substring(0, 28);
         return curto;
     }
 
     void calendar_CalendarioSelecionado(object sender, EventArgs e)
     {
-        Response.Redirect("../Docentes/SelecionaTurma2.aspx");
-    }
-
-    void calendar_CalendarioSelecionadoAdmin(object sender, EventArgs e)
-    {
         Response.Redirect("../Default/PaginaInicial.aspx");
     }
-
+    
     protected void lsLogin_LoggedOut(object sender, EventArgs e)
     {
-        FormsAuthentication.SignOut();
         Session.Clear();
         Response.Redirect("~/Default/Default.aspx");
     }

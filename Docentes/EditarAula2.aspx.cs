@@ -1,22 +1,22 @@
+using BusinessData.BusinessLogic;
+using BusinessData.DataAccess;
+using BusinessData.Entities;
 using System;
-using System.Data;
-using System.Configuration;
 using System.Collections;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-using BusinessData.Entities;
-using BusinessData.BusinessLogic;
-using System.Collections.Generic;
-using BusinessData.DataAccess;
-using System.Drawing;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
-using System.Linq;
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
 {          
@@ -77,6 +77,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                         }
                         Session["TurmaId"] = idturma;
                         cal = (Calendario)Session["Calendario"];
+                        linkExport.NavigateUrl = "~/Default/ExportPlan.aspx?id=" + idturma + "&ano=" + cal.Ano + "&sem=" + cal.Semestre;
 
                         CategoriaAtividadeBO cateBO = new CategoriaAtividadeBO();
                         listaAtividades = cateBO.GetCategoriaAtividade();

@@ -68,6 +68,7 @@
                 OnClick="btnExportarHTML_Click"
                 CssClass="btn btn-sm btn-outline-primary"
                 Text="Exportar HTML" />
+            <asp:HyperLink ID="linkExport" runat="server" NavigateUrl="~/Ddefault/ExportPlan.aspx" Text="Link para planejamento" Target="_blank"></asp:HyperLink>
             <asp:Button ID="btnExportarCSV" runat="server"
                 OnClick="btnExportarCSV_Click"
                 ToolTip="Faz download de um arquivo CSV com o cronograma para o sistema de atas"

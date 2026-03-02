@@ -46,7 +46,7 @@ public partial class Default_Export : System.Web.UI.Page
             }
             catch (FormatException)
             {
-                Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inválido!");
+                Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inválido: " + Request.QueryString["id"]);
             }
 
             Session["TurmaId"] = idturma;

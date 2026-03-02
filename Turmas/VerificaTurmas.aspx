@@ -40,11 +40,15 @@ AutoGenerateColumns="False" DataKeyNames="Id"
 
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
 </asp:BoundField>
-<asp:BoundField DataField="Disciplina" HeaderText="Disciplina">
-<ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center"></ItemStyle>
 
+<asp:TemplateField>
+<ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center"></ItemStyle>
 <HeaderStyle CssClass="ms-wikieditthird"></HeaderStyle>
-</asp:BoundField>
+<ItemTemplate>
+<asp:HyperLink ID="LinkVer" runat="server" NavigateUrl='<%#"~/Default/ExportPlan.aspx?id="+Eval("Id")+"&ano="+Eval("Calendario.Ano")+"&sem="+Eval("Calendario.Semestre")%>' Text='<%# Eval("Disciplina") %>' Target="_blank"/>
+</ItemTemplate>
+</asp:TemplateField>
+
 <asp:BoundField DataField="DataHora" HeaderText="Data &amp; Hora">
 <ItemStyle CssClass="ms-toolbar" HorizontalAlign="Center"></ItemStyle>
 

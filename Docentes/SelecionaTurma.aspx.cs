@@ -158,7 +158,16 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
                         if (hoje.Day == item.Aniver.Day && hoje.Month == item.Aniver.Month)
                             party = "&#x1F389;";
 
-                        DateTime aniv = new DateTime(hoje.Year, item.Aniver.Month, item.Aniver.Day);
+                        DateTime aniv;
+                        try
+                        {
+                            aniv = new DateTime(hoje.Year, item.Aniver.Month, item.Aniver.Day);
+                            
+                        }
+                        catch (ArgumentOutOfRangeException ex)
+                        {
+                            aniv = new DateTime(hoje.Year, 3, 1);
+                        }
                         string shortDay = aniv.ToString("ddd", CultureInfo.GetCultureInfo("pt-BR"));
                         string diaMes = aniv.ToString("dd", CultureInfo.InvariantCulture);
 

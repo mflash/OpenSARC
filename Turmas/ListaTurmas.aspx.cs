@@ -27,6 +27,7 @@ public partial class Pagina2 : System.Web.UI.Page
             this.Professor = t.Professor;
             this.DataHora = t.DataHora;
             this.Numero = t.Numero;
+            this.Calendario = t.Calendario;
         }
 
         public string Infra { get; set; }

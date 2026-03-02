@@ -86,6 +86,7 @@ AutoGenerateColumns="False" OnRowDeleting="grvListaTurmas_RowDeleting"
         <ItemStyle CssClass="ms-wikieditthird" />
         <HeaderStyle BorderStyle="None" CssClass="ms-wikieditthird" />
         <ItemTemplate>
+            <asp:HyperLink ID="LinkVer" runat="server" NavigateUrl='<%#"~/Default/ExportPlan.aspx?id="+Eval("Id")+"&ano="+Eval("Calendario.Ano")+"&sem="+Eval("Calendario.Semestre")%>' Text="Visualizar" Target="_blank"></asp:HyperLink>
             <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit"
                 Text="Editar"></asp:LinkButton>
             <asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" 

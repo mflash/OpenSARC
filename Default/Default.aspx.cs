@@ -526,6 +526,8 @@ public partial class _Default : System.Web.UI.Page
             {
                 SortedDictionary<string, RecursoItem> dicRecurso;
                 char tipo = aloc.Recurso.Tipo;
+//                if (aloc.Recurso.Abrev.StartsWith("RN"))
+//                   continue;
                 if (tipo == 'D' || tipo == 'X') // sala dupla é lab
                     tipo = 'L';
                 if (!dic.ContainsKey(tipo))
@@ -570,6 +572,8 @@ public partial class _Default : System.Web.UI.Page
             {
                 SortedDictionary<string, RecursoItem> dicRecurso;
                 char tipo = aloc.Recurso.Tipo;
+//                if (aloc.Recurso.Abrev.StartsWith("RN"))
+//                    continue;
                 if (tipo == 'D' || tipo == 'X') // sala dupla é lab
                     tipo = 'L';
                 if (!dic.ContainsKey(tipo))

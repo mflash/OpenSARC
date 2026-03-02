@@ -278,11 +278,19 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             }
             else
             {
-                livres.Remove(livres.Find(delegate (Recurso r)
+                List<Recurso> livres2 = new List<Recurso>();
+                foreach (var item in livres)
                 {
-                    return r.Descricao == "Retirar notebook";
+                    if (item.Descricao.StartsWith("Retirar"))
+                        continue;
+                    livres2.Add(item);
                 }
-                ));
+                //livres.Remove(livres.Find(delegate (Recurso r)
+                //{
+                //    return r.Descricao == "Retirar notebook";
+                //}
+                //));
+                livres = livres2;
             }
 
             livres.Sort();

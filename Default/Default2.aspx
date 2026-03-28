@@ -243,71 +243,7 @@
             <br />
 
 <div class="container" runat="server" id="container">
-    <!-- Labs -->
-    <div class="row">
-        <div class="category"><img src="/srrc/img/lab.png" alt=""> Labs</div>
-        <div class="grid">
-            <div class="block labs">301 <span>D. Ruiz</span></div>
-            <div class="block labs">309 <span>D. Silva</span></div>
-            <div class="block labs">310 <span>D. Silva</span></div>
-            <div class="block labs">311 <span>M. Mangan</span></div>
-            <div class="block labs">312 <span>D. Ruiz</span></div>
-            <div class="block labs">318 <span>D. Venturini</span></div>
-        </div>
-    </div>
-
-    <!-- Notebooks -->
-    <div class="row">
-        <div class="category"><img src="/srrc/img/notebook.png" alt=""> Notebooks</div>
-        <div class="grid">
-            <div class="block notebooks">508 <span>A. Bacelo</span></div>
-            <div class="block notebooks">NB 1 <span>P. Alves</span></div>
-            <div class="block notebooks">NB 2 <span>I. Jauris</span></div>
-            <div class="block notebooks">NB 3 <span>A. Cardona</span></div>
-            <div class="block notebooks">NB 4 <span>A. Cardona</span></div>
-        </div>
-    </div>
-
-    <!-- Kits HDMI -->
-    <div class="row">
-        <div class="category"><img src="/srrc/img/cabo-hdmi.png" alt=""> Kits HDMI</div>
-        <div class="grid">
-            <div class="block kits-hdmi">KH 1 <span>S. Moraes</span></div>
-            <div class="block kits-hdmi">KH 2 <span>P. Carneiro</span></div>
-            <div class="block kits-hdmi">KH 3 <span>C. Marcon</span></div>
-        </div>
-    </div>
-
-    <!-- Kits VGA -->
-    <div class="row">
-        <div class="category"><img src="/srrc/img/cabo-vga.png" alt=""> Kits VGA</div>
-        <div class="grid">
-            <div class="block kits-vga">KC 1 <span>I. Lara</span></div>
-            <div class="block kits-vga">KC 2 <span>P. Carneiro</span></div>
-            <div class="block kits-vga">KC 3 <span>M. Mora</span></div>
-            <div class="block kits-vga">KC 4 <span>V. Venturini</span></div>
-        </div>
-    </div>
-
-    <!-- Auditoriums -->
-    <div class="row">
-        <div class="category"><img src="/srrc/img/auditorio.png" alt=""> Auditórios</div>
-        <div class="grid">
-            <div class="block auditoriums">516 <span>A. Agustin</span></div>
-            <div class="block auditoriums">517 <span>S. Filio</span></div>
-        </div>
-    </div>
-
-    <!-- Sound Boxes -->
-    <div class="row">
-        <div class="category"><img src="/srrc/img/speaker.png" alt=""> Cx de Som</div>
-        <div class="grid">
-            <div class="block speakers">SOM 1 <span>N. Nunes</span></div>
-            <div class="block speakers">SOM 2 <span>V. Villeneuve</span></div>
-            <div class="block speakers">SOM 3 <span>R. Silva</span></div>
-            <div class="block speakers">SOM 4 <span>H. Nunes</span></div>
-        </div>
-    </div>
+    
 </div>
 <div class="legend">
     <div class="legend-item">

@@ -9,7 +9,7 @@
 <%@ Register Src="../UserControls/SelecionaCalendario.ascx" TagName="SelecionaCalendario"
  TagPrefix="uc2" %>
 
-<%@ Register Src="../UserControls/MenuAdmin.ascx"  
+<%@ Register Src="../UserControls/MenuAdmin2.ascx"  
             TagName="MenuAdmin" 
             TagPrefix="uc1" %>
     <asp:Content ID="Content2" runat="server" ContentPlaceHolderID="cphTitulo">

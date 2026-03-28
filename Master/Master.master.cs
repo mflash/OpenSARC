@@ -38,7 +38,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             }
             if (Roles.IsUserInRole("Admin"))
             {
-                Control menu = LoadControl("~/UserControls/MenuAdmin.ascx");
+                Control menu = LoadControl("~/UserControls/MenuAdmin2.ascx");
                 phMenu.Controls.Add(menu);
             }
             else if (Roles.IsUserInRole("Professor"))

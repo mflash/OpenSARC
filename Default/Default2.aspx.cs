@@ -104,7 +104,7 @@ public partial class _Default : System.Web.UI.Page
             }
             if (User.Identity.IsAuthenticated == true)
             {
-                Server.Transfer("~/Default/PaginaInicial.aspx");
+                Server.Transfer("~/Default/PaginaInicial2.aspx");
             }
 
             //ACESSOS

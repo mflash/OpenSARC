@@ -1,46 +1,156 @@
 ﻿<%-- $Id$ --%>
 
 <%@ Page Language="C#" MasterPageFile="~/Master/Login2.master" AutoEventWireup="true"
-    CodeFile="Default.aspx.cs" Inherits="_Default" %>
+    CodeFile="Default2.aspx.cs" Inherits="_Default" %>
 
 <%@ Import Namespace="BusinessData.Entities" %>
-<%-- Add content controls here --%>
+
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphTitulo">
-    <div align="center" class="ms-menutoolbar" style="width: 100%; height: 14px">
-        <asp:ScriptManager ID="ScriptManager1" runat="server">
-            <Scripts>
-                <asp:ScriptReference Path="~/Scripts/tooltip.js" />
-            </Scripts>
-        </asp:ScriptManager>
-        <asp:Timer ID="Timer1" runat="server" Interval="60000" OnTick="Timer1_Tick">
-        </asp:Timer>
-    </div>
-        <style>
-        /* General Styles */
-        /*body {
-            font-family: Arial, sans-serif;
-            background-color: #ddd;
+    
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+        <Scripts>
+            <asp:ScriptReference Path="~/Scripts/tooltip.js" />
+        </Scripts>
+    </asp:ScriptManager>
+    
+    <asp:Timer ID="Timer1" runat="server" Interval="60000" OnTick="Timer1_Tick">
+    </asp:Timer>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+    <style>
+        /* =============================================
+           Layout Full Width
+        ============================================= */
+        body {
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+        }
+
+        /* =============================================
+           Login Compacto - UMA ÚNICA LINHA HORIZONTAL
+        ============================================= */
+        .login-compact {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            padding: 0.5rem 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }*/
+        }
 
-        /*body {
-            display: flex;
-            justify-content: center;
+        .login-compact table {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-compact label {
+            color: white;
+            font-weight: 500;
+            font-size: 0.875rem;
+            margin-right: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .login-compact .form-control {
+            height: 32px;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+            font-size: 0.875rem;
+            width: 150px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .login-compact .form-control:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 0.2rem rgba(96, 165, 250, 0.25);
+        }
+
+        .login-compact .btn-light {
+            height: 32px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            padding: 0 1.25rem;
+            border: none;
+            background: white;
+            color: #1e40af;
+            vertical-align: middle;
+        }
+
+        .login-compact .btn-light:hover {
+            background: #f1f5f9;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .login-compact .form-check {
+            display: inline-flex;
             align-items: center;
-        }*/
+            margin: 0;
+            vertical-align: middle;
+        }
 
+        .login-compact .form-check-input {
+            cursor: pointer;
+            margin-top: 0;
+            margin-right: 0.25rem;
+            vertical-align: middle;
+        }
+
+        .login-compact .form-check-label {
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 400;
+            margin-left: 0.25rem;
+            cursor: pointer;
+        }
+
+        .login-compact a {
+            color: #fef3c7;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            vertical-align: middle;
+        }
+
+        .login-compact a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .login-compact .text-danger {
+            color: #fecaca !important;
+            font-size: 0.75rem;
+            margin-left: 0.25rem;
+        }
+
+        .login-compact .login-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: nowrap;
+        }
+
+        .login-compact .login-field {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* =============================================
+           Dashboard de Recursos
+        ============================================= */
         .container {
             display: flex;
             flex-direction: column;
-            max-width: 1024px;
+            max-width: 1200px;
             width: 100%;
             margin: auto;
+            padding: 0 1rem;
         }
 
-        /* Each row contains category + blocks */
         .row {
             display: grid;
             grid-template-columns: 60px auto;
@@ -50,15 +160,11 @@
             padding: 5px;
         }
 
-        /* Fixed Category Column */
         .category {
-            /*background-color: #777;*/
             color: black;
             font-weight: bold;
             font-size: 10px;
-            /*padding: 5px;*/
             text-align: center;
-            /*border: none;*/
             display: flex;
             align-items: center;
             justify-content: center;
@@ -72,7 +178,6 @@
             height: 24px;
         }
 
-        /* Blocks Grid */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -96,41 +201,33 @@
             background: white;
         }
 
-        /* Two-Line Text */
         .block span {
             display: block;
             font-size: 14px;
             font-weight: normal;
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-family: 'Inter', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             opacity: 1.0;
         }
 
-        /* Hover Effect
-        .block:hover {
-            transform: scale(1.05);
-            filter: brightness(90%);
-        }*/
-
         /* Category Colors */
-        .lab { background-color: #97c7a657;}
-        .notebook { background-color: #6e90b057;}
-        .cabo-hdmi { background-color: #e1c48e57;}
-        .cabo-vga { background-color: #df9c7c57;}
-        .auditorio { background-color: #d27c6a57;}
-        .speaker { background-color: #b65c4657;}
+        .lab { background-color: #97c7a657; }
+        .notebook { background-color: #6e90b057; }
+        .cabo-hdmi { background-color: #e1c48e57; }
+        .cabo-vga { background-color: #df9c7c57; }
+        .auditorio { background-color: #d27c6a57; }
+        .speaker { background-color: #b65c4657; }
 
-        .emusoedisp { border-color: #ffd800ff; border: 5px solid #27b91c; color: black}
-        .emusoereserv { border-color: #ff0000ef; border: 5px solid #ff0000a9; color: black}
-        .dispereserv { border-color: #fff79e; border: 5px solid #ffd800ff; color: black}
+        .emusoedisp { border: 5px solid #27b91c; color: black; }
+        .emusoereserv { border: 5px solid #ff0000a9; color: black; }
+        .dispereserv { border: 5px solid #ffd800ff; color: black; }
 
-        .emusoedisp-legenda { background-color: #27b91c }
-        .emusoereserv-legenda { background-color: #ff0000a9 }
-        .dispereserv-legenda { background-color: #ffd800ff }
+        .emusoedisp-legenda { background-color: #27b91c; }
+        .emusoereserv-legenda { background-color: #ff0000a9; }
+        .dispereserv-legenda { background-color: #ffd800ff; }
 
-        .retirado { color: red }
-        .disponivel { color: black }
-
-        .recurso { color: black}
+        .retirado { color: red; }
+        .disponivel { color: black; }
+        .recurso { color: black; }
 
         .legend {
             display: flex;
@@ -138,8 +235,7 @@
             gap: 20px;
             margin-top: 20px;
             padding: 10px;
-            /*background: #f8f8f8;
-            border-radius: 8px;*/
+            flex-wrap: wrap;
         }
 
         .legend-item {
@@ -154,8 +250,6 @@
             border-radius: 4px;
             border: 1px solid #333;
         }
-        
-        /**/
 
         .block {
             position: relative;
@@ -173,19 +267,19 @@
             padding: 5px 10px;
             border-radius: 5px;
             font-size: 14px;
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-family: 'Inter', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             line-height: 19px;
             white-space: pre-line;
             width: max-content;
             max-width: 450px;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.1s; /* ease-in-out; */
+            transition: opacity 0.1s;
         }
 
         .block:hover .tooltip,
         .block.active .tooltip,
-        tooltip.visible {
+        .tooltip.visible {
             opacity: 1;
             visibility: visible;
         }
@@ -194,10 +288,8 @@
             transform: translateX(-70%);
         }
 
-        /**/
-
         /* Responsive Adjustments */
-        @media (max-width: 700px) {
+        @media (max-width: 768px) {
             .row {
                 grid-template-columns: 100px auto;
             }
@@ -205,79 +297,151 @@
                 font-size: 12px;
                 padding: 8px;
             }
+            .login-compact .login-row {
+                flex-wrap: wrap;
+            }
         }
     </style>
 
-    <table style="width: 100%">
-        <tr>
-            <td align="center" class="ms-toolbar" style="text-align: center;" valign="top">
-                <div align="center">
-                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                        <ContentTemplate>
-                            <asp:Login ID="loginEntrada" runat="server" CssClass="ms-toolbar" FailureText="Usuário inválido ou senha inválida."
-                                Font-Bold="False" LoginButtonText="Entrar" PasswordLabelText="Senha:" PasswordRequiredErrorMessage="Senha não pode ser nula."
-                                RememberMeText="Lembrar de mim da próxima vez." UserNameLabelText="Usuário:"
-                                UserNameRequiredErrorMessage="Informe usuário." Width="862px" DestinationPageUrl="~/Default/SelecionarCalendario2.aspx"
-                                OnLoginError="loginEntrada_LoginError" TitleText=""
-                                AccessKey="M" BorderPadding="3" EnableTheming="True" Orientation="Horizontal"
-                                OnAuthenticate="loginEntrada_Authenticate" PasswordRecoveryIconUrl="~/_layouts/images/attention16by16.gif" PasswordRecoveryUrl="~/Default/ResetSenha.aspx" PasswordRecoveryText="Esqueci">
-                                <TitleTextStyle CssClass="ms-toolbar" Font-Bold="False" Font-Names="Verdana" Font-Size="12px" />
-                                <CheckBoxStyle CssClass="ms-toolbar" />
-                                <HyperLinkStyle CssClass="ms-toolbar" Font-Bold="True" ForeColor="Red" />
-                                <InstructionTextStyle CssClass="ms-toolbar" />
-                                <TextBoxStyle CssClass="ms-toolbar" Width="200px" />
-                                <LoginButtonStyle CssClass="ms-toolbar" />
-                                <LabelStyle CssClass="ms-toolbar" />
-                            </asp:Login>
-                        </ContentTemplate>
-                    </asp:UpdatePanel>
-                </div>
-            </td>
-        </tr>
-    </table>
+    <!-- ═══════════════════════════════════════
+         LOGIN COMPACTO - UMA LINHA HORIZONTAL
+    ═══════════════════════════════════════ -->
+    <div class="login-compact">
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+            <ContentTemplate>
+                <asp:Login ID="loginEntrada" runat="server" 
+                    FailureText="Usuário inválido ou senha inválida."
+                    LoginButtonText="Entrar" 
+                    PasswordLabelText="Senha:" 
+                    PasswordRequiredErrorMessage="*"
+                    RememberMeText="Lembrar-me" 
+                    UserNameLabelText="Usuário:"
+                    UserNameRequiredErrorMessage="*" 
+                    DestinationPageUrl="~/Default/SelecionarCalendario2.aspx"
+                    OnLoginError="loginEntrada_LoginError" 
+                    TitleText=""
+                    AccessKey="M" 
+                    Orientation="Horizontal"
+                    OnAuthenticate="loginEntrada_Authenticate" 
+                    PasswordRecoveryUrl="~/Default/ResetSenha.aspx" 
+                    PasswordRecoveryText="Esqueci"
+                    DisplayRememberMe="true">
+                    
+                    <LayoutTemplate>
+                        <div class="login-row">
+                            <!-- Usuário -->
+                            <div class="login-field">
+                                <label for="UserName">Usuário:</label>
+                                <asp:TextBox ID="UserName" runat="server" CssClass="form-control" />
+                                <asp:RequiredFieldValidator ID="UserNameRequired" runat="server" 
+                                    ControlToValidate="UserName" 
+                                    ErrorMessage="*" 
+                                    ValidationGroup="loginEntrada"
+                                    CssClass="text-danger">
+                                </asp:RequiredFieldValidator>
+                            </div>
+
+                            <!-- Senha -->
+                            <div class="login-field">
+                                <label for="Password">Senha:</label>
+                                <asp:TextBox ID="Password" runat="server" TextMode="Password" CssClass="form-control" />
+                                <asp:RequiredFieldValidator ID="PasswordRequired" runat="server" 
+                                    ControlToValidate="Password" 
+                                    ErrorMessage="*" 
+                                    ValidationGroup="loginEntrada"
+                                    CssClass="text-danger">
+                                </asp:RequiredFieldValidator>
+                            </div>
+
+                            <!-- Botão Entrar -->
+                            <asp:Button ID="LoginButton" runat="server" CommandName="Login" 
+                                Text="Entrar" 
+                                ValidationGroup="loginEntrada"
+                                CssClass="btn btn-light" />
+
+                            <!-- Lembrar-me -->
+                            <div class="form-check">
+                                <asp:CheckBox ID="RememberMe" runat="server" CssClass="form-check-input" />
+                                <label class="form-check-label" for="RememberMe">
+                                    Lembrar-me
+                                </label>
+                            </div>
+
+                            <!-- Link Esqueci -->
+<%--                            <asp:HyperLink ID="PasswordRecoveryLink" runat="server" 
+                                NavigateUrl="~/Default/ResetSenha.aspx">
+                                <i class="bi bi-shield-lock"></i> Esqueci
+                            </asp:HyperLink>--%>
+
+                            <!-- Mensagem de erro inline -->
+                            <asp:Literal ID="FailureText" runat="server" EnableViewState="False"></asp:Literal>
+                        </div>
+                    </LayoutTemplate>
+                </asp:Login>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         DATA E HORA + DASHBOARD
+    ═══════════════════════════════════════ -->
     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
         <ContentTemplate>
-            <div align="center">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="lblDataHora" runat="server" CssClass="ms-blogrss"></asp:Label>
+            <div class="text-center my-3">
+                <asp:Label ID="lblDataHora" runat="server" CssClass="text-muted fw-semibold"></asp:Label>
             </div>
-            <br />
 
-<div class="container" runat="server" id="container">
-    
-</div>
-<div class="legend">
-    <div class="legend-item">
-        <div class="legend-color emusoereserv-legenda"></div>
-        <span>Reservado agora e no próximo horário</span>
-    </div>
-    <div class="legend-item">
-        <div class="legend-color dispereserv-legenda"></div>
-        <span>Livre agora e reservado no próximo horário</span>
-    </div>
-    <div class="legend-item">
-        <div class="legend-color emusoedisp-legenda"></div>
-        <span>Reservado agora e livre no próximo horário</span>
-    </div>
-</div>
+            <!-- Dashboard de Recursos -->
+            <div class="container" runat="server" id="container">
+                <!-- Conteúdo dinâmico gerado pelo code-behind -->
+            </div>
+
+            <!-- Legenda -->
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color emusoereserv-legenda"></div>
+                    <span>Reservado agora e no próximo horário</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color dispereserv-legenda"></div>
+                    <span>Livre agora e reservado no próximo horário</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color emusoedisp-legenda"></div>
+                    <span>Reservado agora e livre no próximo horário</span>
+                </div>
+            </div>
         </ContentTemplate>
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="Timer1" EventName="Tick" />
         </Triggers>
     </asp:UpdatePanel>
-    <br />
-    <!--meta name="viewport" content="width=device-width, initial-scale=1.0"-->
-    
-    <div align="center">
-        <p style="padding: 4px; margin: 4px; text-align: center">
-            O OpenSARC é um sistema para alocação de recursos computacionais. Além da solicitação
-            de recursos durante o período de planejamento semestral,<br />
-            o sistema permite agendar eventos, consultar datas de avaliações e trocar e transferir
-            recursos durante todo o ano.<br />
-            <br />
-            O OpenSARC é <i>software</i> livre. Caso deseje participar, reclamar ou dar sugestões,
-            visite <a href="https://github.com/mflash/OpenSARC">https://github.com/mflash/OpenSARC</a>.<br />
-            <br />
-            Em especial, aguardamos voluntários interessados em utilizar o sistema como estudo
-            de caso para suas disciplinas de desenvolvimento de <i>software</i>.</p>
+
+    <!-- ═══════════════════════════════════════
+         INFORMAÇÕES DO SISTEMA
+    ═══════════════════════════════════════ -->
+    <div class="container my-4">
+        <div class="text-center">
+            <p class="mb-2">
+                O OpenSARC é um sistema para alocação de recursos computacionais. Além da solicitação
+                de recursos durante o período de planejamento semestral,<br />
+                o sistema permite agendar eventos, consultar datas de avaliações e trocar e transferir
+                recursos durante todo o ano.
+            </p>
+            <p class="mb-2">
+                O OpenSARC é <em>software</em> livre. Caso deseje participar, reclamar ou dar sugestões,
+                visite <a href="https://github.com/mflash/OpenSARC" target="_blank" class="fw-semibold">
+                    https://github.com/mflash/OpenSARC
+                </a>.
+            </p>
+            <p class="text-muted small">
+                Em especial, aguardamos voluntários interessados em utilizar o sistema como estudo
+                de caso para suas disciplinas de desenvolvimento de <em>software</em>.
+            </p>
+        </div>
     </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </asp:Content>

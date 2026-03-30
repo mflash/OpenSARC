@@ -200,7 +200,7 @@
         <a href="../Turmas/CadastroTurma2.aspx" class="nav-link px-4 py-1">
             <i class="bi bi-plus-circle me-2"></i>Cadastrar
         </a>
-        <a href="../Turmas/ListaTurmas.aspx" class="nav-link px-4 py-1">
+        <a href="../Turmas/ListaTurmas2.aspx" class="nav-link px-4 py-1">
             <i class="bi bi-list-ul me-2"></i>Listar
         </a>
         <a href="../Turmas/VerificaTurmas.aspx" class="nav-link px-4 py-1">

@@ -241,7 +241,7 @@
                                 <asp:Label ID="lblRecurso" runat="server"
                                     Text='<%# ((Recurso)Eval("Recurso")).Descricao%>' />
                             </ItemTemplate>
-                            <ItemStyle Width="200px" />
+                            <ItemStyle Width="150px" />
                             <HeaderStyle HorizontalAlign="Left" />
                         </asp:TemplateColumn>
 
@@ -275,13 +275,13 @@
                             <HeaderStyle HorizontalAlign="Left" />
                         </asp:TemplateColumn>
 
-                        <asp:TemplateColumn HeaderText="Curso">
+<%--                        <asp:TemplateColumn HeaderText="Curso">
                             <ItemTemplate>
                                 <asp:Label ID="lblCurso" runat="server" />
                             </ItemTemplate>
                             <ItemStyle Width="150px" />
                             <HeaderStyle HorizontalAlign="Left" />
-                        </asp:TemplateColumn>
+                        </asp:TemplateColumn>--%>
 
                         <asp:TemplateColumn HeaderText="Responsável">
                             <ItemTemplate>

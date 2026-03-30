@@ -520,8 +520,8 @@ public partial class Alocacoes_Default : System.Web.UI.Page
                 //lblTurmaEvento.Text = aloc.Aula.TurmaId.Numero.ToString(); ;
                 if (aloc.Aula.TurmaId.Professor != null)
                     lblResponsavel.Text = aloc.Aula.TurmaId.Professor.Nome;
-                if (aloc.Aula.TurmaId.Curso != null)
-                    lblCurso.Text = aloc.Aula.TurmaId.Curso.Nome;
+//                if (aloc.Aula.TurmaId.Curso != null)
+//                    lblCurso.Text = aloc.Aula.TurmaId.Curso.Nome;
             }
             else
             {

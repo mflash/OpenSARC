@@ -225,6 +225,29 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
             Response.Redirect("~/Docentes/EditarAulaSemestre2.aspx?GUID=" + id);
     }
 
+    protected void grvListaTurmas_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            // Obtém o ID da turma
+            Guid turmaId = (Guid)grvListaTurmas.DataKeys[e.Row.RowIndex].Value;
+            
+            // Encontra o HyperLink
+            HyperLink lnkDisciplina = (HyperLink)e.Row.FindControl("lnkDisciplina");
+            
+            if (lnkDisciplina != null)
+            {
+                // Define a URL baseada no estado da aplicação
+                AppState estado = (AppState)Session["AppState"];
+                
+                if (estado == AppState.Requisicoes)
+                    lnkDisciplina.NavigateUrl = "~/Docentes/EditarAula2.aspx?GUID=" + turmaId;
+                else if (estado == AppState.AtivoSemestre)
+                    lnkDisciplina.NavigateUrl = "~/Docentes/EditarAulaSemestre2.aspx?GUID=" + turmaId;
+            }
+        }
+    }
+
     protected void dgTroca_ItemDataBound(object sender, DataGridItemEventArgs e)
     {
         if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)

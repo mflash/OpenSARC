@@ -184,7 +184,7 @@
                 Width="100%"
                 AllowSorting="True"
                 DataKeyNames="Id"
-                OnRowEditing="grvListaTurmas_RowEditing"
+                OnRowDataBound="grvListaTurmas_RowDataBound"
                 CssClass="table table-bordered table-hover table-sm align-middle"
                 HeaderStyle-CssClass="table-primary fw-semibold"
                 RowStyle-CssClass="align-middle"
@@ -197,9 +197,15 @@
                         <HeaderStyle CssClass="text-center" />
                     </asp:BoundField>
 
-                    <asp:BoundField HeaderText="Disciplina" DataField="Disciplina">
+                    <asp:TemplateField HeaderText="Disciplina">
+                        <ItemTemplate>
+                            <asp:HyperLink ID="lnkDisciplina" runat="server"
+                                Text='<%# Eval("Disciplina") %>'
+                                CssClass="text-decoration-none fw-semibold">
+                            </asp:HyperLink>
+                        </ItemTemplate>
                         <ItemStyle CssClass="text-start" />
-                    </asp:BoundField>
+                    </asp:TemplateField>
 
                     <asp:BoundField HeaderText="Turma" DataField="Numero">
                         <ItemStyle CssClass="text-center" />
@@ -210,24 +216,6 @@
                         <ItemStyle CssClass="text-center" />
                         <HeaderStyle CssClass="text-center" />
                     </asp:BoundField>
-
-                    <asp:TemplateField ShowHeader="False">
-                        <EditItemTemplate>
-                            <asp:LinkButton ID="LinkButton1" runat="server"
-                                CausesValidation="True"
-                                CommandName="Update"
-                                CssClass="btn btn-sm btn-success"
-                                Text="Alterar" />
-                        </EditItemTemplate>
-                        <ItemTemplate>
-                            <asp:LinkButton ID="LinkButton1" runat="server"
-                                CausesValidation="False"
-                                CommandName="Edit"
-                                CssClass="btn btn-sm btn-primary"
-                                Text="Selecionar" />
-                        </ItemTemplate>
-                        <ItemStyle CssClass="text-center" />
-                    </asp:TemplateField>
                 </Columns>
             </asp:GridView>
         </div>

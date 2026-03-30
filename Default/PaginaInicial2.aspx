@@ -1,0 +1,21 @@
+<%@ Page Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" 
+CodeFile="PaginaInicial.aspx.cs" Inherits="Default_PaginaInicial"  %>
+
+<asp:Content ID="Content2" runat="server" ContentPlaceHolderID="cphTitulo">
+
+    
+    <div align="center">
+        <table style="width: 541px">
+            <tr>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <img src="../_layouts/images/ep.png" /></td>
+            </tr>
+            
+        </table>
+        &nbsp;</div>
+
+</asp:Content>

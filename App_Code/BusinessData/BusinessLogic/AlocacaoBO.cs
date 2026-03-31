@@ -235,6 +235,18 @@ namespace BusinessData.BusinessLogic
             }
         }
 
+        public List<Alocacao> GetAlocacoesByDataFull(DateTime data, Calendario cal)
+        {
+            try
+            {
+                return dao.GetAlocacoesByDataFull(data, cal);
+            }
+            catch (DataAccessException ex)
+            {
+                throw ex;
+            }
+        }
+
         public List<Alocacao> GetAlocacoesByData(DateTime data, Calendario cal)
         {
             try

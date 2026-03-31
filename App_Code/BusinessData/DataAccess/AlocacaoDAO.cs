@@ -9,6 +9,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Text;
 using System.Web;
+using System.Windows.Forms;
 
 namespace BusinessData.DataAccess
 {
@@ -668,6 +669,72 @@ namespace BusinessData.DataAccess
             });
             return lista;
         }
+
+        public List<Alocacao> GetAlocacoesByDataFull(DateTime data, Calendario cal)
+        {
+            List<Alocacao> lista = new List<Alocacao>();
+
+            DbCommand cmd = baseDados.GetStoredProcCommand("AlocacaoSelectByDataFull");
+            baseDados.AddInParameter(cmd, "@Data", DbType.DateTime, data);
+
+            RecursosDAO recDAO = new RecursosDAO();
+
+            using (IDataReader leitor = baseDados.ExecuteReader(cmd))
+            {
+                Alocacao aloc;
+
+                while (leitor.Read())
+                {
+                    Aula au = null;
+                    Recurso rec = null;
+                    Evento evento = null;
+
+                    string recursoDescr = leitor.GetString(leitor.GetOrdinal("descricao_recurso"));
+                    char recursoTipo = leitor.GetString(leitor.GetOrdinal("tipo_recurso"))[0];
+                    string recursoAbrev = leitor.GetString(leitor.GetOrdinal("abrev_recurso"));
+
+                    rec = Recurso.NewRecurso(recursoDescr, recursoAbrev, recursoTipo, null, null, true, null);
+                    //                    rec = recDAO.GetRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")));
+
+                    string hora = (string)leitor["Hora"];
+
+                    Guid? aulaId = leitor["AulaId"] as Guid?;
+                    if (aulaId.HasValue) {
+                        string discipNome = leitor.GetString(leitor.GetOrdinal("Disc_Nome"));
+                        Disciplina disc = Disciplina.GetDisciplina(null, 4, discipNome, true, null, null);
+                        int turmaNumero = leitor.GetInt32(leitor.GetOrdinal("turma_numero"));
+                        string nomeProf = leitor.GetString(leitor.GetOrdinal("nome_prof"));
+                        Professor prof = Professor.NewProfessor("x", nomeProf, "x");
+                        Turma turma = Turma.NewTurma(turmaNumero, null, disc, "", prof, null);
+                        string descrAtiv = leitor.GetString(leitor.GetOrdinal("descricao_aula"));
+                        au = Aula.newAula(turma, hora, data, descrAtiv, null);
+                    }
+
+                    Guid? eventoId = leitor["EventoId"] as Guid?;
+                    if (eventoId.HasValue)
+                    {
+                        string descrEv = leitor.GetString(leitor.GetOrdinal("descricao_evento"));
+                        string tituloEv = leitor.GetString(leitor.GetOrdinal("titulo_evento"));
+                        string respEv = leitor.GetString(leitor.GetOrdinal("respons_evento"));
+
+                        evento = Evento.newEvento(null, descrEv, null, respEv, tituloEv, null);
+                    }
+
+                    aloc = new Alocacao(rec, data, hora, au, evento);
+
+                    lista.Add(aloc);
+                }
+            }
+            lista.Sort((a1, a2) =>
+            {
+                int horarioComp = string.Compare(a1.Horario, a2.Horario, StringComparison.Ordinal);
+                if (horarioComp != 0)
+                    return horarioComp;
+                return string.Compare(a1.Recurso.Descricao, a2.Recurso.Descricao);
+            });
+            return lista;
+        }
+
 
         public List<Recurso> GetRecursoAlocadoByEvento(DateTime data, string hora, Guid eventoId)
         {

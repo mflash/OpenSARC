@@ -488,7 +488,7 @@ public partial class _Default : System.Web.UI.Page
         TimeSpan nowTime = now.TimeOfDay; //.Add(TimeSpan.FromMinutes(60));
 
         AlocacaoBO controladorAlocacoes = new AlocacaoBO();
-        List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByData(hoje, (BusinessData.Entities.Calendario)Session["Calendario"]);
+        List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByDataFull(hoje, (BusinessData.Entities.Calendario)Session["Calendario"]);
         //TimeSpan nowTime = DateTime.Now.TimeOfDay;
         //nowTime = nowTime.Add(new TimeSpan(2,0,0)); // para testar com outros horarios
         //nowTime = nowTime.Subtract(new TimeSpan(0,12,0));

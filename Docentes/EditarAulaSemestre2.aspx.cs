@@ -1,5 +1,6 @@
 using BusinessData.BusinessLogic;
 using BusinessData.DataAccess;
+//using BusinessData.Distribuicao.Entities;
 using BusinessData.Entities;
 using Microsoft.Practices.ObjectBuilder2;
 using System;
@@ -8,6 +9,7 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Net.Mail;
 using System.Security;
 using System.Text.RegularExpressions;
@@ -45,6 +47,16 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             idturma = new Guid(Request.QueryString["GUID"]);
             currentTurma = turmaBo.GetTurmaById(idturma);
+
+            // ========== NOVO: Intercepta o carregamento do dropdown ==========
+            string eventTarget = Request["__EVENTTARGET"];
+            string eventArgument = Request["__EVENTARGUMENT"];
+
+            if (!string.IsNullOrEmpty(eventTarget) && eventArgument == "CARREGAR_RECURSOS")
+            {
+                CarregarDropDownSobDemanda(eventTarget);
+                return;
+            }
 
             if (IsPostBack)
                 return;
@@ -217,7 +229,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         return null;
     }
 
-    protected void updateLivres(DropDownList ddlDisponiveis, DateTime dataAtual, String horario)
+    protected void UpdateLivres(DropDownList ddlDisponiveis, DateTime dataAtual, String horario)
     {
         List<Recurso> livres = recursosBO.GetRecursosDisponiveis(dataAtual, horario);
 //        List<Recurso> aloc = recursosBO.GetRecursosAlocados()
@@ -270,6 +282,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     {
         if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
         {
+            var swDataBound = Stopwatch.StartNew();
             DropDownList ddlAtividade = (DropDownList)e.Item.FindControl("ddlAtividade");
             Label lblData = (Label)e.Item.FindControl("lblData");
             TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
@@ -314,8 +327,13 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
             DropDownList ddlDisponiveis = (DropDownList)e.Item.FindControl("ddlDisponiveis");
+            ddlDisponiveis.Items.Clear();
+            ddlDisponiveis.Items.Add(new ListItem("Selecione...", ""));
 
-            updateLivres(ddlDisponiveis, dataAtual, lblHora.Text);            
+            //Stopwatch sw2 = Stopwatch.StartNew();
+            //updateLivres(ddlDisponiveis, dataAtual, lblHora.Text);
+            //sw2.Stop();
+            //Debug.WriteLine("   updateLivres: " + sw2.ElapsedMilliseconds);
 
             ddlAtividade.DataValueField = "Id";
             ddlAtividade.DataTextField = "Descricao";
@@ -408,6 +426,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             categorias.RemoveAt(0);
             argb.RemoveAt(0);
+            swDataBound.Stop();
+            Debug.WriteLine("DataBound aula " + lblAula.Text + " " + swDataBound.ElapsedMilliseconds);
         }
 
     }
@@ -494,7 +514,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Label lblDescData;
         DropDownList ddlAtividade;
         CheckBox cbChanged;
-        ImageButton butConfirm;
+        HtmlGenericControl butConfirm;
         string hora;
         string aux;
         string descricao;
@@ -511,23 +531,17 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         for (int i = 0; i < t.Count; i++)
         {
             cbChanged = (CheckBox)t[i].FindControl("cbChanged");
-            butConfirm = (ImageButton)t[i].FindControl("butConfirm");
-            // Se a linha não foi modificada, pula ela			
-
-            // NAO FUNCIONA!
-            //if(butConfirm.ImageUrl == "~/_layouts/images/STARgray.gif")
-            //	continue;
-
+            butConfirm = (HtmlGenericControl)t[i].FindControl("butConfirm");
+            
             if (!cbChanged.Checked)
                 continue;
             cbChanged.Checked = false;
 
-            // NAO FUNCIONA!
-            //if (!butConfirm.Enabled)
-            //	continue;
-
-            butConfirm.Enabled = false;
-            butConfirm.ImageUrl = "~/_layouts/images/STARgray.gif";
+            // Remove a classe 'active' do badge
+            if (butConfirm != null)
+            {
+                butConfirm.Attributes["class"] = "confirm-badge saved";
+            }
 
             totalLinhas++;
 
@@ -577,7 +591,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         //salvar.Enabled = false;
 
         ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
-                @"releaseDirtyFlag();", true);
+                @"releaseDirtyFlag(); resetConfirmBadges();", true);
     }
 
     // Salva os dados de todas as aulas modificadas
@@ -640,7 +654,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             dr["Recursos"] = aux;
 
-            dr["CorDaData"] = item.BackColor.Name;
+            dr["CorDaData"] = item.BackColor.ToString();
             tabela.Rows.Add(dr);
         }
         Session["DownHtml"] = tabela;
@@ -774,7 +788,21 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     // Callback do dropdownlist de seleção: aloca um recurso e atualiza os componentes na tela
     protected void ddlDisponiveis_SelectedIndexChanged(object sender, EventArgs e)
     {
+        DropDownList ddlDisponiveis = (DropDownList)sender;
+        DataGridItem parent = (DataGridItem)ddlDisponiveis.Parent.Parent;
+        string recString = this.hdnRecursoSelecionado.Value;
+        if (string.IsNullOrEmpty(recString) || recString == Guid.Empty.ToString())
+            return;
+        string text1 = ((Label)parent.FindControl("lblData")).Text;
+        string text2 = ((Label)parent.FindControl("lblHora")).Text;
+        string text3 = ((Label)parent.FindControl("lblAulaId")).Text;
+        this.alocar(recString, text1, text2, text3);
+        this.UpdateLivres(ddlDisponiveis, Convert.ToDateTime(text1), text2);
+        this.AtualizaComponentes(parent, text1, text2, text3);
+        this.hdnRecursoSelecionado.Value = "";
+        //this.AtualizaTodaGrade();
         //FIXME: tratar possíveis problemas de conexão com o servidor e solicitação de recurso indisponível.
+        /*
         DropDownList ddlDisponiveis = (DropDownList)sender;
         string recString = ddlDisponiveis.SelectedValue;
 
@@ -808,6 +836,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         // E atualiza o BD com as alteracoes na grade
         AtualizaTodaGrade();
+        */
     }
 
 
@@ -886,7 +915,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         // Varre o checkbox list do fim para o início,
         // e remove todos os recursos selecionados (da tela e do BD)
-        List<Recurso> listaRecLib = new List<Recurso>();
+        //List<Recurso> listaRecLib = new List<Recurso>();
         for (int r = cbList.Items.Count - 1; r >= 0; r--)
         {
             ListItem recurso = cbList.Items[r];
@@ -898,8 +927,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 alocBO.UpdateAlocacao(aloc);
                 cbList.Items.RemoveAt(r);
                 // TODO: melhorar isso - só envia email se forem recursos com a palavra "lab" em algum lugar
-                if (rec.Categoria.Descricao.ToLower().Contains("lab"))
-                    listaRecLib.Add(rec);
+                //if (rec.Categoria.Descricao.ToLower().Contains("lab"))
+                //    listaRecLib.Add(rec);
             }
         }
 
@@ -912,7 +941,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         }
 
         // Recria o dropdownlist de recursos disponíveis
-        updateLivres(ddlDisponiveis, data, horario);
+        UpdateLivres(ddlDisponiveis, data, horario);
 
         AtualizaTodaGrade();
         //if(listaRecLib.Count > 0)
@@ -935,5 +964,90 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         }
         SmtpClient client = new SmtpClient();
         client.Send(email);
+    }
+
+    // Carregamento sob demanda dos dropdowns de recursos
+    private void CarregarDropDownSobDemanda(string idControle)
+    {
+        // Obtem a linha da grade correspondente
+        DataGridItem linha = null;
+        DropDownList ddlDisp = null;
+        foreach (DataGridItem item in dgAulas.Items)
+        {
+            ddlDisp = (DropDownList)item.FindControl("ddlDisponiveis");
+            string clientId = ddlDisp.ClientID.Replace('_', '$');
+            if (ddlDisp != null && clientId == idControle)
+            {
+                linha = item;
+                break;
+            }
+        }
+        if (linha == null)
+            return;
+
+        // Carrega dados da aula
+        Label lblData = (Label)linha.FindControl("lblData");
+        Label lblHora = (Label)linha.FindControl("lblHora");
+        //DropDownList ddlDisponiveis = (DropDownList)linha.FindControl("ddlDisponiveis");
+
+        DateTime data = Convert.ToDateTime(lblData.Text);
+        string horario = lblHora.Text;
+
+        // Atualiza o dropdown de recursos disponíveis
+        UpdateLivres(ddlDisp, data, horario);
+    }
+
+    [System.Web.Services.WebMethod]
+    public static List<RecursoItem> ObterRecursosDisponiveis(string data, string hora, string note)
+    {
+        try
+        {
+            List<Recurso> recursosDisponiveis = new RecursosBO().GetRecursosDisponiveis(DateTime.Parse(data), hora);
+            Recurso recNote = (Recurso)null;
+            bool flag = note == "N";
+            List<Recurso> source;
+            if (flag)
+            {
+                List<Recurso> recursoList = new List<Recurso>();
+                foreach (Recurso rec in recursosDisponiveis)
+                {
+                    if (rec.Tipo != 'L' && rec.Tipo != 'D' && !rec.Descricao.StartsWith("LAPRO"))
+                        recursoList.Add(rec);
+                    if (rec.Descricao.StartsWith("Retirar"))
+                        recNote = rec;
+                }
+                source = recursoList;
+            }
+            else
+            {
+                List<Recurso> recursoList = new List<Recurso>();
+                foreach (Recurso rec in recursosDisponiveis)
+                {
+                    if (!rec.Descricao.StartsWith("Retirar") && !rec.Abrev.Trim().Equals("301") && !rec.Abrev.Trim().Equals("310") && !rec.Abrev.Trim().Equals("410"))
+                        recursoList.Add(rec);
+                }
+                source = recursoList;
+            }
+            source.Sort();
+            if (flag && recNote != null)
+                source.Insert(1, recNote);
+            return source.Select<Recurso, Docentes_EditarAula.RecursoItem>((System.Func<Recurso, Docentes_EditarAula.RecursoItem>)(r => new Docentes_EditarAula.RecursoItem()
+            {
+                Id = r.Id.ToString(),
+                Descricao = r.Descricao
+            })).ToList<Docentes_EditarAula.RecursoItem>();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Erro ao obter recursos: " + ex.Message);
+            return new List<RecursoItem>();
+        }
+    }
+
+    // Classe auxiliar para serialização JSON
+    public class RecursoItem
+    {
+        public string Id { get; set; }
+        public string Descricao { get; set; }
     }
 }

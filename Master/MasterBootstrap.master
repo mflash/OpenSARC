@@ -148,11 +148,11 @@
         .sarc-wrapper {
             display: flex;
             min-height: calc(100vh - 52px - 40px);
+            position: relative;
         }
 
         /* =============================================
-
-           Sidebar
+           Sidebar - FIXADA NO TOPO
         ============================================= */
         .sarc-sidebar {
             width: 210px;
@@ -162,6 +162,29 @@
             padding: 1rem 0;
             display: flex;
             flex-direction: column;
+            position: sticky;
+            top: 52px;
+            height: calc(100vh - 52px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Estilização da scrollbar da sidebar */
+        .sarc-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sarc-sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sarc-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .sarc-sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .tiny-text {

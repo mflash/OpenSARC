@@ -3,7 +3,7 @@
     Title="Sistema de Alocação de Recursos Computacionais - FACIN" %>
 
 <%@ Register Src="../UserControls/SelecionaCalendario.ascx" TagName="SelecionaCalendario" TagPrefix="uc2" %>
-<%@ Register Src="../Default/Aguarde.ascx" TagName="Aguarde" TagPrefix="uc1" %>
+<%@ Register Src="../UserControls/ModernProgress.ascx" TagName="ModernProgress" TagPrefix="uc" %>
 
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphTitulo">
 
@@ -14,10 +14,7 @@
 
             <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel1">
                 <ProgressTemplate>
-                    <div id="progressBackgroundFilter"></div>
-                    <div id="processMessage">
-                        <uc1:Aguarde ID="Aguarde1" runat="server" />
-                    </div>
+                    <uc:ModernProgress ID="ModernProgress1" runat="server" />
                 </ProgressTemplate>
             </asp:UpdateProgress>
 

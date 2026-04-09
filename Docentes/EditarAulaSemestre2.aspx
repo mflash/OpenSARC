@@ -7,8 +7,8 @@
     enableeventvalidation="false"
     title="Sistema de Alocação de Recursos Computacionais - FACIN" %>
 
-<%@ Register Src="../Default/Aguarde.ascx" TagName="Aguarde" TagPrefix="uc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<%@ Register Src="../UserControls/ModernProgress.ascx" TagName="ModernProgress" TagPrefix="uc" %>
 <%@ Import Namespace="BusinessData.Util" %>
 
 <asp:Content ID="Content2" runat="server" ContentPlaceHolderID="cphTitulo">
@@ -370,22 +370,9 @@
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
 
-            <asp:UpdateProgress ID="UpdateProgress2" runat="server">
+            <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="UpdatePanel1">
                 <ProgressTemplate>
-                    <div id="modernProgressOverlay"></div>
-                    <div id="modernProgressMessage">
-                        <div class="modern-spinner-container">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Carregando...</span>
-                            </div>
-                            <div class="mt-3 fw-semibold text-primary">
-                                Processando...
-                            </div>
-                            <div class="mt-1 text-muted small">
-                                Por favor, aguarde
-                            </div>
-                        </div>
-                    </div>
+                    <uc:ModernProgress ID="ModernProgress1" runat="server" />
                 </ProgressTemplate>
             </asp:UpdateProgress>
 

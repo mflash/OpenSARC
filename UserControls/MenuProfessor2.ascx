@@ -49,7 +49,7 @@
             </span>
             <ul class="nav flex-column ms-1 mt-1">
                 <li class="nav-item">
-                    <a href="../Eventos/Default.aspx"
+                    <a href="../Eventos/Default2.aspx"
                        class="nav-link sarc-nav-link py-1 px-2">
                         <i class="bi bi-plus-circle me-1"></i>Cadastrar
                     </a>
@@ -57,13 +57,7 @@
                 <li class="nav-item">
                     <a href="../Eventos/ListaEventos2.aspx"
                        class="nav-link sarc-nav-link py-1 px-2">
-                        <i class="bi bi-list-ul me-1"></i>Listar Todos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="../Eventos/ListaEventosFuturos2.aspx"
-                       class="nav-link sarc-nav-link py-1 px-2">
-                        <i class="bi bi-calendar-check me-1"></i>Listar Futuros
+                        <i class="bi bi-list-ul me-1"></i>Listar
                     </a>
                 </li>
             </ul>

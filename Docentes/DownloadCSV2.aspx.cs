@@ -81,7 +81,7 @@ public partial class Docentes_DownloadCSV2 : System.Web.UI.Page
                 {
                     case "Aula":
                     case "Ensino Remoto":
-                        tipoAula = "0"; break;
+                        tipoAula = "6"; break;
                     case "Prova": tipoAula = "2"; break;
                     case "Prova de Substituição": tipoAula = "4"; break;
                     case "Evento Acadêmico": tipoAula = "6"; break;

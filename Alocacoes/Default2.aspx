@@ -4,6 +4,7 @@
 
 <%@ Register Src="../Default/Aguarde.ascx" TagName="Aguarde" TagPrefix="uc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<%@ Register Src="../UserControls/ModernProgress.ascx" TagName="ModernProgress" TagPrefix="uc" %>
 <%@ Import Namespace="BusinessData.Entities" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" runat="Server">
@@ -13,12 +14,9 @@
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
 
-            <asp:UpdateProgress ID="UpdateProgress2" runat="server">
+            <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="UpdatePanel1">
                 <ProgressTemplate>
-                    <div id="progressBackgroundFilter"></div>
-                    <div id="processMessage">
-                        <uc1:Aguarde ID="Aguarde1" runat="server" />
-                    </div>
+                    <uc:ModernProgress ID="ModernProgress1" runat="server" />
                 </ProgressTemplate>
             </asp:UpdateProgress>
 
@@ -72,9 +70,9 @@
                             <asp:Label runat="server" ID="lblData" Text="Data" CssClass="form-label mb-0" />
                         </div>
                         <div class="col-auto">
-                            <asp:TextBox ID="txtData" runat="server" CssClass="form-control form-control-sm" Style="width: 150px;" />
-                            <cc1:CalendarExtender ID="txtData_CalendarExtender" runat="server"
-                                Enabled="True" TargetControlID="txtData" />
+                            <input type="date" id="dtData" class="form-control form-control-sm" style="max-width:200px;"
+                                onchange="document.getElementById('<%= txtData.ClientID %>').value = this.value;" />
+                            <asp:HiddenField ID="txtData" runat="server" />
                         </div>
                         <div class="col-auto">
                             <asp:Label ID="lblOpcional" runat="server"
@@ -109,12 +107,10 @@
                             <div class="col-auto">
                                 <label class="form-label mb-0">Recurso</label>
                             </div>
-                            <div class="col-auto" style="position: relative;">
-                                <ajaxToolkit:ComboBox ID="cbRecurso" runat="server"
-                                    AutoCompleteMode="SuggestAppend"
-                                    CssClass="form-control form-control-sm combobox-fix"
-                                    Width="500px"
-                                    DropDownStyle="DropDownList" />
+                            <div class="col-auto">
+                                <asp:DropDownList ID="cbRecurso" runat="server"
+                                    CssClass="tom-select"
+                                    Style="width: 500px;" />
                             </div>
                         </div>
                     </asp:Panel>
@@ -157,12 +153,10 @@
                             <div class="col-auto">
                                 <label class="form-label mb-0">Professor</label>
                             </div>
-                            <div class="col-auto" style="position: relative;">
-                                <ajaxToolkit:ComboBox ID="cbProfessor" runat="server"
-                                    AutoCompleteMode="SuggestAppend"
-                                    CssClass="form-control form-control-sm combobox-fix"
-                                    Width="500px"
-                                    DropDownStyle="DropDownList" />
+                            <div class="col-auto">
+                                <asp:DropDownList ID="cbProfessor" runat="server"
+                                    CssClass="tom-select"
+                                    Style="width: 500px;" />
                             </div>
                         </div>
                     </asp:Panel>
@@ -190,12 +184,10 @@
                             <div class="col-auto">
                                 <label class="form-label mb-0">Turma</label>
                             </div>
-                            <div class="col-auto" style="position: relative;">
-                                <ajaxToolkit:ComboBox ID="cbTurma" runat="server"
-                                    AutoCompleteMode="SuggestAppend"
-                                    CssClass="form-control form-control-sm combobox-fix"
-                                    Width="500px"
-                                    DropDownStyle="DropDownList" />
+                            <div class="col-auto">
+                                <asp:DropDownList ID="cbTurma" runat="server"
+                                    CssClass="tom-select"
+                                    Style="width: 500px;" />
                             </div>
                         </div>
                     </asp:Panel>
@@ -446,7 +438,85 @@
                 max-width: 100vw !important;
             }
         }
+
+        /* ═══════════════════════════════════════
+           LOADING OVERLAY MODERNO
+        ═══════════════════════════════════════ */
+        #modernProgressOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9998;
+            animation: fadeIn 0.2s ease-in;
+        }
+
+        #modernProgressMessage {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .modern-spinner-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2.5rem 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            min-width: 280px;
+        }
+
+        .modern-spinner-container .spinner-border {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-width: 0.35rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translate(-50%, -45%); }
+            to   { opacity: 1; transform: translate(-50%, -50%); }
+        }
     </style>
+
+    <script type="text/javascript">
+        function destruirTomSelect() {
+            document.querySelectorAll('select.tom-select').forEach(function (el) {
+                if (el.tomselect) {
+                    el.tomselect.destroy();
+                }
+            });
+        }
+
+        function inicializarTomSelect() {
+            document.querySelectorAll('select.tom-select').forEach(function (el) {
+                if (!el.tomselect) {
+                    new TomSelect(el, {
+                        maxOptions: null,
+                        placeholder: 'Digite para buscar...'
+                    });
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', inicializarTomSelect);
+
+        var prm = Sys.WebForms.PageRequestManager.getInstance();
+        // Destrói ANTES do postback para o ASP.NET receber o <select> original
+        prm.add_beginRequest(destruirTomSelect);
+        // Recria APÓS o UpdatePanel atualizar o DOM
+        prm.add_endRequest(inicializarTomSelect);
+    </script>
 
 </asp:Content>
 

@@ -152,9 +152,9 @@ public partial class Alocacoes_Default : System.Web.UI.Page
             //{
 
             Guid recursoId = new Guid(cbRecurso.SelectedValue);
-            if (txtData.Text.Length != 0)
+            if (txtData.Value.Length != 0)
             {
-                DateTime data = DateTime.Parse(txtData.Text);
+                DateTime data = DateTime.Parse(txtData.Value);
                 listaAlocacoes = controladorAlocacoes.GetAlocacoes((BusinessData.Entities.Calendario)Session["Calendario"], data, recursoId);
                 if (listaAlocacoes.Count != 0)
                 {
@@ -348,7 +348,7 @@ public partial class Alocacoes_Default : System.Web.UI.Page
             ProfessoresBO controladorProfessores = new ProfessoresBO();
             Professor prof;
 
-            if (txtData.Text.Length == 0)
+            if (txtData.Value.Length == 0)
             {
                 prof = (Professor)controladorProfessores.GetPessoaById(new Guid(cbProfessor.SelectedValue));
                 listaAlocacoes = controladorAlocacoes.GetAlocacoesSemData((BusinessData.Entities.Calendario)Session["Calendario"], prof);
@@ -370,7 +370,7 @@ public partial class Alocacoes_Default : System.Web.UI.Page
             else
             {
                 prof = (Professor)controladorProfessores.GetPessoaById(new Guid(cbProfessor.SelectedValue));
-                listaAlocacoes = controladorAlocacoes.GetAlocacoes((BusinessData.Entities.Calendario)Session["Calendario"], DateTime.Parse(txtData.Text), prof);
+                listaAlocacoes = controladorAlocacoes.GetAlocacoes((BusinessData.Entities.Calendario)Session["Calendario"], DateTime.Parse(txtData.Value), prof);
                 if (listaAlocacoes.Count != 0)
                 {
                     dgAlocacoes.DataSource = listaAlocacoes;
@@ -408,7 +408,7 @@ public partial class Alocacoes_Default : System.Web.UI.Page
             Secretario secretario;
             if (ddlSecretario.SelectedIndex != 0)
             {
-                if (txtData.Text.Length == 0)
+                if (txtData.Value.Length == 0)
                 {
                     secretario = (Secretario)controladorSecretarios.GetPessoaById(new Guid(ddlSecretario.SelectedValue));
                     listaAlocacoes = controladorAlocacoes.GetAlocacoesSemData((BusinessData.Entities.Calendario)Session["Calendario"], secretario);
@@ -430,7 +430,7 @@ public partial class Alocacoes_Default : System.Web.UI.Page
                 else
                 {
                     secretario = (Secretario)controladorSecretarios.GetPessoaById(new Guid(ddlSecretario.SelectedValue));
-                    listaAlocacoes = controladorAlocacoes.GetAlocacoes((BusinessData.Entities.Calendario)Session["Calendario"], DateTime.Parse(txtData.Text), secretario);
+                    listaAlocacoes = controladorAlocacoes.GetAlocacoes((BusinessData.Entities.Calendario)Session["Calendario"], DateTime.Parse(txtData.Value), secretario);
                     if (listaAlocacoes.Count != 0)
                     {
                         dgAlocacoes.DataSource = listaAlocacoes;
@@ -469,9 +469,9 @@ public partial class Alocacoes_Default : System.Web.UI.Page
     {
         try
         {
-            if (txtData.Text.Length != 0)
+            if (txtData.Value.Length != 0)
             {
-                List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByData(DateTime.Parse(txtData.Text), (BusinessData.Entities.Calendario)Session["Calendario"]);
+                List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByData(DateTime.Parse(txtData.Value), (BusinessData.Entities.Calendario)Session["Calendario"]);
                 if (listaAlocacoes.Count != 0)
                 {
                     dgAlocacoes.DataSource = listaAlocacoes;
@@ -533,7 +533,7 @@ public partial class Alocacoes_Default : System.Web.UI.Page
 
     private void ResetaComponentes()
     {
-        txtData.Text = "";
+        txtData.Value = "";
         lblStatus.Text = "";
         lblStatus.Visible = true;
         lblData.Visible = true;

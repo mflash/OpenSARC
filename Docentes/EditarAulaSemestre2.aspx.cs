@@ -414,6 +414,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 }
             }
             string corHtml = ColorTranslator.ToHtml(corFinal);
+            lblCorDaData.Text = corHtml;
             foreach (TableCell cell in e.Item.Cells)
             {
                 cell.Attributes["style"] = string.Format("background-color: {0} !important;", corHtml);
@@ -645,6 +646,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
             dr["Atividade"] = ddlAtividade.SelectedItem.Text;
 
+            lblAux = (Label)item.FindControl("lblCorDaData");
+
             cbRecursos = (CheckBoxList)item.FindControl("cbRecursos");
             string aux = "";
             foreach (ListItem rec in cbRecursos.Items)
@@ -654,7 +657,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             dr["Recursos"] = aux;
 
-            dr["CorDaData"] = item.BackColor.ToString();
+            dr["CorDaData"] = lblAux.Text;
             tabela.Rows.Add(dr);
         }
         Session["DownHtml"] = tabela;

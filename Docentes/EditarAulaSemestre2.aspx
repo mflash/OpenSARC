@@ -588,6 +588,7 @@
                             <EditItemTemplate>
                                 <asp:TextBox ID="TextBox5" runat="server" CssClass="form-control form-control-sm" />
                             </EditItemTemplate>
+                            <ItemStyle Width="250px" />
                         </asp:TemplateColumn>
 
                         <asp:TemplateColumn HeaderText="Atividade">

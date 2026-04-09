@@ -34,19 +34,46 @@ public partial class Eventos_ListaEventos : System.Web.UI.Page
         {
             cal = (Calendario)Session["Calendario"];
             IList<Evento> listaEventos = eventoBO.GetEventosByCal(cal.Id);
+
+            if (ckbApenasEventosFuturos.Checked)
+            {
+                var listaFiltrada = new List<Evento>();
+                foreach (Evento evento in listaEventos)
+                {
+                    IList<HorariosEvento> horarios = horariosEventoBO.GetHorariosEventosById(evento.EventoId);
+                    if (horarios.Count > 0 && !jaOcorreu(horarios))
+                        listaFiltrada.Add(evento);
+                }
+                listaEventos = listaFiltrada;
+            }
+
             grvListaEventos.DataSource = listaEventos;
             grvListaEventos.DataBind();
             if (listaEventos.Count == 0)
             {
-                lblStatus.Text = "Nenhum evento cadastrado.";
+                lblStatus.Text = ckbApenasEventosFuturos.Checked
+                    ? "Nenhum evento futuro cadastrado."
+                    : "Nenhum evento cadastrado.";
                 lblStatus.Visible = true;
                 btnExportarHtml.Visible = false;
+            }
+            else
+            {
+                lblStatus.Visible = false;
+                btnExportarHtml.Visible = true;
             }
         }
         catch (BusinessData.DataAccess.DataAccessException ex)
         {
             Response.Redirect("~/Default/Erro.aspx?Erro=" + ex.Message);
         }
+    }
+
+    // Exibe uma mensagem de aviso no modal Bootstrap
+    private void ExibirAviso(string mensagem)
+    {
+        hdnMensagemAviso.Value = mensagem;
+        lblStatus.Visible = false;
     }
 
     protected void grvListaEventos_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -67,8 +94,7 @@ public partial class Eventos_ListaEventos : System.Web.UI.Page
             }
             else
             {
-                lblStatus.Text = "Evento deve ser excluído pelo seu autor.";
-                lblStatus.Visible = true;
+                ExibirAviso("Evento deve ser excluído pelo seu autor.");
             }
         }
         catch (DataAccessException ex)
@@ -97,14 +123,18 @@ public partial class Eventos_ListaEventos : System.Web.UI.Page
                     Response.Redirect("~/Eventos/EditarEventos.aspx?GUID=" + id.ToString());
                 else
                 {
-                    lblStatus.Text = "Evento não pode ser editado, pois ele já ocorreu ou está ocorrendo.";
-                    lblStatus.Visible = true;
+                    e.Cancel = true;
+                    grvListaEventos.EditIndex = -1;
+                    PopulaListaEventos();
+                    ExibirAviso("Evento não pode ser editado, pois ele já ocorreu ou está ocorrendo.");
                 }
             }
             else
             {
-                lblStatus.Text = "Evento deve ser editado pelo seu autor.";
-                lblStatus.Visible = true;
+                e.Cancel = true;
+                grvListaEventos.EditIndex = -1;
+                PopulaListaEventos();
+                ExibirAviso("Evento deve ser editado pelo seu autor.");
             }
         }
         catch (BusinessData.DataAccess.DataAccessException ex)
@@ -216,5 +246,10 @@ public partial class Eventos_ListaEventos : System.Web.UI.Page
             return false;
         else
             return true;
+    }
+
+    protected void ckbApenasEventosFuturos_CheckedChanged(object sender, EventArgs e)
+    {
+        PopulaListaEventos();
     }
 }

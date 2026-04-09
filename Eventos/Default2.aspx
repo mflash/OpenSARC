@@ -84,40 +84,19 @@
             <asp:Panel ID="Panel1" runat="server">
                 <div class="card shadow-sm border-0 mb-3">
                     <div class="card-body">
-                        
+
                         <!-- Data -->
                         <div class="row mb-3">
                             <label class="col-sm-3 col-form-label fw-semibold">Data</label>
                             <div class="col-sm-9 col-md-6 col-lg-4">
-                                <div class="input-group" style="max-width: 200px;">
-                                    <asp:TextBox ID="txtData" runat="server" 
-                                        CssClass="form-control" 
-                                        placeholder="dd/mm/aaaa"></asp:TextBox>
-                                    <button class="btn btn-outline-secondary" type="button" id="btnCalendario1">
-                                        <i class="bi bi-calendar3"></i>
-                                    </button>
-                                    <asp:ImageButton ID="ibtnAbrirCalendario" runat="server" 
-                                        ImageUrl="~/_layouts/images/CALENDAR.GIF" 
-                                        CausesValidation="False" 
-                                        Style="display: none;" />
-                                </div>
-                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
-                                    ControlToValidate="txtData"
-                                    CssClass="text-danger small" 
+                                <input type="date" id="dtData" class="form-control" style="max-width:200px;"
+                                    onchange="document.getElementById('<%= txtData.ClientID %>').value = this.value;" />
+                                <asp:HiddenField ID="txtData" runat="server" />
+                                <asp:CustomValidator ID="cvData" runat="server"
+                                    ClientValidationFunction="validarData"
+                                    CssClass="text-danger small"
                                     ErrorMessage="Digite uma data de início."
-                                    Display="Dynamic">*</asp:RequiredFieldValidator>
-                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
-                                    ControlToValidate="txtData"
-                                    CssClass="text-danger small" 
-                                    ErrorMessage="Digite uma data no formato válido." 
-                                    ValidationExpression="\d{2}/\d{2}/\d{4}"
-                                    Display="Dynamic">*</asp:RegularExpressionValidator>
-                                <ajaxToolkit:CalendarExtender ID="calextData"
-                                    runat="server"
-                                    TargetControlID="txtData"
-                                    PopupButtonID="ibtnAbrirCalendario"
-                                    Format="dd/MM/yyyy">
-                                </ajaxToolkit:CalendarExtender>
+                                    Display="Dynamic">*</asp:CustomValidator>
                             </div>
                         </div>
 
@@ -128,8 +107,8 @@
                                 <div class="row g-2">
                                     <div class="col-auto">
                                         <label class="form-label small mb-1">Início:</label>
-                                        <asp:DropDownList ID="ddlInicio" runat="server" 
-                                            AutoPostBack="True" 
+                                        <asp:DropDownList ID="ddlInicio" runat="server"
+                                            AutoPostBack="True"
                                             OnSelectedIndexChanged="ddlInicio_SelectedIndexChanged"
                                             CssClass="form-select">
                                             <asp:ListItem>AB</asp:ListItem>
@@ -164,27 +143,26 @@
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label fw-semibold">Recorrência</label>
                         <div class="col-sm-9">
-                            <div class="form-check">
-                                <asp:CheckBox ID="ckbEhRecorrente" runat="server" 
-                                    AutoPostBack="True" 
-                                    Text="Tornar Recorrente" 
-                                    OnCheckedChanged="ckbEhRecorrente_CheckedChanged" 
-                                    CssClass="form-check-input" />
-                            </div>
+                            <label class="d-flex align-items-center gap-2 mb-0 user-select-none" style="cursor:pointer;">
+                                <asp:CheckBox ID="ckbEhRecorrente" runat="server"
+                                    AutoPostBack="True"
+                                    OnCheckedChanged="ckbEhRecorrente_CheckedChanged" />
+                                <span>Tornar Recorrente</span>
+                            </label>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-sm-3"></div>
                         <div class="col-sm-9">
-                            <asp:RadioButtonList ID="RadioButtonList1" runat="server" 
-                                Visible="false" 
-                                OnSelectedIndexChanged="RadioButtonList1_SelectedIndexChanged" 
-                                AutoPostBack="True" 
+                            <asp:RadioButtonList ID="RadioButtonList1" runat="server"
+                                Visible="false"
+                                OnSelectedIndexChanged="RadioButtonList1_SelectedIndexChanged"
+                                AutoPostBack="True"
                                 CssClass="form-check">
-                                <asp:ListItem Value="0">Diário</asp:ListItem>
-                                <asp:ListItem Value="1">Selecionar Dias</asp:ListItem>
-                                <asp:ListItem Value="2">Seleção Manual</asp:ListItem>
+                                <asp:ListItem Value="0">&nbsp;Diário</asp:ListItem>
+                                <asp:ListItem Value="1">&nbsp;Selecionar Dias</asp:ListItem>
+                                <asp:ListItem Value="2">&nbsp;Seleção Manual</asp:ListItem>
                             </asp:RadioButtonList>
                         </div>
                     </div>
@@ -194,14 +172,28 @@
                         <div class="row mb-3">
                             <div class="col-sm-3"></div>
                             <div class="col-sm-9">
-                                <div class="d-flex flex-wrap gap-2">
-                                    <asp:CheckBox ID="seg" runat="server" Text="SEG" CssClass="form-check-input" />
-                                    <asp:CheckBox ID="ter" runat="server" Text="TER" CssClass="form-check-input" />
-                                    <asp:CheckBox ID="qua" runat="server" Text="QUA" CssClass="form-check-input" />
-                                    <asp:CheckBox ID="qui" runat="server" Text="QUI" CssClass="form-check-input" />
-                                    <asp:CheckBox ID="sex" runat="server" Text="SEX" CssClass="form-check-input" />
-                                    <asp:CheckBox ID="sab" runat="server" Text="SAB" CssClass="form-check-input" />
-                                    <asp:CheckBox ID="dom" runat="server" Text="DOM" CssClass="form-check-input" />
+                                <div class="d-flex flex-wrap gap-3">
+                                    <label class="d-flex align-items-center gap-1 mb-0 user-select-none" style="cursor:pointer;">
+                                        <asp:CheckBox ID="seg" runat="server" /><span>SEG</span>
+                                    </label>
+                                    <label class="d-flex align-items-center gap-1 mb-0 user-select-none" style="cursor:pointer;">
+                                        <asp:CheckBox ID="ter" runat="server" /><span>TER</span>
+                                    </label>
+                                    <label class="d-flex align-items-center gap-1 mb-0 user-select-none" style="cursor:pointer;">
+                                        <asp:CheckBox ID="qua" runat="server" /><span>QUA</span>
+                                    </label>
+                                    <label class="d-flex align-items-center gap-1 mb-0 user-select-none" style="cursor:pointer;">
+                                        <asp:CheckBox ID="qui" runat="server" /><span>QUI</span>
+                                    </label>
+                                    <label class="d-flex align-items-center gap-1 mb-0 user-select-none" style="cursor:pointer;">
+                                        <asp:CheckBox ID="sex" runat="server" /><span>SEX</span>
+                                    </label>
+                                    <label class="d-flex align-items-center gap-1 mb-0 user-select-none" style="cursor:pointer;">
+                                        <asp:CheckBox ID="sab" runat="server" /><span>SAB</span>
+                                    </label>
+                                    <label class="d-flex align-items-center gap-1 mb-0 user-select-none" style="cursor:pointer;">
+                                        <asp:CheckBox ID="dom" runat="server" /><span>DOM</span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -212,34 +204,14 @@
                         <div class="row mb-3">
                             <label class="col-sm-3 col-form-label fw-semibold">Data Final</label>
                             <div class="col-sm-9 col-md-6 col-lg-4">
-                                <div class="input-group" style="max-width: 200px;">
-                                    <asp:TextBox ID="txtDataFinal" runat="server" 
-                                        CssClass="form-control" 
-                                        placeholder="dd/mm/aaaa"></asp:TextBox>
-                                    <button class="btn btn-outline-secondary" type="button" id="btnCalendario2">
-                                        <i class="bi bi-calendar3"></i>
-                                    </button>
-                                    <asp:ImageButton ID="ImageButton2" runat="server" 
-                                        ImageUrl="~/_layouts/images/CALENDAR.GIF" 
-                                        CausesValidation="False"
-                                        Style="display: none;" />
-                                </div>
-                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
-                                    ControlToValidate="txtDataFinal"
-                                    CssClass="text-danger small" 
+                                <input type="date" id="dtDataFinal" class="form-control" style="max-width:200px;"
+                                    onchange="document.getElementById('<%= txtDataFinal.ClientID %>').value = this.value;" />
+                                <asp:HiddenField ID="txtDataFinal" runat="server" />
+                                <asp:CustomValidator ID="cvDataFinal" runat="server"
+                                    ClientValidationFunction="validarDataFinal"
+                                    CssClass="text-danger small"
                                     ErrorMessage="Digite uma data de fim."
-                                    Display="Dynamic">*</asp:RequiredFieldValidator>
-                                <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" 
-                                    ControlToValidate="txtDataFinal"
-                                    CssClass="text-danger small" 
-                                    ErrorMessage="Digite a data no formato válido." 
-                                    ValidationExpression="\d{2}/\d{2}/\d{4}"
-                                    Display="Dynamic">*</asp:RegularExpressionValidator>
-                                <ajaxToolkit:CalendarExtender ID="CalendarExtender2" runat="server" 
-                                    TargetControlID="txtDataFinal"
-                                    PopupButtonID="ImageButton2"
-                                    Format="dd/MM/yyyy">
-                                </ajaxToolkit:CalendarExtender>
+                                    Display="Dynamic">*</asp:CustomValidator>
                             </div>
                         </div>
                     </asp:Panel>
@@ -249,35 +221,14 @@
                         <div class="row mb-3">
                             <label class="col-sm-3 col-form-label fw-semibold">Data</label>
                             <div class="col-sm-9 col-md-6 col-lg-4">
-                                <div class="input-group" style="max-width: 200px;">
-                                    <asp:TextBox ID="txtDataFim" runat="server" 
-                                        CssClass="form-control" 
-                                        placeholder="dd/mm/aaaa"></asp:TextBox>
-                                    <button class="btn btn-outline-secondary" type="button" id="btnCalendario3">
-                                        <i class="bi bi-calendar3"></i>
-                                    </button>
-                                    <asp:ImageButton ID="imgbtnDataFim" runat="server" 
-                                        ImageUrl="~/_layouts/images/CALENDAR.GIF" 
-                                        CausesValidation="False"
-                                        Style="display: none;" />
-                                </div>
-                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" 
-                                    ControlToValidate="txtDataFim" 
+                                <input type="date" id="dtDataFim" class="form-control" style="max-width:200px;"
+                                    onchange="document.getElementById('<%= txtDataFim.ClientID %>').value = this.value;" />
+                                <asp:HiddenField ID="txtDataFim" runat="server" />
+                                <asp:CustomValidator ID="cvDataFim" runat="server"
+                                    ClientValidationFunction="validarDataFim"
                                     CssClass="text-danger small"
                                     ErrorMessage="Digite uma data."
-                                    Display="Dynamic">*</asp:RequiredFieldValidator>
-                                <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" 
-                                    ControlToValidate="txtDataFim"
-                                    CssClass="text-danger small" 
-                                    ErrorMessage="Digite a data no formato válido." 
-                                    ValidationExpression="\d{2}/\d{2}/\d{4}"
-                                    Display="Dynamic">*</asp:RegularExpressionValidator>
-                                <ajaxToolkit:CalendarExtender ID="calexDataFim"
-                                    runat="server"
-                                    TargetControlID="txtDataFim"
-                                    PopupButtonID="imgbtnDataFim"
-                                    Format="dd/MM/yyyy">
-                                </ajaxToolkit:CalendarExtender>
+                                    Display="Dynamic">*</asp:CustomValidator>
                             </div>
                         </div>
 
@@ -393,32 +344,15 @@
     </asp:UpdatePanel>
 
     <script type="text/javascript">
-        // Redirecionar cliques dos botões Bootstrap para os ImageButtons ocultos
-        document.addEventListener('DOMContentLoaded', function() {
-            var btn1 = document.getElementById('btnCalendario1');
-            if (btn1) {
-                btn1.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.getElementById('<%=ibtnAbrirCalendario.ClientID%>').click();
-                });
-            }
-
-            var btn2 = document.getElementById('btnCalendario2');
-            if (btn2) {
-                btn2.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.getElementById('<%=ImageButton2.ClientID%>').click();
-                });
-            }
-
-            var btn3 = document.getElementById('btnCalendario3');
-            if (btn3) {
-                btn3.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.getElementById('<%=imgbtnDataFim.ClientID%>').click();
-                });
-            }
-        });
+        function validarData(sender, args) {
+            args.IsValid = document.getElementById('dtData').value.length > 0;
+        }
+        function validarDataFinal(sender, args) {
+            args.IsValid = document.getElementById('dtDataFinal').value.length > 0;
+        }
+        function validarDataFim(sender, args) {
+            args.IsValid = document.getElementById('dtDataFim').value.length > 0;
+        }
     </script>
 
 </asp:Content>

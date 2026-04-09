@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Collections.Generic;
+using System.Globalization;
 using BusinessData.Entities;
 using BusinessData.BusinessLogic;
 using BusinessData.DataAccess;
@@ -20,6 +21,12 @@ public partial class Eventos_Default : System.Web.UI.Page
     private IList<HorariosEvento> listaHorarios = new List<HorariosEvento>();
     private HorariosEventoBO horariosEventoBO = new HorariosEventoBO();
     private EventoBO eventoBO = new EventoBO();
+
+    // type="date" envia o valor no formato yyyy-MM-dd
+    private static DateTime ParseData(string valor)
+    {
+        return DateTime.ParseExact(valor, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+    }
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -36,7 +43,7 @@ public partial class Eventos_Default : System.Web.UI.Page
         int indice = 0;
         for (; indice < horariosPUCRS.Length; indice++)
         {
-            if(horarioInicial.Equals(horariosPUCRS[indice]))
+            if (horarioInicial.Equals(horariosPUCRS[indice]))
                 break;
         }
 
@@ -60,7 +67,7 @@ public partial class Eventos_Default : System.Web.UI.Page
         PopulaDDLHorario();
     }
 
-    private void PopulaDDLHorario() 
+    private void PopulaDDLHorario()
     {
         ddlFim.DataSource = GetHorariosFuturos(ddlInicio.SelectedValue);
         ddlFim.DataBind();
@@ -85,21 +92,21 @@ public partial class Eventos_Default : System.Web.UI.Page
         int index = RadioButtonList1.SelectedIndex;
         switch (index)
         {
-            case 0 :
+            case 0:
                 pnlDias.Visible = false;
                 pnlSelecionarDatas.Visible = true;
                 Panel2.Visible = false;
                 Panel1.Visible = true;
                 break;
 
-            case 1 :
+            case 1:
                 pnlDias.Visible = true;
                 pnlSelecionarDatas.Visible = true;
                 Panel2.Visible = false;
                 Panel1.Visible = true;
                 break;
 
-            case 2 :
+            case 2:
                 pnlDias.Visible = false;
                 pnlSelecionarDatas.Visible = false;
                 Panel2.Visible = true;
@@ -112,7 +119,6 @@ public partial class Eventos_Default : System.Web.UI.Page
     {
         try
         {
-            //Montar o evento
             Calendario cal = (Calendario)Session["Calendario"];
             MembershipUser usr = Membership.GetUser();
             PessoaFactory fabricaPessoas = PessoaFactory.GetInstance();
@@ -128,31 +134,21 @@ public partial class Eventos_Default : System.Web.UI.Page
             {
                 #region cadastra evento diariamente
                 case 0:
-                    //Montar o HorariosEvento
-                    dataAtual = new DateTime();
-                    dataAtual = DateTime.Parse(txtData.Text);
-                    dataFinal = new DateTime();
-                    dataFinal = DateTime.Parse(txtDataFinal.Text);
+                    dataAtual = ParseData(txtData.Value);
+                    dataFinal = ParseData(txtDataFinal.Value);
 
-                    //Valida datas
                     if (dataAtual > dataFinal)
                         lblResultado.Text = "Data final deve ser maior que a inicial!";
-                    
                     else
                     {
-                        //Insere Evento
                         eventoBO.InsereEvento(evento);
-
-                        //Insere HorariosEvento
                         while (dataAtual <= dataFinal)
                         {
                             horariosEvento = HorariosEvento.NewHorariosEvento(dataAtual, evento, ddlInicio.Text, ddlFim.Text);
                             horariosEventoBO.InsereHorariosEvento(horariosEvento);
                             dataAtual = dataAtual.AddDays(1);
                         }
-
-                        //Envia e-mail para a secretaria
-                        dataAtual = DateTime.Parse(txtData.Text);
+                        dataAtual = ParseData(txtData.Value);
                         EnviarEmail(pessoa.Nome, evento.Descricao, dataAtual, dataFinal);
                         lblResultado.Text = "Evento cadastrado com sucesso.";
                         LimpaCampos();
@@ -161,44 +157,32 @@ public partial class Eventos_Default : System.Web.UI.Page
                 #endregion
 
                 #region cadastra evento nos dias escolhidos
-                case 1 :
-                    if ((seg.Checked == false) &&
-                        (ter.Checked == false) &&
-                        (qua.Checked == false) &&
-                        (qui.Checked == false) &&
-                        (sex.Checked == false) &&
-                        (sab.Checked == false) &&
-                        (dom.Checked == false))
+                case 1:
+                    if (!seg.Checked && !ter.Checked && !qua.Checked &&
+                        !qui.Checked && !sex.Checked && !sab.Checked && !dom.Checked)
+                    {
                         lblResultado.Text = "Selecione pelo menos um horário.";
+                    }
                     else
                     {
-
                         IList<HorariosEvento> horarios = new List<HorariosEvento>();
+                        dataAtual = ParseData(txtData.Value);
+                        dataFinal = ParseData(txtDataFinal.Value);
 
-                        //Montar o HorariosEvento
-                        dataAtual = new DateTime();
-                        dataAtual = DateTime.Parse(txtData.Text);
-                        dataFinal = new DateTime();
-                        dataFinal = DateTime.Parse(txtDataFinal.Text);
-
-                        //Valida datas
                         if (dataAtual > dataFinal)
                             lblResultado.Text = "Data final deve ser maior que a inicial!";
-                        
                         else
                         {
-                            //Insere Evento
                             eventoBO.InsereEvento(evento);
-                            //Insere HorariosEvento
                             while (dataAtual <= dataFinal)
                             {
-                                if ((dataAtual.DayOfWeek == DayOfWeek.Monday && seg.Checked == true) ||
-                                    (dataAtual.DayOfWeek == DayOfWeek.Tuesday && ter.Checked == true) ||
-                                    (dataAtual.DayOfWeek == DayOfWeek.Wednesday && qua.Checked == true) ||
-                                    (dataAtual.DayOfWeek == DayOfWeek.Thursday && qui.Checked == true) ||
-                                    (dataAtual.DayOfWeek == DayOfWeek.Friday && sex.Checked == true) ||
-                                    (dataAtual.DayOfWeek == DayOfWeek.Saturday && sab.Checked == true) ||
-                                    (dataAtual.DayOfWeek == DayOfWeek.Sunday && dom.Checked == true))
+                                if ((dataAtual.DayOfWeek == DayOfWeek.Monday && seg.Checked) ||
+                                    (dataAtual.DayOfWeek == DayOfWeek.Tuesday && ter.Checked) ||
+                                    (dataAtual.DayOfWeek == DayOfWeek.Wednesday && qua.Checked) ||
+                                    (dataAtual.DayOfWeek == DayOfWeek.Thursday && qui.Checked) ||
+                                    (dataAtual.DayOfWeek == DayOfWeek.Friday && sex.Checked) ||
+                                    (dataAtual.DayOfWeek == DayOfWeek.Saturday && sab.Checked) ||
+                                    (dataAtual.DayOfWeek == DayOfWeek.Sunday && dom.Checked))
                                 {
                                     horariosEvento = HorariosEvento.NewHorariosEvento(dataAtual, evento, ddlInicio.Text, ddlFim.Text);
                                     horarios.Add(horariosEvento);
@@ -206,7 +190,6 @@ public partial class Eventos_Default : System.Web.UI.Page
                                 }
                                 dataAtual = dataAtual.AddDays(1);
                             }
-                            //Envia e-mail para a secretaria
                             if (horarios.Count < 2)
                                 EnviarEmail(pessoa.Nome, evento.Descricao, horarios[0].Data);
                             else
@@ -217,56 +200,43 @@ public partial class Eventos_Default : System.Web.UI.Page
                         }
                     }
                     break;
-#endregion
+                #endregion
 
                 #region cadastra eventos nas datas escolhidas manualmente
-                case 2 :
+                case 2:
                     if (listaHorarios.Count != 0)
                     {
-                        //Insere Evento
                         eventoBO.InsereEvento(evento);
-
-                        //Insere HorariosEvento
                         foreach (HorariosEvento horario in listaHorarios)
                         {
                             horario.EventoId = evento;
                             horariosEventoBO.InsereHorariosEvento(horario);
                         }
-
-                        //Envia e-mail para a secretaria
                         if (listaHorarios.Count < 2)
                             EnviarEmail(pessoa.Nome, evento.Descricao, listaHorarios[0].Data);
                         else
                             EnviarEmail(pessoa.Nome, evento.Descricao, listaHorarios[0].Data, listaHorarios[listaHorarios.Count - 1].Data);
+
                         lblResultado.Text = "Evento cadastrado com sucesso.";
                         LimpaCampos();
                         listaHorarios = new List<HorariosEvento>();
-                        
                     }
                     else
                         lblResultado.Text = "Nenhum horário escolhido para o evento.";
                     break;
                 #endregion
-                
+
                 #region cadastra evento apenas em um dia
-                default :
-                    dataAtual = new DateTime();
-                    dataAtual = DateTime.Parse(txtData.Text);
-                   
-                        //Insere Evento
-                        eventoBO.InsereEvento(evento);
-
-                        //Insere HorariosEvento
-                        horariosEvento = HorariosEvento.NewHorariosEvento(dataAtual, evento, ddlInicio.Text, ddlFim.Text);
-                        horariosEventoBO.InsereHorariosEvento(horariosEvento);
-
-                        //Envia E-Mail
-                        EnviarEmail(pessoa.Nome, evento.Descricao, dataAtual);
-                        lblResultado.Text = "Evento cadastrado com sucesso.";
-                        LimpaCampos();
-                
+                default:
+                    dataAtual = ParseData(txtData.Value);
+                    eventoBO.InsereEvento(evento);
+                    horariosEvento = HorariosEvento.NewHorariosEvento(dataAtual, evento, ddlInicio.Text, ddlFim.Text);
+                    horariosEventoBO.InsereHorariosEvento(horariosEvento);
+                    EnviarEmail(pessoa.Nome, evento.Descricao, dataAtual);
+                    lblResultado.Text = "Evento cadastrado com sucesso.";
+                    LimpaCampos();
                     break;
-                #endregion
+                    #endregion
             }
         }
         catch (Exception ex)
@@ -278,9 +248,9 @@ public partial class Eventos_Default : System.Web.UI.Page
     private void LimpaCampos()
     {
         txtTitulo.Text = "";
-        txtData.Text = "";
-        txtDataFinal.Text = "";
-        txtDataFim.Text = "";
+        txtData.Value = "";
+        txtDataFinal.Value = "";
+        txtDataFim.Value = "";
         txtResponsavel.Text = "";
         txtUnidade.Text = "";
         txtaDescricao.Text = "";
@@ -306,36 +276,33 @@ public partial class Eventos_Default : System.Web.UI.Page
     protected void btnAdicionar_Click1(object sender, EventArgs e)
     {
         bool jaCadastrado = false;
-        DateTime dataAtual = new DateTime();
-        dataAtual = DateTime.Parse(txtDataFim.Text);
+        DateTime dataAtual = ParseData(txtDataFim.Value);
         Calendario cal = (Calendario)Session["Calendario"];
-       
-            HorariosEvento horarioEvento = HorariosEvento.NewHorariosEvento(dataAtual, null, ddlHoraInicio.SelectedItem.ToString(), ddlHoraFim.SelectedItem.ToString());
-            listaHorarios = (IList<HorariosEvento>)Session["listaHorarios"];
-            foreach (HorariosEvento horarios in listaHorarios)
+
+        HorariosEvento horarioEvento = HorariosEvento.NewHorariosEvento(dataAtual, null, ddlHoraInicio.SelectedItem.ToString(), ddlHoraFim.SelectedItem.ToString());
+        listaHorarios = (IList<HorariosEvento>)Session["listaHorarios"];
+        foreach (HorariosEvento horarios in listaHorarios)
+        {
+            if (horarioEvento.Equals(horarios) || jaAdicionado(dataAtual, ddlHoraInicio.SelectedItem.ToString(), ddlHoraFim.SelectedItem.ToString()))
             {
-                if (horarioEvento.Equals(horarios) || jaAdicionado(dataAtual, ddlHoraInicio.SelectedItem.ToString(), ddlHoraFim.SelectedItem.ToString()))
-                {
-                    lblResultado.Text = "Horário já adicionado!";
-                    jaCadastrado = true;
-                    break;
-                }
+                lblResultado.Text = "Horário já adicionado!";
+                jaCadastrado = true;
+                break;
             }
-            if (!jaCadastrado)
-            {
-                listaHorarios.Add(horarioEvento);
-                ((List<HorariosEvento>)listaHorarios).Sort();
-                Session["listaHorarios"] = listaHorarios;
-                grdHorarios.DataSource = listaHorarios;
-                grdHorarios.DataBind();
-                lblResultado.Text = "Horário adicionado.";
-            }
-        
+        }
+        if (!jaCadastrado)
+        {
+            listaHorarios.Add(horarioEvento);
+            ((List<HorariosEvento>)listaHorarios).Sort();
+            Session["listaHorarios"] = listaHorarios;
+            grdHorarios.DataSource = listaHorarios;
+            grdHorarios.DataBind();
+            lblResultado.Text = "Horário adicionado.";
+        }
     }
 
     private bool jaAdicionado(DateTime data, string horarioInicial, string horarioFinal)
     {
-        
         listaHorarios = (IList<HorariosEvento>)Session["listaHorarios"];
         foreach (HorariosEvento horario in listaHorarios)
         {

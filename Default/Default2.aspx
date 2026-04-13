@@ -6,13 +6,13 @@
 <%@ Import Namespace="BusinessData.Entities" %>
 
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphTitulo">
-    
+
     <asp:ScriptManager ID="ScriptManager1" runat="server">
         <Scripts>
             <asp:ScriptReference Path="~/Scripts/tooltip.js" />
         </Scripts>
     </asp:ScriptManager>
-    
+
     <asp:Timer ID="Timer1" runat="server" Interval="60000" OnTick="Timer1_Tick">
     </asp:Timer>
 
@@ -38,110 +38,111 @@
             margin: 0;
         }
 
-        .login-compact table {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
+            .login-compact table {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
 
-        .login-compact label {
-            color: white;
-            font-weight: 500;
-            font-size: 0.875rem;
-            margin-right: 0.5rem;
-            white-space: nowrap;
-        }
+            .login-compact label {
+                color: white;
+                font-weight: 500;
+                font-size: 0.875rem;
+                margin-right: 0.5rem;
+                white-space: nowrap;
+            }
 
-        .login-compact .form-control {
-            height: 32px;
-            border-radius: 4px;
-            border: 1px solid #e2e8f0;
-            font-size: 0.875rem;
-            width: 150px;
-            display: inline-block;
-            vertical-align: middle;
-        }
+            .login-compact .form-control {
+                height: 32px;
+                border-radius: 4px;
+                border: 1px solid #e2e8f0;
+                font-size: 0.875rem;
+                width: 150px;
+                display: inline-block;
+                vertical-align: middle;
+            }
 
-        .login-compact .form-control:focus {
-            border-color: #60a5fa;
-            box-shadow: 0 0 0 0.2rem rgba(96, 165, 250, 0.25);
-        }
+                .login-compact .form-control:focus {
+                    border-color: #60a5fa;
+                    box-shadow: 0 0 0 0.2rem rgba(96, 165, 250, 0.25);
+                }
 
-        .login-compact .btn-light {
-            height: 32px;
-            font-weight: 600;
-            font-size: 0.875rem;
-            padding: 0 1.25rem;
-            border: none;
-            background: white;
-            color: #1e40af;
-            vertical-align: middle;
-        }
+            .login-compact .btn-light {
+                height: 32px;
+                font-weight: 600;
+                font-size: 0.875rem;
+                padding: 0 1.25rem;
+                border: none;
+                background: white;
+                color: #1e40af;
+                vertical-align: middle;
+            }
 
-        .login-compact .btn-light:hover {
-            background: #f1f5f9;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-        }
+                .login-compact .btn-light:hover {
+                    background: #f1f5f9;
+                    transform: translateY(-1px);
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+                }
 
-        .login-compact .form-check {
-            display: inline-flex;
-            align-items: center;
-            margin: 0;
-            vertical-align: middle;
-        }
+            .login-compact .form-check {
+                display: inline-flex;
+                align-items: center;
+                margin: 0;
+                vertical-align: middle;
+            }
 
-        .login-compact .form-check-input {
-            cursor: pointer;
-            margin-top: 0;
-            margin-right: 0.25rem;
-            vertical-align: middle;
-        }
+            .login-compact .form-check-input {
+                cursor: pointer;
+                margin-top: 0;
+                margin-right: 0.25rem;
+                vertical-align: middle;
+            }
 
-        .login-compact .form-check-label {
-            color: white;
-            font-size: 0.875rem;
-            font-weight: 400;
-            margin-left: 0.25rem;
-            cursor: pointer;
-        }
+            .login-compact .form-check-label {
+                color: white;
+                font-size: 0.875rem;
+                font-weight: 400;
+                margin-left: 0.25rem;
+                cursor: pointer;
+            }
 
-        .login-compact a {
-            color: #fef3c7;
-            font-size: 0.875rem;
-            font-weight: 500;
-            text-decoration: none;
-            vertical-align: middle;
-        }
+            .login-compact a {
+                color: #fef3c7;
+                font-size: 0.875rem;
+                font-weight: 500;
+                text-decoration: none;
+                vertical-align: middle;
+            }
 
-        .login-compact a:hover {
-            color: white;
-            text-decoration: underline;
-        }
+                .login-compact a:hover {
+                    color: white;
+                    text-decoration: underline;
+                }
 
-        .login-compact .text-danger {
-            color: #fecaca !important;
-            font-size: 0.75rem;
-            margin-left: 0.25rem;
-        }
+            .login-compact .text-danger {
+                color: #fecaca !important;
+                font-size: 0.75rem;
+                margin-left: 0.25rem;
+            }
 
-        .login-compact .login-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: nowrap;
-        }
+            .login-compact .login-row {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 1rem;
+                flex-wrap: nowrap;
+            }
 
-        .login-compact .login-field {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+            .login-compact .login-field {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
 
         /* =============================================
            Dashboard de Recursos
         ============================================= */
+        /*
         .container {
             display: flex;
             flex-direction: column;
@@ -150,7 +151,9 @@
             margin: auto;
             padding: 0 1rem;
         }
+            */
 
+        /*
         .row {
             display: grid;
             grid-template-columns: 60px auto;
@@ -173,10 +176,10 @@
             flex-direction: column;
         }
 
-        .category img {
-            width: 24px;
-            height: 24px;
-        }
+            .category img {
+                width: 24px;
+                height: 24px;
+            }
 
         .grid {
             display: grid;
@@ -201,33 +204,79 @@
             background: white;
         }
 
-        .block span {
-            display: block;
-            font-size: 14px;
-            font-weight: normal;
-            font-family: 'Inter', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-            opacity: 1.0;
-        }
+            .block span {
+                display: block;
+                font-size: 14px;
+                font-weight: normal;
+                font-family: 'Inter', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                opacity: 1.0;
+            }
+
+            /*
 
         /* Category Colors */
-        .lab { background-color: #97c7a657; }
-        .notebook { background-color: #6e90b057; }
-        .cabo-hdmi { background-color: #e1c48e57; }
-        .cabo-vga { background-color: #df9c7c57; }
-        .auditorio { background-color: #d27c6a57; }
-        .speaker { background-color: #b65c4657; }
+        .lab {
+            background-color: #97c7a657;
+        }
 
-        .emusoedisp { border: 5px solid #27b91c; color: black; }
-        .emusoereserv { border: 5px solid #ff0000a9; color: black; }
-        .dispereserv { border: 5px solid #ffd800ff; color: black; }
+        .notebook {
+            background-color: #6e90b057;
+        }
 
-        .emusoedisp-legenda { background-color: #27b91c; }
-        .emusoereserv-legenda { background-color: #ff0000a9; }
-        .dispereserv-legenda { background-color: #ffd800ff; }
+        .cabo-hdmi {
+            background-color: #e1c48e57;
+        }
 
-        .retirado { color: red; }
-        .disponivel { color: black; }
-        .recurso { color: black; }
+        .cabo-vga {
+            background-color: #df9c7c57;
+        }
+
+        .auditorio {
+            background-color: #d27c6a57;
+        }
+
+        .speaker {
+            background-color: #b65c4657;
+        }
+
+        .emusoedisp {
+            border: 5px solid #27b91c;
+            color: black;
+        }
+
+        .emusoereserv {
+            border: 5px solid #ff0000a9;
+            color: black;
+        }
+
+        .dispereserv {
+            border: 5px solid #ffd800ff;
+            color: black;
+        }
+
+        .emusoedisp-legenda {
+            background-color: #27b91c;
+        }
+
+        .emusoereserv-legenda {
+            background-color: #ff0000a9;
+        }
+
+        .dispereserv-legenda {
+            background-color: #ffd800ff;
+        }
+
+        .retirado {
+            color: red;
+        }
+
+        .disponivel {
+            color: black;
+        }
+
+        .recurso {
+            color: black;
+        }
 
         .legend {
             display: flex;
@@ -250,6 +299,8 @@
             border-radius: 4px;
             border: 1px solid #333;
         }
+
+        /*
 
         .block {
             position: relative;
@@ -277,30 +328,127 @@
             transition: opacity 0.1s;
         }
 
-        .block:hover .tooltip,
-        .block.active .tooltip,
-        .tooltip.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+            .block:hover .tooltip,
+            .block.active .tooltip,
+            .tooltip.visible {
+                opacity: 1;
+                visibility: visible;
+            }
 
-        .tooltip.activeLeft {
-            transform: translateX(-70%);
-        }
+            .tooltip.activeLeft {
+                transform: translateX(-70%);
+            }
+            */
 
         /* Responsive Adjustments */
+        /*
         @media (max-width: 768px) {
             .row {
                 grid-template-columns: 100px auto;
             }
+
             .category {
                 font-size: 12px;
                 padding: 8px;
             }
+
             .login-compact .login-row {
                 flex-wrap: wrap;
             }
         }
+            */
+
+        .schedule-card {
+            border: none;
+            border-radius: 12px;
+        }
+
+        .schedule-header {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            padding: 1rem;
+            font-weight: 700;
+        }
+
+        .resource-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .resource-icon {
+            font-size: 1.3rem;
+            margin-right: 10px;
+            color: #6c757d;
+        }
+
+        .resource-tag {
+            font-size: 1rem !important;
+            font-family: sans-serif;
+            font-weight: 600;
+        }
+
+        /* Badge em uso: Cor vibrante e animação de sombra */
+        .badge-active {
+            background-color: #dc3545 !important; /* Vermelho para 'ocupado' */
+            animation: pulse-red 2s infinite;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes pulse-red {
+            0% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+            }
+        }
+
+        /* Indicador visual interno (ponto luminoso) */
+        .status-indicator {
+            height: 8px;
+            width: 8px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        .resource-tag {
+            font-size: 1.1rem !important; /* Fonte ampliada conforme solicitado */
+            padding: 0.5rem 1rem !important;
+            display: flex;
+            align-items: center;
+        }
+
+        .resource-icon.text-danger {
+            color: #dc3545 !important;
+        }
+
+        /* Estado: Disponível (Verde) */
+        .badge-available {
+            background-color: #198754 !important;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Estado: Manutenção (Amarelo) */
+        .badge-maintenance {
+            background-color: #ffc107 !important;
+            color: #000 !important;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* Ajuste para ícones de manutenção */
+        .text-maintenance {
+            color: #856404 !important;
+        }
+
+        .text-available {
     </style>
 
     <!-- ═══════════════════════════════════════
@@ -309,33 +457,33 @@
     <div class="login-compact">
         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
             <ContentTemplate>
-                <asp:Login ID="loginEntrada" runat="server" 
+                <asp:Login ID="loginEntrada" runat="server"
                     FailureText="Usuário inválido ou senha inválida."
-                    LoginButtonText="Entrar" 
-                    PasswordLabelText="Senha:" 
+                    LoginButtonText="Entrar"
+                    PasswordLabelText="Senha:"
                     PasswordRequiredErrorMessage="*"
-                    RememberMeText="Lembrar-me" 
+                    RememberMeText="Lembrar-me"
                     UserNameLabelText="Usuário:"
-                    UserNameRequiredErrorMessage="*" 
+                    UserNameRequiredErrorMessage="*"
                     DestinationPageUrl="~/Default/SelecionarCalendario2.aspx"
-                    OnLoginError="loginEntrada_LoginError" 
+                    OnLoginError="loginEntrada_LoginError"
                     TitleText=""
-                    AccessKey="M" 
+                    AccessKey="M"
                     Orientation="Horizontal"
-                    OnAuthenticate="loginEntrada_Authenticate" 
-                    PasswordRecoveryUrl="~/Default/ResetSenha.aspx" 
+                    OnAuthenticate="loginEntrada_Authenticate"
+                    PasswordRecoveryUrl="~/Default/ResetSenha.aspx"
                     PasswordRecoveryText="Esqueci"
                     DisplayRememberMe="true">
-                    
+
                     <LayoutTemplate>
                         <div class="login-row">
                             <!-- Usuário -->
                             <div class="login-field">
                                 <label for="UserName">Usuário:</label>
                                 <asp:TextBox ID="UserName" runat="server" CssClass="form-control" />
-                                <asp:RequiredFieldValidator ID="UserNameRequired" runat="server" 
-                                    ControlToValidate="UserName" 
-                                    ErrorMessage="*" 
+                                <asp:RequiredFieldValidator ID="UserNameRequired" runat="server"
+                                    ControlToValidate="UserName"
+                                    ErrorMessage="*"
                                     ValidationGroup="loginEntrada"
                                     CssClass="text-danger">
                                 </asp:RequiredFieldValidator>
@@ -345,17 +493,17 @@
                             <div class="login-field">
                                 <label for="Password">Senha:</label>
                                 <asp:TextBox ID="Password" runat="server" TextMode="Password" CssClass="form-control" />
-                                <asp:RequiredFieldValidator ID="PasswordRequired" runat="server" 
-                                    ControlToValidate="Password" 
-                                    ErrorMessage="*" 
+                                <asp:RequiredFieldValidator ID="PasswordRequired" runat="server"
+                                    ControlToValidate="Password"
+                                    ErrorMessage="*"
                                     ValidationGroup="loginEntrada"
                                     CssClass="text-danger">
                                 </asp:RequiredFieldValidator>
                             </div>
 
                             <!-- Botão Entrar -->
-                            <asp:Button ID="LoginButton" runat="server" CommandName="Login" 
-                                Text="Entrar" 
+                            <asp:Button ID="LoginButton" runat="server" CommandName="Login"
+                                Text="Entrar"
                                 ValidationGroup="loginEntrada"
                                 CssClass="btn btn-light" />
 
@@ -364,11 +512,12 @@
                                 <asp:CheckBox ID="RememberMe" runat="server" CssClass="form-check-input" />
                                 <label class="form-check-label" for="RememberMe">
                                     Lembrar-me
+                               
                                 </label>
                             </div>
 
                             <!-- Link Esqueci -->
-<%--                            <asp:HyperLink ID="PasswordRecoveryLink" runat="server" 
+                            <%--                            <asp:HyperLink ID="PasswordRecoveryLink" runat="server" 
                                 NavigateUrl="~/Default/ResetSenha.aspx">
                                 <i class="bi bi-shield-lock"></i> Esqueci
                             </asp:HyperLink>--%>
@@ -388,11 +537,11 @@
     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
         <ContentTemplate>
             <div class="text-center my-3">
-                <asp:Label ID="lblDataHora" runat="server" CssClass="text-muted fw-semibold"></asp:Label>
+                <asp:Label ID="lblDataHora" runat="server" CssClass="text-muted fw-semibold" Visible="false"></asp:Label>
             </div>
 
             <!-- Dashboard de Recursos -->
-            <div class="container" runat="server" id="container">
+            <div class="container py-1" runat="server" id="container">
                 <!-- Conteúdo dinâmico gerado pelo code-behind -->
             </div>
 
@@ -427,16 +576,18 @@
                 de recursos durante o período de planejamento semestral,<br />
                 o sistema permite agendar eventos, consultar datas de avaliações e trocar e transferir
                 recursos durante todo o ano.
+           
             </p>
             <p class="mb-2">
                 O OpenSARC é <em>software</em> livre. Caso deseje participar, reclamar ou dar sugestões,
-                visite <a href="https://github.com/mflash/OpenSARC" target="_blank" class="fw-semibold">
-                    https://github.com/mflash/OpenSARC
+                visite <a href="https://github.com/mflash/OpenSARC" target="_blank" class="fw-semibold">https://github.com/mflash/OpenSARC
                 </a>.
+           
             </p>
             <p class="text-muted small">
                 Em especial, aguardamos voluntários interessados em utilizar o sistema como estudo
                 de caso para suas disciplinas de desenvolvimento de <em>software</em>.
+           
             </p>
         </div>
     </div>

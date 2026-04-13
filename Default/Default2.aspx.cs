@@ -1,30 +1,30 @@
 // $Id$
+using BusinessData.BusinessLogic;
+using BusinessData.DataAccess;
+using BusinessData.Distribuicao.Entities;
+using BusinessData.Entities;
 using System;
-using System.Data;
-using System.Configuration;
 using System.Collections;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Diagnostics;
+using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Runtime.Remoting.Messaging;
+using System.ServiceModel.Configuration;
+using System.Text;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-using BusinessData.BusinessLogic;
-using BusinessData.Entities;
-using BusinessData.DataAccess;
-using BusinessData.Distribuicao.Entities;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
-using System.IO;
-using System.Diagnostics;
-using System.Drawing;
-using System.Runtime.Remoting.Messaging;
-using System.DirectoryServices;
-using System.DirectoryServices.AccountManagement;
 using Image = System.Web.UI.WebControls.Image;
-using System.ServiceModel.Configuration;
-using System.Linq;
 
 
 public partial class _Default : System.Web.UI.Page
@@ -41,19 +41,17 @@ public partial class _Default : System.Web.UI.Page
     {
         Disponivel, EmUsoEDisponivel, EmUsoEReservado, DisponivelEReservado
     }
+
     private class RecursoItem
     {
         public string HorarioAtual;
-        public string HorarioProx;
         public string NomeCompleto;
+        public string NomeCurto;
+        public char Tipo;
         public string DescricaoAtualCurta;
         public string DescricaoAtual;
-        public string DescricaoProxCurta;
-        public string DescricaoProx;
         public string ResponsavelAtual;
         public string ResponsavelAtualCurto;
-        public string ResponsavelProx;
-        public string ResponsavelProxCurto;
         public StatusRecurso Status;
     }
 
@@ -139,10 +137,17 @@ public partial class _Default : System.Web.UI.Page
         string domain = ConfigurationManager.AppSettings["ldapDomain"];
         string serviceUser = ConfigurationManager.AppSettings["ldapServiceUser"];
         string servicePass = ConfigurationManager.AppSettings["ldapServicePasswd"];
-        using (var context = new PrincipalContext(ContextType.Domain, domain, serviceUser, servicePass))
+        try
         {
-            //Username and password for authentication.
-            result = context.ValidateCredentials(user, pass);
+            using (var context = new PrincipalContext(ContextType.Domain, domain, serviceUser, servicePass))
+            {
+                //Username and password for authentication.
+                result = context.ValidateCredentials(user, pass);
+            }
+        }
+        catch (PrincipalServerDownException e)
+        {
+            return false;
         }
         //Debug.WriteLine("Auth: " + result);
         return result;
@@ -371,7 +376,7 @@ public partial class _Default : System.Web.UI.Page
      */
     public string getNomeCurtoProfessor(string nome)
     {
-        string[] nomes = nome.Split();
+        string[] nomes = nome.Trim().Split();
         // Somente um nome ?
         if (nomes.Length == 1)
             return nome.Length <= 10 ? nome : nome.Substring(0, 10);
@@ -423,6 +428,7 @@ public partial class _Default : System.Web.UI.Page
         return filtradaAtual;
     }
 
+    /*
     private void CopiaSalaDupla(SortedDictionary<string, RecursoItem> dicRecurso, string chavedupla, string chave1, string chave2)
     {
         RecursoItem r = dicRecurso[chavedupla];
@@ -475,8 +481,10 @@ public partial class _Default : System.Web.UI.Page
             dicRecurso[chave2].HorarioProx = r.HorarioProx;
         }
     }
+    */
 
-    private void VisualizarAlocacoesData()
+    /*
+    private void VisualizarAlocacoesDataOld()
     {
         DateTime now;
         if (forcaDataHora)
@@ -500,7 +508,8 @@ public partial class _Default : System.Web.UI.Page
         else
             for (pos = 0; pos < horarios.Count - 1; pos++)
             {
-                if (nowTime >= horariosTime[pos] && nowTime < horariosTime[pos + 1]) {
+                if (nowTime >= horariosTime[pos] && nowTime < horariosTime[pos + 1])
+                {
                     TimeSpan ts = nowTime.Subtract(horariosTime[pos]);
                     Debug.WriteLine("Timedelta: " + ts);
                     if (ts.TotalMinutes > 30)
@@ -674,7 +683,7 @@ public partial class _Default : System.Web.UI.Page
                     else if (recItem.DescricaoAtual != null && recItem.DescricaoProx != null)
                         recItem.Status = StatusRecurso.EmUsoEReservado;
                     Debug.WriteLine(" " + recKV.Key + " " + recItem.HorarioAtual + ": " + recItem.DescricaoAtual + " (" + recItem.ResponsavelAtual + ") " + recItem.Status);
-                    Debug.WriteLine(" " + recKV.Key + " " + recItem.HorarioProx + ": " + recItem.DescricaoProx + " (" + recItem.ResponsavelProx + ")");
+                    Debug.WriteLine(" " + recKV.Key + " " + recItem.HorarioProx + ": " + recItem.DescricaoProx + " (" + recItem.ResponsavelProx + ")\n");
                     string innerText = "";
                     string tooltip = "";
                     if (ocultaDescricaoCurta)
@@ -735,9 +744,300 @@ public partial class _Default : System.Web.UI.Page
                     <div class='block {0} {1}'>{3} <span class='recurso'>{4}</span><div class='tooltip'>{2}</div></div>
                     ", dicCoresStatus[recItem.Status], colorStatus, tooltip, recKV.Key, innerText);
                 }
-                row += "</div></div>";
+                row += "</div></div>\n";
                 container.InnerHtml += row;
             }
+        }
+    }
+    */
+
+    private void VisualizarAlocacoesData()
+    {
+        DateTime now;
+        if (forcaDataHora)
+            now = dataHoraForcada;
+        else
+            now = DateTime.Now;
+        now = new DateTime(now.Year, now.Month, now.Day, 19, 0, 0); // arredonda para baixo (ex: 14:35:47 -> 14:35:00)
+        DateTime hoje = now.Date;
+        //        now = now.Subtract(TimeSpan.FromDays(1));
+        TimeSpan nowTime = now.TimeOfDay; //.Add(TimeSpan.FromMinutes(60));
+
+        AlocacaoBO controladorAlocacoes = new AlocacaoBO();
+        List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByDataFull(hoje, (BusinessData.Entities.Calendario)Session["Calendario"]);
+        //TimeSpan nowTime = DateTime.Now.TimeOfDay;
+        //nowTime = nowTime.Add(new TimeSpan(2,0,0)); // para testar com outros horarios
+        //nowTime = nowTime.Subtract(new TimeSpan(0,12,0));
+
+        // Identifica o período de aula atual
+        int pos;
+        if (nowTime < horariosTime[0])
+            pos = 0;
+        else
+            for (pos = 0; pos < horarios.Count - 1; pos++)
+            {
+                if (nowTime >= horariosTime[pos] && nowTime < horariosTime[pos + 1])
+                {
+                    TimeSpan ts = nowTime.Subtract(horariosTime[pos]);
+                    Debug.WriteLine("Timedelta: " + ts);
+                    if (ts.TotalMinutes > 30)
+                        pos++;
+                    break;
+                }
+            }
+        if (pos == horarios.Count)
+            pos--;
+        lblDataHora.Text = now.Add(new TimeSpan(0, 0, 0, 0)).ToString() + " - " + horarios[pos];
+
+        //pos = 5;
+        List<Alocacao> filtradaAtual = ProcuraProximoHorario(listaAlocacoes, ref pos);
+        List<Alocacao> filtradaProx = ProcuraProximoHorario(listaAlocacoes, ref pos);
+        //foreach (Alocacao aloc in listaAlocacoes)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("ALOC: "+aloc.Horario+" "+aloc.Recurso.Descricao);
+        //}
+
+        List<RecursoItem> listaRecursosAtual = new List<RecursoItem>();
+        List<RecursoItem> listaRecursosProx = new List<RecursoItem>();
+
+        foreach (Alocacao aloc in filtradaAtual)
+        {
+  //          Debug.WriteLine("ALOC: " + aloc.Horario + " " + aloc.Recurso.Descricao);
+            RecursoItem rec = new RecursoItem();
+            if (aloc.Aula != null)
+            {
+                rec.NomeCompleto = aloc.Recurso.Descricao;
+                rec.HorarioAtual = aloc.Horario;
+                rec.NomeCurto = aloc.Recurso.Abrev;
+                rec.Tipo = aloc.Recurso.Tipo;
+                rec.DescricaoAtual = aloc.Aula.TurmaId.Disciplina.Nome + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
+                rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
+                rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Aula.TurmaId.Professor.Nome);
+                rec.ResponsavelAtualCurto = getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
+            }
+            else
+            {
+                rec.NomeCompleto = aloc.Recurso.Descricao;
+                rec.HorarioAtual = aloc.Horario;
+                rec.NomeCurto = aloc.Recurso.Abrev;
+                rec.Tipo = aloc.Recurso.Tipo;
+                rec.DescricaoAtual = aloc.Evento.Descricao;
+                rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Evento.Titulo);
+                rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Evento.Responsavel).Trim();
+                if (rec.ResponsavelAtual.ToLower().StartsWith("prof."))
+                    rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(5).Trim();
+                if (rec.ResponsavelAtual.ToLower().StartsWith("profa."))
+                    rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(6).Trim();
+                rec.ResponsavelAtualCurto = getNomeCurtoProfessor(rec.ResponsavelAtual);
+            }
+            listaRecursosAtual.Add(rec);
+        }
+
+        Debug.WriteLine("");
+
+        foreach(Alocacao aloc in filtradaProx)
+        {
+//            Debug.WriteLine("ALOC: " + aloc.Horario + " " + aloc.Recurso.Descricao);
+            RecursoItem rec = new RecursoItem();
+            if (aloc.Aula != null)
+            {
+                rec.NomeCompleto = aloc.Recurso.Descricao;
+                rec.HorarioAtual = aloc.Horario;
+                rec.NomeCurto = aloc.Recurso.Abrev;
+                rec.Tipo = aloc.Recurso.Tipo;
+                rec.DescricaoAtual = aloc.Aula.TurmaId.Disciplina.Nome + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
+                rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
+                rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Aula.TurmaId.Professor.Nome);
+                rec.ResponsavelAtualCurto = getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
+            }
+            else
+            {
+                rec.NomeCompleto = aloc.Recurso.Descricao;
+                rec.HorarioAtual = aloc.Horario;
+                rec.NomeCurto = aloc.Recurso.Abrev;
+                rec.Tipo = aloc.Recurso.Tipo;
+                rec.DescricaoAtual = aloc.Evento.Descricao;
+                rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Evento.Titulo);
+                rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Evento.Responsavel).Trim();
+                if (rec.ResponsavelAtual.ToLower().StartsWith("prof."))
+                    rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(5).Trim();
+                if (rec.ResponsavelAtual.ToLower().StartsWith("profa."))
+                    rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(6).Trim();
+                rec.ResponsavelAtualCurto = getNomeCurtoProfessor(rec.ResponsavelAtual);
+            }
+            listaRecursosProx.Add(rec);
+        }
+
+        // Se houver, copia reservas da 309/312 e 409/412 para 309 + 312 e 409 + 412
+        /*
+        if (dic.ContainsKey('L'))
+        {
+            SortedDictionary<string, RecursoItem> dicRecurso = dic['L'];
+            if (dicRecurso.ContainsKey("309/312   "))
+            {
+                CopiaSalaDupla(dicRecurso, "309/312   ", "309       ", "312       ");
+            }
+            if (dicRecurso.ContainsKey("409/412   "))
+            {
+                CopiaSalaDupla(dicRecurso, "409/412   ", "409       ", "412       ");
+            }
+        }
+        */
+        //if (pos < horarios.Count - 1) // se nao estivermos ja no ultimo horario... 
+        //    {
+        // lblAtual.Text = "Horário atual: " + horarioAtual;//+" - "+nowTime.ToString();
+        // lblProximo.Text = "Proximo horario: " + horarioProx;
+        if (filtradaAtual.Count == 0 && filtradaProx.Count == 0)
+        {
+            string newContent = @"
+        <div class='row'>
+            <div class='category'></div>
+            <div class='grid'>
+                <div class='block new-category'><span>Não há recursos alocados para hoje</span></div>
+            </div>
+        </div>";
+            container.InnerHtml = newContent;
+        }
+        else
+        {
+            container.InnerHtml = "";
+  
+            listaRecursosAtual = listaRecursosAtual.OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
+            listaRecursosProx = listaRecursosProx.OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
+
+            Debug.WriteLine("Atual:");
+            string horarioAtual = "";
+            foreach (var ri in listaRecursosAtual) {
+                Debug.WriteLine(ri.NomeCurto + " (" + ri.Tipo+") -> " + ri.DescricaoAtualCurta + " - " + ri.ResponsavelAtual + " - " + ri.Status);
+                horarioAtual = ri.HorarioAtual;
+            }
+
+            Debug.WriteLine("\nProx:");
+            foreach (var ri in listaRecursosProx)
+                Debug.WriteLine(ri.NomeCurto + " (" + ri.Tipo+ ") -> " + ri.DescricaoAtualCurta + " - " + ri.ResponsavelAtual  + " - " + ri.Status);
+
+            int cont = 0;
+            string block = "";
+            foreach (List<RecursoItem> lista in new List<List<RecursoItem>> { listaRecursosAtual, listaRecursosProx })
+            {
+                cont += 1;
+                if (lista.Count == 0)
+                    continue;
+                horarioAtual = lista[0].HorarioAtual;
+                
+                block += "<div class=\"col-md-6\">\n<div class=\"card shadow-sm schedule-card\">";
+                block += string.Format("<div class=\"schedule-header text-success\">HORÁRIO {0}</div>\n", horarioAtual);
+
+                block += "<div class=\"list-group list-group-flush\">\n";
+
+                foreach (RecursoItem ri in lista)
+                {
+                    if (ri.NomeCompleto == null) continue;
+                    block += "<div class=\"list-group-item d-flex justify-content-between align-items-center\">\n";
+                    block += string.Format("<span>{0} - {1}</span>\n<div class=\"resource-container\">\n", ri.ResponsavelAtualCurto, ri.DescricaoAtualCurta);
+                    string destaque = "bg-dark";
+                    string destaqueText = "";
+                    if ((cont == 1 && (ri.Status == StatusRecurso.EmUsoEReservado)))
+                    {
+                        destaque = "badge-active";
+                        destaqueText = "text-danger";
+                    }
+
+                    string recursoIcone = "";
+                    switch (ri.Tipo)
+                    {
+                        case 'A':
+                            recursoIcone = "bi-easel2";
+                            break;
+                        case 'L':
+                        case 'D':
+                            if (ri.NomeCurto.StartsWith("RN"))
+                                recursoIcone = "bi-laptop";
+                            else
+                                recursoIcone = "bi-pc-display";
+                            break;
+                        case 'N':
+                            recursoIcone = "bi-laptop";
+                            break;
+
+                    }
+                    if (ri.NomeCurto.StartsWith("211"))
+                        recursoIcone = "bi-pc-display";
+                    block += string.Format("<i class=\"bi {0} resource-icon {1}\"></i>", recursoIcone, destaqueText);
+                    block += string.Format("<span class=\"badge {1} resource-tag\">{0}</span>\n</div>\n</div>", ri.NomeCurto, destaque);
+                }
+
+                block += "</div>";
+                block += "</div></div>";
+            }
+
+            container.InnerHtml = string.Format("<div class=\"row g-4\">{0}</div>", block);
+
+
+            /*
+            string innerText = "";
+                    string tooltip = "";
+                    if (ocultaDescricaoCurta)
+                    {
+                        recItem.DescricaoAtualCurta = "";
+                        recItem.DescricaoProxCurta = "";
+                    }
+                    else
+                    {
+                        recItem.ResponsavelAtualCurto += " \u00b7 ";
+                        recItem.ResponsavelProxCurto += " \u00b7 ";
+                        recItem.ResponsavelAtual += " \u00b7 ";
+                        recItem.ResponsavelProx += " \u00b7 ";
+                    }
+                    switch (recItem.Status)
+                    {
+                        case StatusRecurso.Disponivel:
+                            innerText = "";
+                            break;
+                        case StatusRecurso.DisponivelEReservado:
+                            tooltip = recItem.HorarioProx + ": " + recItem.ResponsavelProx + recItem.DescricaoProx;
+                            if (usaDescricaoLonga)
+                                innerText = "<b>" + recItem.HorarioProx + "</b>: " + recItem.ResponsavelProx + recItem.DescricaoProx;
+                            else
+                                innerText = "<b>" + recItem.HorarioProx + "</b>: " + recItem.ResponsavelProxCurto + recItem.DescricaoProxCurta;
+                            break;
+                        case StatusRecurso.EmUsoEDisponivel:
+                            tooltip = recItem.HorarioAtual + ": " + recItem.ResponsavelAtual + recItem.DescricaoAtual;
+                            if (usaDescricaoLonga)
+                                innerText = "<b>" + recItem.HorarioAtual + "</b>: " + recItem.ResponsavelAtual + recItem.DescricaoAtual;
+                            else
+                                innerText = "<b>" + recItem.HorarioAtual + "</b>: " + recItem.ResponsavelAtualCurto + recItem.DescricaoAtualCurta;
+                            break;
+                        case StatusRecurso.EmUsoEReservado:
+                            if (usaDescricaoLonga)
+                            {
+                                innerText = "<b>" + recItem.HorarioAtual + "</b>: " + recItem.ResponsavelAtual + recItem.DescricaoAtual;
+                                innerText += "<br><b>" + recItem.HorarioProx + "</b>: " + recItem.ResponsavelProx + recItem.DescricaoProx;
+                            }
+                            else
+                            {
+                                innerText = "<b>" + recItem.HorarioAtual + "</b>: " + recItem.ResponsavelAtualCurto + recItem.DescricaoAtualCurta;
+                                innerText += "<br><b>" + recItem.HorarioProx + "</b>: " + recItem.ResponsavelProxCurto + recItem.DescricaoProxCurta;
+                            }
+                            tooltip = recItem.HorarioAtual + ": " + recItem.ResponsavelAtual + recItem.DescricaoAtual;
+                            tooltip += "\n" + recItem.HorarioProx + ": " + recItem.ResponsavelProx + recItem.DescricaoProx;
+                            break;
+                    }
+                    string retiradaStatus = "";
+                    //Debug.WriteLine("NOME RECURSO: " + recItem.DescricaoAtual + " [" + recItem.NomeCompleto + "]");
+                    if (recItem.NomeCompleto != null)
+                        retiradaStatus = logDataDAO.GetUltimoStatus(recItem.NomeCompleto);
+                    tooltip += "\n" + retiradaStatus;
+                    string colorStatus = "retirado";
+                    if (retiradaStatus == "Disponível")
+                        colorStatus = "disponivel";
+                    row += string.Format(@"
+                    <div class='block {0} {1}'>{3} <span class='recurso'>{4}</span><div class='tooltip'>{2}</div></div>
+                    ", dicCoresStatus[recItem.Status], colorStatus, tooltip, recKV.Key, innerText);
+                }
+                row += "</div></div>\n";
+                container.InnerHtml += row;
+            }*/
         }
     }
 }

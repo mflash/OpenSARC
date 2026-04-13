@@ -368,6 +368,7 @@
             border-bottom: 2px solid #dee2e6;
             padding: 1rem;
             font-weight: 700;
+            font-size: medium;
         }
 
         .resource-container {
@@ -449,6 +450,13 @@
         }
 
         .text-available {
+            color: #198754 !important;
+        }
+
+        .nomedisc {
+            font-size: small;
+        }
+
     </style>
 
     <!-- ═══════════════════════════════════════
@@ -546,7 +554,7 @@
             </div>
 
             <!-- Legenda -->
-            <div class="legend">
+            <!--div class="legend">
                 <div class="legend-item">
                     <div class="legend-color emusoereserv-legenda"></div>
                     <span>Reservado agora e no próximo horário</span>
@@ -559,7 +567,7 @@
                     <div class="legend-color emusoedisp-legenda"></div>
                     <span>Reservado agora e livre no próximo horário</span>
                 </div>
-            </div>
+            </div-->
         </ContentTemplate>
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="Timer1" EventName="Tick" />

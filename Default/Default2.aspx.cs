@@ -39,7 +39,7 @@ public partial class _Default : System.Web.UI.Page
 
     private enum StatusRecurso
     {
-        Disponivel, EmUsoEDisponivel, EmUsoEReservado, DisponivelEReservado
+        Disponivel, Retirado, SemInfo
     }
 
     private class RecursoItem
@@ -67,9 +67,8 @@ public partial class _Default : System.Web.UI.Page
 
     private Dictionary<StatusRecurso, string> dicCoresStatus = new Dictionary<StatusRecurso, string>
     {
-        { StatusRecurso.EmUsoEDisponivel, "emusoedisp" },
-        { StatusRecurso.DisponivelEReservado, "dispereserv" },
-        { StatusRecurso.EmUsoEReservado, "emusoereserv" }
+        { StatusRecurso.Disponivel, "emusoedisp" },
+        { StatusRecurso.Retirado, "emusoereserv" }
     };
 
     protected void Page_Load(object sender, EventArgs e)
@@ -753,6 +752,9 @@ public partial class _Default : System.Web.UI.Page
 
     private void VisualizarAlocacoesData()
     {
+        SRRCDAO sRRCDAO = new SRRCDAO();
+        //string stat = sRRCDAO.GetUltimoStatus("Kit HDMI 02");
+        //Debug.WriteLine("Status: " + stat);
         DateTime now;
         if (forcaDataHora)
             now = dataHoraForcada;
@@ -814,6 +816,20 @@ public partial class _Default : System.Web.UI.Page
                 rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
                 rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Aula.TurmaId.Professor.Nome);
                 rec.ResponsavelAtualCurto = getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
+                string stat = sRRCDAO.GetUltimoStatus(rec.NomeCompleto);
+                switch(stat)
+                {
+                    case "Disponível":
+                        rec.Status = StatusRecurso.Disponivel;
+                        break;
+                    case "Retirado":
+                        rec.Status = StatusRecurso.Retirado;
+                        break;
+                    default:
+                        rec.Status = StatusRecurso.SemInfo;
+                        break;
+                }
+                Debug.WriteLine("Status " + rec.NomeCompleto + " -> " + stat);
             }
             else
             {
@@ -829,6 +845,20 @@ public partial class _Default : System.Web.UI.Page
                 if (rec.ResponsavelAtual.ToLower().StartsWith("profa."))
                     rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(6).Trim();
                 rec.ResponsavelAtualCurto = getNomeCurtoProfessor(rec.ResponsavelAtual);
+                string stat = sRRCDAO.GetUltimoStatus(rec.NomeCompleto);
+                switch(stat)
+                {
+                    case "Disponível":
+                        rec.Status = StatusRecurso.Disponivel;
+                        break;
+                    case "Retirado":
+                        rec.Status = StatusRecurso.Retirado;
+                        break;
+                    default:
+                        rec.Status = StatusRecurso.SemInfo;
+                        break;
+                }
+                Debug.WriteLine("Status " + rec.NomeCompleto + " -> " + stat);
             }
             listaRecursosAtual.Add(rec);
         }
@@ -849,6 +879,19 @@ public partial class _Default : System.Web.UI.Page
                 rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
                 rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Aula.TurmaId.Professor.Nome);
                 rec.ResponsavelAtualCurto = getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
+                string stat = sRRCDAO.GetUltimoStatus(rec.NomeCompleto);
+                switch(stat)
+                {
+                    case "Disponível":
+                        rec.Status = StatusRecurso.Disponivel;
+                        break;
+                    case "Retirado":
+                        rec.Status = StatusRecurso.Retirado;
+                        break;
+                    default:
+                        rec.Status = StatusRecurso.SemInfo;
+                        break;
+                }
             }
             else
             {
@@ -864,6 +907,19 @@ public partial class _Default : System.Web.UI.Page
                 if (rec.ResponsavelAtual.ToLower().StartsWith("profa."))
                     rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(6).Trim();
                 rec.ResponsavelAtualCurto = getNomeCurtoProfessor(rec.ResponsavelAtual);
+                string stat = sRRCDAO.GetUltimoStatus(rec.NomeCompleto);
+                switch(stat)
+                {
+                    case "Disponível":
+                        rec.Status = StatusRecurso.Disponivel;
+                        break;
+                    case "Retirado":
+                        rec.Status = StatusRecurso.Retirado;
+                        break;
+                    default:
+                        rec.Status = StatusRecurso.SemInfo;
+                        break;
+                }
             }
             listaRecursosProx.Add(rec);
         }
@@ -905,16 +961,20 @@ public partial class _Default : System.Web.UI.Page
             listaRecursosAtual = listaRecursosAtual.OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
             listaRecursosProx = listaRecursosProx.OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
 
-            Debug.WriteLine("Atual:");
             string horarioAtual = "";
+
+//            Debug.WriteLine("Atual:");
             foreach (var ri in listaRecursosAtual) {
-                Debug.WriteLine(ri.NomeCurto + " (" + ri.Tipo+") -> " + ri.DescricaoAtualCurta + " - " + ri.ResponsavelAtual + " - " + ri.Status);
+                //Debug.WriteLine(ri.NomeCurto + " (" + ri.Tipo+") -> " + ri.DescricaoAtualCurta + " - " + ri.ResponsavelAtual + " - " + ri.Status);
                 horarioAtual = ri.HorarioAtual;
+                break;
             }
 
+            /*
             Debug.WriteLine("\nProx:");
             foreach (var ri in listaRecursosProx)
                 Debug.WriteLine(ri.NomeCurto + " (" + ri.Tipo+ ") -> " + ri.DescricaoAtualCurta + " - " + ri.ResponsavelAtual  + " - " + ri.Status);
+            */
 
             int cont = 0;
             string block = "";
@@ -933,11 +993,11 @@ public partial class _Default : System.Web.UI.Page
                 foreach (RecursoItem ri in lista)
                 {
                     if (ri.NomeCompleto == null) continue;
-                    block += "<div class=\"list-group-item d-flex justify-content-between align-items-center\">\n";
+                    block += "<div class=\"list-group-item d-flex justify-content-between align-items-center nomedisc\">\n";
                     block += string.Format("<span>{0} - {1}</span>\n<div class=\"resource-container\">\n", ri.ResponsavelAtualCurto, ri.DescricaoAtualCurta);
                     string destaque = "bg-dark";
                     string destaqueText = "";
-                    if ((cont == 1 && (ri.Status == StatusRecurso.EmUsoEReservado)))
+                    if ((cont == 1 && (ri.Status == StatusRecurso.Retirado)))
                     {
                         destaque = "badge-active";
                         destaqueText = "text-danger";
@@ -949,6 +1009,9 @@ public partial class _Default : System.Web.UI.Page
                         case 'A':
                             recursoIcone = "bi-easel2";
                             break;
+                        case 'H':
+                            recursoIcone = "bi-hdmi";
+                            break;
                         case 'L':
                         case 'D':
                             if (ri.NomeCurto.StartsWith("RN"))
@@ -958,6 +1021,9 @@ public partial class _Default : System.Web.UI.Page
                             break;
                         case 'N':
                             recursoIcone = "bi-laptop";
+                            break;
+                        case 'S':
+                            recursoIcone = "bi-speaker";
                             break;
 
                     }

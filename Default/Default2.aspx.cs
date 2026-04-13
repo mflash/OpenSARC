@@ -758,7 +758,7 @@ public partial class _Default : System.Web.UI.Page
             now = dataHoraForcada;
         else
             now = DateTime.Now;
-        now = new DateTime(now.Year, now.Month, now.Day, 19, 0, 0); // arredonda para baixo (ex: 14:35:47 -> 14:35:00)
+        //now = new DateTime(now.Year, now.Month, now.Day, 19, 0, 0); // arredonda para baixo (ex: 14:35:47 -> 14:35:00)
         DateTime hoje = now.Date;
         //        now = now.Subtract(TimeSpan.FromDays(1));
         TimeSpan nowTime = now.TimeOfDay; //.Add(TimeSpan.FromMinutes(60));

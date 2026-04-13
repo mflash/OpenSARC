@@ -47,6 +47,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             idturma = new Guid(Request.QueryString["GUID"]);
             currentTurma = turmaBo.GetTurmaById(idturma);
+            lblNotebook.Text = currentTurma.Notebook ? "S" : "N";
 
             // ========== NOVO: Intercepta o carregamento do dropdown ==========
             string eventTarget = Request["__EVENTTARGET"];
@@ -1007,7 +1008,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         {
             List<Recurso> recursosDisponiveis = new RecursosBO().GetRecursosDisponiveis(DateTime.Parse(data), hora);
             Recurso recNote = (Recurso)null;
-            bool flag = note == "N";
+            bool flag = note == "S";
             List<Recurso> source;
             if (flag)
             {

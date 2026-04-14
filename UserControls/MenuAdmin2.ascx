@@ -1,4 +1,4 @@
-<<%@ Control Language="C#" AutoEventWireup="true" CodeFile="MenuAdmin2.ascx.cs" Inherits="Default_MenuAdmin" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeFile="MenuAdmin2.ascx.cs" Inherits="Default_MenuAdmin" %>
 
 <!-- Menu Admin com Bootstrap 5 -->
 <nav class="nav flex-column">

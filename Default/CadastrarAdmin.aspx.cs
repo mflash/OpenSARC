@@ -22,7 +22,7 @@ public partial class Default_CadastrarAdmin : System.Web.UI.Page
                 if (!User.IsInRole("Admin"))
                     Response.Redirect("~/Default/Erro.aspx?Erro=Usuário logado não possui privilégios de admin");
             }
-            else { cuUsuarios.RedirectUrl = "~/Default/PaginaInicial.aspx"; }
+            else { cuUsuarios.RedirectUrl = "~/Default/PaginaInicial2.aspx"; }
         }
     }
 

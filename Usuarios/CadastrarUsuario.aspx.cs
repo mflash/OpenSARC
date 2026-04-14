@@ -77,7 +77,7 @@ public partial class Usuarios_Default: System.Web.UI.Page
 
     protected void lbtnVoltar_Click1(object sender, EventArgs e)
     {
-        Response.Redirect("~/Default/PaginaInicial.aspx");
+        Response.Redirect("~/Default/PaginaInicial2.aspx");
     }
     private void EnviarEmail(string pessoa, string descricaoEvento, DateTime data)
     {

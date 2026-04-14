@@ -127,7 +127,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
 
     void calendar_CalendarioSelecionado(object sender, EventArgs e)
     {
-        Response.Redirect("../Default/PaginaInicial.aspx");
+        Response.Redirect("../Default/PaginaInicial2.aspx");
     }
     
     protected void lsLogin_LoggedOut(object sender, EventArgs e)

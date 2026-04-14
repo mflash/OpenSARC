@@ -874,11 +874,37 @@ public partial class _Default : System.Web.UI.Page
     }
     */
 
+    private List<RecursoItem> GroupRecursos(List<RecursoItem> lista)
+    {
+        var grupos = new List<RecursoItem>();
+        // Group by professor + discipline + resource type
+        var agrupados = lista.GroupBy(ri => new
+        {
+            ri.ResponsavelAtual,
+            ri.DescricaoAtual,
+            ri.Tipo,
+            ri.HorarioAtual
+        });
+
+        foreach (var grupo in agrupados)
+        {
+            RecursoItem base_ = grupo.First();
+            // Merge all NomeCurto values into one, e.g. "211.2/211.3"
+            base_.NomeCurto = string.Join("/", grupo.Select(ri => ri.NomeCurto));
+            // NomeCompleto: join all for status lookup
+            base_.NomeCompleto = grupo.First().NomeCompleto;
+            // If any resource is Retirado, reflect that in the group
+            if (grupo.Any(ri => ri.Status == StatusRecurso.Retirado))
+                base_.Status = StatusRecurso.Retirado;
+            else if (grupo.Any(ri => ri.Status == StatusRecurso.Disponivel))
+                base_.Status = StatusRecurso.Disponivel;
+            grupos.Add(base_);
+        }
+        return grupos;
+    }
+
     private void VisualizarAlocacoesData()
     {
-        SRRCDAO sRRCDAO = new SRRCDAO();
-        //string stat = sRRCDAO.GetUltimoStatus("Kit HDMI 02");
-        //Debug.WriteLine("Status: " + stat);
         DateTime now;
         if (forcaDataHora)
             now = dataHoraForcada;
@@ -942,7 +968,7 @@ public partial class _Default : System.Web.UI.Page
                     rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
                     rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Aula.TurmaId.Professor.Nome);
                     rec.ResponsavelAtualCurto = getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
-                    string stat = sRRCDAO.GetUltimoStatus(rec.NomeCompleto);
+                    string stat = logDataDAO.GetUltimoStatus(rec.NomeCompleto);
                     if (stat.StartsWith("Retirado"))
                         rec.Status = StatusRecurso.Retirado;
                     else if (stat.StartsWith("Disponível"))
@@ -965,7 +991,7 @@ public partial class _Default : System.Web.UI.Page
                     if (rec.ResponsavelAtual.ToLower().StartsWith("profa."))
                         rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(6).Trim();
                     rec.ResponsavelAtualCurto = getNomeCurtoProfessor(rec.ResponsavelAtual);
-                    string stat = sRRCDAO.GetUltimoStatus(rec.NomeCompleto);
+                    string stat = logDataDAO.GetUltimoStatus(rec.NomeCompleto);
                     if (stat.StartsWith("Retirado"))
                         rec.Status = StatusRecurso.Retirado;
                     else if (stat.StartsWith("Disponível"))
@@ -1015,8 +1041,11 @@ public partial class _Default : System.Web.UI.Page
         {
             container.InnerHtml = "";
   
-            listaRecursosAtual = listaRecursosAtual.OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
-            listaRecursosProx = listaRecursosProx.OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
+            ////listaRecursosAtual = listaRecursosAtual.OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
+            //listaRecursosProx = listaRecursosProx.OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
+
+            listaRecursosAtual = GroupRecursos(listaRecursosAtual).OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
+            listaRecursosProx = GroupRecursos(listaRecursosProx).OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
 
             string horarioAtual = "";
 

@@ -1041,9 +1041,10 @@ public partial class _Default : System.Web.UI.Page
         {
             container.InnerHtml = "";
   
-            ////listaRecursosAtual = listaRecursosAtual.OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
+            //listaRecursosAtual = listaRecursosAtual.OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
             //listaRecursosProx = listaRecursosProx.OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
 
+            // Agrupa recursos do mesmo professor
             listaRecursosAtual = GroupRecursos(listaRecursosAtual).OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
             listaRecursosProx = GroupRecursos(listaRecursosProx).OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
 

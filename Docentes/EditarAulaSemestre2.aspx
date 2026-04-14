@@ -368,6 +368,10 @@
     <asp:ScriptManager ID="ScriptManager1" runat="server" />
 
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <Triggers>
+            <asp:PostBackTrigger ControlID="Button1" />
+            <asp:PostBackTrigger ControlID="Button2" />
+        </Triggers>
         <ContentTemplate>
 
             <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="UpdatePanel1">

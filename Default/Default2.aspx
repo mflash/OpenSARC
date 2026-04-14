@@ -371,6 +371,11 @@
             font-size: medium;
         }
 
+        /* Card centralizado quando há apenas uma coluna */
+        .schedule-col {
+            max-width: 600px;
+        }
+
         .resource-container {
             display: flex;
             align-items: center;
@@ -454,10 +459,215 @@
         }
 
         .nomedisc {
-            font-size: small;
+            font-size: medium;
         }
 
+        /* Destaque ao passar o mouse - mesmo professor nas duas colunas */
+        .list-group-item.highlight {
+            background-color: #fff3cd;
+            transition: background-color 0.2s;
+        }
+
+        .list-group-item.highlight-same {
+            background-color: #d1e7dd;
+            transition: background-color 0.2s;
+        }
+
+        /* Esmaece itens não relacionados ao hover */
+        .list-group-item.dimmed {
+            opacity: 0.25;
+            transition: opacity 0.2s;
+        }
+
+        .list-group-item.highlight,
+        .list-group-item.highlight-same {
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+        /* Indicador flutuante de busca por teclado */
+        #indicadorBusca {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-size: 1rem;
+            font-family: monospace;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
     </style>
+
+    <script>
+        // Destaque cruzado de linhas pelo responsável
+        /*
+                function bindRowHighlight() {
+                    const items = document.querySelectorAll('.list-group-item[data-responsavel]');
+                    items.forEach(function (item) {
+                        item.addEventListener('mouseenter', function () {
+                            const responsavel = this.dataset.responsavel;
+                            document.querySelectorAll('.list-group-item[data-responsavel="' + responsavel + '"]')
+                                .forEach(function (match) {
+                                    match.classList.add(match === item ? 'highlight' : 'highlight-same');
+                                });
+                        });
+                        item.addEventListener('mouseleave', function () {
+                            const responsavel = this.dataset.responsavel;
+                            document.querySelectorAll('.list-group-item[data-responsavel="' + responsavel + '"]')
+                                .forEach(function (match) {
+                                    match.classList.remove('highlight', 'highlight-same');
+                                });
+                        });
+                    });
+                }
+        
+                // Rebinda após cada UpdatePanel (Timer)
+                if (typeof Sys !== 'undefined') {
+                    Sys.WebForms.PageRequestManager.getInstance().add_endRequest(bindRowHighlight);
+                }
+                document.addEventListener('DOMContentLoaded', bindRowHighlight);
+                */
+
+        /*
+        function bindRowHighlight() {
+            const items = document.querySelectorAll('.list-group-item[data-responsavel]');
+
+            items.forEach(function (item) {
+                item.addEventListener('mouseenter', function () {
+                    const responsavel = this.dataset.responsavel;
+
+                    items.forEach(function (other) {
+                        if (other.dataset.responsavel === responsavel) {
+                            other.classList.add(other === item ? 'highlight' : 'highlight-same');
+                            other.classList.remove('dimmed');
+                        } else {
+                            other.classList.add('dimmed');
+                            other.classList.remove('highlight', 'highlight-same');
+                        }
+                    });
+                });
+
+                item.addEventListener('mouseleave', function () {
+                    items.forEach(function (other) {
+                        other.classList.remove('highlight', 'highlight-same', 'dimmed');
+                    });
+                });
+            });
+        }
+
+        if (typeof Sys !== 'undefined') {
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(bindRowHighlight);
+        }
+        document.addEventListener('DOMContentLoaded', bindRowHighlight);
+        */
+
+        function bindRowHighlight() {
+            const items = () => document.querySelectorAll('.list-group-item[data-responsavel]');
+
+            // ── Hover cruzado ──────────────────────────────────────────
+            items().forEach(function (item) {
+                item.addEventListener('mouseenter', function () {
+                    if (termoBusca !== '') return;
+
+                    const responsavel = this.dataset.responsavel;
+                    items().forEach(function (other) {
+                        if (other.dataset.responsavel === responsavel) {
+                            other.classList.add(other === item ? 'highlight' : 'highlight-same');
+                            other.classList.remove('dimmed');
+                        } else {
+                            other.classList.add('dimmed');
+                            other.classList.remove('highlight', 'highlight-same');
+                        }
+                    });
+                });
+
+                item.addEventListener('mouseleave', function () {
+                    if (termoBusca !== '') return;
+                    items().forEach(function (other) {
+                        other.classList.remove('highlight', 'highlight-same', 'dimmed');
+                    });
+                });
+            });
+        }
+
+        // ── Busca global por teclado ───────────────────────────────────
+        let termoBusca = '';
+        let timerLimpar = null;
+
+        function atualizarIndicador() {
+            let indicador = document.getElementById('indicadorBusca');
+            if (!indicador) {
+                indicador = document.createElement('div');
+                indicador.id = 'indicadorBusca';
+                document.body.appendChild(indicador);
+            }
+            if (termoBusca === '') {
+                indicador.style.display = 'none';
+            } else {
+                indicador.textContent = '🔍 ' + termoBusca;
+                indicador.style.display = 'block';
+            }
+        }
+
+        function aplicarBusca() {
+            const allItems = document.querySelectorAll('.list-group-item[data-responsavel]');
+            if (termoBusca === '') {
+                allItems.forEach(i => i.classList.remove('search-match', 'highlight', 'highlight-same', 'dimmed'));
+                return;
+            }
+            const termo = termoBusca.toLowerCase();
+            allItems.forEach(function (item) {
+                const nome = item.dataset.responsavel.toLowerCase();
+                if (nome.includes(termo)) {
+                    item.classList.add('search-match');
+                    item.classList.remove('dimmed', 'highlight', 'highlight-same');
+                } else {
+                    item.classList.add('dimmed');
+                    item.classList.remove('search-match', 'highlight', 'highlight-same');
+                }
+            });
+        }
+
+        function limparBusca() {
+            termoBusca = '';
+            aplicarBusca();
+            atualizarIndicador();
+        }
+
+        document.addEventListener('keydown', function (e) {
+            // Ignora se o foco está num input/textarea
+            const tag = document.activeElement.tagName.toLowerCase();
+            if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+
+            if (e.key === 'Escape') {
+                limparBusca();
+                return;
+            }
+            if (e.key === 'Backspace') {
+                termoBusca = termoBusca.slice(0, -1);
+            } else if (e.key.length === 1) {
+                // Apenas caracteres imprimíveis
+                termoBusca += e.key;
+            } else {
+                return;
+            }
+
+            aplicarBusca();
+            atualizarIndicador();
+
+            // Limpa automaticamente após 5s de inatividade
+            clearTimeout(timerLimpar);
+            timerLimpar = setTimeout(limparBusca, 5000);
+        });
+
+        if (typeof Sys !== 'undefined') {
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(bindRowHighlight);
+        }
+        document.addEventListener('DOMContentLoaded', bindRowHighlight);
+    </script>
 
     <!-- ═══════════════════════════════════════
          LOGIN COMPACTO - UMA LINHA HORIZONTAL

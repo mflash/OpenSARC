@@ -333,6 +333,129 @@ public partial class _Default : System.Web.UI.Page
         return curto;
     }
 
+    public string getNomeMaisOuMenosCurtoDisciplina(string nome, int maxLen = 30)
+    {
+        if (nome.Length <= maxLen)
+            return nome;
+
+        HashSet<char> vogais = new HashSet<char>
+        {
+            'a', 'á', 'à', 'â', 'ã',
+            'e', 'é', 'ê',
+            'i', 'í',
+            'o', 'ó', 'ô', 'õ',
+            'u', 'ú'
+        };
+
+        HashSet<string> stopWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "da", "de", "do", "das", "dos", "à", "á", "e", "ao", "a", "para", "em", "na", "no", "-"
+        };
+
+        HashSet<string> numerals = new HashSet<string>
+        {
+            "I", "II", "III", "IV", "V", "VI", "VII", "VIII"
+        };
+
+        string[] palavras = nome.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        string numeral = "";
+        var partes = new List<string>();
+
+        foreach (string pal in palavras)
+        {
+            // Guarda numeral romano para colocar no final
+            if (numerals.Contains(pal))
+            {
+                numeral = " " + pal;
+                continue;
+            }
+            // Stopwords: inclui apenas se for a primeira palavra
+            if (stopWords.Contains(pal) && partes.Count > 0)
+                continue;
+
+            // Abrevia palavras longas: 4 letras + avança até consoante
+            if (pal.Length > 6)
+            {
+                string abrev = pal.Substring(0, 4);
+                int pos = 4;
+                while (pos < pal.Length)
+                {
+                    abrev += pal[pos];
+                    if (vogais.Contains(char.ToLower(pal[pos])))
+                        pos++;
+                    else
+                        break;
+                }
+                partes.Add(abrev + ".");
+            }
+            else
+            {
+                partes.Add(pal);
+            }
+        }
+
+        string curto = string.Join(" ", partes) + numeral;
+
+        // Trunca com reticências se ainda ultrapassar o limite
+        if (curto.Length > maxLen)
+            curto = curto.Substring(0, maxLen - 1) + "\u2026";
+
+        return curto;
+    }
+
+    /*
+    public string getNomeMaisOuMenosCurtoDisciplina(string nome)
+    {
+        if (nome.Length <= 15)
+            return nome;
+
+        // Conjunto completo de vogais com acentos do português
+        HashSet<char> vogais = new HashSet<char>
+        {
+            'a', 'á', 'à', 'â', 'ã',
+            'e', 'é', 'ê',
+            'i', 'í',
+            'o', 'ó', 'ô', 'õ',
+            'u', 'ú'
+        };
+
+        var partes = new List<string>();
+        foreach (string pal in nome.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
+        {
+            // Se a palavra tiver até 7 caracteres (ex: "de", "para", "(SI)") usa como está
+            if (pal.Length <= 7)
+            {
+                partes.Add(pal);
+                continue;
+            }
+
+            // Pega as 4 primeiras letras da palavra
+            string palCurta = pal.Substring(0, 4);
+
+            // A partir da quarta letra, avança enquanto for vogal (para terminar em consoante)
+            int pos = 4;
+            while (pos < pal.Length)
+            {
+                palCurta += pal[pos];
+                if (vogais.Contains(char.ToLower(pal[pos])))
+                    pos++;
+                else
+                    break;
+            }
+            partes.Add(palCurta + ".");
+        }
+
+        string curto = string.Join(" ", partes);
+
+        // Trunca com reticências se ainda for longo demais
+        if (curto.Length >= 35)
+            curto = curto.Substring(0, 33) + "\u2026";
+
+        return curto;
+    }
+    */
+
+    /*
     public string getNomeMaisOuMenosCurtoDisciplina(string nome)
     {
         if (nome.Length <= 15)
@@ -369,6 +492,7 @@ public partial class _Default : System.Web.UI.Page
             curto = curto.Substring(0, 33) + "\u2026";
         return curto;
     }
+    */
 
     /*
      * Retorna um nome curto para um professor, i.e. apenas nome e último sobrenome
@@ -380,7 +504,7 @@ public partial class _Default : System.Web.UI.Page
         if (nomes.Length == 1)
             return nome.Length <= 10 ? nome : nome.Substring(0, 10);
         string ultNome = nomes[nomes.Length - 1];
-        return nomes[0][0] + ". " + (ultNome.Length <= 8 ? ultNome : ultNome.Substring(0, 8) + ".");
+        return nomes[0][0] + ". " + (ultNome.Length <= 10 ? ultNome : ultNome.Substring(0, 10) + ".");
         ;
     }
 
@@ -802,126 +926,59 @@ public partial class _Default : System.Web.UI.Page
         List<RecursoItem> listaRecursosAtual = new List<RecursoItem>();
         List<RecursoItem> listaRecursosProx = new List<RecursoItem>();
 
-        foreach (Alocacao aloc in filtradaAtual)
+        foreach (List<Alocacao> lista in new List<List<Alocacao>> { filtradaAtual, filtradaProx })
         {
-  //          Debug.WriteLine("ALOC: " + aloc.Horario + " " + aloc.Recurso.Descricao);
-            RecursoItem rec = new RecursoItem();
-            if (aloc.Aula != null)
+            foreach (Alocacao aloc in lista)
             {
-                rec.NomeCompleto = aloc.Recurso.Descricao;
-                rec.HorarioAtual = aloc.Horario;
-                rec.NomeCurto = aloc.Recurso.Abrev;
-                rec.Tipo = aloc.Recurso.Tipo;
-                rec.DescricaoAtual = aloc.Aula.TurmaId.Disciplina.Nome + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
-                rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
-                rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Aula.TurmaId.Professor.Nome);
-                rec.ResponsavelAtualCurto = getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
-                string stat = sRRCDAO.GetUltimoStatus(rec.NomeCompleto);
-                switch(stat)
+                //          Debug.WriteLine("ALOC: " + aloc.Horario + " " + aloc.Recurso.Descricao);
+                RecursoItem rec = new RecursoItem();
+                if (aloc.Aula != null)
                 {
-                    case "Disponível":
-                        rec.Status = StatusRecurso.Disponivel;
-                        break;
-                    case "Retirado":
+                    rec.NomeCompleto = aloc.Recurso.Descricao;
+                    rec.HorarioAtual = aloc.Horario;
+                    rec.NomeCurto = aloc.Recurso.Abrev;
+                    rec.Tipo = aloc.Recurso.Tipo;
+                    rec.DescricaoAtual = aloc.Aula.TurmaId.Disciplina.Nome + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
+                    rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
+                    rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Aula.TurmaId.Professor.Nome);
+                    rec.ResponsavelAtualCurto = getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
+                    string stat = sRRCDAO.GetUltimoStatus(rec.NomeCompleto);
+                    if (stat.StartsWith("Retirado"))
                         rec.Status = StatusRecurso.Retirado;
-                        break;
-                    default:
+                    else if (stat.StartsWith("Disponível"))
+                        rec.Status = StatusRecurso.Disponivel;
+                    else
                         rec.Status = StatusRecurso.SemInfo;
-                        break;
+                    Debug.WriteLine("Status " + rec.NomeCompleto + " -> " + rec.Status);
                 }
-                Debug.WriteLine("Status " + rec.NomeCompleto + " -> " + stat);
-            }
-            else
-            {
-                rec.NomeCompleto = aloc.Recurso.Descricao;
-                rec.HorarioAtual = aloc.Horario;
-                rec.NomeCurto = aloc.Recurso.Abrev;
-                rec.Tipo = aloc.Recurso.Tipo;
-                rec.DescricaoAtual = aloc.Evento.Descricao;
-                rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Evento.Titulo);
-                rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Evento.Responsavel).Trim();
-                if (rec.ResponsavelAtual.ToLower().StartsWith("prof."))
-                    rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(5).Trim();
-                if (rec.ResponsavelAtual.ToLower().StartsWith("profa."))
-                    rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(6).Trim();
-                rec.ResponsavelAtualCurto = getNomeCurtoProfessor(rec.ResponsavelAtual);
-                string stat = sRRCDAO.GetUltimoStatus(rec.NomeCompleto);
-                switch(stat)
+                else
                 {
-                    case "Disponível":
-                        rec.Status = StatusRecurso.Disponivel;
-                        break;
-                    case "Retirado":
+                    rec.NomeCompleto = aloc.Recurso.Descricao;
+                    rec.HorarioAtual = aloc.Horario;
+                    rec.NomeCurto = aloc.Recurso.Abrev;
+                    rec.Tipo = aloc.Recurso.Tipo;
+                    rec.DescricaoAtual = aloc.Evento.Descricao;
+                    rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Evento.Titulo);
+                    rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Evento.Responsavel).Trim();
+                    if (rec.ResponsavelAtual.ToLower().StartsWith("prof."))
+                        rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(5).Trim();
+                    if (rec.ResponsavelAtual.ToLower().StartsWith("profa."))
+                        rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(6).Trim();
+                    rec.ResponsavelAtualCurto = getNomeCurtoProfessor(rec.ResponsavelAtual);
+                    string stat = sRRCDAO.GetUltimoStatus(rec.NomeCompleto);
+                    if (stat.StartsWith("Retirado"))
                         rec.Status = StatusRecurso.Retirado;
-                        break;
-                    default:
-                        rec.Status = StatusRecurso.SemInfo;
-                        break;
-                }
-                Debug.WriteLine("Status " + rec.NomeCompleto + " -> " + stat);
-            }
-            listaRecursosAtual.Add(rec);
-        }
-
-        Debug.WriteLine("");
-
-        foreach(Alocacao aloc in filtradaProx)
-        {
-//            Debug.WriteLine("ALOC: " + aloc.Horario + " " + aloc.Recurso.Descricao);
-            RecursoItem rec = new RecursoItem();
-            if (aloc.Aula != null)
-            {
-                rec.NomeCompleto = aloc.Recurso.Descricao;
-                rec.HorarioAtual = aloc.Horario;
-                rec.NomeCurto = aloc.Recurso.Abrev;
-                rec.Tipo = aloc.Recurso.Tipo;
-                rec.DescricaoAtual = aloc.Aula.TurmaId.Disciplina.Nome + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
-                rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
-                rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Aula.TurmaId.Professor.Nome);
-                rec.ResponsavelAtualCurto = getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
-                string stat = sRRCDAO.GetUltimoStatus(rec.NomeCompleto);
-                switch(stat)
-                {
-                    case "Disponível":
+                    else if (stat.StartsWith("Disponível"))
                         rec.Status = StatusRecurso.Disponivel;
-                        break;
-                    case "Retirado":
-                        rec.Status = StatusRecurso.Retirado;
-                        break;
-                    default:
+                    else
                         rec.Status = StatusRecurso.SemInfo;
-                        break;
+                    Debug.WriteLine("Status " + rec.NomeCompleto + " -> " + rec.Status);
                 }
+                if (lista == filtradaAtual)
+                    listaRecursosAtual.Add(rec);
+                else
+                    listaRecursosProx.Add(rec);
             }
-            else
-            {
-                rec.NomeCompleto = aloc.Recurso.Descricao;
-                rec.HorarioAtual = aloc.Horario;
-                rec.NomeCurto = aloc.Recurso.Abrev;
-                rec.Tipo = aloc.Recurso.Tipo;
-                rec.DescricaoAtual = aloc.Evento.Descricao;
-                rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Evento.Titulo);
-                rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Evento.Responsavel).Trim();
-                if (rec.ResponsavelAtual.ToLower().StartsWith("prof."))
-                    rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(5).Trim();
-                if (rec.ResponsavelAtual.ToLower().StartsWith("profa."))
-                    rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(6).Trim();
-                rec.ResponsavelAtualCurto = getNomeCurtoProfessor(rec.ResponsavelAtual);
-                string stat = sRRCDAO.GetUltimoStatus(rec.NomeCompleto);
-                switch(stat)
-                {
-                    case "Disponível":
-                        rec.Status = StatusRecurso.Disponivel;
-                        break;
-                    case "Retirado":
-                        rec.Status = StatusRecurso.Retirado;
-                        break;
-                    default:
-                        rec.Status = StatusRecurso.SemInfo;
-                        break;
-                }
-            }
-            listaRecursosProx.Add(rec);
         }
 
         // Se houver, copia reservas da 309/312 e 409/412 para 309 + 312 e 409 + 412
@@ -964,17 +1021,12 @@ public partial class _Default : System.Web.UI.Page
             string horarioAtual = "";
 
 //            Debug.WriteLine("Atual:");
+            
             foreach (var ri in listaRecursosAtual) {
                 //Debug.WriteLine(ri.NomeCurto + " (" + ri.Tipo+") -> " + ri.DescricaoAtualCurta + " - " + ri.ResponsavelAtual + " - " + ri.Status);
                 horarioAtual = ri.HorarioAtual;
                 break;
             }
-
-            /*
-            Debug.WriteLine("\nProx:");
-            foreach (var ri in listaRecursosProx)
-                Debug.WriteLine(ri.NomeCurto + " (" + ri.Tipo+ ") -> " + ri.DescricaoAtualCurta + " - " + ri.ResponsavelAtual  + " - " + ri.Status);
-            */
 
             int cont = 0;
             string block = "";
@@ -985,7 +1037,7 @@ public partial class _Default : System.Web.UI.Page
                     continue;
                 horarioAtual = lista[0].HorarioAtual;
                 
-                block += "<div class=\"col-md-6\">\n<div class=\"card shadow-sm schedule-card\">";
+                block += "<div class=\"col-md-6 schedule-col\">\n<div class=\"card shadow-sm schedule-card\">";
                 block += string.Format("<div class=\"schedule-header text-success\">HORÁRIO {0}</div>\n", horarioAtual);
 
                 block += "<div class=\"list-group list-group-flush\">\n";
@@ -993,8 +1045,19 @@ public partial class _Default : System.Web.UI.Page
                 foreach (RecursoItem ri in lista)
                 {
                     if (ri.NomeCompleto == null) continue;
-                    block += "<div class=\"list-group-item d-flex justify-content-between align-items-center nomedisc\">\n";
+
+                    // Sanitiza o nome para uso seguro como atributo HTML
+                    string responsavelAttr = ri.ResponsavelAtual != null
+                        ? ri.ResponsavelAtual.Replace("\"", "&quot;").Trim()
+                        : "";
+
+                    block += string.Format(
+                        "<div class=\"list-group-item d-flex justify-content-between align-items-center nomedisc\" data-responsavel=\"{0}\">\n",
+                        responsavelAttr);
                     block += string.Format("<span>{0} - {1}</span>\n<div class=\"resource-container\">\n", ri.ResponsavelAtualCurto, ri.DescricaoAtualCurta);
+
+//                    block += "<div class=\"list-group-item d-flex justify-content-between align-items-center nomedisc\">\n";
+//                    block += string.Format("<span>{0} - {1}</span>\n<div class=\"resource-container\">\n", ri.ResponsavelAtualCurto, ri.DescricaoAtualCurta);
                     string destaque = "bg-dark";
                     string destaqueText = "";
                     if ((cont == 1 && (ri.Status == StatusRecurso.Retirado)))
@@ -1037,7 +1100,7 @@ public partial class _Default : System.Web.UI.Page
                 block += "</div></div>";
             }
 
-            container.InnerHtml = string.Format("<div class=\"row g-4\">{0}</div>", block);
+            container.InnerHtml = string.Format("<div class=\"row g-4 justify-content-center\">{0}</div>", block);
 
 
             /*

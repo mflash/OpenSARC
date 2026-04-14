@@ -187,7 +187,7 @@
                             <div class="col-auto">
                                 <asp:DropDownList ID="cbTurma" runat="server"
                                     CssClass="tom-select"
-                                    Style="width: 500px;" />
+                                    Style="width: 800px;" />
                             </div>
                         </div>
                     </asp:Panel>

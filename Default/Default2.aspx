@@ -7,13 +7,16 @@
 
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphTitulo">
 
+    <!-- Recarrega a página inteira a cada 60 segundos -->
+    <meta http-equiv="refresh" content="60">
+
     <asp:ScriptManager ID="ScriptManager1" runat="server">
         <Scripts>
             <asp:ScriptReference Path="~/Scripts/tooltip.js" />
         </Scripts>
     </asp:ScriptManager>
 
-    <asp:Timer ID="Timer1" runat="server" Interval="60000" OnTick="Timer1_Tick">
+    <asp:Timer ID="Timer1" runat="server" Interval="60000" OnTick="Timer1_Tick" Enabled="false">
     </asp:Timer>
 
     <!-- Bootstrap 5 CSS -->
@@ -216,27 +219,27 @@
 
         /* Category Colors */
         .lab {
-            background-color: #97c7a657;
+            background-color: #97c7a6;
         }
 
         .notebook {
-            background-color: #6e90b057;
+            background-color: #6e90b0;
         }
 
         .cabo-hdmi {
-            background-color: #e1c48e57;
+            background-color: #e1c48e;
         }
 
         .cabo-vga {
-            background-color: #df9c7c57;
+            background-color: #df9c7c;
         }
 
         .auditorio {
-            background-color: #d27c6a57;
+            background-color: #d27c6a;
         }
 
         .speaker {
-            background-color: #b65c4657;
+            background-color: #b65c46;
         }
 
         .emusoedisp {
@@ -755,7 +758,7 @@
     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
         <ContentTemplate>
             <div class="text-center my-3">
-                <asp:Label ID="lblDataHora" runat="server" CssClass="text-muted fw-semibold" Visible="false"></asp:Label>
+                <asp:Label ID="lblDataHora" runat="server" CssClass="text-muted fw-semibold" Visible="true"></asp:Label>
             </div>
 
             <!-- Dashboard de Recursos -->

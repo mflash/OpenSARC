@@ -939,6 +939,19 @@ public partial class _Default : System.Web.UI.Page
             }
         if (pos == horarios.Count)
             pos--;
+
+        Debug.WriteLine("atual: " + horariosTime[pos-1]);
+        Debug.WriteLine("prox: " + horariosTime[pos]);
+        TimeSpan tsAtual = nowTime.Subtract(horariosTime[pos]);
+        TimeSpan tsProx = horariosTime[pos+1].Subtract(nowTime);
+
+        Debug.WriteLine("tsAtual: " + tsAtual);
+        Debug.WriteLine("tsProx: " + tsProx);
+
+        string strTsAtual = "";
+        string strTsProx = "";
+
+        if(tsAtual.TotalMinutes > 0)
         lblDataHora.Text = now.Add(new TimeSpan(0, 0, 0, 0)).ToString() + " - " + horarios[pos];
 
         //pos = 5;
@@ -975,7 +988,7 @@ public partial class _Default : System.Web.UI.Page
                         rec.Status = StatusRecurso.Disponivel;
                     else
                         rec.Status = StatusRecurso.SemInfo;
-                    Debug.WriteLine("Status " + rec.NomeCompleto + " -> " + rec.Status);
+                    //Debug.WriteLine("Status " + rec.NomeCompleto + " -> " + rec.Status);
                 }
                 else
                 {
@@ -998,7 +1011,7 @@ public partial class _Default : System.Web.UI.Page
                         rec.Status = StatusRecurso.Disponivel;
                     else
                         rec.Status = StatusRecurso.SemInfo;
-                    Debug.WriteLine("Status " + rec.NomeCompleto + " -> " + rec.Status);
+                    //Debug.WriteLine("Status " + rec.NomeCompleto + " -> " + rec.Status);
                 }
                 if (lista == filtradaAtual)
                     listaRecursosAtual.Add(rec);
@@ -1086,10 +1099,11 @@ public partial class _Default : System.Web.UI.Page
                         responsavelAttr);
                     block += string.Format("<span>{0} - {1}</span>\n<div class=\"resource-container\">\n", ri.ResponsavelAtualCurto, ri.DescricaoAtualCurta);
 
-//                    block += "<div class=\"list-group-item d-flex justify-content-between align-items-center nomedisc\">\n";
-//                    block += string.Format("<span>{0} - {1}</span>\n<div class=\"resource-container\">\n", ri.ResponsavelAtualCurto, ri.DescricaoAtualCurta);
-                    string destaque = "bg-dark";
+                    //                    block += "<div class=\"list-group-item d-flex justify-content-between align-items-center nomedisc\">\n";
+                    //                    block += string.Format("<span>{0} - {1}</span>\n<div class=\"resource-container\">\n", ri.ResponsavelAtualCurto, ri.DescricaoAtualCurta);
+                    string destaque = "";// bg-dark";
                     string destaqueText = "";
+                    string corBadge = "bg-dark";
                     if ((cont == 1 && (ri.Status == StatusRecurso.Retirado)))
                     {
                         destaque = "badge-active";
@@ -1101,29 +1115,39 @@ public partial class _Default : System.Web.UI.Page
                     {
                         case 'A':
                             recursoIcone = "bi-easel2";
+                            corBadge = "auditorio";
                             break;
                         case 'H':
                             recursoIcone = "bi-hdmi";
+                            corBadge = "cabo-hdmi";
                             break;
                         case 'L':
                         case 'D':
                             if (ri.NomeCurto.StartsWith("RN"))
+                            {
                                 recursoIcone = "bi-laptop";
+                                corBadge = "notebook";
+                            }
                             else
+                            {
                                 recursoIcone = "bi-pc-display";
+                                corBadge = "lab";
+                            }
                             break;
                         case 'N':
                             recursoIcone = "bi-laptop";
+                            corBadge = "notebook";
                             break;
                         case 'S':
                             recursoIcone = "bi-speaker";
+                            corBadge = "speaker";
                             break;
 
                     }
                     if (ri.NomeCurto.StartsWith("211"))
                         recursoIcone = "bi-pc-display";
                     block += string.Format("<i class=\"bi {0} resource-icon {1}\"></i>", recursoIcone, destaqueText);
-                    block += string.Format("<span class=\"badge {1} resource-tag\">{0}</span>\n</div>\n</div>", ri.NomeCurto, destaque);
+                    block += string.Format("<span class=\"badge {1} resource-tag {2}\">{0}</span>\n</div>\n</div>", ri.NomeCurto, destaque, corBadge);
                 }
 
                 block += "</div>";

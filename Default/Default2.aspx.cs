@@ -925,6 +925,7 @@ public partial class _Default : System.Web.UI.Page
 
         // Identifica o período de aula atual
         int pos;
+        TimeSpan ts = nowTime;
         if (nowTime < horariosTime[0])
             pos = 0;
         else
@@ -932,17 +933,27 @@ public partial class _Default : System.Web.UI.Page
             {
                 if (nowTime >= horariosTime[pos] && nowTime < horariosTime[pos + 1])
                 {
-                    TimeSpan ts = nowTime.Subtract(horariosTime[pos]);
+                    ts = nowTime.Subtract(horariosTime[pos]);
                     Debug.WriteLine("Timedelta: " + ts);
                     if (ts.TotalMinutes > 30)
                         pos++;
                     break;
                 }
             }
+
         if (pos == horarios.Count)
             pos--;
 
-        //Debug.WriteLine("atual: " + horariosTime[pos - 1]);
+        int posAula = pos;
+
+        TimeSpan deltaNow = nowTime.Subtract(horariosTime[posAula]);
+        TimeSpan deltaProx = nowTime;
+        Debug.WriteLine("deltaNow: " + deltaNow);
+        if (posAula < horarios.Count - 1)
+        {
+            deltaProx = nowTime.Subtract(horariosTime[posAula + 1]);
+            Debug.WriteLine("deltaProx: " + deltaProx);
+        }
         //Debug.WriteLine("prox: " + horariosTime[pos]);
         //TimeSpan tsAtual = nowTime.Subtract(horariosTime[pos]);
         //TimeSpan tsProx = horariosTime[pos + 1].Subtract(nowTime);
@@ -1076,15 +1087,30 @@ public partial class _Default : System.Web.UI.Page
 
             int cont = 0;
             string block = "";
+            TimeSpan noventa = TimeSpan.FromMinutes(90);
             foreach (List<RecursoItem> lista in new List<List<RecursoItem>> { listaRecursosAtual, listaRecursosProx })
             {
                 cont += 1;
                 if (lista.Count == 0)
                     continue;
                 horarioAtual = lista[0].HorarioAtual;
+                string infoHorario = deltaNow.ToString();
+                if(deltaNow.TotalMinutes > 0)
+                {
+                    infoHorario = "<i class=\"bi bi-hourglass-split\"></i>" + noventa.Subtract(deltaNow).ToString();
+                }
+                else if(deltaNow.TotalMinutes < 0)
+                {
+                    infoHorario = "<i class=\"bi bi-hourglass-split\"></i>" + deltaNow.ToString();
+                }
+
+                if (lista == listaRecursosProx && deltaProx != nowTime)
+                {
+                    infoHorario = "<i class=\"bi bi-hourglass-top\"></i>" + deltaProx.ToString();
+                }
 
                 block += "<div class=\"col-md-6 schedule-col\">\n<div class=\"card shadow-sm schedule-card\">";
-                block += string.Format("<div class=\"schedule-header text-success\">HORÁRIO {0}</div>\n", horarioAtual);
+                block += string.Format("<div class=\"schedule-header text-success\">HORÁRIO {0} {1}</div>\n", horarioAtual, infoHorario);
 
                 block += "<div class=\"list-group list-group-flush\">\n";
 

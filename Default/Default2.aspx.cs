@@ -942,8 +942,8 @@ public partial class _Default : System.Web.UI.Page
         if (pos == horarios.Count)
             pos--;
 
-        Debug.WriteLine("atual: " + horariosTime[pos - 1]);
-        Debug.WriteLine("prox: " + horariosTime[pos]);
+        //Debug.WriteLine("atual: " + horariosTime[pos - 1]);
+        //Debug.WriteLine("prox: " + horariosTime[pos]);
         //TimeSpan tsAtual = nowTime.Subtract(horariosTime[pos]);
         //TimeSpan tsProx = horariosTime[pos + 1].Subtract(nowTime);
 

@@ -1,4 +1,4 @@
-// $Id$
+Ôªø// $Id$
 using BusinessData.BusinessLogic;
 using BusinessData.DataAccess;
 using BusinessData.Distribuicao.Entities;
@@ -58,7 +58,7 @@ public partial class _Default : System.Web.UI.Page
     private Dictionary<char, string[]> dicIcones = new Dictionary<char, string[]>
         {
             { 'L', new string[] {"lab", "Labs", "#feff00" } },
-            { 'A', new string[] { "auditorio", "AuditÛrios", "#FFEEDD" } },
+            { 'A', new string[] { "auditorio", "Audit√≥rios", "#FFEEDD" } },
             { 'N', new string[] { "notebook", "Notebooks", "#CEFD30" } },
             { 'K', new string[] { "cabo-vga", "Kits VGA", "#CA2098" } },
             { 'H', new string[] { "cabo-hdmi", "Kits HDMI", "#F97845" } },
@@ -125,7 +125,7 @@ public partial class _Default : System.Web.UI.Page
         MembershipUser usr = Membership.GetUser(loginEntrada.UserName);
         if (usr != null && (!usr.IsApproved || usr.IsLockedOut))
         {
-            ScriptManager.RegisterClientScriptBlock(this, GetType(), "Conta Bloqueada", "alert(' Sua conta est· bloqueada. Contate o administrador do sistema para mais informaÁıes');", true);
+            ScriptManager.RegisterClientScriptBlock(this, GetType(), "Conta Bloqueada", "alert(' Sua conta est√° bloqueada. Contate o administrador do sistema para mais informa√ß√µes');", true);
         }
 
     }
@@ -235,7 +235,7 @@ public partial class _Default : System.Web.UI.Page
                 lblResponsavel.Text = aloc.Evento.AutorId.Nome;
             }
             lblStatus.Text = logDataDAO.GetUltimoStatus(lblRecurso.Text);
-            if (lblStatus.Text == "DisponÌvel")
+            if (lblStatus.Text == "Dispon√≠vel")
                 e.Item.ForeColor = Color.Green;
             else
                 e.Item.ForeColor = Color.Red;
@@ -271,11 +271,12 @@ public partial class _Default : System.Web.UI.Page
     {
         if (nome.Length <= 20)
             return nome;
-        char[] vogais = { 'a', '·', 'e', 'Í', 'i', 'o', 'u' };
+        char[] vogais = { 'a', '√°', 'e', '√™', 'i', 'o', 'u' };
+        //string[] vogais = { "a", "√°", "e", "√™", "i", "o", "u" };
         string curto = "";
         foreach (string pal in nome.Split())
         {
-            // Se a palavra tiver menos de 7 caracteres (ex: "de", "para", "(SI)") usa como est·
+            // Se a palavra tiver menos de 7 caracteres (ex: "de", "para", "(SI)") usa como est√°
             string palCurta = pal;
             if (pal.Length > 7)
             {
@@ -286,13 +287,13 @@ public partial class _Default : System.Web.UI.Page
                 while (pos < pal.Length)
                 {
                     palCurta += pal[pos];
-                    if (pal[pos] == 'a' || pal[pos] == '·' || pal[pos] == 'e' || pal[pos] == 'Í'
-                       || pal[pos] == 'o' || pal[pos] == 'Û' || pal[pos] == 'u')
+                    if (pal[pos] == 'a' ||  pal[pos] == 'e' || pal[pos]=='√°' || pal[pos]=='√™'
+                       || pal[pos] == 'o' || pal[pos] == 'u')
                         pos++;
                     else break;
                 }
                 // Se terminar com uma vogal, acrescenta mais uma letra
-                //if (palCurta[2] == 'a' || palCurta[2] == '·' || palCurta[2] == 'e' || palCurta[2] == 'i' || palCurta[2] == 'o'
+                //if (palCurta[2] == 'a' || palCurta[2] == '√°' || palCurta[2] == 'e' || palCurta[2] == 'i' || palCurta[2] == 'o'
                 //    || palCurta[2] == 'u')
                 //    palCurta = pal.Substring(0, 4);
                 palCurta += ". ";
@@ -308,13 +309,14 @@ public partial class _Default : System.Web.UI.Page
         if (nome.Length <= 40)
             return nome;
         HashSet<String> stopWords = new HashSet<string> {
-            "da", "de", "‡", "·", "e", "ao", "a", "para", "em", "-"
+            "da", "de", "√†", "√°", "e", "ao", "a", "para", "em", "-"
         };
         HashSet<String> numerals = new HashSet<string>
         {
             "I", "II", "III", "IV", "V", "VI"
         };
-        char[] vogais = { 'a', '·', 'e', 'Í', 'i', 'o', 'u' };
+        char[] vogais = { 'a', '√°', 'e', '√™', 'i', 'o', 'u' };
+        //string[] vogais = { "a", "√°", "e", "√™", "i", "o", "u" };
         string curto = "";
         foreach (string pal in nome.Split())
         {
@@ -340,16 +342,16 @@ public partial class _Default : System.Web.UI.Page
 
         HashSet<char> vogais = new HashSet<char>
         {
-            'a', '·', '‡', '‚', '„',
-            'e', 'È', 'Í',
-            'i', 'Ì',
-            'o', 'Û', 'Ù', 'ı',
-            'u', '˙'
+            'a', '√°', '√†', '√¢', '√£',
+            'e', '√©', '√™',
+            'i', '√≠',
+            'o', '√≥', '√¥', '√µ',
+            'u', '√∫'
         };
 
         HashSet<string> stopWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
-            "da", "de", "do", "das", "dos", "‡", "·", "e", "ao", "a", "para", "em", "na", "no", "-"
+            "da", "de", "do", "das", "dos", "√†", "√°", "e", "ao", "a", "para", "em", "na", "no", "-"
         };
 
         HashSet<string> numerals = new HashSet<string>
@@ -373,7 +375,7 @@ public partial class _Default : System.Web.UI.Page
             if (stopWords.Contains(pal) && partes.Count > 0)
                 continue;
 
-            // Abrevia palavras longas: 4 letras + avanÁa atÈ consoante
+            // Abrevia palavras longas: 4 letras + avan√ßa at√© consoante
             if (pal.Length > 6)
             {
                 string abrev = pal.Substring(0, 4);
@@ -396,7 +398,7 @@ public partial class _Default : System.Web.UI.Page
 
         string curto = string.Join(" ", partes) + numeral;
 
-        // Trunca com reticÍncias se ainda ultrapassar o limite
+        // Trunca com retic√™ncias se ainda ultrapassar o limite
         if (curto.Length > maxLen)
             curto = curto.Substring(0, maxLen - 1) + "\u2026";
 
@@ -409,20 +411,20 @@ public partial class _Default : System.Web.UI.Page
         if (nome.Length <= 15)
             return nome;
 
-        // Conjunto completo de vogais com acentos do portuguÍs
+        // Conjunto completo de vogais com acentos do portugu√™s
         HashSet<char> vogais = new HashSet<char>
         {
-            'a', '·', '‡', '‚', '„',
-            'e', 'È', 'Í',
-            'i', 'Ì',
-            'o', 'Û', 'Ù', 'ı',
-            'u', '˙'
+            'a', '√°', '√†', '√¢', '√£',
+            'e', '√©', '√™',
+            'i', '√≠',
+            'o', '√≥', '√¥', '√µ',
+            'u', '√∫'
         };
 
         var partes = new List<string>();
         foreach (string pal in nome.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
         {
-            // Se a palavra tiver atÈ 7 caracteres (ex: "de", "para", "(SI)") usa como est·
+            // Se a palavra tiver at√© 7 caracteres (ex: "de", "para", "(SI)") usa como est√°
             if (pal.Length <= 7)
             {
                 partes.Add(pal);
@@ -432,7 +434,7 @@ public partial class _Default : System.Web.UI.Page
             // Pega as 4 primeiras letras da palavra
             string palCurta = pal.Substring(0, 4);
 
-            // A partir da quarta letra, avanÁa enquanto for vogal (para terminar em consoante)
+            // A partir da quarta letra, avan√ßa enquanto for vogal (para terminar em consoante)
             int pos = 4;
             while (pos < pal.Length)
             {
@@ -447,7 +449,7 @@ public partial class _Default : System.Web.UI.Page
 
         string curto = string.Join(" ", partes);
 
-        // Trunca com reticÍncias se ainda for longo demais
+        // Trunca com retic√™ncias se ainda for longo demais
         if (curto.Length >= 35)
             curto = curto.Substring(0, 33) + "\u2026";
 
@@ -460,11 +462,11 @@ public partial class _Default : System.Web.UI.Page
     {
         if (nome.Length <= 15)
             return nome;
-        char[] vogais = { 'a', '·', 'e', 'Í', 'i', 'o', 'u' };
+        char[] vogais = { 'a', '√°', 'e', '√™', 'i', 'o', 'u' };
         string curto = "";
         foreach (string pal in nome.Split())
         {
-            // Se a palavra tiver menos de 7 caracteres (ex: "de", "para", "(SI)") usa como est·
+            // Se a palavra tiver menos de 7 caracteres (ex: "de", "para", "(SI)") usa como est√°
             string palCurta = pal;
             if (pal.Length > 7)
             {
@@ -475,13 +477,13 @@ public partial class _Default : System.Web.UI.Page
                 while (pos < pal.Length)
                 {
                     palCurta += pal[pos];
-                    if (pal[pos] == 'a' || pal[pos] == '·' || pal[pos] == 'e' || pal[pos] == 'Í'
-                       || pal[pos] == 'o' || pal[pos] == 'Û' || pal[pos] == 'u')
+                    if (pal[pos] == 'a' || pal[pos] == '√°' || pal[pos] == 'e' || pal[pos] == '√™'
+                       || pal[pos] == 'o' || pal[pos] == '√≥' || pal[pos] == 'u')
                         pos++;
                     else break;
                 }
                 // Se terminar com uma vogal, acrescenta mais uma letra
-                //if (palCurta[2] == 'a' || palCurta[2] == '·' || palCurta[2] == 'e' || palCurta[2] == 'i' || palCurta[2] == 'o'
+                //if (palCurta[2] == 'a' || palCurta[2] == '√°' || palCurta[2] == 'e' || palCurta[2] == 'i' || palCurta[2] == 'o'
                 //    || palCurta[2] == 'u')
                 //    palCurta = pal.Substring(0, 4);
                 palCurta += ". ";
@@ -495,7 +497,7 @@ public partial class _Default : System.Web.UI.Page
     */
 
     /*
-     * Retorna um nome curto para um professor, i.e. apenas nome e ˙ltimo sobrenome
+     * Retorna um nome curto para um professor, i.e. apenas nome e √∫ltimo sobrenome
      */
     public string getNomeCurtoProfessor(string nome)
     {
@@ -528,10 +530,10 @@ public partial class _Default : System.Web.UI.Page
     {
         List<Alocacao> filtradaAtual = new List<Alocacao>();
         bool achei = false;
-        // Procura o primeiro perÌodo com reservas
+        // Procura o primeiro per√≠odo com reservas
         while (filtradaAtual.Count == 0)
         {
-            if (pos > horarios.Count - 1) // n„o h· mais hor·rios neste dia
+            if (pos > horarios.Count - 1) // n√£o h√° mais hor√°rios neste dia
                 break;
             string horarioAtual = horarios[pos];
             foreach (Alocacao aloc in lista)
@@ -624,7 +626,7 @@ public partial class _Default : System.Web.UI.Page
         //nowTime = nowTime.Add(new TimeSpan(2,0,0)); // para testar com outros horarios
         //nowTime = nowTime.Subtract(new TimeSpan(0,12,0));
 
-        // Identifica o perÌodo de aula atual
+        // Identifica o per√≠odo de aula atual
         int pos;
         if (nowTime < horariosTime[0])
             pos = 0;
@@ -658,7 +660,7 @@ public partial class _Default : System.Web.UI.Page
             {
                 SortedDictionary<string, RecursoItem> dicRecurso;
                 char tipo = aloc.Recurso.Tipo;
-                if (tipo == 'D' || tipo == 'X') // sala dupla È lab
+                if (tipo == 'D' || tipo == 'X') // sala dupla √© lab
                     tipo = 'L';
                 if (!dic.ContainsKey(tipo))
                 {
@@ -702,7 +704,7 @@ public partial class _Default : System.Web.UI.Page
             {
                 SortedDictionary<string, RecursoItem> dicRecurso;
                 char tipo = aloc.Recurso.Tipo;
-                if (tipo == 'D' || tipo == 'X') // sala dupla È lab
+                if (tipo == 'D' || tipo == 'X') // sala dupla √© lab
                     tipo = 'L';
                 if (!dic.ContainsKey(tipo))
                 {
@@ -758,7 +760,7 @@ public partial class _Default : System.Web.UI.Page
         }
         //if (pos < horarios.Count - 1) // se nao estivermos ja no ultimo horario... 
         //    {
-        // lblAtual.Text = "Hor·rio atual: " + horarioAtual;//+" - "+nowTime.ToString();
+        // lblAtual.Text = "Hor√°rio atual: " + horarioAtual;//+" - "+nowTime.ToString();
         // lblProximo.Text = "Proximo horario: " + horarioProx;
         if (filtradaAtual.Count == 0 && filtradaProx.Count == 0)
         {
@@ -766,7 +768,7 @@ public partial class _Default : System.Web.UI.Page
         <div class='row'>
             <div class='category'></div>
             <div class='grid'>
-                <div class='block new-category'><span>N„o h· recursos alocados para hoje</span></div>
+                <div class='block new-category'><span>N√£o h√° recursos alocados para hoje</span></div>
             </div>
         </div>";
             container.InnerHtml = newContent;
@@ -861,7 +863,7 @@ public partial class _Default : System.Web.UI.Page
                         retiradaStatus = logDataDAO.GetUltimoStatus(recItem.NomeCompleto);
                     tooltip += "\n" + retiradaStatus;
                     string colorStatus = "retirado";
-                    if (retiradaStatus == "DisponÌvel")
+                    if (retiradaStatus == "Dispon√≠vel")
                         colorStatus = "disponivel";
                     row += string.Format(@"
                     <div class='block {0} {1}'>{3} <span class='recurso'>{4}</span><div class='tooltip'>{2}</div></div>
@@ -921,7 +923,7 @@ public partial class _Default : System.Web.UI.Page
         //nowTime = nowTime.Add(new TimeSpan(2,0,0)); // para testar com outros horarios
         //nowTime = nowTime.Subtract(new TimeSpan(0,12,0));
 
-        // Identifica o perÌodo de aula atual
+        // Identifica o per√≠odo de aula atual
         int pos;
         if (nowTime < horariosTime[0])
             pos = 0;
@@ -940,19 +942,19 @@ public partial class _Default : System.Web.UI.Page
         if (pos == horarios.Count)
             pos--;
 
-        Debug.WriteLine("atual: " + horariosTime[pos-1]);
+        Debug.WriteLine("atual: " + horariosTime[pos - 1]);
         Debug.WriteLine("prox: " + horariosTime[pos]);
-        TimeSpan tsAtual = nowTime.Subtract(horariosTime[pos]);
-        TimeSpan tsProx = horariosTime[pos+1].Subtract(nowTime);
+        //TimeSpan tsAtual = nowTime.Subtract(horariosTime[pos]);
+        //TimeSpan tsProx = horariosTime[pos + 1].Subtract(nowTime);
 
-        Debug.WriteLine("tsAtual: " + tsAtual);
-        Debug.WriteLine("tsProx: " + tsProx);
+        //Debug.WriteLine("tsAtual: " + tsAtual);
+        //Debug.WriteLine("tsProx: " + tsProx);
 
-        string strTsAtual = "";
-        string strTsProx = "";
+        //string strTsAtual = "";
+        //string strTsProx = "";
 
-        if(tsAtual.TotalMinutes > 0)
-        lblDataHora.Text = now.Add(new TimeSpan(0, 0, 0, 0)).ToString() + " - " + horarios[pos];
+        //if (tsAtual.TotalMinutes > 0)
+        //    lblDataHora.Text = now.Add(new TimeSpan(0, 0, 0, 0)).ToString() + " - " + horarios[pos];
 
         //pos = 5;
         List<Alocacao> filtradaAtual = ProcuraProximoHorario(listaAlocacoes, ref pos);
@@ -984,7 +986,7 @@ public partial class _Default : System.Web.UI.Page
                     string stat = logDataDAO.GetUltimoStatus(rec.NomeCompleto);
                     if (stat.StartsWith("Retirado"))
                         rec.Status = StatusRecurso.Retirado;
-                    else if (stat.StartsWith("DisponÌvel"))
+                    else if (stat.StartsWith("Dispon√≠vel"))
                         rec.Status = StatusRecurso.Disponivel;
                     else
                         rec.Status = StatusRecurso.SemInfo;
@@ -1007,7 +1009,7 @@ public partial class _Default : System.Web.UI.Page
                     string stat = logDataDAO.GetUltimoStatus(rec.NomeCompleto);
                     if (stat.StartsWith("Retirado"))
                         rec.Status = StatusRecurso.Retirado;
-                    else if (stat.StartsWith("DisponÌvel"))
+                    else if (stat.StartsWith("Dispon√≠vel"))
                         rec.Status = StatusRecurso.Disponivel;
                     else
                         rec.Status = StatusRecurso.SemInfo;
@@ -1037,7 +1039,7 @@ public partial class _Default : System.Web.UI.Page
         */
         //if (pos < horarios.Count - 1) // se nao estivermos ja no ultimo horario... 
         //    {
-        // lblAtual.Text = "Hor·rio atual: " + horarioAtual;//+" - "+nowTime.ToString();
+        // lblAtual.Text = "Hor√°rio atual: " + horarioAtual;//+" - "+nowTime.ToString();
         // lblProximo.Text = "Proximo horario: " + horarioProx;
         if (filtradaAtual.Count == 0 && filtradaProx.Count == 0)
         {
@@ -1045,7 +1047,7 @@ public partial class _Default : System.Web.UI.Page
         <div class='row'>
             <div class='category'></div>
             <div class='grid'>
-                <div class='block new-category'><span>N„o h· recursos alocados para hoje</span></div>
+                <div class='block new-category'><span>N√£o h√° recursos alocados para hoje</span></div>
             </div>
         </div>";
             container.InnerHtml = newContent;
@@ -1053,7 +1055,7 @@ public partial class _Default : System.Web.UI.Page
         else
         {
             container.InnerHtml = "";
-  
+
             //listaRecursosAtual = listaRecursosAtual.OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
             //listaRecursosProx = listaRecursosProx.OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
 
@@ -1063,9 +1065,10 @@ public partial class _Default : System.Web.UI.Page
 
             string horarioAtual = "";
 
-//            Debug.WriteLine("Atual:");
-            
-            foreach (var ri in listaRecursosAtual) {
+            //            Debug.WriteLine("Atual:");
+
+            foreach (var ri in listaRecursosAtual)
+            {
                 //Debug.WriteLine(ri.NomeCurto + " (" + ri.Tipo+") -> " + ri.DescricaoAtualCurta + " - " + ri.ResponsavelAtual + " - " + ri.Status);
                 horarioAtual = ri.HorarioAtual;
                 break;
@@ -1079,9 +1082,9 @@ public partial class _Default : System.Web.UI.Page
                 if (lista.Count == 0)
                     continue;
                 horarioAtual = lista[0].HorarioAtual;
-                
+
                 block += "<div class=\"col-md-6 schedule-col\">\n<div class=\"card shadow-sm schedule-card\">";
-                block += string.Format("<div class=\"schedule-header text-success\">HOR¡RIO {0}</div>\n", horarioAtual);
+                block += string.Format("<div class=\"schedule-header text-success\">HOR√ÅRIO {0}</div>\n", horarioAtual);
 
                 block += "<div class=\"list-group list-group-flush\">\n";
 
@@ -1156,71 +1159,6 @@ public partial class _Default : System.Web.UI.Page
 
             container.InnerHtml = string.Format("<div class=\"row g-4 justify-content-center\">{0}</div>", block);
 
-
-            /*
-            string innerText = "";
-                    string tooltip = "";
-                    if (ocultaDescricaoCurta)
-                    {
-                        recItem.DescricaoAtualCurta = "";
-                        recItem.DescricaoProxCurta = "";
-                    }
-                    else
-                    {
-                        recItem.ResponsavelAtualCurto += " \u00b7 ";
-                        recItem.ResponsavelProxCurto += " \u00b7 ";
-                        recItem.ResponsavelAtual += " \u00b7 ";
-                        recItem.ResponsavelProx += " \u00b7 ";
-                    }
-                    switch (recItem.Status)
-                    {
-                        case StatusRecurso.Disponivel:
-                            innerText = "";
-                            break;
-                        case StatusRecurso.DisponivelEReservado:
-                            tooltip = recItem.HorarioProx + ": " + recItem.ResponsavelProx + recItem.DescricaoProx;
-                            if (usaDescricaoLonga)
-                                innerText = "<b>" + recItem.HorarioProx + "</b>: " + recItem.ResponsavelProx + recItem.DescricaoProx;
-                            else
-                                innerText = "<b>" + recItem.HorarioProx + "</b>: " + recItem.ResponsavelProxCurto + recItem.DescricaoProxCurta;
-                            break;
-                        case StatusRecurso.EmUsoEDisponivel:
-                            tooltip = recItem.HorarioAtual + ": " + recItem.ResponsavelAtual + recItem.DescricaoAtual;
-                            if (usaDescricaoLonga)
-                                innerText = "<b>" + recItem.HorarioAtual + "</b>: " + recItem.ResponsavelAtual + recItem.DescricaoAtual;
-                            else
-                                innerText = "<b>" + recItem.HorarioAtual + "</b>: " + recItem.ResponsavelAtualCurto + recItem.DescricaoAtualCurta;
-                            break;
-                        case StatusRecurso.EmUsoEReservado:
-                            if (usaDescricaoLonga)
-                            {
-                                innerText = "<b>" + recItem.HorarioAtual + "</b>: " + recItem.ResponsavelAtual + recItem.DescricaoAtual;
-                                innerText += "<br><b>" + recItem.HorarioProx + "</b>: " + recItem.ResponsavelProx + recItem.DescricaoProx;
-                            }
-                            else
-                            {
-                                innerText = "<b>" + recItem.HorarioAtual + "</b>: " + recItem.ResponsavelAtualCurto + recItem.DescricaoAtualCurta;
-                                innerText += "<br><b>" + recItem.HorarioProx + "</b>: " + recItem.ResponsavelProxCurto + recItem.DescricaoProxCurta;
-                            }
-                            tooltip = recItem.HorarioAtual + ": " + recItem.ResponsavelAtual + recItem.DescricaoAtual;
-                            tooltip += "\n" + recItem.HorarioProx + ": " + recItem.ResponsavelProx + recItem.DescricaoProx;
-                            break;
-                    }
-                    string retiradaStatus = "";
-                    //Debug.WriteLine("NOME RECURSO: " + recItem.DescricaoAtual + " [" + recItem.NomeCompleto + "]");
-                    if (recItem.NomeCompleto != null)
-                        retiradaStatus = logDataDAO.GetUltimoStatus(recItem.NomeCompleto);
-                    tooltip += "\n" + retiradaStatus;
-                    string colorStatus = "retirado";
-                    if (retiradaStatus == "DisponÌvel")
-                        colorStatus = "disponivel";
-                    row += string.Format(@"
-                    <div class='block {0} {1}'>{3} <span class='recurso'>{4}</span><div class='tooltip'>{2}</div></div>
-                    ", dicCoresStatus[recItem.Status], colorStatus, tooltip, recKV.Key, innerText);
-                }
-                row += "</div></div>\n";
-                container.InnerHtml += row;
-            }*/
         }
     }
 }

@@ -1097,16 +1097,16 @@ public partial class _Default : System.Web.UI.Page
                 string infoHorario = deltaNow.ToString();
                 if(deltaNow.TotalMinutes > 0)
                 {
-                    infoHorario = "<i class=\"bi bi-hourglass-split\"></i>" + noventa.Subtract(deltaNow).ToString();
+                    infoHorario = "<i class=\"bi bi-hourglass-split\"></i>" + noventa.Subtract(deltaNow).ToString(@"hh\:mm\:ss");
                 }
                 else if(deltaNow.TotalMinutes < 0)
                 {
-                    infoHorario = "<i class=\"bi bi-hourglass-split\"></i>" + deltaNow.ToString();
+                    infoHorario = "<i class=\"bi bi-hourglass-split\"></i>" + deltaNow.ToString(@"hh\:mm\:ss");
                 }
 
                 if (lista == listaRecursosProx && deltaProx != nowTime)
                 {
-                    infoHorario = "<i class=\"bi bi-hourglass-top\"></i>" + deltaProx.ToString();
+                    infoHorario = "<i class=\"bi bi-hourglass-top\"></i>" + deltaProx.ToString(@"hh\:mm\:ss"); ;
                 }
 
                 block += "<div class=\"col-md-6 schedule-col\">\n<div class=\"card shadow-sm schedule-card\">";

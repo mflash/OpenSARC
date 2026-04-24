@@ -61,38 +61,46 @@ namespace BusinessData.DataAccess
             if (recurso.StartsWith("LAPRO"))
                 return "Disponível";
 
-            SqlConnection c = ConnectSqlServer();
-            c.Open();
-            SqlCommand cmd = c.CreateCommand();
-            if (recurso.IndexOf('/') != -1) // caso seja lab duplo, nao ha entrada no log (apenas para um deles, geralmente o primeiro)
+            if (recurso.IndexOf('/') != -1)
             {
                 recurso = recurso.Substring(0, recurso.IndexOf("/"));
                 string[] aux = recurso.Split();
                 recurso = aux[0] + " - " + aux[1];
             }
-            cmd.CommandText = "select horario, acao, usuario from LogData where recurso = '" + recurso + "' order by horario desc";
-            SqlDataReader dr = cmd.ExecuteReader();
-            if (!dr.HasRows)
+
+            var constr = ConfigurationManager.ConnectionStrings["SARCFACINcs"].ConnectionString;
+
+            using (SqlConnection c = new SqlConnection(constr))
             {
-                c.Close();
-                return "Sem informações";
+                c.Open();
+                using (SqlCommand cmd = c.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT horario, acao FROM LogData WHERE recurso = @recurso ORDER BY horario DESC";
+                    cmd.Parameters.AddWithValue("@recurso", recurso);
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (!dr.HasRows)
+                            return "Sem informações";
+
+                        dr.Read();
+                        string acao = dr["acao"] as string;
+                        DateTime horario = dr.GetDateTime(0);
+
+                        string timespec = "";
+                        TimeSpan delta = DateTime.Now - horario;
+                        if (delta.TotalHours < 12)
+                            timespec = "(" + horario.ToShortTimeString() + ")";
+                        else if (delta.TotalHours < 48)
+                            timespec = "(ontem " + horario.ToShortTimeString() + ")";
+                        else
+                            timespec = "(" + delta.Days + " dias)";
+
+                        if (acao == "E") return "Disponível";
+                        return "Retirado " + timespec;
+                    }
+                }
             }
-            dr.Read();
-            string acao = dr["acao"] as string;
-            DateTime horario = dr.GetDateTime(0);
-            dr.Close();
-            c.Close();
-            string timespec = "";
-            TimeSpan delta = DateTime.Now - horario;
-            if (delta.TotalHours < 12)
-                timespec = "(" + horario.ToShortTimeString() + ")";
-            else if (delta.TotalHours >= 12 && delta.TotalHours < 48)
-                timespec = "(ontem " + horario.ToShortTimeString() + ")";
-            else
-                timespec = "(" + delta.Days + " dias)";
-            //            timespec += " ("+horario+")";
-            if (acao == "E") return "Disponível";// +timespec;
-            return "Retirado " + timespec;
         }
 
         public Usuario FindProf(String id)

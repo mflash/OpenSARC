@@ -391,9 +391,14 @@
         }
 
         .resource-tag {
-            font-size: 1rem !important;
-            font-family: sans-serif;
+            font-size: 1.3rem !important;
+            padding: 0.5rem 1rem !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 600;
+            font-family: sans-serif;
+            min-width: 6vw;
         }
 
         /* Badge em uso: Cor vibrante e animação de sombra */
@@ -426,13 +431,6 @@
             display: inline-block;
             margin-right: 6px;
             vertical-align: middle;
-        }
-
-        .resource-tag {
-            font-size: 1.1rem !important; /* Fonte ampliada conforme solicitado */
-            padding: 0.5rem 1rem !important;
-            display: flex;
-            align-items: center;
         }
 
         .resource-icon.text-danger {
@@ -502,6 +500,27 @@
             z-index: 9999;
             display: none;
         }
+
+        /* ── Telas pequenas (≤ 1024) ── */
+        @media (max-width: 1024px) {
+            .nomedisc {
+                font-size: 0.83rem !important;
+            }
+
+            .resource-tag {
+                font-size: 0.82rem !important;
+                padding: 0.25rem 0.5rem !important;
+            }
+
+            .resource-icon {
+                font-size: 1.2rem;
+            }
+
+            .schedule-header {
+                font-size: 0.9rem;
+            }
+        }
+
     </style>
 
     <script>

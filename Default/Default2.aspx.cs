@@ -1097,19 +1097,19 @@ public partial class _Default : System.Web.UI.Page
                 string infoHorario = deltaNow.ToString();
                 if(deltaNow.TotalMinutes > 0)
                 {
-                    infoHorario = "<i class=\"bi bi-hourglass-split\"></i>" + noventa.Subtract(deltaNow).ToString(@"hh\:mm\:ss");
+                    infoHorario = "<i class=\"bi bi-hourglass-split\"></i>" + noventa.Subtract(deltaNow).ToString(@"hh\:mm");
                 }
                 else if(deltaNow.TotalMinutes < 0)
                 {
-                    infoHorario = "<i class=\"bi bi-hourglass-split\"></i>" + deltaNow.ToString(@"hh\:mm\:ss");
+                    infoHorario = "<i class=\"bi bi-hourglass-split\"></i>" + deltaNow.ToString(@"hh\:mm");
                 }
 
                 if (lista == listaRecursosProx && deltaProx != nowTime)
                 {
-                    infoHorario = "<i class=\"bi bi-hourglass-top\"></i>" + deltaProx.ToString(@"hh\:mm\:ss"); ;
+                    infoHorario = "<i class=\"bi bi-hourglass-top\"></i>" + deltaProx.ToString(@"hh\:mm"); ;
                 }
 
-                block += "<div class=\"col-md-6 schedule-col\">\n<div class=\"card shadow-sm schedule-card\">";
+                block += "<div class=\"col-12 col-md-6 schedule-col\">\n<div class=\"card shadow-sm schedule-card\">";
                 block += string.Format("<div class=\"schedule-header text-success\">HORÁRIO {0} {1}</div>\n", horarioAtual, infoHorario);
 
                 block += "<div class=\"list-group list-group-flush\">\n";

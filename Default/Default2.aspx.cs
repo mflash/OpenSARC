@@ -1109,7 +1109,7 @@ public partial class _Default : System.Web.UI.Page
                     infoHorario = "<i class=\"bi bi-hourglass-top\"></i>" + deltaProx.ToString(@"hh\:mm"); ;
                 }
 
-                block += "<div class=\"col-12 col-md-6 schedule-col\">\n<div class=\"card shadow-sm schedule-card\">";
+                block += "<div class=\"col-12 col-lg-6 schedule-col\">\n<div class=\"card shadow-sm schedule-card\">";
                 block += string.Format("<div class=\"schedule-header text-success\">HORÁRIO {0} {1}</div>\n", horarioAtual, infoHorario);
 
                 block += "<div class=\"list-group list-group-flush\">\n";

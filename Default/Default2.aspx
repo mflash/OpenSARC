@@ -504,11 +504,11 @@
         /* ── Telas pequenas (≤ 1024) ── */
         @media (max-width: 1024px) {
             .nomedisc {
-                font-size: 0.83rem !important;
+                font-size: 0.85rem !important;
             }
 
             .resource-tag {
-                font-size: 0.82rem !important;
+                font-size: 0.9rem !important;
                 padding: 0.25rem 0.5rem !important;
             }
 
@@ -521,6 +521,20 @@
             }
         }
 
+        @media (max-width: 500px) {
+            .login-compact .login-row {
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+
+            .login-compact .form-control {
+                width: 120px;
+            }
+
+            .nomedisc {
+                font-size: 1rem !important;
+            }
+        }
     </style>
 
     <script>

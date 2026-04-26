@@ -289,6 +289,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
             Label lblDescData = (Label)e.Item.FindControl("lblDescData");
             Label lblCorDaData = (Label)e.Item.FindControl("lblCorDaData");
+            Label lblCorExport = (Label)e.Item.FindControl("lblCorExport");
             Label lblRecursosAlocados = (Label)e.Item.FindControl("lblRecursosAlocados");
             //lblRecursosAlocados.ReadOnly = true;
             Label lblRecursosAlocadosId = (Label)e.Item.FindControl("lblRecursosAlocadosId");
@@ -415,7 +416,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 }
             }
             string corHtml = ColorTranslator.ToHtml(corFinal);
-            lblCorDaData.Text = corHtml;
+            lblCorExport.Text = corHtml;
             foreach (TableCell cell in e.Item.Cells)
             {
                 cell.Attributes["style"] = string.Format("background-color: {0} !important;", corHtml);
@@ -542,7 +543,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             // Remove a classe 'active' do badge
             if (butConfirm != null)
             {
-                butConfirm.Attributes["class"] = "confirm-badge saved";
+                butConfirm.Attributes["class"] = "confirm-badge active";
             }
 
             totalLinhas++;
@@ -592,7 +593,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         //salvar.Text = "Salvo";
         //salvar.Enabled = false;
 
-        ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
+        ScriptManager.RegisterStartupScript(this, GetType(), "OnClick",
                 @"releaseDirtyFlag(); resetConfirmBadges();", true);
     }
 
@@ -647,7 +648,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
             dr["Atividade"] = ddlAtividade.SelectedItem.Text;
 
-            lblAux = (Label)item.FindControl("lblCorDaData");
+            lblAux = (Label)item.FindControl("lblCorExport");
 
             cbRecursos = (CheckBoxList)item.FindControl("cbRecursos");
             string aux = "";
@@ -745,10 +746,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         DropDownList ddlAtividade = (DropDownList)sender;
         //        TableCell cell = (TableCell)ddlDisponiveis.Parent;
         DataGridItem grid = (DataGridItem)ddlAtividade.Parent.Parent;
-        ImageButton butConfirm = (ImageButton)grid.FindControl("butConfirm");
+        HtmlGenericControl butConfirm = (HtmlGenericControl)grid.FindControl("butConfirm");
         CheckBox cbChanged = (CheckBox)grid.FindControl("cbChanged");
         cbChanged.Checked = true; // marca para alteracao
-        butConfirm.Enabled = true;
+        butConfirm.Attributes.Remove("disabled");
         AtualizaTodaGrade();
     }
 

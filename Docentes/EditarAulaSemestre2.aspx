@@ -657,6 +657,12 @@
                             </ItemTemplate>
                         </asp:TemplateColumn>
 
+                        <asp:TemplateColumn HeaderText="CorDaDataExport" Visible="False">
+                            <ItemTemplate>
+                                <asp:Label ID="lblCorExport" runat="server" />
+                            </ItemTemplate>
+                        </asp:TemplateColumn>
+
                         <asp:TemplateColumn HeaderText="DescData" Visible="False">
                             <ItemTemplate>
                                 <asp:Label ID="lblDescData" runat="server" />

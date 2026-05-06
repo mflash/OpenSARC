@@ -1002,8 +1002,13 @@ public partial class _Default : System.Web.UI.Page
                     else
                         rec.Status = StatusRecurso.SemInfo;
                     //Debug.WriteLine("Status " + rec.NomeCompleto + " -> " + rec.Status);
+                    if (aloc.Aula.TurmaId.Notebook)
+                    {
+                        string sala = aloc.Aula.TurmaId.Sala.Replace("32/A/", "").Replace("15/A/", "");
+                        rec.NomeCurto = rec.NomeCurto + "/ " + sala;
+                    }
                 }
-                else
+                else if (aloc.Evento != null)
                 {
                     rec.NomeCompleto = aloc.Recurso.Descricao;
                     rec.HorarioAtual = aloc.Horario;
@@ -1150,6 +1155,10 @@ public partial class _Default : System.Web.UI.Page
                             recursoIcone = "bi-hdmi";
                             corBadge = "cabo-hdmi";
                             break;
+                        case 'K':
+                            recursoIcone = "bi-display";
+                            corBadge = "cabo-vga";
+                            break;
                         case 'L':
                         case 'D':
                             if (ri.NomeCurto.StartsWith("RN"))
@@ -1171,7 +1180,13 @@ public partial class _Default : System.Web.UI.Page
                             recursoIcone = "bi-speaker";
                             corBadge = "speaker";
                             break;
-
+                        case 'X':
+                            if (ri.NomeCurto.StartsWith("211"))
+                            {
+                                recursoIcone = "bi-pc-display";
+                                corBadge = "lab";
+                            }
+                            break;
                     }
                     if (ri.NomeCurto.StartsWith("211"))
                         recursoIcone = "bi-pc-display";

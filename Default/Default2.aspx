@@ -398,7 +398,7 @@
             justify-content: center;
             font-weight: 600;
             font-family: sans-serif;
-            min-width: 6vw;
+            min-width: 8vw;
         }
 
         /* Badge em uso: Cor vibrante e animação de sombra */

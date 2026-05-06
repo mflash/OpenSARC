@@ -703,9 +703,11 @@ namespace BusinessData.DataAccess
                         string discipNome = leitor.GetString(leitor.GetOrdinal("Disc_Nome"));
                         Disciplina disc = Disciplina.GetDisciplina(null, 4, discipNome, true, null, null);
                         int turmaNumero = leitor.GetInt32(leitor.GetOrdinal("turma_numero"));
+                        string turmaSala = leitor.GetString(leitor.GetOrdinal("turma_sala"));
                         string nomeProf = leitor.GetString(leitor.GetOrdinal("nome_prof"));
+                        bool turmaNote = leitor.GetBoolean(leitor.GetOrdinal("turma_notebook"));
                         Professor prof = Professor.NewProfessor("x", nomeProf, "x");
-                        Turma turma = Turma.NewTurma(turmaNumero, null, disc, "", prof, null);
+                        Turma turma = Turma.NewTurma(turmaNumero, null, disc, "", prof, null, turmaSala, turmaNote);
                         string descrAtiv = leitor.GetString(leitor.GetOrdinal("descricao_aula"));
                         au = Aula.newAula(turma, hora, data, descrAtiv, null);
                     }

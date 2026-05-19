@@ -993,7 +993,10 @@ public partial class _Default : System.Web.UI.Page
                     rec.DescricaoAtual = aloc.Aula.TurmaId.Disciplina.Nome + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
                     rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
                     rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Aula.TurmaId.Professor.Nome);
-                    rec.ResponsavelAtualCurto = getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
+                    if (aloc.Aula.TurmaId.Professor.Curto != null)
+                        rec.ResponsavelAtualCurto = aloc.Aula.TurmaId.Professor.Curto;
+                    else
+                        rec.ResponsavelAtualCurto = getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
                     string stat = logDataDAO.GetUltimoStatus(rec.NomeCompleto);
                     if (stat.StartsWith("Retirado"))
                         rec.Status = StatusRecurso.Retirado;

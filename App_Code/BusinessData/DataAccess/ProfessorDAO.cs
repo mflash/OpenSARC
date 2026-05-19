@@ -89,7 +89,8 @@ namespace BusinessData.DataAccess
                     aux = Entities.Professor.GetProfessor(leitor.GetGuid(leitor.GetOrdinal("Id")),
                                                           leitor.GetString(leitor.GetOrdinal("Matricula")),
                                                           leitor.GetString(leitor.GetOrdinal("Nome")),
-                                                          leitor.GetString(leitor.GetOrdinal("Email")));
+                                                          leitor.GetString(leitor.GetOrdinal("Email")),
+                                                          leitor.GetString(leitor.GetOrdinal("Curto")));
 
                 }
             }
@@ -124,7 +125,8 @@ namespace BusinessData.DataAccess
                         aux = Entities.Professor.GetProfessor(leitor.GetGuid(leitor.GetOrdinal("Id")),
                                                               leitor.GetString(leitor.GetOrdinal("Matricula")),
                                                               leitor.GetString(leitor.GetOrdinal("Nome")),
-                                                              leitor.GetString(leitor.GetOrdinal("Email")));
+                                                              leitor.GetString(leitor.GetOrdinal("Email")),
+                                                              leitor.GetString(leitor.GetOrdinal("Curto")));
                 }
             }
             catch (SqlException ex)
@@ -153,7 +155,8 @@ namespace BusinessData.DataAccess
                         aux = Professor.GetProfessor(leitor.GetGuid(leitor.GetOrdinal("Id")),
                                                           leitor.GetString(leitor.GetOrdinal("Matricula")),
                                                           leitor.GetString(leitor.GetOrdinal("Nome")),
-                                                          leitor.GetString(leitor.GetOrdinal("Email")));
+                                                          leitor.GetString(leitor.GetOrdinal("Email")),
+                                                          leitor.GetString(leitor.GetOrdinal("Curto")));
                         listaAux.Add(aux);
                     }
                 }

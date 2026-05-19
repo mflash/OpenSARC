@@ -391,14 +391,14 @@
         }
 
         .resource-tag {
-            font-size: 1.3rem !important;
-            padding: 0.5rem 1rem !important;
+            font-size: 1.7rem !important;
+            padding: 0.3rem 1rem !important;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
             font-family: sans-serif;
-            min-width: 8vw;
+            min-width: 9vw;
         }
 
         /* Badge em uso: Cor vibrante e animação de sombra */
@@ -517,7 +517,7 @@
             }
 
             .schedule-header {
-                font-size: 0.9rem;
+                font-size: 1.0rem;
             }
         }
 

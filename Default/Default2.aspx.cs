@@ -935,7 +935,7 @@ public partial class _Default : System.Web.UI.Page
                 {
                     ts = nowTime.Subtract(horariosTime[pos]);
                     Debug.WriteLine("Timedelta: " + ts);
-                    if (ts.TotalMinutes > 30)
+                    if (ts.TotalMinutes > 45)
                         pos++;
                     break;
                 }
@@ -991,7 +991,7 @@ public partial class _Default : System.Web.UI.Page
                     rec.NomeCurto = aloc.Recurso.Abrev;
                     rec.Tipo = aloc.Recurso.Tipo;
                     rec.DescricaoAtual = aloc.Aula.TurmaId.Disciplina.Nome + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
-                    rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
+                    rec.DescricaoAtualCurta = getNomeCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
                     rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Aula.TurmaId.Professor.Nome);
                     if (aloc.Aula.TurmaId.Professor.Curto != null)
                         rec.ResponsavelAtualCurto = aloc.Aula.TurmaId.Professor.Curto;

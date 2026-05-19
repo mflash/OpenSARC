@@ -40,7 +40,7 @@ public partial class Eventos_ListaEventos : System.Web.UI.Page
                 var listaFiltrada = new List<Evento>();
                 foreach (Evento evento in listaEventos)
                 {
-                    IList<HorariosEvento> horarios = horariosEventoBO.GetHorariosEventosById(evento.EventoId);
+                    IList<HorariosEvento> horarios = horariosEventoBO.GetHorariosEventosByIdCal(evento.EventoId, cal);
                     if (horarios.Count > 0 && !jaOcorreu(horarios))
                         listaFiltrada.Add(evento);
                 }
@@ -120,7 +120,7 @@ public partial class Eventos_ListaEventos : System.Web.UI.Page
             {
                 IList<HorariosEvento> listaHorariosEvento = horariosEventoBO.GetHorariosEventosById(id);
                 if (!jaOcorreu(listaHorariosEvento))
-                    Response.Redirect("~/Eventos/EditarEventos.aspx?GUID=" + id.ToString());
+                    Response.Redirect("~/Eventos/EditarEventos2.aspx?GUID=" + id.ToString());
                 else
                 {
                     e.Cancel = true;
@@ -207,7 +207,7 @@ public partial class Eventos_ListaEventos : System.Web.UI.Page
         foreach (GridViewRow linha in grvListaEventos.Rows)
         {
             dr = tabela.NewRow();
-            lblAux = (Label)linha.FindControl("lblTitulo");
+            lblAux = (Label)linha.FindControl("lblTituloEvento"); // match the actual markup ID
             dr["Título"] = lblAux.Text;
 
             lblAux = (Label)linha.FindControl("lblResponsavel");

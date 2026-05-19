@@ -476,7 +476,7 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
         if (e.CommandName == "Horarios")
         {
             Label lblEventoId = (Label)e.Item.FindControl("lblEventoId");
-            Response.Redirect("~/Common/DetalhesEvento.aspx?Evento=" + lblEventoId.Text);
+            Response.Redirect("~/Common/DetalhesEvento2.aspx?Evento=" + lblEventoId.Text);
         }
     }
 

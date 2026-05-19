@@ -81,7 +81,7 @@ namespace BusinessData.DataAccess
             }
         }
 
-        public Evento GetEvento(Guid? id)
+        public Evento GetEvento(Guid? id, Calendario cal=null)
         {
             DbCommand cmd = baseDados.GetStoredProcCommand("EventoSelectById");
             baseDados.AddInParameter(cmd, "@EventoId", DbType.Guid, id);
@@ -103,11 +103,12 @@ namespace BusinessData.DataAccess
                     if (autorId.HasValue)
                         autor = pF.CreatePessoa(leitor.GetGuid(leitor.GetOrdinal("AutorId")));
                     else autor = null;
-                    Calendario calendario = calDAO.GetCalendario(leitor.GetGuid(leitor.GetOrdinal("CalendarioId")));
+                    if(cal == null)
+                        cal= calDAO.GetCalendario(leitor.GetGuid(leitor.GetOrdinal("CalendarioId")));
                     aux = Evento.GetEvento(leitor.GetGuid(leitor.GetOrdinal("EventoId")),
                                            autor,
                                            leitor.GetString(leitor.GetOrdinal("Descricao")),
-                                           calendario,
+                                           cal,
                                            leitor.GetString(leitor.GetOrdinal("Responsavel")),
                                            leitor.GetString(leitor.GetOrdinal("Titulo")),
                                            leitor.GetString(leitor.GetOrdinal("Unidade")));

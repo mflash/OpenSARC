@@ -222,6 +222,9 @@
             </div>
 
         </ContentTemplate>
+    <Triggers>
+        <asp:PostBackTrigger ControlID="btnExportarHtml" />
+    </Triggers>
     </asp:UpdatePanel>
 
     <!-- ═══════════════════════════════════════

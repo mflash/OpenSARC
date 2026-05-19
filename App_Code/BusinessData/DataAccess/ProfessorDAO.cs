@@ -29,6 +29,13 @@ namespace BusinessData.DataAccess
             }
         }
 
+        // Helper: returns null instead of throwing when a column is NULL
+        private static string SafeGetString(IDataReader leitor, string coluna)
+        {
+            int ord = leitor.GetOrdinal(coluna);
+            return leitor.IsDBNull(ord) ? null : leitor.GetString(ord);
+        }
+
         /// <summary>
         /// Deleta um Professor
         /// throws BusinessData.BusinessLogic.DataAccess.DataAccessExceptiom
@@ -90,7 +97,7 @@ namespace BusinessData.DataAccess
                                                           leitor.GetString(leitor.GetOrdinal("Matricula")),
                                                           leitor.GetString(leitor.GetOrdinal("Nome")),
                                                           leitor.GetString(leitor.GetOrdinal("Email")),
-                                                          leitor.GetString(leitor.GetOrdinal("Curto")));
+                                                          SafeGetString(leitor, "Curto"));
 
                 }
             }
@@ -126,7 +133,7 @@ namespace BusinessData.DataAccess
                                                               leitor.GetString(leitor.GetOrdinal("Matricula")),
                                                               leitor.GetString(leitor.GetOrdinal("Nome")),
                                                               leitor.GetString(leitor.GetOrdinal("Email")),
-                                                              leitor.GetString(leitor.GetOrdinal("Curto")));
+                                                              SafeGetString(leitor, "Curto"));
                 }
             }
             catch (SqlException ex)
@@ -156,7 +163,7 @@ namespace BusinessData.DataAccess
                                                           leitor.GetString(leitor.GetOrdinal("Matricula")),
                                                           leitor.GetString(leitor.GetOrdinal("Nome")),
                                                           leitor.GetString(leitor.GetOrdinal("Email")),
-                                                          leitor.GetString(leitor.GetOrdinal("Curto")));
+                                                          SafeGetString(leitor, "Curto"));
                         listaAux.Add(aux);
                     }
                 }

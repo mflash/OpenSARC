@@ -71,7 +71,15 @@ public partial class Secretarios_Recursos : System.Web.UI.Page
             Guid catRecId = new Guid(ddlCategoriaRecurso.SelectedValue);
 
             List<Recurso> listaRecursos = controleRecursos.GetRecursosDisponiveis(data, horario, catRecId);
-            ddlRecurso.DataSource = listaRecursos;
+            List<Recurso> listaFiltrada = new List<Recurso>();
+            foreach (Recurso r in listaRecursos)
+            {
+                if (r.Abrev != "301" && r.Abrev != "310" && r.Abrev != "410")
+                {
+                    listaFiltrada.Add(r);
+                }
+            }
+            ddlRecurso.DataSource = listaFiltrada;
             ddlRecurso.DataTextField = "Descricao";
             ddlRecurso.DataValueField = "Id";
 

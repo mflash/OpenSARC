@@ -213,6 +213,7 @@ namespace BusinessData.DataAccess
                         aux.EstaDisponivel = leitor.GetBoolean(leitor.GetOrdinal("RecursoEstaDisponivel"));
                         List<HorarioBloqueado> listaHB = this.GetHorarioBloqueadoByRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")));
                         aux.HorariosBloqueados = listaHB;
+                        aux.Abrev = leitor.GetString(leitor.GetOrdinal("Abrev")).Trim();
                         aux.Id = recursoId; // leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
                         aux.Vinculo = facul;
 

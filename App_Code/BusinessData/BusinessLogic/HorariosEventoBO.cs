@@ -73,6 +73,11 @@ namespace BusinessData.BusinessLogic
             return dao.GetHorariosEventosById(id);
         }
 
+        public List<HorariosEvento> GetHorariosEventosByIdCal(Guid id, Calendario cal)
+        {
+            return dao.GetHorariosEventosByIdCal(id, cal);
+        }
+
         public List<HorariosEvento> GetHorariosEventosByIdDetalhados(Guid eventoId)
         {
             try

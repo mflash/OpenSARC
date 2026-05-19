@@ -348,6 +348,7 @@ public partial class Eventos_Default : System.Web.UI.Page
 
     private void EnviarEmail(string pessoa, string descricaoEvento, DateTime data)
     {
+        return;
         string para = ConfigurationManager.AppSettings["MailMessageSecretaria"];
         string de = ConfigurationManager.AppSettings["MailMessageFrom"];
         MailMessage email = new MailMessage(de, para);
@@ -364,6 +365,7 @@ public partial class Eventos_Default : System.Web.UI.Page
 
     private void EnviarEmail(string pessoa, string descricaoEvento, DateTime dataInicial, DateTime dataFinal)
     {
+        return;
         string para = ConfigurationManager.AppSettings["MailMessageSecretaria"];
         string de = ConfigurationManager.AppSettings["MailMessageFrom"];
         MailMessage email = new MailMessage(de, para);

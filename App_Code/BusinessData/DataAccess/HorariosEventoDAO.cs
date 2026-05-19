@@ -225,7 +225,43 @@ namespace BusinessData.DataAccess
                 throw new DataAccessException(ErroMessages.GetErrorMessage(ex.Number), ex);
             }
         }
-    
-    
+
+        public List<HorariosEvento> GetHorariosEventosByIdCal(Guid id, Calendario cal)
+        {
+            DbCommand cmd = baseDados.GetStoredProcCommand("HorariosEventosSelectById");
+            baseDados.AddInParameter(cmd, "@EventoId", DbType.Guid, id);
+            List<Entities.HorariosEvento> listaAux = new List<BusinessData.Entities.HorariosEvento>();
+            Entities.HorariosEvento aux;
+            try
+            {
+                using (IDataReader leitor = baseDados.ExecuteReader(cmd))
+                {
+                    EventoDAO eventoDAO = new EventoDAO();
+                    Entities.Evento evento;
+                    while (leitor.Read())
+                    {
+                        try
+                        {
+                           evento = eventoDAO.GetEvento(leitor.GetGuid(leitor.GetOrdinal("EventoId")), cal);
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            evento = null;
+                        }
+                        aux = Entities.HorariosEvento.GetHorariosEvento(leitor.GetGuid(leitor.GetOrdinal("HorariosEventoId")),
+                                                    evento,
+                                                    leitor.GetDateTime(leitor.GetOrdinal("Data")),
+                                                    leitor.GetString(leitor.GetOrdinal("HorarioInicio")),
+                                                    leitor.GetString(leitor.GetOrdinal("HorarioFim")));
+                        listaAux.Add(aux);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DataAccessException(ErroMessages.GetErrorMessage(ex.Number), ex);
+            }
+            return listaAux;
+        }
     }
 }

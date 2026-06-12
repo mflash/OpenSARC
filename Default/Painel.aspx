@@ -6,21 +6,108 @@
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphConteudo">
 
     <!-- Recarrega a página inteira a cada 60 segundos -->
-    <meta http-equiv="refresh" content="60">
+    <meta http-equiv="refresh" content="60"/>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
 
+    <%-- Se PainelPublico.master já tiver ScriptManager, substituir por ScriptManagerProxy --%>
+    <asp:ScriptManagerProxy ID="ScriptManager1" runat="server" />
+
     <!-- Cabeçalho público -->
-    <div class="bg-dark text-white py-2 px-3 d-flex align-items-center justify-content-between">
+    <div class="bg-dark text-white py-2 px-3 d-flex align-items-center gap-3">
+
         <span class="fw-bold"><i class="bi bi-display me-2"></i>OpenSARC — Painel de Recursos</span>
+
+        <!-- Filtros: matrícula e recurso -->
+        <div class="d-flex align-items-center gap-2">
+            <asp:Label ID="lblMatricula" runat="server" Text="Matrícula:"
+                AssociatedControlID="txtMatricula"
+                CssClass="col-form-label col-form-label-sm mb-0 text-white-50" />
+            <div>
+                <asp:TextBox ID="txtMatricula" runat="server"
+                    CssClass="form-control form-control-sm"
+                    MaxLength="10" placeholder="Ex.: A123456789" />
+                <asp:RegularExpressionValidator ID="revMatricula" runat="server"
+                    ControlToValidate="txtMatricula"
+                    ValidationExpression="^[a-zA-Z0-9]*$"
+                    ErrorMessage="Apenas alfanuméricos."
+                    CssClass="text-warning small"
+                    Display="Dynamic" />
+            </div>
+
+            <asp:Label ID="lblRecurso" runat="server" Text="Recurso:"
+                AssociatedControlID="txtRecurso"
+                CssClass="col-form-label col-form-label-sm mb-0 text-white-50" />
+            <div class="d-flex align-items-center gap-2">
+                <asp:TextBox ID="txtRecurso" runat="server"
+                    CssClass="form-control form-control-sm"
+                    MaxLength="50" placeholder="Ex.: SALA01" />
+                <asp:RegularExpressionValidator ID="revRecurso" runat="server"
+                    ControlToValidate="txtRecurso"
+                    ValidationExpression="^[a-zA-Z0-9]*$"
+                    ErrorMessage="Apenas alfanuméricos."
+                    CssClass="text-warning small"
+                    Display="Dynamic" />
+
+                <!-- Painel de aviso atualizado de forma assíncrona -->
+                <asp:UpdatePanel ID="upAviso" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+                        <asp:Label ID="lblAviso" runat="server"
+                            CssClass="small"
+                            style="min-width: 180px; display: inline-block;" />
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="btnConsultaMatricula" EventName="Click" />
+                    </Triggers>
+                </asp:UpdatePanel>
+            </div>
+        </div>
+
+        <!-- Botão oculto que dispara o postback assíncrono ao atingir 10 caracteres -->
+        <asp:Button ID="btnConsultaMatricula" runat="server"
+            OnClick="btnConsultaMatricula_Click"
+            UseSubmitBehavior="false"
+            style="display:none;" />
+
         <asp:HyperLink ID="lnkLogin" runat="server"
             NavigateUrl="~/Default/Default2.aspx"
-            CssClass="btn btn-sm btn-outline-light">
+            CssClass="btn btn-sm btn-outline-light ms-auto">
             <i class="bi bi-box-arrow-in-right me-1"></i>Entrar
         </asp:HyperLink>
+
     </div>
 
     <uc:Dashboard ID="Dashboard1" runat="server" />
+
+    <script>
+        (function () {
+            var inputMatricula = document.getElementById('<%= txtMatricula.ClientID %>');
+
+            // Foco inicial ao carregar a página
+            if (inputMatricula) inputMatricula.focus();
+
+            // Foco ao clicar em qualquer área não interativa
+            document.addEventListener('click', function (e) {
+                var el = e.target;
+                while (el) {
+                    var tag = el.tagName ? el.tagName.toUpperCase() : '';
+                    if (tag === 'INPUT' || tag === 'BUTTON' || tag === 'A' ||
+                        tag === 'TEXTAREA' || tag === 'SELECT') return;
+                    el = el.parentElement;
+                }
+                if (inputMatricula) inputMatricula.focus();
+            });
+
+            // Dispara postback assíncrono ao atingir exactamente 10 caracteres
+            if (inputMatricula) {
+                inputMatricula.addEventListener('input', function () {
+                    if (this.value.length === 10) {
+                        __doPostBack('<%= btnConsultaMatricula.UniqueID %>', '');
+                    }
+                });
+            }
+        })();
+    </script>
 
 </asp:Content>

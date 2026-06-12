@@ -1126,6 +1126,8 @@ public partial class _Default : System.Web.UI.Page
                 {
                     if (ri.NomeCompleto == null) continue;
 
+                    bool isRetiradoAtual = cont == 1 && ri.Status == StatusRecurso.Retirado;
+
                     // Sanitiza o nome para uso seguro como atributo HTML
                     string responsavelAttr = ri.ResponsavelAtual != null
                         ? ri.ResponsavelAtual.Replace("\"", "&quot;").Trim()
@@ -1134,10 +1136,26 @@ public partial class _Default : System.Web.UI.Page
                     block += string.Format(
                         "<div class=\"list-group-item d-flex justify-content-between align-items-center nomedisc\" data-responsavel=\"{0}\">\n",
                         responsavelAttr);
-                    block += string.Format("<span>{0} - {1}</span>\n<div class=\"resource-container\">\n", ri.ResponsavelAtualCurto, ri.DescricaoAtualCurta);
+                    //block += string.Format("<span>{0} - {1}</span>\n<div class=\"resource-container\">\n", ri.ResponsavelAtualCurto, ri.DescricaoAtualCurta);
+
 
                     //                    block += "<div class=\"list-group-item d-flex justify-content-between align-items-center nomedisc\">\n";
                     //                    block += string.Format("<span>{0} - {1}</span>\n<div class=\"resource-container\">\n", ri.ResponsavelAtualCurto, ri.DescricaoAtualCurta);
+
+                    if (isRetiradoAtual)
+                    {
+                        string textoPrimario = string.Format("{0} - {1}", ri.ResponsavelAtualCurto, ri.DescricaoAtualCurta)
+                            .Replace("\"", "&quot;");
+                        block += string.Format(
+                            "<span class=\"text-alternating\" data-text-primary=\"{0}\" data-text-alt=\"&#9888; RETIRADO\">{0}</span>\n<div class=\"resource-container\">\n",
+                            textoPrimario);
+                    }
+                    else
+                    {
+                        block += string.Format("<span>{0} - {1}</span>\n<div class=\"resource-container\">\n",
+                            ri.ResponsavelAtualCurto, ri.DescricaoAtualCurta);
+                    }
+
                     string destaque = "";// bg-dark";
                     string destaqueText = "";
                     string corBadge = "bg-dark";

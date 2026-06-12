@@ -702,7 +702,44 @@
         if (typeof Sys !== 'undefined') {
             Sys.WebForms.PageRequestManager.getInstance().add_endRequest(bindRowHighlight);
         }
-        document.addEventListener('DOMContentLoaded', bindRowHighlight);
+
+        let _alternatingTimer = null;
+
+        function bindTextAlternating() {
+            if (_alternatingTimer !== null) {
+                clearInterval(_alternatingTimer);
+                _alternatingTimer = null;
+            }
+
+            // Restaura texto primário antes de reiniciar
+            document.querySelectorAll('.text-alternating').forEach(function (el) {
+                el.textContent = el.dataset.textPrimary;
+                el._showingAlt = false;
+            });
+
+            _alternatingTimer = setInterval(function () {
+                document.querySelectorAll('.text-alternating').forEach(function (el) {
+                    if (el._showingAlt) {
+                        el.textContent = el.dataset.textPrimary;
+                    } else {
+                        el.textContent = el.dataset.textAlt;
+                    }
+                    el._showingAlt = !el._showingAlt;
+                });
+            }, 2000);
+        }
+
+        if (typeof Sys !== 'undefined') {
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+                bindRowHighlight();
+                bindTextAlternating();
+            });
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            bindRowHighlight();
+            bindTextAlternating();
+        });
+        //document.addEventListener('DOMContentLoaded', bindRowHighlight);
     </script>
 
     <!-- ═══════════════════════════════════════

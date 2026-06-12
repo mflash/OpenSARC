@@ -196,6 +196,7 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
                         ? aloc.Aula.TurmaId.Professor.Curto
                         : getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
                     string stat = logDataDAO.GetUltimoStatus(rec.NomeCompleto);
+                    LogData latest = logDataDAO.FindLatestActivity(rec.NomeCompleto);
                     if (stat.StartsWith("Retirado"))
                         rec.Status = StatusRecurso.Retirado;
                     else if (stat.StartsWith("Disponível"))

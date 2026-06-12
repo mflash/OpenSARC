@@ -343,9 +343,12 @@
 
                             <!-- Mensagem de erro inline -->
                             <asp:Literal ID="FailureText" runat="server" EnableViewState="False"></asp:Literal>
+                            <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="~/Default/Painel.aspx" CssClass="btn btn-sm btn-outline-light">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>Painel</asp:HyperLink>
                         </div>
                     </LayoutTemplate>
                 </asp:Login>
+
             </ContentTemplate>
         </asp:UpdatePanel>
     </div>

@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
 
     <%-- Se PainelPublico.master já tiver ScriptManager, substituir por ScriptManagerProxy --%>
-    <asp:ScriptManager ID="ScriptManager1" runat="server" />
+    <asp:ScriptManagerProxy ID="ScriptManager1" runat="server" />
 
     <!-- Cabeçalho público -->
     <div class="bg-dark text-white py-2 px-3 d-flex align-items-center gap-3">

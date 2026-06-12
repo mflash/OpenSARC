@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
 
     <%-- Se PainelPublico.master já tiver ScriptManager, substituir por ScriptManagerProxy --%>
-    <asp:ScriptManagerProxy ID="ScriptManager1" runat="server" />
+    <asp:ScriptManager ID="ScriptManager1" runat="server" />
 
     <!-- Cabeçalho público -->
     <div class="bg-dark text-white py-2 px-3 d-flex align-items-center gap-3">
@@ -42,7 +42,7 @@
             <div class="d-flex align-items-center gap-2">
                 <asp:TextBox ID="txtRecurso" runat="server"
                     CssClass="form-control form-control-sm"
-                    MaxLength="50" placeholder="Ex.: SALA01" />
+                    MaxLength="50" placeholder="Ex.: SALA" />
                 <asp:RegularExpressionValidator ID="revRecurso" runat="server"
                     ControlToValidate="txtRecurso"
                     ValidationExpression="^[a-zA-Z0-9]*$"
@@ -59,14 +59,19 @@
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="btnConsultaMatricula" EventName="Click" />
+                        <asp:AsyncPostBackTrigger ControlID="btnConsultaRecurso" EventName="Click" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
         </div>
 
-        <!-- Botão oculto que dispara o postback assíncrono ao atingir 10 caracteres -->
+        <!-- Botões ocultos que disparam os postbacks assíncronos -->
         <asp:Button ID="btnConsultaMatricula" runat="server"
             OnClick="btnConsultaMatricula_Click"
+            UseSubmitBehavior="false"
+            style="display:none;" />
+        <asp:Button ID="btnConsultaRecurso" runat="server"
+            OnClick="btnConsultaRecurso_Click"
             UseSubmitBehavior="false"
             style="display:none;" />
 
@@ -83,6 +88,7 @@
     <script>
         (function () {
             var inputMatricula = document.getElementById('<%= txtMatricula.ClientID %>');
+            var inputRecurso   = document.getElementById('<%= txtRecurso.ClientID %>');
 
             // Foco inicial ao carregar a página
             if (inputMatricula) inputMatricula.focus();
@@ -99,11 +105,20 @@
                 if (inputMatricula) inputMatricula.focus();
             });
 
-            // Dispara postback assíncrono ao atingir exactamente 10 caracteres
+            // Dispara postback assíncrono ao atingir exactamente 10 caracteres em txtMatricula
             if (inputMatricula) {
                 inputMatricula.addEventListener('input', function () {
                     if (this.value.length === 10) {
                         __doPostBack('<%= btnConsultaMatricula.UniqueID %>', '');
+                    }
+                });
+            }
+
+            // Dispara postback assíncrono ao atingir exactamente 4 caracteres em txtRecurso
+            if (inputRecurso) {
+                inputRecurso.addEventListener('input', function () {
+                    if (this.value.length === 4) {
+                        __doPostBack('<%= btnConsultaRecurso.UniqueID %>', '');
                     }
                 });
             }

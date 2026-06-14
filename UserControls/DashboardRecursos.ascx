@@ -48,9 +48,17 @@
     }
 
     @keyframes pulse-red {
-        0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
-        70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+        0% {
+            box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+        }
+
+        70% {
+            box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+        }
     }
 
     .status-indicator {
@@ -126,101 +134,115 @@
         display: none;
     }
 
-        /* Category Colors */
-        .lab {
-            background-color: #97c7a6;
-        }
+    /* Category Colors */
+    .lab {
+        background-color: #97c7a6;
+    }
 
-        .notebook {
-            background-color: #6e90b0;
-        }
+    .notebook {
+        background-color: #6e90b0;
+    }
 
-        .cabo-hdmi {
-            background-color: #e1c48e;
-        }
+    .cabo-hdmi {
+        background-color: #e1c48e;
+    }
 
-        .cabo-vga {
-            background-color: #df9c7c;
-        }
+    .cabo-vga {
+        background-color: #df9c7c;
+    }
 
-        .auditorio {
-            background-color: #d27c6a;
-        }
+    .auditorio {
+        background-color: #d27c6a;
+    }
 
-        .speaker {
-            background-color: #b65c46;
-        }
+    .speaker {
+        background-color: #b65c46;
+    }
 
-        .emusoedisp {
-            border: 5px solid #27b91c;
-            color: black;
-        }
+    .emusoedisp {
+        border: 5px solid #27b91c;
+        color: black;
+    }
 
-        .emusoereserv {
-            border: 5px solid #ff0000a9;
-            color: black;
-        }
+    .emusoereserv {
+        border: 5px solid #ff0000a9;
+        color: black;
+    }
 
-        .dispereserv {
-            border: 5px solid #ffd800ff;
-            color: black;
-        }
+    .dispereserv {
+        border: 5px solid #ffd800ff;
+        color: black;
+    }
 
-        .emusoedisp-legenda {
-            background-color: #27b91c;
-        }
+    .emusoedisp-legenda {
+        background-color: #27b91c;
+    }
 
-        .emusoereserv-legenda {
-            background-color: #ff0000a9;
-        }
+    .emusoereserv-legenda {
+        background-color: #ff0000a9;
+    }
 
-        .dispereserv-legenda {
-            background-color: #ffd800ff;
-        }
+    .dispereserv-legenda {
+        background-color: #ffd800ff;
+    }
 
-        .retirado {
-            color: red;
-        }
+    .retirado {
+        color: red;
+    }
 
-        .disponivel {
-            color: black;
-        }
+    .disponivel {
+        color: black;
+    }
 
-        .recurso {
-            color: black;
-        }
+    .recurso {
+        color: black;
+    }
 
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-            padding: 10px;
-            flex-wrap: wrap;
-        }
+    .legend {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+        padding: 10px;
+        flex-wrap: wrap;
+    }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            border: 1px solid #333;
-        }
+    .legend-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        border: 1px solid #333;
+    }
 
     @media (max-width: 1024px) {
-        .nomedisc { font-size: 0.85rem !important; }
-        .resource-tag { font-size: 0.9rem !important; padding: 0.25rem 0.5rem !important; }
-        .resource-icon { font-size: 1.2rem; }
-        .schedule-header { font-size: 1.0rem; }
+        .nomedisc {
+            font-size: 0.85rem !important;
+        }
+
+        .resource-tag {
+            font-size: 1.2rem !important;
+            padding: 0.25rem 0.5rem !important;
+        }
+
+        .resource-icon {
+            font-size: 1.3rem;
+        }
+
+        .schedule-header {
+            font-size: 1.0rem;
+        }
     }
 
     @media (max-width: 500px) {
-        .nomedisc { font-size: 1rem !important; }
+        .nomedisc {
+            font-size: 1rem !important;
+        }
     }
 </style>
 

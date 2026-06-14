@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.DirectoryServices.AccountManagement;
 
 public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
 {
@@ -36,6 +37,7 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
         public string ResponsavelAtual;
         public string ResponsavelAtualCurto;
         public StatusRecurso Status;
+        public LogData latest;
     }
 
     private Dictionary<char, string[]> dicIcones = new Dictionary<char, string[]>
@@ -197,8 +199,12 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
                         : getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
                     string stat = logDataDAO.GetUltimoStatus(rec.NomeCompleto);
                     LogData latest = logDataDAO.FindLatestActivity(rec.NomeCompleto);
+                    rec.latest = null;
                     if (stat.StartsWith("Retirado"))
+                    {
                         rec.Status = StatusRecurso.Retirado;
+                        rec.latest = latest;
+                    }
                     else if (stat.StartsWith("Disponível"))
                         rec.Status = StatusRecurso.Disponivel;
                     else
@@ -224,8 +230,13 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
                         rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(6).Trim();
                     rec.ResponsavelAtualCurto = getNomeCurtoProfessor(rec.ResponsavelAtual);
                     string stat = logDataDAO.GetUltimoStatus(rec.NomeCompleto);
+                    LogData latest = logDataDAO.FindLatestActivity(rec.NomeCompleto);
+                    rec.latest = null;
                     if (stat.StartsWith("Retirado"))
+                    {
                         rec.Status = StatusRecurso.Retirado;
+                        rec.latest = latest;
+                    }
                     else if (stat.StartsWith("Disponível"))
                         rec.Status = StatusRecurso.Disponivel;
                     else
@@ -299,9 +310,14 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
                 {
                     string textoPrimario = string.Format("{0} - {1}", ri.ResponsavelAtualCurto, ri.DescricaoAtualCurta)
                         .Replace("\"", "&quot;");
+                    string responsavelRetirada = "";
+                    if(ri.latest != null)
+                    {
+                        responsavelRetirada = getNomeSobrenomeProfessor(ri.latest.Usuario) + " - " + ri.latest.Horario;
+                    }
                     block += string.Format(
-                        "<span class=\"text-alternating\" data-text-primary=\"{0}\" data-text-alt=\"&#9888; RETIRADO\">{0}</span>\n<div class=\"resource-container\">\n",
-                        textoPrimario);
+                        "<span class=\"text-alternating\" data-text-primary=\"{0}\" data-text-alt=\"&#9888; {1}\">{0}</span>\n<div class=\"resource-container\">\n",
+                        textoPrimario, responsavelRetirada);
                 }
                 else
                 {
@@ -435,11 +451,21 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
         return nomes[0][0] + ". " + (ultNome.Length <= 10 ? ultNome : ultNome.Substring(0, 10) + ".");
     }
 
-    public string getNomeSobrenomeProfessor(string nome)
+    public static string toCamelCase(string nome)
+    {
+        return nome[0] + nome.Substring(1).ToLower();
+    }
+
+    public static string getNomeSobrenomeProfessor(string nome)
     {
         string[] nomes = nome.Split();
         if (nomes.Length == 1)
-            return nome;
-        return nomes[0] + " " + nomes[nomes.Length - 1];
+            return toCamelCase(nome);
+        return toCamelCase(nomes[0]) + " " + toCamelCase(nomes[nomes.Length - 1]);
+    }
+
+    public void Refresh()
+    {
+        VisualizarAlocacoesData();
     }
 }

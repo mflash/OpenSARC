@@ -17,7 +17,7 @@
     <!-- Cabeçalho público -->
     <div class="bg-dark text-white py-2 px-3 d-flex align-items-center gap-3">
 
-        <span class="fw-bold"><i class="bi bi-display me-2"></i>OpenSARC — Painel de Recursos</span>
+        <span class="fw-bold"><i class="bi bi-display me-2"></i>OpenSARC — Painel</span>
 
         <!-- Filtros: matrícula e recurso -->
         <div class="d-flex align-items-center gap-2">
@@ -27,7 +27,7 @@
             <div>
                 <asp:TextBox ID="txtMatricula" runat="server"
                     CssClass="form-control form-control-sm"
-                    MaxLength="10" placeholder="Ex.: A123456789" />
+                    MaxLength="10" onclick="limparCampo(this);" />
                 <asp:RegularExpressionValidator ID="revMatricula" runat="server"
                     ControlToValidate="txtMatricula"
                     ValidationExpression="^[a-zA-Z0-9]*$"
@@ -42,7 +42,8 @@
             <div class="d-flex align-items-center gap-2">
                 <asp:TextBox ID="txtRecurso" runat="server"
                     CssClass="form-control form-control-sm"
-                    MaxLength="50" placeholder="Ex.: SALA" />
+                    MaxLength="4"
+                    style="width: 6ch;"/>
                 <asp:RegularExpressionValidator ID="revRecurso" runat="server"
                     ControlToValidate="txtRecurso"
                     ValidationExpression="^[a-zA-Z0-9]*$"
@@ -54,8 +55,8 @@
                 <asp:UpdatePanel ID="upAviso" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:Label ID="lblAviso" runat="server"
-                            CssClass="small"
-                            style="min-width: 180px; display: inline-block;" />
+                            CssClass="small text-white"
+                            style="min-width: 250px; display: inline-block;" />
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="btnConsultaMatricula" EventName="Click" />
@@ -105,16 +106,18 @@
                 if (inputMatricula) inputMatricula.focus();
             });
 
-            // Dispara postback assíncrono ao atingir exactamente 10 caracteres em txtMatricula
+            // Dispara postback assíncrono ao atingir exatamente 10 caracteres em txtMatricula
             if (inputMatricula) {
                 inputMatricula.addEventListener('input', function () {
                     if (this.value.length === 10) {
+                        var aviso = document.getElementById('<%= lblAviso.ClientID %>');
+                        if (aviso) aviso.innerHTML = "<i class='bi bi-search me-1'></i>Verificando usuário...";
                         __doPostBack('<%= btnConsultaMatricula.UniqueID %>', '');
                     }
                 });
             }
 
-            // Dispara postback assíncrono ao atingir exactamente 4 caracteres em txtRecurso
+            // Dispara postback assíncrono ao atingir exatamente 4 caracteres em txtRecurso
             if (inputRecurso) {
                 inputRecurso.addEventListener('input', function () {
                     if (this.value.length === 4) {
@@ -123,6 +126,10 @@
                 });
             }
         })();
+
+        function limparCampo(input) {
+            input.value = '';
+        }
     </script>
 
 </asp:Content>

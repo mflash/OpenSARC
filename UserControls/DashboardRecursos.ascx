@@ -16,7 +16,7 @@
     }
 
     .schedule-col {
-        max-width: 600px;
+        max-width: 100%;
     }
 
     .resource-container {
@@ -222,16 +222,16 @@
 
     @media (max-width: 1024px) {
         .nomedisc {
-            font-size: 0.85rem !important;
+            font-size: 0.9rem !important;
         }
 
         .resource-tag {
-            font-size: 1.2rem !important;
+            font-size: 1.5rem !important;
             padding: 0.25rem 0.5rem !important;
         }
 
         .resource-icon {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
         }
 
         .schedule-header {
@@ -371,7 +371,7 @@
             <asp:Label ID="lblDataHora" runat="server" CssClass="text-muted fw-semibold" Visible="true"></asp:Label>
         </div>
 
-        <div class="container py-1" runat="server" id="container">
+        <div class="container-fluid px-3 py-1" runat="server" id="container">
             <!-- Conteúdo dinâmico gerado pelo code-behind -->
         </div>
     </ContentTemplate>

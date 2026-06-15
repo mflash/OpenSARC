@@ -70,14 +70,14 @@ public partial class _Painel : System.Web.UI.Page
             if (u != null)
             {
                 string nome = UserControls_DashboardRecursos.getNomeSobrenomeProfessor(u.Nome);
-                lblAviso.CssClass = "small text-white";
+                lblAviso.CssClass = "text-white";
                 lblAviso.Text = string.Format("<i class='bi bi-person-check-fill me-1'></i>{0}", nome);
                 ok = true;
                 currentUser = u;
             }
             else
             {
-                lblAviso.CssClass = "small text-danger";
+                lblAviso.CssClass = "text-danger";
                 lblAviso.Text = "<i class='bi bi-person-x-fill me-1'></i>Matrícula não encontrada.";
                 currentUser = null;
             }
@@ -86,7 +86,7 @@ public partial class _Painel : System.Web.UI.Page
         }
         catch (Exception)
         {
-            lblAviso.CssClass = "text-warning small";
+            lblAviso.CssClass = "text-warning";
             lblAviso.Text = "<i class='bi bi-exclamation-triangle-fill me-1'></i>Erro ao consultar matrícula.";
         }
         return false;
@@ -103,18 +103,18 @@ public partial class _Painel : System.Web.UI.Page
                 if(r.Id == id)
                 {
                     //lblStatus.Text = r.Descricao;
-                    lblAviso.CssClass = "small text-white";
+                    lblAviso.CssClass = "text-white";
                     lblAviso.Text = string.Format("<i class='bi bi-building-check me-1'></i>{0}", r.Descricao);
                     return r;
                 }
             }
-            lblAviso.CssClass = "text-danger small";
+            lblAviso.CssClass = "text-danger";
             lblAviso.Text = "<i class='bi bi-building-x me-1'></i>Recurso não encontrado.";
             return null;
         }
         catch (Exception)
         {
-            lblAviso.CssClass = "text-warning small";
+            lblAviso.CssClass = "text-warning";
             lblAviso.Text = "<i class='bi bi-exclamation-triangle-fill me-1'></i>Erro ao consultar recurso.";
         }
         return null;
@@ -135,7 +135,7 @@ public partial class _Painel : System.Web.UI.Page
             r.Status = RecursoSRRC.StatusRecurso.DISPONIVEL;
 
             string u = UserControls_DashboardRecursos.getNomeSobrenomeProfessor(user);
-            lblAviso.CssClass = "small text-white";
+            lblAviso.CssClass = "text-white";
             lblAviso.Text = string.Format(
                 "<i class='bi bi-box-arrow-in-left me-1 text-warning'></i>{0} — {1} &nbsp; <span class='text-white-50'>{2}</span>",
                 u, resource, now.ToString("HH:mm"));
@@ -146,7 +146,7 @@ public partial class _Painel : System.Web.UI.Page
             r.Status = RecursoSRRC.StatusRecurso.RETIRADO;
 
             string u = UserControls_DashboardRecursos.getNomeSobrenomeProfessor(user);
-            lblAviso.CssClass = "small text-white";
+            lblAviso.CssClass = "text-white";
             lblAviso.Text = string.Format(
                 "<i class='bi bi-box-arrow-right me-1 text-warning'></i>{0} — {1} &nbsp; <span class='text-white-50'>{2}</span>",
                 u, resource, now.ToString("HH:mm"));

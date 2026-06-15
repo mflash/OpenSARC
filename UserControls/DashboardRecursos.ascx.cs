@@ -263,8 +263,8 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
 
         container.InnerHtml = "";
 
-        listaRecursosAtual = GroupRecursos(listaRecursosAtual).OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
-        listaRecursosProx = GroupRecursos(listaRecursosProx).OrderBy(ri => ri.ResponsavelAtual).ThenBy(ri => ri.DescricaoAtual).ToList();
+        listaRecursosAtual = GroupRecursos(listaRecursosAtual).OrderBy(ri => ri.ResponsavelAtualCurto).ThenBy(ri => ri.DescricaoAtual).ToList();
+        listaRecursosProx = GroupRecursos(listaRecursosProx).OrderBy(ri => ri.ResponsavelAtualCurto).ThenBy(ri => ri.DescricaoAtual).ToList();
 
         string horarioAtual = "";
         foreach (var ri in listaRecursosAtual) { horarioAtual = ri.HorarioAtual; break; }
@@ -313,7 +313,10 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
                     string responsavelRetirada = "";
                     if(ri.latest != null)
                     {
-                        responsavelRetirada = getNomeSobrenomeProfessor(ri.latest.Usuario) + " - " + ri.latest.Horario;
+                        string horarioRetirada = ri.latest.Horario.ToString(@"dd/MM HH:mm");
+                        if(ri.latest.Horario.Day == hoje.Day)
+                            horarioRetirada = ri.latest.Horario.ToString(@"HH:mm");
+                        responsavelRetirada = getNomeCurtoProfessor(ri.latest.Usuario) + " - " + horarioRetirada;
                     }
                     block += string.Format(
                         "<span class=\"text-alternating\" data-text-primary=\"{0}\" data-text-alt=\"&#9888; {1}\">{0}</span>\n<div class=\"resource-container\">\n",
@@ -373,7 +376,7 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
         foreach (string pal in nome.Split())
         {
             string palCurta = pal;
-            if (pal.Length > 7)
+            if (pal.Length > 6)
             {
                 palCurta = pal.Substring(0, 4);
                 int pos = 4;
@@ -448,6 +451,7 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
         if (nomes.Length == 1)
             return nome.Length <= 10 ? nome : nome.Substring(0, 10);
         string ultNome = nomes[nomes.Length - 1];
+        ultNome = ultNome[0] + ultNome.Substring(1).ToLower();
         return nomes[0][0] + ". " + (ultNome.Length <= 10 ? ultNome : ultNome.Substring(0, 10) + ".");
     }
 

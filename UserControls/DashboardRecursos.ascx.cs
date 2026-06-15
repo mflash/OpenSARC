@@ -13,6 +13,10 @@ using System.DirectoryServices.AccountManagement;
 
 public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
 {
+
+    public string ContainerCssClass { get; set; } // padding padrão para o container, pode ser sobrescrito ao usar o controle
+    public bool ExibeRecursosRetirados { get; set; } // flag para exibir os recursos retirados neste momento (usada no painel de retiradas)
+
     private List<string> horarios;
     private List<TimeSpan> horariosTime;
     private SRRCDAO logDataDAO = new SRRCDAO();
@@ -60,6 +64,9 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
     {
         horarios = new List<string>();
         horariosTime = new List<TimeSpan>();
+
+        if (!string.IsNullOrEmpty(ContainerCssClass))
+            container.Attributes["class"] = "container-fluid py-1 " + ContainerCssClass;
 
         if (Request.QueryString["datahora"] != null)
         {
@@ -268,31 +275,32 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
             return;
         }
 
-        foreach (BusinessData.Entities.Recurso r in recursosBO.GetRecursos()) 
-        {
-                LogData latest = logDataDAO.FindLatestActivity(r.Descricao);
-                if(latest != null)
-                {
-                    if(latest.Acao == "RETIRADA" && !recursosAlocadosAgora.Contains(r.Descricao))
+        if(ExibeRecursosRetirados)
+            foreach (BusinessData.Entities.Recurso r in recursosBO.GetRecursos()) 
+            {
+                    LogData latest = logDataDAO.FindLatestActivity(r.Descricao);
+                    if(latest != null)
                     {
-                        RecursoItem rec = new RecursoItem();
-                        rec.NomeCompleto = r.Descricao;
-                        rec.NomeCurto = r.Abrev;
-                        rec.Tipo = r.Tipo;
+                        if(latest.Acao == "RETIRADA" && !recursosAlocadosAgora.Contains(r.Descricao))
+                        {
+                            RecursoItem rec = new RecursoItem();
+                            rec.NomeCompleto = r.Descricao;
+                            rec.NomeCurto = r.Abrev;
+                            rec.Tipo = r.Tipo;
 
-                        string horarioRetirada = latest.Horario.ToString(@"dd/MM HH:mm");
-                        if(latest.Horario.Day == hoje.Day)
-                            horarioRetirada = latest.Horario.ToString(@"HH:mm");
-                        rec.ResponsavelAtualCurto = getNomeCurtoProfessor(latest.Usuario);
-                        rec.DescricaoAtualCurta = horarioRetirada;
-                        rec.DescricaoAtual = "RETIRADA";
-                        //rec.ResponsavelAtualCurto = "&#9888; Desconhecido";
-                        rec.Status = StatusRecurso.Retirado;
-                        rec.latest = latest;
-                        listaRecursosAtual.Add(rec);
+                            string horarioRetirada = latest.Horario.ToString(@"dd/MM HH:mm");
+                            if(latest.Horario.Day == hoje.Day)
+                                horarioRetirada = latest.Horario.ToString(@"HH:mm");
+                            rec.ResponsavelAtualCurto = getNomeCurtoProfessor(latest.Usuario);
+                            rec.DescricaoAtualCurta = horarioRetirada;
+                            rec.DescricaoAtual = "RETIRADA";
+                            //rec.ResponsavelAtualCurto = "&#9888; Desconhecido";
+                            rec.Status = StatusRecurso.Retirado;
+                            rec.latest = latest;
+                            listaRecursosAtual.Add(rec);
+                        }
                     }
-                }
-        }
+            }
 
         container.InnerHtml = "";
 

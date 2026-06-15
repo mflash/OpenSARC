@@ -84,7 +84,7 @@
 
     </div>
 
-    <uc:Dashboard ID="Dashboard1" runat="server" />
+    <uc:Dashboard ID="Dashboard1" ContainerCssClass="px-0" ExibeRecursosRetirados=true runat="server" />
 
     <script>
         (function () {

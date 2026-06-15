@@ -361,20 +361,20 @@
     <!-- ═══════════════════════════════════════
          DASHBOARD DE RECURSOS
     ═══════════════════════════════════════ -->
-    <uc:Dashboard ID="Dashboard1" runat="server" />
+    <uc:Dashboard ID="Dashboard1" ContainerCssClass="px-5" ExibeRecursosRetirados=false runat="server" />
 
     <!-- ═══════════════════════════════════════
          INFORMAÇÕES DO SISTEMA
     ═══════════════════════════════════════ -->
     <div class="container my-4">
         <div class="text-center">
-            <p class="mb-2">
+            <p class="text-muted small">
                 O OpenSARC é um sistema para alocação de recursos computacionais. Além da solicitação
                 de recursos durante o período de planejamento semestral,<br />
                 o sistema permite agendar eventos, consultar datas de avaliações e trocar e transferir
                 recursos durante todo o ano.
             </p>
-            <p class="mb-2">
+            <p class="text-muted small">
                 O OpenSARC é <em>software</em> livre. Caso deseje participar, reclamar ou dar sugestões,
                 visite <a href="https://github.com/mflash/OpenSARC" target="_blank" class="fw-semibold">https://github.com/mflash/OpenSARC
                 </a>.

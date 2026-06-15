@@ -371,7 +371,7 @@
             <asp:Label ID="lblDataHora" runat="server" CssClass="text-muted fw-semibold" Visible="true"></asp:Label>
         </div>
 
-        <div class="container-fluid px-3 py-1" runat="server" id="container">
+        <div class="container-fluid py-1" runat="server" id="container">
             <!-- Conteúdo dinâmico gerado pelo code-behind -->
         </div>
     </ContentTemplate>

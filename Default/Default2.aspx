@@ -128,7 +128,7 @@
             .login-compact .login-row {
                 display: flex;
                 align-items: center;
-                justify-content: center;
+                justify-content: space-between;
                 gap: 1rem;
                 flex-wrap: nowrap;
             }
@@ -303,6 +303,11 @@
 
                     <LayoutTemplate>
                         <div class="login-row">
+                            <!-- Título à esquerda -->
+                            <span class="fw-bold text-white me-auto">
+                                <i class="bi bi-grid-1x2-fill me-2"></i>OpenSARC
+                            </span>
+
                             <!-- Usuário -->
                             <div class="login-field">
                                 <label for="UserName">Usuário:</label>

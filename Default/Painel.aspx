@@ -17,7 +17,7 @@
     <!-- Cabeçalho público -->
     <div class="bg-dark text-white py-2 px-3 d-flex align-items-center gap-3">
 
-        <span class="fw-bold"><i class="bi bi-display me-2"></i>OpenSARC — Painel</span>
+        <span class="fw-bold"><i class="bi bi-key-fill me-2"></i>OpenSARC — Painel</span>
 
         <!-- Filtros: matrícula e recurso -->
         <div class="d-flex align-items-center gap-2">

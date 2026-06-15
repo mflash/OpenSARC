@@ -140,6 +140,7 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
         DateTime hoje = now.Date;
         TimeSpan nowTime = now.TimeOfDay;
 
+        RecursosBO recursosBO = new RecursosBO();
         AlocacaoBO controladorAlocacoes = new AlocacaoBO();
         List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByDataFull(hoje, (BusinessData.Entities.Calendario)Session["Calendario"]);
 
@@ -179,6 +180,8 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
 
         List<RecursoItem> listaRecursosAtual = new List<RecursoItem>();
         List<RecursoItem> listaRecursosProx = new List<RecursoItem>();
+
+        HashSet<String> recursosAlocadosAgora = new HashSet<string>();
 
         foreach (List<Alocacao> lista in new List<List<Alocacao>> { filtradaAtual, filtradaProx })
         {
@@ -243,7 +246,11 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
                         rec.Status = StatusRecurso.SemInfo;
                 }
                 if (lista == filtradaAtual)
+                {
                     listaRecursosAtual.Add(rec);
+                    if(rec.Status == StatusRecurso.Retirado)
+                        recursosAlocadosAgora.Add(rec.NomeCompleto);
+                }
                 else
                     listaRecursosProx.Add(rec);
             }
@@ -259,6 +266,32 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
             </div>
         </div>";
             return;
+        }
+
+        foreach (BusinessData.Entities.Recurso r in recursosBO.GetRecursos()) 
+        {
+                LogData latest = logDataDAO.FindLatestActivity(r.Descricao);
+                if(latest != null)
+                {
+                    if(latest.Acao == "RETIRADA" && !recursosAlocadosAgora.Contains(r.Descricao))
+                    {
+                        RecursoItem rec = new RecursoItem();
+                        rec.NomeCompleto = r.Descricao;
+                        rec.NomeCurto = r.Abrev;
+                        rec.Tipo = r.Tipo;
+
+                        string horarioRetirada = latest.Horario.ToString(@"dd/MM HH:mm");
+                        if(latest.Horario.Day == hoje.Day)
+                            horarioRetirada = latest.Horario.ToString(@"HH:mm");
+                        rec.ResponsavelAtualCurto = getNomeCurtoProfessor(latest.Usuario);
+                        rec.DescricaoAtualCurta = horarioRetirada;
+                        rec.DescricaoAtual = "RETIRADA";
+                        //rec.ResponsavelAtualCurto = "&#9888; Desconhecido";
+                        rec.Status = StatusRecurso.Retirado;
+                        rec.latest = latest;
+                        listaRecursosAtual.Add(rec);
+                    }
+                }
         }
 
         container.InnerHtml = "";

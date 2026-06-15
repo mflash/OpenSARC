@@ -1,11 +1,11 @@
-﻿<%@ page language="C#"
-    masterpagefile="~/Master/MasterBootstrap.master"
-    autoeventwireup="true"
-    inherits="Docentes_EditarAula"
-    codefile="~/Docentes/EditarAulaSemestre2.aspx.cs"
-    maintainscrollpositiononpostback="true"
-    enableeventvalidation="false"
-    title="Sistema de Alocação de Recursos Computacionais - FACIN" %>
+﻿<%@ Page Language="C#"
+    MasterPageFile="~/Master/MasterBootstrap.master"
+    AutoEventWireup="true"
+    Inherits="Docentes_EditarAula"
+    CodeFile="~/Docentes/EditarAulaSemestre2.aspx.cs"
+    MaintainScrollPositionOnPostback="true"
+    EnableEventValidation="false"
+    Title="Sistema de Alocação de Recursos Computacionais - FACIN" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Src="../UserControls/ModernProgress.ascx" TagName="ModernProgress" TagPrefix="uc" %>
@@ -45,12 +45,12 @@
                 badge.classList.add('active');
                 badge.classList.remove('saved');
                 badge.title = 'Clique para salvar todas as alterações';
-                
+
                 // Adiciona o evento de clique se ainda não existir
                 if (!badge.hasAttribute('data-click-attached')) {
                     badge.setAttribute('data-click-attached', 'true');
                     badge.style.cursor = 'pointer';
-                    badge.onclick = function(e) {
+                    badge.onclick = function (e) {
                         e.preventDefault();
                         e.stopPropagation();
                         // Dispara o clique no botão salvar
@@ -108,7 +108,7 @@
             if (ddl.options.length > 1) {
                 ddlsCarregados[ddl.id] = true;
                 console.log("ddl já com itens");
-               return;
+                return;
             }
 
             // Dispara o postback com comando personalizado
@@ -221,9 +221,9 @@
         // Configuração do menu dropdown para recursos
         function setupRecursosMenu() {
             // Fecha todos os dropdowns ao clicar fora
-            document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
                 if (!e.target.closest('.recursos-list-simple li')) {
-                    document.querySelectorAll('.recurso-dropdown').forEach(function(dropdown) {
+                    document.querySelectorAll('.recurso-dropdown').forEach(function (dropdown) {
                         dropdown.classList.remove('show');
                     });
                 }
@@ -244,6 +244,7 @@
 
                 // Para cada item da lista
                 lista.querySelectorAll('li').forEach(function (li, index) {
+                    var retirarNote = li.textContent.startsWith("Retirar");
                     // Remove menu existente se houver
                     var existingMenu = li.querySelector('.recurso-menu-btn');
                     if (existingMenu) existingMenu.remove();
@@ -263,76 +264,78 @@
 
                     // Opções do menu
                     var opcoes = [
-                        { 
-                            btn: butDeletar, 
-                            icon: 'bi-trash', 
+                        {
+                            btn: butDeletar,
+                            icon: 'bi-trash',
                             texto: 'Liberar recurso',
                             classe: 'delete'
                         },
-                        { 
-                            btn: butTransferir, 
-                            icon: 'bi-arrow-right-circle', 
+                        {
+                            btn: butTransferir,
+                            icon: 'bi-arrow-right-circle',
                             texto: 'Transferir recurso',
                             classe: 'transfer'
                         },
-                        { 
-                            btn: butTrocar, 
-                            icon: 'bi-arrow-left-right', 
+                        {
+                            btn: butTrocar,
+                            icon: 'bi-arrow-left-right',
                             texto: 'Trocar recurso',
                             classe: 'swap'
                         }
                     ];
 
-                    opcoes.forEach(function(opcao, idx) {
+                    opcoes.forEach(function (opcao, idx) {
                         var item = document.createElement('button');
                         item.className = 'recurso-dropdown-item ' + opcao.classe;
                         item.type = 'button';
                         item.innerHTML = '<i class="bi ' + opcao.icon + '"></i><span>' + opcao.texto + '</span>';
-                        
-                        item.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            
-                            // Fecha o dropdown
-                            dropdown.classList.remove('show');
-                            
-                            // Marca o checkbox correspondente
-                            var checkbox = li.querySelector('input[type="checkbox"]');
-                            if (checkbox) {
-                                // Desmarca todos primeiro
-                                lista.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
-                                    cb.checked = false;
-                                });
-                                // Marca apenas este
-                                checkbox.checked = true;
-                            }
-                            
-                            // Dispara o click no botão original
-                            opcao.btn.click();
-                        });
 
-                        dropdown.appendChild(item);
-                        
-                        // Adiciona separador entre Transferir e Trocar
-                        if (idx === 0) {
-                            var divider = document.createElement('div');
-                            divider.className = 'recurso-dropdown-divider';
-                            dropdown.appendChild(divider);
+                        if (!retirarNote || retirarNote && idx == 0) {
+                            item.addEventListener('click', function (e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+
+                                // Fecha o dropdown
+                                dropdown.classList.remove('show');
+
+                                // Marca o checkbox correspondente
+                                var checkbox = li.querySelector('input[type="checkbox"]');
+                                if (checkbox) {
+                                    // Desmarca todos primeiro
+                                    lista.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+                                        cb.checked = false;
+                                    });
+                                    // Marca apenas este
+                                    checkbox.checked = true;
+                                }
+
+                                // Dispara o click no botão original
+                                opcao.btn.click();
+                            });
+
+                            dropdown.appendChild(item);
+
+                            // Adiciona separador entre Transferir e Trocar
+                            if (idx === 0 && !retirarNote) {
+                                var divider = document.createElement('div');
+                                divider.className = 'recurso-dropdown-divider';
+                                dropdown.appendChild(divider);
+                            }
                         }
                     });
 
                     // Toggle dropdown ao clicar no botão
-                    menuBtn.addEventListener('click', function(e) {
+                    menuBtn.addEventListener('click', function (e) {
                         e.preventDefault();
                         e.stopPropagation();
-                        
+
                         // Fecha outros dropdowns
-                        document.querySelectorAll('.recurso-dropdown').forEach(function(d) {
+                        document.querySelectorAll('.recurso-dropdown').forEach(function (d) {
                             if (d !== dropdown) {
                                 d.classList.remove('show');
                             }
                         });
-                        
+
                         // Toggle este dropdown
                         dropdown.classList.toggle('show');
                     });
@@ -348,16 +351,16 @@
         window.addEventListener('load', setupRecursosMenu);
 
         function resetConfirmBadges() {
-            document.querySelectorAll('.confirm-badge.active').forEach(function(badge) {
+            document.querySelectorAll('.confirm-badge.active').forEach(function (badge) {
                 badge.classList.remove('active');
                 badge.classList.add('saved');
                 badge.title = 'Alteração salva';
                 badge.style.cursor = 'default';
                 badge.removeAttribute('data-click-attached');
                 badge.onclick = null;
-                
+
                 // Remove o estado 'saved' após 2 segundos
-                setTimeout(function() {
+                setTimeout(function () {
                     badge.classList.remove('saved');
                     badge.title = '';
                 }, 2000);
@@ -473,7 +476,7 @@
 
             <asp:Label ID="lblNotebook" runat="server"
                 Style="display: none"
-                Text=" "/>
+                Text=" " />
 
             <asp:HiddenField ID="hdnRecursoSelecionado" runat="server" />
 
@@ -566,7 +569,7 @@
                                         TextMode="MultiLine"
                                         Text='<%#DataBinder.Eval(Container.DataItem, "DescricaoAtividade") %>'
                                         AutoPostBack="False" />
-                                    <span ID="butConfirm"
+                                    <span id="butConfirm"
                                         runat="server"
                                         class="confirm-badge">
                                         <i class="bi bi-exclamation-circle-fill"></i>
@@ -627,7 +630,7 @@
                                         CssClass="recursos-list-simple"
                                         RepeatLayout="UnorderedList">
                                     </asp:CheckBoxList>
-                                    
+
                                     <div class="recursos-buttons-template" style="display: none;">
                                         <asp:LinkButton ID="butDeletar" runat="server"
                                             OnClick="butDeletar_Click"
@@ -642,7 +645,7 @@
                                             CssClass="btn-action-swap">
                                         </asp:LinkButton>
                                     </div>
-                                    
+
                                     <asp:Label ID="lblRecursosAlocados" runat="server"
                                         Width="250px"
                                         Visible="false" />
@@ -751,6 +754,7 @@
             0%, 100% {
                 box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
             }
+
             50% {
                 box-shadow: 0 0 0 8px rgba(255, 193, 7, 0);
             }
@@ -989,6 +993,7 @@
             from {
                 opacity: 0;
             }
+
             to {
                 opacity: 1;
             }
@@ -999,6 +1004,7 @@
                 opacity: 0;
                 transform: translate(-50%, -45%);
             }
+
             to {
                 opacity: 1;
                 transform: translate(-50%, -50%);

@@ -70,7 +70,7 @@ public partial class _Painel : System.Web.UI.Page
             if (u != null)
             {
                 string nome = UserControls_DashboardRecursos.getNomeSobrenomeProfessor(u.Nome);
-                lblAviso.CssClass = "text-white";
+                lblAviso.CssClass = "text-success-bright";
                 lblAviso.Text = string.Format("<i class='bi bi-person-check-fill me-1'></i>{0}", nome);
                 ok = true;
                 currentUser = u;
@@ -103,7 +103,7 @@ public partial class _Painel : System.Web.UI.Page
                 if(r.Id == id)
                 {
                     //lblStatus.Text = r.Descricao;
-                    lblAviso.CssClass = "text-white";
+                    lblAviso.CssClass = "text-success-bright";
                     lblAviso.Text = string.Format("<i class='bi bi-building-check me-1'></i>{0}", r.Descricao);
                     return r;
                 }
@@ -137,8 +137,8 @@ public partial class _Painel : System.Web.UI.Page
             string u = UserControls_DashboardRecursos.getNomeSobrenomeProfessor(user);
             lblAviso.CssClass = "text-white";
             lblAviso.Text = string.Format(
-                "<i class='bi bi-box-arrow-in-left me-1 text-warning'></i>{0} — {1} &nbsp; <span class='text-white-50'>{2}</span>",
-                u, resource, now.ToString("HH:mm"));
+                "<i class='bi bi-box-arrow-in-left me-1 text-warning'></i>{0} | {1}",
+                u, resource);
         }
         else
         {
@@ -148,8 +148,8 @@ public partial class _Painel : System.Web.UI.Page
             string u = UserControls_DashboardRecursos.getNomeSobrenomeProfessor(user);
             lblAviso.CssClass = "text-white";
             lblAviso.Text = string.Format(
-                "<i class='bi bi-box-arrow-right me-1 text-warning'></i>{0} — {1} &nbsp; <span class='text-white-50'>{2}</span>",
-                u, resource, now.ToString("HH:mm"));
+                "<i class='bi bi-box-arrow-right me-1 text-warning'></i>{0} | {1}",
+                u, resource);
         }
         r.LastUser = user;
         r.LastTime = now;

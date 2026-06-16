@@ -6,10 +6,16 @@
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphConteudo">
 
     <!-- Recarrega a página inteira a cada 60 segundos -->
-    <meta http-equiv="refresh" content="60"/>
+    <meta http-equiv="refresh" content="60" />
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+    <style>
+        .text-success-bright {
+            color: #2ecc71 !important; /* A bright, vivid emerald green */
+        }
+    </style>
 
     <%-- Se PainelPublico.master já tiver ScriptManager, substituir por ScriptManagerProxy --%>
     <asp:ScriptManagerProxy ID="ScriptManager1" runat="server" />
@@ -17,7 +23,7 @@
     <!-- Cabeçalho público -->
     <div class="bg-dark text-white py-2 px-3 d-flex align-items-center gap-3">
 
-        <span class="fw-bold"><i class="bi bi-key-fill me-2"></i>OpenSARC — Painel</span>
+        <span class="fw-bold"><i class="bi bi-key-fill me-2"></i>OpenSARC | Painel</span>
 
         <!-- Filtros: matrícula e recurso -->
         <div class="d-flex align-items-center gap-2">
@@ -27,7 +33,8 @@
             <div>
                 <asp:TextBox ID="txtMatricula" runat="server"
                     CssClass="form-control form-control-sm"
-                    MaxLength="10" onclick="limparCampo(this);" />
+                    MaxLength="10"
+                    Style="width: 14ch;" />
                 <asp:RegularExpressionValidator ID="revMatricula" runat="server"
                     ControlToValidate="txtMatricula"
                     ValidationExpression="^[a-zA-Z0-9]*$"
@@ -43,7 +50,7 @@
                 <asp:TextBox ID="txtRecurso" runat="server"
                     CssClass="form-control form-control-sm"
                     MaxLength="4"
-                    style="width: 6ch;"/>
+                    Style="width: 8ch;" />
                 <asp:RegularExpressionValidator ID="revRecurso" runat="server"
                     ControlToValidate="txtRecurso"
                     ValidationExpression="^[a-zA-Z0-9]*$"
@@ -56,7 +63,7 @@
                     <ContentTemplate>
                         <asp:Label ID="lblAviso" runat="server"
                             CssClass="small text-white"
-                            style="min-width: 250px; display: inline-block;" />
+                            Style="min-width: 250px; display: inline-block;" />
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="btnConsultaMatricula" EventName="Click" />
@@ -70,11 +77,11 @@
         <asp:Button ID="btnConsultaMatricula" runat="server"
             OnClick="btnConsultaMatricula_Click"
             UseSubmitBehavior="false"
-            style="display:none;" />
+            Style="display: none;" />
         <asp:Button ID="btnConsultaRecurso" runat="server"
             OnClick="btnConsultaRecurso_Click"
             UseSubmitBehavior="false"
-            style="display:none;" />
+            Style="display: none;" />
 
         <asp:HyperLink ID="lnkLogin" runat="server"
             NavigateUrl="~/Default/Default2.aspx"
@@ -84,12 +91,12 @@
 
     </div>
 
-    <uc:Dashboard ID="Dashboard1" ContainerCssClass="px-0" ExibeRecursosRetirados=true runat="server" />
+    <uc:Dashboard ID="Dashboard1" ContainerCssClass="px-0" ExibeRecursosRetirados="true" runat="server" />
 
     <script>
         (function () {
             var inputMatricula = document.getElementById('<%= txtMatricula.ClientID %>');
-            var inputRecurso   = document.getElementById('<%= txtRecurso.ClientID %>');
+            var inputRecurso = document.getElementById('<%= txtRecurso.ClientID %>');
 
             // Foco inicial ao carregar a página
             if (inputMatricula) inputMatricula.focus();
@@ -105,6 +112,20 @@
                 }
                 if (inputMatricula) inputMatricula.focus();
             });
+
+            // Limpa ambos os campos ao clicar em txtMatricula
+            if (inputMatricula) {
+                inputMatricula.addEventListener('click', function () {
+                    limparCampo(inputMatricula);
+                    if (inputRecurso) limparCampo(inputRecurso);
+                });
+
+                if (inputRecurso) {
+                    inputRecurso.addEventListener('click', function () {
+                        limparCampo(inputRecurso);
+                    });
+                }
+            }
 
             // Dispara postback assíncrono ao atingir exatamente 10 caracteres em txtMatricula
             if (inputMatricula) {

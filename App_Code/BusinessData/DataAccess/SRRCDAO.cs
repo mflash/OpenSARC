@@ -113,7 +113,8 @@ namespace BusinessData.DataAccess
                              "where pr.cdmatricula = ";
             string mat = "10" + id.Substring(2, id.Length - 2);
             sql += mat;
-            c.Open();
+            if(c.State == System.Data.ConnectionState.Closed)
+                c.Open();
             OracleCommand cmd = c.CreateCommand();
 
             cmd.CommandText = sql;

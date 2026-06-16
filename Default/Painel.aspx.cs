@@ -196,9 +196,9 @@ public partial class _Painel : System.Web.UI.Page
             return users[userId];
         Usuario u = null;// srrcDAO.FindProf(userId);
 
-        //u = srrcDAO.FindProf("10"+userId.Substring(2,6)); 
-        //if (u == null)
-        u = srrcDAO.FindFunc(userId);
+        u = srrcDAO.FindProf("10"+userId.Substring(2,6)); 
+        if(u==null)
+            u = srrcDAO.FindFunc(userId);
         if (u == null)
             u = srrcDAO.FindStudentUndergrad(userId);
         if (u == null)

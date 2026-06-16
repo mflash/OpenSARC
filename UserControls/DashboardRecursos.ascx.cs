@@ -147,8 +147,11 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
         DateTime hoje = now.Date;
         TimeSpan nowTime = now.TimeOfDay;
 
+        lblDataHora.Text = now.ToString();
+
         RecursosBO recursosBO = new RecursosBO();
         AlocacaoBO controladorAlocacoes = new AlocacaoBO();
+        ProfessoresBO professoresBO = new ProfessoresBO();
         List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByDataFull(hoje, (BusinessData.Entities.Calendario)Session["Calendario"]);
 
         int pos;
@@ -231,14 +234,32 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
                     rec.HorarioAtual = aloc.Horario;
                     rec.NomeCurto = aloc.Recurso.Abrev;
                     rec.Tipo = aloc.Recurso.Tipo;
+
                     rec.DescricaoAtual = aloc.Evento.Descricao;
                     rec.DescricaoAtualCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Evento.Titulo);
-                    rec.ResponsavelAtual = getNomeSobrenomeProfessor(aloc.Evento.Responsavel).Trim();
-                    if (rec.ResponsavelAtual.ToLower().StartsWith("prof."))
-                        rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(5).Trim();
-                    if (rec.ResponsavelAtual.ToLower().StartsWith("profa."))
-                        rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(6).Trim();
-                    rec.ResponsavelAtualCurto = getNomeCurtoProfessor(rec.ResponsavelAtual);
+
+                    rec.ResponsavelAtual = aloc.Evento.Responsavel.Trim();
+                    
+                    if (aloc.Evento.AutorId != null)
+                    {
+                        Professor pes = (Professor)professoresBO.GetPessoaById(aloc.Evento.AutorId.Id);
+                        if (pes != null)
+                        { // É professor
+                            Professor prof = pes as Professor;
+                            rec.ResponsavelAtual = getNomeSobrenomeProfessor(prof.Nome).Trim();
+                            rec.ResponsavelAtualCurto = prof.Curto != null ? prof.Curto : getNomeCurtoProfessor(prof.Nome).Trim();
+                        }
+                    }
+                    else
+                    {
+                        if (rec.ResponsavelAtual.ToLower().StartsWith("prof."))
+                            rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(5).Trim();
+                        if (rec.ResponsavelAtual.ToLower().StartsWith("profa."))
+                            rec.ResponsavelAtual = aloc.Evento.Responsavel.Substring(6).Trim();
+                        rec.ResponsavelAtualCurto = getNomeCurtoProfessor(rec.ResponsavelAtual);
+                        rec.ResponsavelAtual = getNomeSobrenomeProfessor(rec.ResponsavelAtual).Trim();
+                    }
+
                     string stat = logDataDAO.GetUltimoStatus(rec.NomeCompleto);
                     LogData latest = logDataDAO.FindLatestActivity(rec.NomeCompleto);
                     rec.latest = null;

@@ -5,8 +5,8 @@
 
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphConteudo">
 
-    <!-- Recarrega a página inteira a cada 60 segundos -->
-    <meta http-equiv="refresh" content="60" />
+    <!-- Recarrega a página inteira a cada 120 segundos -->
+    <!--meta http-equiv="refresh" content="120" /-->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />

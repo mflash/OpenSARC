@@ -2,7 +2,7 @@
 
 <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~/UserControls/DashboardRecursos.css") %>" />
 
-<asp:Timer ID="Timer1" runat="server" Interval="60000" OnTick="Timer1_Tick" Enabled="false" />
+<asp:Timer ID="Timer1" runat="server" Interval="30000" OnTick="Timer1_Tick" Enabled="true" />
 
 <script>
     function bindRowHighlight() {
@@ -125,8 +125,8 @@
 ═══════════════════════════════════════ -->
 <asp:UpdatePanel ID="UpdatePanel2" runat="server">
     <ContentTemplate>
-        <div class="text-center my-3">
-            <asp:Label ID="lblDataHora" runat="server" CssClass="text-muted fw-semibold" Visible="true"></asp:Label>
+        <div class="text-center my-1">
+            <asp:Label ID="lblDataHora" runat="server" CssClass="text-muted fw-semibold" style="font-size: 0.65rem" Visible="false"></asp:Label>
         </div>
 
         <div class="container-fluid py-1" runat="server" id="container">

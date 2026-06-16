@@ -716,11 +716,23 @@ namespace BusinessData.DataAccess
                     Guid? eventoId = leitor["EventoId"] as Guid?;
                     if (eventoId.HasValue)
                     {
+                        Guid autorId = leitor.GetGuid(leitor.GetOrdinal("autor_evento"));
                         string descrEv = leitor.GetString(leitor.GetOrdinal("descricao_evento"));
                         string tituloEv = leitor.GetString(leitor.GetOrdinal("titulo_evento"));
                         string respEv = leitor.GetString(leitor.GetOrdinal("respons_evento"));
 
-                        evento = Evento.newEvento(null, descrEv, null, respEv, tituloEv, null);
+                        int ordProf = leitor.GetOrdinal("nome_prof_evento");
+                        int ordCurto = leitor.GetOrdinal("curto_prof_evento");
+                        string nomeAutor = leitor.IsDBNull(ordProf) ? null : leitor.GetString(ordProf);
+                        string curtoAutor = leitor.IsDBNull(ordCurto) ? null : leitor.GetString(ordCurto);
+
+                        Professor p = null;
+                        if(nomeAutor != null)
+                        {
+                            p = Professor.NewProfessor("x", nomeAutor, "x", curtoAutor);
+                            p.Id = autorId;
+                        }
+                        evento = Evento.newEvento(p, descrEv, null, respEv, tituloEv, null);
                     }
 
                     aloc = new Alocacao(rec, data, hora, au, evento);

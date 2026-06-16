@@ -1,3 +1,7 @@
+.text-xs {
+    font-size: 0.55rem !important; /* Approximately 12px */
+}
+
 .schedule-card {
     border: none;
     border-radius: 12px;

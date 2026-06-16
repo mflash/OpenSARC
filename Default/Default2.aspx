@@ -8,7 +8,7 @@
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphTitulo">
 
     <!-- Recarrega a página inteira a cada 60 segundos -->
-    <meta http-equiv="refresh" content="60">
+    <!--meta http-equiv="refresh" content="60"-->
 
     <asp:ScriptManager ID="ScriptManager1" runat="server">
         <Scripts>
@@ -128,7 +128,7 @@
             .login-compact .login-row {
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
+                justify-content: flex-start;
                 gap: 1rem;
                 flex-wrap: nowrap;
             }
@@ -139,142 +139,6 @@
                 gap: 0.5rem;
             }
 
-        /* =============================================
-           Dashboard de Recursos — estilos no UserControl DashboardRecursos.ascx
-        ============================================= */
-        /*
-        .container {
-            display: flex;
-            flex-direction: column;
-            max-width: 1200px;
-            width: 100%;
-            margin: auto;
-            padding: 0 1rem;
-        }
-            */
-
-        /*
-        .row {
-            display: grid;
-            grid-template-columns: 60px auto;
-            gap: 5px;
-            align-items: center;
-            margin-bottom: 10px;
-            padding: 5px;
-        }
-
-        .category {
-            color: black;
-            font-weight: bold;
-            font-size: 10px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            width: 60px;
-            flex-direction: column;
-        }
-
-            .category img {
-                width: 24px;
-                height: 24px;
-            }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 5px;
-            padding-right: 10px;
-        }
-
-        .block {
-            padding: 2px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: transform 0.2s, background-color 0.3s;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 80px;
-            min-width: 280px;
-            background: white;
-        }
-
-            .block span {
-                display: block;
-                font-size: 14px;
-                font-weight: normal;
-                font-family: 'Inter', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-                opacity: 1.0;
-            }
-
-            /*
-
-        /*
-
-        .block {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .tooltip {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 120%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(220, 220, 220, 1);
-            color: black;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            font-family: 'Inter', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-            line-height: 19px;
-            white-space: pre-line;
-            width: max-content;
-            max-width: 450px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.1s;
-        }
-
-            .block:hover .tooltip,
-            .block.active .tooltip,
-            .tooltip.visible {
-                opacity: 1;
-                visibility: visible;
-            }
-
-            .tooltip.activeLeft {
-                transform: translateX(-70%);
-            }
-            */
-
-        /* Responsive Adjustments */
-        /*
-        @media (max-width: 768px) {
-            .row {
-                grid-template-columns: 100px auto;
-            }
-
-            .category {
-                font-size: 12px;
-                padding: 8px;
-            }
-
-            .login-compact .login-row {
-                flex-wrap: wrap;
-            }
-        }
-            */
-
-        .schedule-card {
-            /* dashboard styles are in DashboardRecursos.ascx */
-        }
     </style>
 
     <!-- ═══════════════════════════════════════
@@ -304,14 +168,14 @@
                     <LayoutTemplate>
                         <div class="login-row">
                             <!-- Título à esquerda -->
-                            <span class="fw-bold text-white me-auto">
+                            <span class="fw-bold text-white">
                                 <i class="bi bi-grid-1x2-fill me-2"></i>OpenSARC
                             </span>
 
                             <!-- Usuário -->
                             <div class="login-field">
                                 <label for="UserName">Usuário:</label>
-                                <asp:TextBox ID="UserName" runat="server" CssClass="form-control" />
+                                <asp:TextBox ID="UserName" runat="server" CssClass="form-control" Style="width: 14ch;" />
                                 <asp:RequiredFieldValidator ID="UserNameRequired" runat="server"
                                     ControlToValidate="UserName"
                                     ErrorMessage="*"
@@ -347,7 +211,7 @@
                             </div>
 
                             <!-- Mensagem de erro inline -->
-                            <asp:Literal ID="FailureText" runat="server" EnableViewState="False"></asp:Literal>
+                            <asp:Label ID="FailureText" runat="server" EnableViewState="False" CssClass="me-auto text-warning fs-6"></asp:Label>
                             <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="~/Default/Painel.aspx" CssClass="btn btn-sm btn-outline-light">
                                 <i class="bi bi-box-arrow-in-right me-1"></i>Painel</asp:HyperLink>
                         </div>
@@ -361,7 +225,7 @@
     <!-- ═══════════════════════════════════════
          DASHBOARD DE RECURSOS
     ═══════════════════════════════════════ -->
-    <uc:Dashboard ID="Dashboard1" ContainerCssClass="px-5" ExibeRecursosRetirados=false runat="server" />
+    <uc:Dashboard ID="Dashboard1" ContainerCssClass="px-5" ExibeRecursosRetirados="false" runat="server" />
 
     <!-- ═══════════════════════════════════════
          INFORMAÇÕES DO SISTEMA

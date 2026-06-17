@@ -69,7 +69,7 @@ public partial class _Painel : System.Web.UI.Page
 
             if (u != null)
             {
-                string nome = UserControls_DashboardRecursos.getNomeSobrenomeProfessor(u.Nome);
+                string nome = Dashboard1.getNomeSobrenomeProfessor(u.Nome);
                 lblAviso.CssClass = "text-success-bright";
                 lblAviso.Text = string.Format("<i class='bi bi-person-check-fill me-1'></i>{0}", nome);
                 ok = true;
@@ -134,7 +134,7 @@ public partial class _Painel : System.Web.UI.Page
             ld = new LogData(now, "ENTREGA", user, resource, unitCourse, currentUser.TipoUsuarioChar);
             r.Status = RecursoSRRC.StatusRecurso.DISPONIVEL;
 
-            string u = UserControls_DashboardRecursos.getNomeSobrenomeProfessor(user);
+            string u = Dashboard1.getNomeSobrenomeProfessor(user);
             lblAviso.CssClass = "text-white";
             lblAviso.Text = string.Format(
                 "<i class='bi bi-box-arrow-in-left me-1 text-warning'></i>{0} | {1}",
@@ -145,7 +145,7 @@ public partial class _Painel : System.Web.UI.Page
             ld = new LogData(now, "RETIRADA", user, resource, unitCourse, currentUser.TipoUsuarioChar);
             r.Status = RecursoSRRC.StatusRecurso.RETIRADO;
 
-            string u = UserControls_DashboardRecursos.getNomeSobrenomeProfessor(user);
+            string u = Dashboard1.getNomeSobrenomeProfessor(user);
             lblAviso.CssClass = "text-white";
             lblAviso.Text = string.Format(
                 "<i class='bi bi-box-arrow-right me-1 text-warning'></i>{0} | {1}",

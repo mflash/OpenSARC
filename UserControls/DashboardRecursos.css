@@ -220,6 +220,33 @@
     border: 1px solid #333;
 }
 
+/* Dashboard unificada */
+
+.dashboard-header-grid,
+.dashboard-row {
+    display: grid !important;
+    grid-template-columns: auto 1fr 1fr;
+    gap: 0.35rem;
+    align-items: center;
+}
+
+.dashboard-header-grid {
+    font-weight: 700;
+    font-size: medium;
+}
+
+.schedule-cell {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.schedule-cell-prox {
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
 @media (max-width: 1024px) {
     .nomedisc {
         font-size: 0.9rem !important;

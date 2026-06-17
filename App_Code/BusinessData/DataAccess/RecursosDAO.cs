@@ -261,7 +261,7 @@ namespace BusinessData.DataAccess
                         listaHB = this.GetHorarioBloqueadoByRecurso(recursoId);
                         aux = Recurso.GetRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")),
                                                  leitor.GetString(leitor.GetOrdinal("Descricao")),
-                                                 leitor.GetString(leitor.GetOrdinal("Abrev")),
+                                                 leitor.GetString(leitor.GetOrdinal("Abrev")).Trim(),
                                                  leitor.GetString(leitor.GetOrdinal("Tipo"))[0],
                                                  vinculosDAO.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("FaculdadeId"))),
                                                  categoriarecursoDAO.GetCategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaRecursoId"))),

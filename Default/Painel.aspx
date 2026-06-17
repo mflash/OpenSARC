@@ -1,7 +1,7 @@
 <%@ Page Language="C#" MasterPageFile="~/Master/PainelPublico.master" AutoEventWireup="true"
     CodeFile="Painel.aspx.cs" Inherits="_Painel" %>
 
-<%@ Register Src="~/UserControls/DashboardRecursos.ascx" TagName="Dashboard" TagPrefix="uc" %>
+<%@ Register Src="~/UserControls/DashboardAtual.ascx" TagName="Dashboard" TagPrefix="uc" %>
 
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphConteudo">
 

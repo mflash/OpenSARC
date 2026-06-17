@@ -693,7 +693,7 @@ namespace BusinessData.DataAccess
                     char recursoTipo = leitor.GetString(leitor.GetOrdinal("tipo_recurso"))[0];
                     string recursoAbrev = leitor.GetString(leitor.GetOrdinal("abrev_recurso"));
 
-                    rec = Recurso.NewRecurso(recursoDescr, recursoAbrev, recursoTipo, null, null, true, null);
+                    rec = Recurso.NewRecurso(recursoDescr.Trim(), recursoAbrev.Trim(), recursoTipo, null, null, true, null);
                     //                    rec = recDAO.GetRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")));
 
                     string hora = (string)leitor["Hora"];

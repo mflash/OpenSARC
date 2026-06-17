@@ -74,6 +74,7 @@
         atualizarIndicador();
     }
 
+    // Listener para fazer busca na tela de login (filtragem por user)
     document.addEventListener('keydown', function (e) {
         const tag = document.activeElement.tagName.toLowerCase();
         if (tag === 'input' || tag === 'textarea' || tag === 'select') return;

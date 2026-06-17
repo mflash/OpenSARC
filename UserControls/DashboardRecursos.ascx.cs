@@ -121,8 +121,8 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
         var grupos = new List<RecursoItem>();
         var agrupados = lista.GroupBy(ri => new
         {
-            ri.ResponsavelAtual,
-            ri.DescricaoAtual,
+            ri.ResponsavelAtualCurto,
+            ri.DescricaoAtualCurta,
             ri.Tipo,
             ri.HorarioAtual
         });
@@ -138,7 +138,7 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
                 base_.Status = StatusRecurso.Disponivel;
             grupos.Add(base_);
         }
-        return lista; // TODO: corrigir agrupamento - por enquanto retorna a lista original
+        return grupos; // TODO: corrigir agrupamento - por enquanto retorna a lista original
     }
 
     private void VisualizarAlocacoesData()
@@ -313,6 +313,7 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
                         if (latest.Horario.Day == hoje.Day)
                             horarioRetirada = latest.Horario.ToString(@"HH:mm");
                         rec.ResponsavelAtualCurto = getNomeCurtoProfessor(latest.Usuario);
+                        rec.ResponsavelAtual = getNomeCurtoProfessor(latest.Usuario);
                         rec.DescricaoAtualCurta = horarioRetirada;
                         rec.DescricaoAtual = "RETIRADA";
                         rec.HorarioAtual = horarioRetirada;
@@ -330,7 +331,7 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
         listaRecursosProx = GroupRecursos(listaRecursosProx).OrderBy(ri => ri.ResponsavelAtualCurto).ThenBy(ri => ri.DescricaoAtual).ToList();
 
         string horarioAtual = "";
-        foreach (var ri in listaRecursosAtual) { horarioAtual = ri.HorarioAtual; break; }
+        //foreach (var ri in listaRecursosAtual) { horarioAtual = ri.HorarioAtual; break; }
 
         int cont = 0;
         string block = "";
@@ -340,7 +341,15 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
             cont += 1;
             if (lista.Count == 0)
                 continue;
-            horarioAtual = lista[0].HorarioAtual;
+            for(int p=0; p<lista.Count; p++)
+            {
+                // Obtém o horário a partir do primeiro elemento válido (AB,  CD, ...)
+                if (lista[p].HorarioAtual.Length == 2)
+                {
+                    horarioAtual = lista[p].HorarioAtual;
+                    break;
+                }
+            }
 
             string infoHorario = deltaNow.ToString();
             if (deltaNow.TotalMinutes > 0)
@@ -382,7 +391,7 @@ public partial class UserControls_DashboardRecursos : System.Web.UI.UserControl
                         responsavelRetirada = getNomeCurtoProfessor(ri.latest.Usuario) + " - " + horarioRetirada;
                     }
                     block += string.Format(
-                        "<span class=\"text-alternating\" data-text-primary=\"{0}\" data-text-alt=\"&#9888; {1}\">{0}</span>\n<div class=\"resource-container\">\n",
+                        "<span class=\"text-alternating\" style=\"font-family: 'bootstrap-icons'\" data-text-primary=\"{0}\" data-text-alt=\" \u27a0 {1}\">{0}</span>\n<div class=\"resource-container\">\n",
                         textoPrimario, responsavelRetirada);
                 }
                 else

@@ -244,3 +244,8 @@
         font-size: 1rem !important;
     }
 }
+
+.bi-icon-inside {
+    font-family: "bootstrap-icons", system-ui, -apple-system, sans-serif;
+}
+

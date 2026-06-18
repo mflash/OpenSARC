@@ -171,7 +171,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 {
                     ts = nowTime.Subtract(horariosTime[pos]);
                     Debug.WriteLine("Timedelta: " + ts);
-                    if (ts.TotalMinutes > 45)
+                    if (ts.TotalMinutes > 80)
                         pos++;
                     break;
                 }
@@ -335,10 +335,11 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
         listaRecursosAtual = GroupRecursos(listaRecursosAtual).OrderBy(ri => ri.ResponsavelAtualCurto).ThenBy(ri => ri.DescricaoAtual).ToList();
 
-        if(apenasAtual)
+        if(apenasAtual  || now.Hour >= 21)
         {
-            listaRecursosProx = listaRecursosAtual.GetRange(12, listaRecursosAtual.Count-12);
-            listaRecursosAtual = listaRecursosAtual.GetRange(0, 12);
+            int quebra = 12;
+            listaRecursosProx = listaRecursosAtual.GetRange(quebra, listaRecursosAtual.Count-quebra);
+            listaRecursosAtual = listaRecursosAtual.GetRange(0, quebra);
         }
         else
         {
@@ -384,7 +385,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 if (ri.NomeCompleto == null) continue;
 
                 bool isRetiradoAtual = cont == 1 && ri.Status == StatusRecurso.Retirado;
-                if(apenasAtual && ri.Status == StatusRecurso.Retirado)
+                if((apenasAtual || now.Hour >=21) && ri.Status == StatusRecurso.Retirado)
                     isRetiradoAtual = true;
 
                 string responsavelAttr = ri.ResponsavelAtual != null
@@ -420,7 +421,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 string destaque = "";
                 string destaqueText = "";
                 string corBadge = "bg-dark";
-                if ((cont == 1 || apenasAtual) && ri.Status == StatusRecurso.Retirado)
+                if ((cont == 1 || (apenasAtual || now.Hour >= 21)) && ri.Status == StatusRecurso.Retirado)
                 {
                     destaque = "badge-active";
                     destaqueText = "text-danger";

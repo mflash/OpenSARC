@@ -3,7 +3,7 @@
 <%@ Page Language="C#" MasterPageFile="~/Master/Login2.master" AutoEventWireup="true"
     CodeFile="Default2.aspx.cs" Inherits="_Default" %>
 
-<%@ Register Src="~/UserControls/DashboardRecursos.ascx" TagName="Dashboard" TagPrefix="uc" %>
+<%@ Register Src="~/UserControls/DashboardAtual.ascx" TagName="Dashboard" TagPrefix="uc" %>
 
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphTitulo">
 

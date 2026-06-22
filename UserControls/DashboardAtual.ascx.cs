@@ -230,7 +230,10 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                         string sala = aloc.Aula.TurmaId.Sala.Replace("32/A/", "").Replace("15/A/", "");
                         rec.Abrev = rec.Abrev + "/" + sala;
                         rec.AbrevPura = sala;
-                        rec.Nome = dicRecursos[sala];
+                        if (dicRecursos.ContainsKey(sala))
+                            rec.Nome = dicRecursos[sala];
+                        else
+                            Debug.WriteLine("ERRO: " + sala + " não encontrada");
                     }
                 }
                 else if (aloc.Evento != null)

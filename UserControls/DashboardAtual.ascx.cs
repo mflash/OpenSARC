@@ -151,6 +151,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
     private void VisualizarAlocacoesData()
     {
         DateTime now = forcaDataHora ? dataHoraForcada : DateTime.Now;
+        //now = new DateTime(now.Year, now.Month, now.Day, 10, 0, 0);
         DateTime hoje = now.Date;
         TimeSpan nowTime = now.TimeOfDay;
 
@@ -160,6 +161,9 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         AlocacaoBO controladorAlocacoes = new AlocacaoBO();
         ProfessoresBO professoresBO = new ProfessoresBO();
         List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByDataFull(hoje, (BusinessData.Entities.Calendario)Session["Calendario"]);
+
+        Dictionary<string, string> dicRecursos = new Dictionary<string, string>();
+        recursosBO.GetRecursos().ForEach(r => dicRecursos[r.Abrev] = r.Descricao);
 
         int pos;
         TimeSpan ts = nowTime;
@@ -226,6 +230,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                         string sala = aloc.Aula.TurmaId.Sala.Replace("32/A/", "").Replace("15/A/", "");
                         rec.Abrev = rec.Abrev + "/" + sala;
                         rec.AbrevPura = sala;
+                        rec.Nome = dicRecursos[sala];
                     }
                 }
                 else if (aloc.Evento != null)

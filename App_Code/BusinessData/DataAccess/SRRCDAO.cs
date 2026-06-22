@@ -38,7 +38,11 @@ namespace BusinessData.DataAccess
 
         public OracleConnection ConnectOracle()
         {
-            if (oconn != null) return oconn;
+            if (oconn != null)
+            {
+                oconn.Close();
+                oconn = null;
+            }
             string cs = ConfigurationManager.ConnectionStrings["OracleCS"].ConnectionString;
             oconn = new Oracle.ManagedDataAccess.Client.OracleConnection(cs);
             return oconn;

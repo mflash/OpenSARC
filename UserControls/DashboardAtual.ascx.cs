@@ -162,6 +162,12 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         RecursosBO recursosBO = new RecursosBO();
         AlocacaoBO controladorAlocacoes = new AlocacaoBO();
         ProfessoresBO professoresBO = new ProfessoresBO();
+
+        Dictionary<string, Professor> dicProfs = new Dictionary<string, Professor>();
+        foreach (var prof in professoresBO.GetProfessores())
+        {
+            dicProfs.Add(prof.Matricula, prof);    
+        }
         List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByDataFull(hoje, (BusinessData.Entities.Calendario)Session["Calendario"]);
 
         Dictionary<string, string> dicRecursos = new Dictionary<string, string>();
@@ -331,6 +337,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 LogData latest = retiradas[key].Item2;
                 RecursoItem rec = null;
 
+                /*
                 // Verifica se já existe uma reserva para a mesma dupla de salas
                 if ((r.Abrev == "309" || r.Abrev == "312") && dicRecursosAtual.ContainsKey("309/312"))
                 {
@@ -387,7 +394,8 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 {
 
                 }
-                else if(r.Abrev != "309" && r.Abrev != "312" && r.Abrev != "409" && r.Abrev != "412")
+                */
+                //else if(r.Abrev != "309" && r.Abrev != "312" && r.Abrev != "409" && r.Abrev != "412")
                 {
                     // Reserva 309/312: Michael
                     // Michael: retirou 309
@@ -402,9 +410,15 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                     string horarioRetirada = latest.Horario.ToString(@"dd/MM HH:mm");
                     if (latest.Horario.Day == hoje.Day)
                         horarioRetirada = latest.Horario.ToString(@"HH:mm");
-                    rec.ResponsavelCurto = getNomeCurtoProfessor(latest.Usuario);
-                    rec.Responsavel = getNomeCurtoProfessor(latest.Usuario);
-                    rec.DescricaoCurta = horarioRetirada;
+                    string responsCurto = getNomeCurtoProfessor(latest.Usuario);
+                    if(latest.TipoUsuario == "P")
+                    {
+                        if (latest.Matricula != null)
+                            responsCurto = dicProfs[latest.Matricula].Curto;
+                    }
+                    rec.ResponsavelCurto = responsCurto;
+                    rec.Responsavel = responsCurto;
+                    rec.DescricaoCurta = "Retirado: " + responsCurto + " - " + horarioRetirada;
                     rec.Descricao = "RETIRADA";
                     rec.Horario = horarioRetirada;
                     //rec.ResponsavelAtualCurto = "&#9888; Desconhecido";
@@ -472,7 +486,6 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
             {
                 if (ri.Nome == null) continue;
 
-                // Determina ícone e cor da badge com base no tipo de recurso
                 string destaque = "";
                 string destaqueText = "";
                 string corBadge = "bg-dark";
@@ -528,8 +541,8 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                         string horarioRetirada = ri.latest.Horario.ToString(@"dd/MM HH:mm");
                         if (ri.latest.Horario.Day == now.Day)
                             horarioRetirada = ri.latest.Horario.ToString(@"HH:mm");
-                        //responsavelRetirada = "Retirado: " + getNomeCurtoProfessor(ri.latest.Usuario) + " - " + horarioRetirada;
-                        responsavelRetirada = "Retirado: " + horarioRetirada;
+                        responsavelRetirada = "Retirado: " + ri.ResponsavelCurto + " - " + horarioRetirada;
+                        //responsavelRetirada = "Retirado: " + horarioRetirada;
                     }
                     block += string.Format(
                         "<div class=\"d-flex align-items-center\">{2}<span class=\"text-alternating\" data-text-primary=\"{0}\" data-text-alt=\"{1}\">{0}</span></div>\n<div class=\"resource-container\">\n",

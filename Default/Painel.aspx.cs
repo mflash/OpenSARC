@@ -19,13 +19,8 @@ public partial class _Painel : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            recs = new SortedDictionary<string, RecursoSRRC>();
-            CarregaUsuarios();
-            CarregaRecursos();
+            CarregaUsuariosRecursos();
             //CarregaUltimaAtividade();
-
-            Session["USERS"] = users;
-            Session["RECS"] = recs;
         }
         else
         {
@@ -34,6 +29,15 @@ public partial class _Painel : System.Web.UI.Page
             currentUser = (Usuario)Session["CURRENT"];
         }
     }
+
+    private void CarregaUsuariosRecursos()
+    {
+        CarregaUsuarios();
+        CarregaRecursos();
+        Session["USERS"] = users;
+        Session["RECS"] = recs;
+    }
+
 
     protected void btnConsultaMatricula_Click(object sender, EventArgs e)
     {
@@ -74,20 +78,24 @@ public partial class _Painel : System.Web.UI.Page
                 lblAviso.Text = string.Format("<i class='bi bi-person-check-fill me-1'></i>{0}", nome);
                 ok = true;
                 currentUser = u;
+                lblErro.Visible = false;
             }
             else
             {
                 lblAviso.CssClass = "text-danger";
                 lblAviso.Text = "<i class='bi bi-person-x-fill me-1'></i>Matrícula não encontrada.";
                 currentUser = null;
+                lblErro.Visible = false;
             }
             Session["CURRENT"] = currentUser;
             return ok;
         }
-        catch (Exception)
+        catch (Exception e)
         {
             lblAviso.CssClass = "text-warning";
             lblAviso.Text = "<i class='bi bi-exclamation-triangle-fill me-1'></i>Erro ao consultar matrícula.";
+            lblErro.Text = "Erro ao consultar matrícula: "+e.Message;
+            lblErro.Visible = true;
         }
         return false;
     }
@@ -163,6 +171,7 @@ public partial class _Painel : System.Web.UI.Page
 
     private void CarregaRecursos()
     {
+        recs = new SortedDictionary<string, RecursoSRRC>();
         List<RecursoSRRC> lista = srrcDAO.LoadResources();
         foreach (RecursoSRRC rec in lista)
         {
@@ -192,6 +201,9 @@ public partial class _Painel : System.Web.UI.Page
 
     public Usuario FindUser(string userId)
     {
+        if(users == null)
+            CarregaUsuariosRecursos();
+
         if (users.ContainsKey(userId))
             return users[userId];
         Usuario u = null;// srrcDAO.FindProf(userId);

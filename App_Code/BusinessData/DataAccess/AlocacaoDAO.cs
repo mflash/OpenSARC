@@ -707,7 +707,8 @@ namespace BusinessData.DataAccess
                         string nomeProf = leitor.GetString(leitor.GetOrdinal("nome_prof"));
                         string curtoProf = leitor.GetString(leitor.GetOrdinal("curto_prof"));
                         bool turmaNote = leitor.GetBoolean(leitor.GetOrdinal("turma_notebook"));
-                        Professor prof = Professor.NewProfessor("x", nomeProf, "x", curtoProf);
+                        string matriculaProf = leitor.GetString(leitor.GetOrdinal("matricula_prof"));
+                        Professor prof = Professor.NewProfessor(matriculaProf, nomeProf, "x", curtoProf);
                         Turma turma = Turma.NewTurma(turmaNumero, null, disc, "", prof, null, turmaSala, turmaNote);
                         string descrAtiv = leitor.GetString(leitor.GetOrdinal("descricao_aula"));
                         au = Aula.newAula(turma, hora, data, descrAtiv, null);
@@ -723,13 +724,15 @@ namespace BusinessData.DataAccess
 
                         int ordProf = leitor.GetOrdinal("nome_prof_evento");
                         int ordCurto = leitor.GetOrdinal("curto_prof_evento");
+                        int ordMatr = leitor.GetOrdinal("matricula_prof_evento");
                         string nomeAutor = leitor.IsDBNull(ordProf) ? null : leitor.GetString(ordProf);
                         string curtoAutor = leitor.IsDBNull(ordCurto) ? null : leitor.GetString(ordCurto);
+                        string matriculaAutor = leitor.IsDBNull(ordMatr) ? null : leitor.GetString(ordMatr);
 
                         Professor p = null;
                         if(nomeAutor != null)
                         {
-                            p = Professor.NewProfessor("x", nomeAutor, "x", curtoAutor);
+                            p = Professor.NewProfessor(matriculaAutor, nomeAutor, "x", curtoAutor);
                             p.Id = autorId;
                         }
                         evento = Evento.newEvento(p, descrEv, null, respEv, tituloEv, null);

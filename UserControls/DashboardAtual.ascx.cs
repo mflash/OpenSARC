@@ -488,7 +488,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
                 string destaque = "";
                 string destaqueText = "";
-                string corBadge = "bg-dark";
+                string corBadge = "speaker";
                 if ((cont == 1 || (apenasAtual || now.Hour >= 21)) && ri.Status == StatusRecurso.Retirado)
                 {
                     destaque = "badge-active";

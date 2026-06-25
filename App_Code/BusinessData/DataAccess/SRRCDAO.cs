@@ -22,7 +22,11 @@ namespace BusinessData.DataAccess
 
         public SqlConnection ConnectSqlServer()
         {
-            if (conn != null) return conn;
+            if (conn != null)
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                    return conn;
+            }
             try
             {
                 var constr = ConfigurationManager.ConnectionStrings["SARCFACINcs"];
@@ -40,8 +44,8 @@ namespace BusinessData.DataAccess
         {
             if (oconn != null)
             {
-                oconn.Close();
-                oconn = null;
+                if (oconn.State == System.Data.ConnectionState.Open)
+                    return oconn;
             }
             string cs = ConfigurationManager.ConnectionStrings["OracleCS"].ConnectionString;
             oconn = new Oracle.ManagedDataAccess.Client.OracleConnection(cs);

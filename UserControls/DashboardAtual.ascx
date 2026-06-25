@@ -2,6 +2,45 @@
 
 <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~/UserControls/DashboardRecursos.css") %>" />
 
+<style>
+
+.user-initials {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 35px;
+    height: 35px;
+    padding: 0 6px;
+    border-radius: 0.375rem;
+    background-color: transparent;
+    border: 1px solid #198754;
+    color: #198754;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-right: 12px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.user-initials.long-text {
+    font-size: 0.75rem;
+    padding: 0 8px;
+}
+
+/*
+.d-flex.align-items-center {
+    display: flex !important;
+    align-items: center !important;
+    width: 100%;
+}
+*/
+
+.text-alternating {
+    display: inline-block;
+}
+</style>
+
 <asp:Timer ID="Timer1" runat="server" Interval="30000" OnTick="Timer1_Tick" Enabled="true" />
 
 <script>

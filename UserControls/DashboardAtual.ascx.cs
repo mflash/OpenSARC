@@ -223,8 +223,8 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                     rec.Responsavel = getNomeSobrenomeProfessor(aloc.Aula.TurmaId.Professor.Nome);
                     rec.ResponsavelCurto = aloc.Aula.TurmaId.Professor.Curto != null
                         ? aloc.Aula.TurmaId.Professor.Curto
-                        : getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);                    
-                    
+                        : getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
+
                     if (aloc.Aula.TurmaId.Notebook)
                     {
                         string sala = aloc.Aula.TurmaId.Sala.Replace("32/A/", "").Replace("15/A/", "");
@@ -247,7 +247,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                     rec.DescricaoCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Evento.Titulo);
 
                     rec.Responsavel = aloc.Evento.Responsavel.Trim();
-                    
+
                     if (aloc.Evento.AutorId != null)
                     {
                         Professor pes = (Professor)professoresBO.GetPessoaById(aloc.Evento.AutorId.Id);
@@ -266,7 +266,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                             rec.Responsavel = aloc.Evento.Responsavel.Substring(6).Trim();
                         rec.ResponsavelCurto = getNomeCurtoProfessor(rec.Responsavel);
                         rec.Responsavel = getNomeSobrenomeProfessor(rec.Responsavel).Trim();
-                    }                    
+                    }
                 }
 
                 string stat = logDataDAO.GetUltimoStatus(rec.Nome);
@@ -285,18 +285,18 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 if (lista == filtradaAtual)
                 {
                     Debug.WriteLine("Atual: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
-                    if(!dicRecursosAtual.ContainsKey(rec.AbrevPura))
-                        dicRecursosAtual.Add(rec.AbrevPura, rec);                    
+                    if (!dicRecursosAtual.ContainsKey(rec.AbrevPura))
+                        dicRecursosAtual.Add(rec.AbrevPura, rec);
                     if (rec.Status == StatusRecurso.Retirado)
                         recursosAlocadosAgora.Add(rec.AbrevPura);
                 }
                 else
                 {
                     Debug.WriteLine("Prox: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
-                    if(!dicRecursosProx.ContainsKey(rec.AbrevPura))
+                    if (!dicRecursosProx.ContainsKey(rec.AbrevPura))
                         dicRecursosProx.Add(rec.AbrevPura, rec);
                 }
-                    
+
             }
         }
 
@@ -337,7 +337,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                         rec.Status = StatusRecurso.Retirado;
                         rec.latest = latest;
                         //if (!dicRecursosAtual.ContainsKey(rec.AbrevPura))
-                            dicRecursosAtual[rec.AbrevPura] = rec;
+                        dicRecursosAtual[rec.AbrevPura] = rec;
                     }
                 }
             }
@@ -349,10 +349,10 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
         listaRecursosAtual = GroupRecursos(listaRecursosAtual).OrderBy(ri => ri.ResponsavelCurto).ThenBy(ri => ri.Descricao).ToList();
 
-        if(apenasAtual  || now.Hour >= 21)
+        if (apenasAtual || now.Hour >= 21)
         {
             int quebra = 12;
-            listaRecursosProx = listaRecursosAtual.GetRange(quebra, listaRecursosAtual.Count-quebra);
+            listaRecursosProx = listaRecursosAtual.GetRange(quebra, listaRecursosAtual.Count - quebra);
             listaRecursosAtual = listaRecursosAtual.GetRange(0, quebra);
         }
         else
@@ -371,7 +371,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
             cont += 1;
             if (lista.Count == 0)
                 continue;
-            for(int p=0; p<lista.Count; p++)
+            for (int p = 0; p < lista.Count; p++)
             {
                 // Obtém o horário a partir do primeiro elemento válido (AB,  CD, ...)
                 if (lista[p].Horario.Length == 2)
@@ -398,8 +398,13 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
             {
                 if (ri.Nome == null) continue;
 
+                string apelido = ri.ResponsavelCurto;
+                // Define classe de tamanho caso o apelido seja longo (ex: mais de 3 caracteres)
+                string classeTamanho = apelido.Length > 8 ? " long-text" : "";
+                string htmlIniciais = string.Format("<span class=\"user-initials{1}\">{0}</span>", apelido, classeTamanho);
+
                 bool isRetiradoAtual = cont == 1 && ri.Status == StatusRecurso.Retirado;
-                if((apenasAtual || now.Hour >=21) && ri.Status == StatusRecurso.Retirado)
+                if ((apenasAtual || now.Hour >= 21) && ri.Status == StatusRecurso.Retirado)
                     isRetiradoAtual = true;
 
                 string responsavelAttr = ri.Responsavel != null
@@ -412,24 +417,38 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
                 if (isRetiradoAtual)
                 {
-                    string textoPrimario = string.Format("{0} - {1}", ri.ResponsavelCurto, ri.DescricaoCurta)
+                    //string textoPrimario = string.Format("{0} - {1}", ri.ResponsavelCurto, ri.DescricaoCurta)
+                        //.Replace("\"", "&quot;");
+                    string textoPrimario = string.Format("{0}", ri.DescricaoCurta)
                         .Replace("\"", "&quot;");
+
                     string responsavelRetirada = "";
                     if (ri.latest != null)
                     {
                         string horarioRetirada = ri.latest.Horario.ToString(@"dd/MM HH:mm");
                         if (ri.latest.Horario.Day == now.Day)
                             horarioRetirada = ri.latest.Horario.ToString(@"HH:mm");
-                        responsavelRetirada = "Retirado: "+getNomeCurtoProfessor(ri.latest.Usuario) + " - " + horarioRetirada;
+                        responsavelRetirada = "Retirado: " + getNomeCurtoProfessor(ri.latest.Usuario) + " - " + horarioRetirada;
                     }
+                    block += string.Format(
+        "<div class=\"d-flex align-items-center\">{2}<span class=\"text-alternating\" data-text-primary=\"{0}\" data-text-alt=\"{1}\">{0}</span></div>\n<div class=\"resource-container\">\n",
+        textoPrimario, responsavelRetirada, htmlIniciais);
+
+                    /*
                     block += string.Format(
                         "<span class=\"text-alternating\" data-text-primary=\"{0}\" data-text-alt=\"{1}\">{0}</span>\n<div class=\"resource-container\">\n",
                         textoPrimario, responsavelRetirada);
+                    */
                 }
                 else
                 {
+                    block += string.Format(
+        "<div class=\"d-flex align-items-center\">{1}<span>{0}</span></div>\n<div class=\"resource-container\">\n",
+        ri.DescricaoCurta, htmlIniciais);
+                    /*
                     block += string.Format("<span>{0} - {1}</span>\n<div class=\"resource-container\">\n",
                         ri.ResponsavelCurto, ri.DescricaoCurta);
+                    */
                 }
 
                 string destaque = "";

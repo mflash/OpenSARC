@@ -65,12 +65,14 @@ namespace BusinessData.DataAccess
             if (recurso.StartsWith("LAPRO"))
                 return "Disponível";
 
+            /*
             if (recurso.IndexOf('/') != -1)
             {
                 recurso = recurso.Substring(0, recurso.IndexOf("/"));
                 string[] aux = recurso.Split();
                 recurso = aux[0] + " - " + aux[1];
             }
+            */
 
             var constr = ConfigurationManager.ConnectionStrings["SARCFACINcs"].ConnectionString;
 
@@ -277,7 +279,7 @@ namespace BusinessData.DataAccess
             LogData log = null;
             SqlConnection c = ConnectSqlServer();
             c.Open();
-            String sql = "select top 1 horario, acao, usuario, unidadecurso, tipousuario from logdata " +
+            String sql = "select top 1 horario, acao, usuario, unidadecurso, tipousuario, matricula from logdata " +
                          "where recurso = '" + resource +
                          //"' and CAST(horario as DATE) = CAST(GETDATE() as DATE) " +
                          "' order by horario desc";
@@ -297,13 +299,14 @@ namespace BusinessData.DataAccess
             string usuario = dr["usuario"] as string;
             string unidadeCurso = dr["unidadecurso"] as string;
             string tipoUsuario = dr["tipousuario"] as string;
+            string matricula = dr["matricula"] as string;
             dr.Close();
             c.Close();
             if (acao == "R")
                 acao = "RETIRADA";
             else
                 acao = "ENTREGA";
-            log = new LogData(horario, acao, usuario, resource, unidadeCurso, tipoUsuario);
+            log = new LogData(horario, acao, usuario, resource, unidadeCurso, tipoUsuario, matricula);
 
             return log;
         }
@@ -311,8 +314,8 @@ namespace BusinessData.DataAccess
         public void AddToLog(LogData log)
         {
             SqlConnection c = ConnectSqlServer();
-            String sql = "insert into logdata (logid, horario, acao, usuario, recurso, unidadecurso, tipousuario) " +
-                         "values ('{0}',@horario,'{1}','{2}','{3}','{4}','{5}')";
+            String sql = "insert into logdata (logid, horario, acao, usuario, recurso, unidadecurso, tipousuario, matricula) " +
+                         "values ('{0}',@horario,'{1}','{2}','{3}','{4}','{5}','{6}')";
             //               "values (@logid, @horario, @acao, @usuario, @recurso, @unidade, @tipouser)";
             c.Open();
             SqlCommand cmd = c.CreateCommand();            
@@ -331,7 +334,7 @@ namespace BusinessData.DataAccess
             //cmd.Parameters.Add("@tipouser", System.Data.SqlDbType.VarChar).Value = log.TipoUsuario;
 
 
-            sql = string.Format(sql, guid, acao, log.Usuario, log.Recurso, log.UnidadeCurso, log.TipoUsuario);
+            sql = string.Format(sql, guid, acao, log.Usuario, log.Recurso, log.UnidadeCurso, log.TipoUsuario, log.Matricula);
             cmd.CommandText = sql;
 
             int linhas = cmd.ExecuteNonQuery();
@@ -479,7 +482,7 @@ namespace BusinessData.DataAccess
             if (daily)
                 wheres = "where CAST(horario as DATE) = CAST(GETDATE() as DATE) ";
             SqlConnection c = ConnectSqlServer();
-            String sql = "select horario, acao, usuario,recurso, unidadecurso, tipousuario from logdata " +
+            String sql = "select horario, acao, usuario,recurso, unidadecurso, tipousuario, matricula from logdata " +
                          wheres +
                          "order by horario desc";
             c.Open();
@@ -505,7 +508,8 @@ namespace BusinessData.DataAccess
                 string recurso = dr["recurso"] as string;
                 string unidadeCurso = dr["unidadecurso"] as string;
                 string tipoUsuario = dr["tipousuario"] as string;
-                LogData log = new LogData(horario, acao, usuario, recurso, unidadeCurso, tipoUsuario);
+                string matricula = dr["matricula"] as string;
+                LogData log = new LogData(horario, acao, usuario, recurso, unidadeCurso, tipoUsuario, matricula);
                 lista.Add(log);
             }
             dr.Close();

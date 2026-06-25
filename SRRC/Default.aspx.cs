@@ -287,14 +287,14 @@ public partial class _Default : System.Web.UI.Page
         if(ld != null && ld.Acao == "RETIRADA")
         {
             string lastUser = ld.Usuario;
-            ld = new LogData(now, "ENTREGA", user, resource, unitCourse, currentUser.TipoUsuarioChar);
+            ld = new LogData(now, "ENTREGA", user, resource, unitCourse, currentUser.TipoUsuarioChar, currentUser.Matricula);
             r.Status = RecursoSRRC.StatusRecurso.DISPONIVEL;
             lblStatus.Text = user + " entregou " + resource + " em " + now.ToString();
             lblStatus.ForeColor = Color.ForestGreen;
         }
         else
         {
-            ld = new LogData(now, "RETIRADA", user, resource, unitCourse, currentUser.TipoUsuarioChar);
+            ld = new LogData(now, "RETIRADA", user, resource, unitCourse, currentUser.TipoUsuarioChar, currentUser.Matricula);
             r.Status = RecursoSRRC.StatusRecurso.RETIRADO;
             lblStatus.Text = user + " retirou " + resource + " em " + now.ToString();
             lblStatus.ForeColor = Color.Firebrick;

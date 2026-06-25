@@ -131,7 +131,7 @@ public partial class _Painel : System.Web.UI.Page
         if(ld != null && ld.Acao == "RETIRADA")
         {
             string lastUser = ld.Usuario;
-            ld = new LogData(now, "ENTREGA", user, resource, unitCourse, currentUser.TipoUsuarioChar);
+            ld = new LogData(now, "ENTREGA", user, resource, unitCourse, currentUser.TipoUsuarioChar, currentUser.Matricula);
             r.Status = RecursoSRRC.StatusRecurso.DISPONIVEL;
 
             string u = Dashboard1.getNomeSobrenomeProfessor(user);
@@ -142,7 +142,7 @@ public partial class _Painel : System.Web.UI.Page
         }
         else
         {
-            ld = new LogData(now, "RETIRADA", user, resource, unitCourse, currentUser.TipoUsuarioChar);
+            ld = new LogData(now, "RETIRADA", user, resource, unitCourse, currentUser.TipoUsuarioChar, currentUser.Matricula);
             r.Status = RecursoSRRC.StatusRecurso.RETIRADO;
 
             string u = Dashboard1.getNomeSobrenomeProfessor(user);

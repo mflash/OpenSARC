@@ -93,6 +93,8 @@
 
     <uc:Dashboard ID="Dashboard1" ContainerCssClass="px-0" ExibeRecursosRetirados="true" runat="server" />
 
+    <asp:Label ID="lblErro" runat="server" CssClass="text-danger small" visible="false"/>
+    
     <script>
         (function () {
             var inputMatricula = document.getElementById('<%= txtMatricula.ClientID %>');

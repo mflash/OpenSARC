@@ -276,3 +276,19 @@
     font-family: "bootstrap-icons", system-ui, -apple-system, sans-serif;
 }
 
+.user-initials {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #198754; /* Verde Bootstrap (Success) - Ajustável */
+    color: white;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-right: 12px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+}
+

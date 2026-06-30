@@ -414,7 +414,10 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                     if(latest.TipoUsuario == "P")
                     {
                         if (latest.Matricula != null)
-                            responsCurto = dicProfs[latest.Matricula].Curto;
+                        {
+                            if(dicProfs.ContainsKey(latest.Matricula))
+                                responsCurto = dicProfs[latest.Matricula].Curto;
+                        }
                     }
                     rec.ResponsavelCurto = responsCurto;
                     rec.Responsavel = responsCurto;
@@ -440,8 +443,11 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         if (apenasAtual || now.Hour >= 21)
         {
             int quebra = 12;
-            listaRecursosProx = listaRecursosAtual.GetRange(quebra, listaRecursosAtual.Count - quebra);
-            listaRecursosAtual = listaRecursosAtual.GetRange(0, quebra);
+            if (listaRecursosAtual.Count > quebra)
+            {
+                listaRecursosProx = listaRecursosAtual.GetRange(quebra, listaRecursosAtual.Count - quebra);
+                listaRecursosAtual = listaRecursosAtual.GetRange(0, quebra);
+            }
         }
         else
         {

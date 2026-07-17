@@ -1,15 +1,17 @@
 using BusinessData.BusinessLogic;
 using BusinessData.DataAccess;
-using BusinessData.Entities;
 using BusinessData.Distribuicao.Entities;
+using BusinessData.Entities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
+using System.Reflection;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.DirectoryServices.AccountManagement;
 using Recurso = BusinessData.Entities.Recurso;
 
 public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
@@ -35,6 +37,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
     private class RecursoItem
     {
         public string Horario;
+        public string Predio;
         public string Nome;
         public string Abrev;
         public string AbrevPura;
@@ -156,19 +159,45 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         //now = new DateTime(now.Year, now.Month, now.Day, 10, 0, 0);
         DateTime hoje = now.Date;
         TimeSpan nowTime = now.TimeOfDay;
+        int diaSemNum = now.DayOfWeek == DayOfWeek.Sunday ? 1 : (int)now.DayOfWeek + 1;
 
         lblDataHora.Text = now.ToString();
 
         RecursosBO recursosBO = new RecursosBO();
         AlocacaoBO controladorAlocacoes = new AlocacaoBO();
         ProfessoresBO professoresBO = new ProfessoresBO();
+        CalendariosBO calendariosBO = new CalendariosBO();
+        TurmaBO turmasBO = new TurmaBO();
+
+        int sem = 1;
+        if (hoje.Month == 7 && hoje.Day > 20 || hoje.Month >= 8)
+            sem = 2;
+        BusinessData.Entities.Calendario cal = calendariosBO.GetCalendarioByAnoSemestre(hoje.Year, sem);
+        //        BusinessData.Entities.Calendario cal = (BusinessData.Entities.Calendario)Session["Calendario"];
+
+        Dictionary<string, List<Turma>> dicTurmas = new Dictionary<string, List<Turma>>();
+
+        List<Turma> turmas = turmasBO.GetTurmas(cal);
+        foreach (var turma in turmas)
+        {
+            string[] horariosTurma = Enumerable.Range(0, turma.DataHora.Length / 3)
+                .Select(i => turma.DataHora.Substring(i * 3, 3))
+                .ToArray();
+            foreach (var horario in horariosTurma)
+            {
+                if (dicTurmas.ContainsKey(horario))
+                    dicTurmas[horario].Add(turma);
+                else
+                    dicTurmas[horario] = new List<Turma> { turma };
+            }
+        }
 
         Dictionary<string, Professor> dicProfs = new Dictionary<string, Professor>();
         foreach (var prof in professoresBO.GetProfessores())
         {
-            dicProfs.Add(prof.Matricula, prof);    
+            dicProfs.Add(prof.Matricula, prof);
         }
-        List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByDataFull(hoje, (BusinessData.Entities.Calendario)Session["Calendario"]);
+        List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByDataFull(hoje, cal);
 
         Dictionary<string, string> dicRecursos = new Dictionary<string, string>();
         recursosBO.GetRecursos().ForEach(r => dicRecursos[r.Abrev] = r.Descricao);
@@ -213,7 +242,67 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         Dictionary<string, RecursoItem> dicRecursosAtual = new Dictionary<string, RecursoItem>();
         Dictionary<string, RecursoItem> dicRecursosProx = new Dictionary<string, RecursoItem>();
 
+        string atual = filtradaAtual.Count > 0 ? filtradaAtual[0].Horario : "";
+        string prox  = filtradaProx.Count > 0 ? filtradaProx[0].Horario : "";
+        atual = diaSemNum + atual;
+        prox = diaSemNum + prox;
+
         HashSet<String> recursosAlocadosAgora = new HashSet<string>();
+
+        foreach (List<Turma> turmasAux in new List<List<Turma>> { dicTurmas[atual], dicTurmas[prox] })
+        {
+            foreach(Turma t in turmasAux)
+            {
+                RecursoItem rec = new RecursoItem();
+                string sala = t.Sala;
+                if (sala.Contains("32/A"))
+                {
+                    sala = sala.Replace("32/A", "32");
+                    rec.Predio = "32";
+                }
+                if(sala.Contains("15/A"))
+                {
+                    sala = sala.Replace("15/A", "15");
+                    rec.Predio = "15";
+                }
+                if(sala.Contains("30/"))
+                {
+                    string[] dados = sala.Split('/');
+                    sala = dados[2];
+                    rec.Predio = dados[0] + "/" + dados[1];
+                }
+                rec.Abrev = sala;
+                rec.AbrevPura = sala;
+                rec.Nome = sala;
+                rec.Horario = t.DataHora;
+                rec.Abrev = sala;
+                rec.Tipo = 'L';
+                rec.Descricao = t.Disciplina.Nome + " (" + t.Numero.ToString() + ")";
+                rec.DescricaoCurta = getNomeCurtoDisciplina(t.Disciplina.Nome) + " (" + t.Numero.ToString() + ")";
+                rec.Responsavel = getNomeSobrenomeProfessor(t.Professor.Nome);
+                rec.Matricula = t.Professor.Matricula;
+                rec.ResponsavelCurto = t.Professor.Curto != null
+                    ? t.Professor.Curto
+                    : getNomeCurtoProfessor(t.Professor.Nome);
+                rec.Status = StatusRecurso.Disponivel;
+                Debug.WriteLine(t.DataHora+ ": " + t.Numero + " - " + t.Disciplina.Nome + " - " + t.Professor.Nome + " - " + t.Sala);
+
+                if (turmasAux == dicTurmas[atual])
+                {
+                    Debug.WriteLine("Atual: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
+                    if (!dicRecursosAtual.ContainsKey(rec.AbrevPura))
+                        dicRecursosAtual.Add(rec.AbrevPura, rec);
+                    if (rec.Status == StatusRecurso.Retirado)
+                        recursosAlocadosAgora.Add(rec.AbrevPura);
+                }
+                else
+                {
+                    Debug.WriteLine("Prox: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
+                    if (!dicRecursosProx.ContainsKey(rec.AbrevPura))
+                        dicRecursosProx.Add(rec.AbrevPura, rec);
+                }
+            }
+        }
 
         foreach (List<Alocacao> lista in new List<List<Alocacao>> { filtradaAtual, filtradaProx })
         {
@@ -411,11 +500,11 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                     if (latest.Horario.Day == hoje.Day)
                         horarioRetirada = latest.Horario.ToString(@"HH:mm");
                     string responsCurto = getNomeCurtoProfessor(latest.Usuario);
-                    if(latest.TipoUsuario == "P")
+                    if (latest.TipoUsuario == "P")
                     {
                         if (latest.Matricula != null)
                         {
-                            if(dicProfs.ContainsKey(latest.Matricula))
+                            if (dicProfs.ContainsKey(latest.Matricula))
                                 responsCurto = dicProfs[latest.Matricula].Curto;
                         }
                     }
@@ -571,7 +660,10 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                     //    ri.ResponsavelCurto, ri.DescricaoCurta);
                 }
 
-
+                string predioHtml = !string.IsNullOrEmpty(ri.Predio)
+                    ? string.Format("<span class=\"resource-predio badge bg-secondary\">{0}</span>", ri.Predio)
+                    : "";
+//                block += string.Format("{0}<span class=\"badge {1} resource-tag {2}\">{3}</span>\n</div>\n</div>", predioHtml, destaque, corBadge, ri.Abrev);
                 block += string.Format("<i class=\"bi {0} resource-icon {1}\"></i>", recursoIcone, destaqueText);
                 block += string.Format("<span class=\"badge {1} resource-tag {2}\">{0}</span>\n</div>\n</div>", ri.Abrev, destaque, corBadge);
             }

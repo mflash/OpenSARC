@@ -225,7 +225,7 @@
     <!-- ═══════════════════════════════════════
          DASHBOARD DE RECURSOS
     ═══════════════════════════════════════ -->
-    <uc:Dashboard ID="Dashboard1" ContainerCssClass="px-5" ExibeRecursosRetirados="false" runat="server" />
+    <uc:Dashboard ID="Dashboard1" ContainerCssClass="px-5" ExibeRecursosRetirados="false" IgnoraReservas="true" runat="server" />
 
     <!-- ═══════════════════════════════════════
          INFORMAÇÕES DO SISTEMA

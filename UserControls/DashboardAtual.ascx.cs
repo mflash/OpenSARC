@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Calendario = BusinessData.Entities.Calendario;
 using Recurso = BusinessData.Entities.Recurso;
 
 public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
@@ -19,6 +20,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
     public string ContainerCssClass { get; set; } // padding padrão para o container, pode ser sobrescrito ao usar o controle
     public bool ExibeRecursosRetirados { get; set; } // flag para exibir os recursos retirados neste momento (usada no painel de retiradas)
+    public bool IgnoraReservas { get; set; } // flag para não exibir as reservas de lab (não são mais usadas) no dashboard
 
     private List<string> horarios;
     private List<TimeSpan> horariosTime;
@@ -107,6 +109,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
     private List<Alocacao> ProcuraProximoHorario(List<Alocacao> lista, ref int pos)
     {
         List<Alocacao> filtradaAtual = new List<Alocacao>();
+
         bool achei = false;
         while (filtradaAtual.Count == 0)
         {
@@ -169,11 +172,8 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         CalendariosBO calendariosBO = new CalendariosBO();
         TurmaBO turmasBO = new TurmaBO();
 
-        int sem = 1;
-        if (hoje.Month == 7 && hoje.Day > 20 || hoje.Month >= 8)
-            sem = 2;
-        BusinessData.Entities.Calendario cal = calendariosBO.GetCalendarioByAnoSemestre(hoje.Year, sem);
-        //        BusinessData.Entities.Calendario cal = (BusinessData.Entities.Calendario)Session["Calendario"];
+        List<Calendario> calendarios = calendariosBO.GetCalendarios();
+        Calendario cal = calendarios[calendarios.Count - 1];
 
         Dictionary<string, List<Turma>> dicTurmas = new Dictionary<string, List<Turma>>();
 
@@ -236,6 +236,18 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         List<Alocacao> filtradaAtual = ProcuraProximoHorario(listaAlocacoes, ref pos);
         List<Alocacao> filtradaProx = ProcuraProximoHorario(listaAlocacoes, ref pos);
 
+        if (filtradaAtual.Count == 0 && filtradaProx.Count == 0)
+        {
+            container.InnerHtml = @"
+        <div class='row'>
+            <div class='category'></div>
+            <div class='grid'>
+                <div class='block new-category'><span>Não há recursos alocados para hoje</span></div>
+            </div>
+        </div>";
+            return;
+        }
+
         List<RecursoItem> listaRecursosAtual = new List<RecursoItem>();
         List<RecursoItem> listaRecursosProx = new List<RecursoItem>();
 
@@ -246,6 +258,12 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         string prox  = filtradaProx.Count > 0 ? filtradaProx[0].Horario : "";
         atual = diaSemNum + atual;
         prox = diaSemNum + prox;
+
+        if (!dicTurmas.ContainsKey(atual))
+            dicTurmas.Add(atual, new List<Turma>());
+
+        if (!dicTurmas.ContainsKey(prox))
+            dicTurmas.Add(prox, new List<Turma>());
 
         HashSet<String> recursosAlocadosAgora = new HashSet<string>();
 
@@ -274,7 +292,10 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 rec.Abrev = sala;
                 rec.AbrevPura = sala;
                 rec.Nome = sala;
-                rec.Horario = t.DataHora;
+                if (turmasAux == dicTurmas[atual])
+                    rec.Horario = atual.Substring(1);
+                else
+                    rec.Horario = prox.Substring(1);
                 rec.Abrev = sala;
                 rec.Tipo = 'L';
                 rec.Descricao = t.Disciplina.Nome + " (" + t.Numero.ToString() + ")";
@@ -304,6 +325,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
             }
         }
 
+        if(!IgnoraReservas)
         foreach (List<Alocacao> lista in new List<List<Alocacao>> { filtradaAtual, filtradaProx })
         {
             foreach (Alocacao aloc in lista)
@@ -399,17 +421,6 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
             }
         }
 
-        if (filtradaAtual.Count == 0 && filtradaProx.Count == 0)
-        {
-            container.InnerHtml = @"
-        <div class='row'>
-            <div class='category'></div>
-            <div class='grid'>
-                <div class='block new-category'><span>Não há recursos alocados para hoje</span></div>
-            </div>
-        </div>";
-            return;
-        }
 
         if (ExibeRecursosRetirados)
         {

@@ -373,7 +373,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                                 corFinal = c.Cor;
                                 e.Item.Enabled = false;
                                 lblCorDaData.Text = "True";
-                                txtDescricao.Text = c.Descricao + (txtDescricao.Text != "Feriado" ? " (era " + txtDescricao.Text + ")" : "");
+                                txtDescricao.Text = c.Descricao; // + (txtDescricao.Text != "Feriado" ? " (era " + txtDescricao.Text + ")" : "");
                             }
                             else
                             {
@@ -1005,9 +1005,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     [System.Web.Services.WebMethod]
     public static List<RecursoItem> ObterRecursosDisponiveis(string data, string hora, string note)
     {
+        RecursosBO recursosBO = new RecursosBO();
         try
         {
-            List<Recurso> recursosDisponiveis = new RecursosBO().GetRecursosDisponiveis(DateTime.Parse(data), hora);
+            List<Recurso> recursosDisponiveis = recursosBO.GetRecursosDisponiveis(DateTime.Parse(data), hora);
             Recurso recNote = (Recurso)null;
             bool flag = note == "S";
             List<Recurso> source;
@@ -1035,7 +1036,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             }
             source.Sort();
             if (flag && recNote != null)
-                source.Insert(1, recNote);
+                source.Insert(0, recNote);
             return source.Select<Recurso, Docentes_EditarAula.RecursoItem>((System.Func<Recurso, Docentes_EditarAula.RecursoItem>)(r => new Docentes_EditarAula.RecursoItem()
             {
                 Id = r.Id.ToString(),

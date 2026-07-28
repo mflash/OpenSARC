@@ -95,21 +95,27 @@
         // Controle de dropdowns já carregados
         var ddlsCarregados = {};
 
+        // Controle de dropdowns em carregamento (evita chamadas simultâneas, mas permite recarregar)
+        var ddlsCarregando = {};
+
         function carregarRecursosDisponiveis(ddl) {
 
             console.log("Carregando recursos...");
+
             // Verifica se já foi carregado para evitar chamadas repetidas
-            if (ddlsCarregados[ddl.id]) {
-                console.log("Recurso já carregado: ", ddl.id);
+            if (ddlsCarregando[ddl.id]) {
+                console.log("Já carregando: ", ddl.id);
                 return;
             }
 
             // Verifica se já tem itens além do placeholder
+            /*
             if (ddl.options.length > 1) {
                 ddlsCarregados[ddl.id] = true;
                 console.log("ddl já com itens");
                 return;
             }
+            */
 
             // Dispara o postback com comando personalizado
             //__doPostBack(ddl.id.replace(/_/g, '$'), 'CARREGAR_RECURSOS');
@@ -141,8 +147,12 @@
             console.log("Data: ", data, " Hora: ", hora, "Note: ", notebook);
 
             // Mostra indicador de carregamento
+            //ddl.options[0].text = "Carregando...";
+            // Marca como carregando e desabilita
+            ddlsCarregando[ddl.id] = true;
             ddl.disabled = true;
-            ddl.options[0].text = "Carregando...";
+            ddl.options.length = 0;
+            ddl.options.add(new Option("Carregando...", ""));
 
             // Chamada AJAX usando fetch
             fetch('EditarAulaSemestre2.aspx/ObterRecursosDisponiveis', {
@@ -164,10 +174,25 @@
                     // Adiciona opção padrão
                     ddl.options.add(new Option("-- Selecione um recurso --", ""));
 
+                    // Verifica se já existe um "Retirar notebook" alocado na linha
+                    var row = ddl.closest('tr');
+                    var temRetirarNotebook = false;
+                    if (row) {
+                        var labels = row.querySelectorAll('.recursos-list-simple label');
+                        labels.forEach(function (lbl) {
+                            if ((lbl.innerText || lbl.textContent).trim().startsWith("Retirar")) {
+                                temRetirarNotebook = true;
+                            }
+                        });
+                    }
+
                     // Adiciona os recursos retornados
                     var recursos = result.d || result;
                     if (recursos && recursos.length > 0) {
                         for (var i = 0; i < recursos.length; i++) {
+                            if (temRetirarNotebook && recursos[i].Descricao.startsWith("Retirar")) {
+                                continue; // Já tem um "Retirar" alocado, não exibe novamente
+                            }
                             ddl.options.add(new Option(recursos[i].Descricao, recursos[i].Id));
                         }
                     } else {
@@ -176,7 +201,7 @@
 
                     // Reabilita e marca como não carregado
                     ddl.disabled = false;
-                    ddlsCarregados[ddl.id] = false;
+                    ddlsCarregando[ddl.id] = false;
 
                     // NOVO: Adiciona handler para salvar valor no HiddenField antes do postback
                     ddl.addEventListener('change', function () {
@@ -204,6 +229,7 @@
                     ddl.options.length = 0;
                     ddl.options.add(new Option("Erro ao carregar", ""));
                     ddl.disabled = false;
+                    ddlsCarregando[ddl.id] = false;
                 });
         }
 
@@ -218,7 +244,53 @@
             }
         }
 
+        function setupRecursosMenu() {
+            document.querySelectorAll('.recursos-list-simple').forEach(function (lista) {
+                var panel = lista.closest('[id*="pnRecursos"]');
+                if (!panel) return;
+
+                var templateDiv = panel.querySelector('.recursos-buttons-template');
+                if (!templateDiv) return;
+
+                var butDeletar = templateDiv.querySelector('.btn-action-delete');
+                if (!butDeletar) return;
+
+                lista.querySelectorAll('li').forEach(function (li) {
+                    // Remove botão existente se houver
+                    var existingBtn = li.querySelector('.recurso-delete-btn');
+                    if (existingBtn) existingBtn.remove();
+
+                    // Cria botão de lixeira
+                    var deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'recurso-delete-btn';
+                    deleteBtn.type = 'button';
+                    deleteBtn.title = 'Liberar recurso';
+                    deleteBtn.innerHTML = '<i class="bi bi-trash"></i>';
+
+                    deleteBtn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        // Marca o checkbox correspondente
+                        var checkbox = li.querySelector('input[type="checkbox"]');
+                        if (checkbox) {
+                            lista.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+                                cb.checked = false;
+                            });
+                            checkbox.checked = true;
+                        }
+
+                        // Dispara o click no botão deletar original
+                        butDeletar.click();
+                    });
+
+                    li.appendChild(deleteBtn);
+                });
+            });
+        }
+
         // Configuração do menu dropdown para recursos
+        /*
         function setupRecursosMenu() {
             // Fecha todos os dropdowns ao clicar fora
             document.addEventListener('click', function (e) {
@@ -345,6 +417,7 @@
                 });
             });
         }
+        */
 
         // Executa após carregamento e após postbacks
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(setupRecursosMenu);
@@ -820,6 +893,8 @@
         /* ═══════════════════════════════════════
            BOTÃO DE MENU E DROPDOWN
         ═══════════════════════════════════════ */
+
+        /*
         .recurso-menu-btn {
             padding: 0.25rem 0.5rem;
             background: white;
@@ -833,17 +908,16 @@
             flex-shrink: 0;
         }
 
-            .recurso-menu-btn:hover {
-                background: #e9ecef;
-                color: #495057;
-                border-color: #adb5bd;
-            }
+        .recurso-menu-btn:hover {
+           background: #e9ecef;
+           color: #495057;
+           border-color: #adb5bd;
+        }
 
-            .recurso-menu-btn:active {
-                transform: scale(0.95);
-            }
+        .recurso-menu-btn:active {
+           transform: scale(0.95);
+        }
 
-        /* Dropdown menu */
         .recurso-dropdown {
             position: absolute;
             right: 0;
@@ -859,9 +933,9 @@
             overflow: hidden;
         }
 
-            .recurso-dropdown.show {
-                display: block;
-            }
+        .recurso-dropdown.show {
+           display: block;
+        }
 
         .recurso-dropdown-item {
             display: flex;
@@ -879,46 +953,72 @@
             font-size: 0.875rem;
         }
 
-            .recurso-dropdown-item:hover {
-                background: #f8f9fa;
-            }
+        .recurso-dropdown-item:hover {
+           background: #f8f9fa;
+        }
 
-            .recurso-dropdown-item i {
-                font-size: 1rem;
-                width: 1.25rem;
-                text-align: center;
-            }
+        .recurso-dropdown-item i {
+           font-size: 1rem;
+           width: 1.25rem;
+           text-align: center;
+        }
 
-            .recurso-dropdown-item.delete {
-                color: #dc3545;
-            }
+        .recurso-dropdown-item.delete {
+           color: #dc3545;
+        }
 
-                .recurso-dropdown-item.delete:hover {
-                    background: #fff5f5;
-                }
+        .recurso-dropdown-item.delete:hover {
+           background: #fff5f5;
+        }
 
-            .recurso-dropdown-item.transfer {
-                color: #0d6efd;
-            }
+        .recurso-dropdown-item.transfer {
+           color: #0d6efd;
+        }
 
-                .recurso-dropdown-item.transfer:hover {
-                    background: #f0f5ff;
-                }
+        .recurso-dropdown-item.transfer:hover {
+           background: #f0f5ff;
+        }
 
-            .recurso-dropdown-item.swap {
-                color: #6c757d;
-            }
+        .recurso-dropdown-item.swap {
+           color: #6c757d;
+        }
 
-                .recurso-dropdown-item.swap:hover {
-                    background: #f8f9fa;
-                }
+        .recurso-dropdown-item.swap:hover {
+           background: #f8f9fa;
+        }
 
-        /* Separador entre itens do menu */
         .recurso-dropdown-divider {
             height: 1px;
             background: #dee2e6;
             margin: 0.25rem 0;
         }
+        */
+
+        /* ═══════════════════════════════════════
+           BOTÃO DE LIXEIRA DO RECURSO
+        ═══════════════════════════════════════ */
+        .recurso-delete-btn {
+            padding: 0.2rem 0.45rem;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #dc3545;
+            font-size: 0.875rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+            .recurso-delete-btn:hover {
+                background: #fff5f5;
+                border-color: #dc3545;
+                color: #b02a37;
+            }
+
+            .recurso-delete-btn:active {
+                transform: scale(0.95);
+            }
 
         /* ═══════════════════════════════════════
            TEXTAREAS - Estilos legados (mantidos)

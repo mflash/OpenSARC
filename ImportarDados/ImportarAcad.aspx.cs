@@ -2,6 +2,8 @@
 using BusinessData.Entities;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -170,7 +172,9 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
         string data;
         try
         {
-            String url = "http://www.politecnica.pucrs.br/academico/sarc/csv.php?GRP=&PREDIO=" + predio;
+            String url = ConfigurationManager.AppSettings["acadurl"]; // + predio;
+            //String url = "http://www.politecnica.pucrs.br/academico/sarc/csv.php?GRP=&PREDIO=" + predio;
+            wc.Encoding = System.Text.Encoding.UTF8;
             data = wc.DownloadString(url);
         }
         catch(Exception ex)
@@ -204,12 +208,24 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
         Dictionary<string, Turma> turmasNovas = new Dictionary<string, Turma>();
 
         // Popula o dicionário com todas as turmas já existentes no calendário
-        foreach (Turma turma in turmasCadastradas)
-            turmasNovas.Add(turma.ToString(), turma);
+        string turmaAux = "";
+        try
+        {
+            foreach (Turma turma in turmasCadastradas)
+            {
+                turmaAux = turma.ToString();
+                turmasNovas.Add(turmaAux, turma);
+            }
+        } catch (ArgumentException ex)
+        { 
+            Debug.WriteLine("Turma já existente no dicionário: " + ex.Message);
+            Debug.WriteLine(turmaAux);
+        }
 
-        // Todas as turmas são vinculadas ao curso "Escola Politécnica Importação", pois não há
-        // essa informação no CSV
-        Curso curso = null;
+
+            // Todas as turmas são vinculadas ao curso "Escola Politécnica Importação", pois não há
+            // essa informação no CSV
+            Curso curso = null;
 
         int totalDiscNovas = 0;
         int totalDiscNovasCal = 0;
@@ -242,9 +258,12 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
             //output.InnerHtml += "<pre>" + linha + "</pre><br>";
             if (linha.Trim() == String.Empty)
                 break;
-            var dados = linha.Split(';');
+            var dados = linha.Split(',');
             int turma, cred;
             string cod = dados[CODIGO];
+            // Primeiro cod vazio = fim da lista
+            if (cod.Trim() == String.Empty)
+                break;
             if (predio == "15" && (!cod.StartsWith("46") && !cod.StartsWith("98")))
                 continue; // Living: apenas turmas 46 ou 98 (informatica)
             int.TryParse(dados[CREDITOS], out cred);
@@ -252,12 +271,18 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
                 continue; // skip 1-credit modules
             string nomedisc = ToTitleCase(dados[NOMEDISC]);
             int.TryParse(dados[TURMA], out turma);
-            string hora = dados[HORARIO].Replace('Y', 'X').Replace(" ", "");
+            //string hora = dados[HORARIO].Replace('Y', 'X').Replace(" ", "");
+            string hora = dados[HORARIO].Replace("E1", "X").Replace(" ", "");
             hora = FixTime(hora, cred);
             string nomeprof = ToTitleCase(dados[NOMEPROF]).Trim();
-            if (nomeprof.Trim() == String.Empty)
+            if (nomeprof.Trim() == String.Empty || nomeprof.Trim() == "#N/A")
                 continue;
             string email = dados[EMAIL].Trim();
+            if (email.Trim() == "#N/A")
+            {
+                novos += "<span style=\"color: red\">ERRO: " + nomeprof + " (" + email + ") - " + nomedisc + "</span><br>";
+                continue;
+            }
             if (email.StartsWith("professornovo"))
             {
                 email = String.Format("professornovo{0}{1}@pucrs.br", nomeprof[0], nomeprof[nomeprof.Length-1]);
@@ -267,6 +292,11 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
                 matricula = "10" + matricula;
 
             string sala = dados[SALA1].Trim();
+
+            // Este prédio?
+            if (!sala.StartsWith(predio))
+                continue;
+
             if(dados[SALA2].Trim() != "-")
                 sala += ", "+dados[SALA2].Trim();
             if(dados[SALA3].Trim() != "-")
@@ -299,7 +329,7 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
                 if (novoProf == null && matricula != String.Empty)
                 {
                     novoProf = Professor.NewProfessor(matricula, nomeprof, email);
-                    novos += "<span style=\"color: red\">Novo: " + novoProf.Nome + " (" + novoProf.Email + ")</span><br>";
+                    novos += "<span style=\"color: green\">Novo: " + novoProf.Nome + " (" + novoProf.Email + ")</span><br>";
                     novos_emails += novoProf.Email + ", ";
                     if(!simula)
                         controleProfs.InsertPessoa(novoProf, "pergunta", novoProf.Matricula);

@@ -158,8 +158,8 @@
            Sidebar - FIXADA NO TOPO
         ============================================= */
         .sarc-sidebar {
-            width: 210px;
-            min-width: 210px;
+            width: 230px;
+            min-width: 230px;
             background-color: var(--sarc-sidebar-bg);
             color: var(--sarc-sidebar-text);
             padding: 1rem 0;

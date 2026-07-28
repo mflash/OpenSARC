@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Security;
@@ -447,6 +448,11 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         ExportarCSV();
     }
 
+    protected void btnImportarCSV_Click(object sender, EventArgs e)
+    {
+        ImportarCSV();
+    }
+
     protected void butTransferir_Click(object sender, EventArgs e)
     {
         LinkButton but = (LinkButton)sender;
@@ -666,6 +672,186 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Response.Redirect("DownloadHtml2.aspx");
     }
 
+    protected void ImportarCSV()
+    {
+        if (csvUpload.HasFile)
+        {
+            string folderPath = "c:\\temp";
+            //            string folderPath = Server.MapPath("~/AppData");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string pathname = folderPath + "\\" + Path.GetFileName(csvUpload.FileName);
+            Debug.WriteLine("Save pathname: " + pathname);
+            csvUpload.SaveAs(pathname);
+
+            DataTable dt = ConvertCSVtoDataTable(pathname);
+            if (dt == null)
+            {
+                MessageBox("Formato de arquivo inválido (deve ser CSV do sistema de atas)");
+                return;
+            }
+
+            int cont = 0;
+            foreach (DataGridItem item in dgAulas.Items)
+            {
+                DataRow dr = dt.Rows[cont];
+
+                Label lblAux = (Label)item.FindControl("lblAula");
+                if (lblAux.Text == String.Empty) continue;
+
+                // Verifica se a linha está desabilitada (feriado/suspensão não letiva)
+                if (!item.Enabled)
+                    continue;
+
+                // Verifica a cor via lblCorExport (mais confiável que item.BackColor,
+                // pois as cores são aplicadas via CSS inline e não via BackColor)
+                Label lblCorExport = (Label)item.FindControl("lblCorExport");
+                if (lblCorExport != null)
+                {
+                    string corHtml = lblCorExport.Text.ToLower();
+                    if (corHtml == "gold" || corHtml == "#ffd700" ||
+                        corHtml == "orangered" || corHtml == "#ff4500")
+                        continue;
+                }
+
+                TextBox txtDescricao = (TextBox)item.FindControl("txtDescricao");
+                txtDescricao.Text = (string)dr[3];
+                Debug.WriteLine(cont + ": " + txtDescricao.Text);
+
+                DropDownList ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
+                string atividade = (string)dr[2];
+                int tipoAula = 0;
+                switch (atividade)
+                {
+                    case "0": tipoAula = 0; break; // Aula
+                    case "2": tipoAula = 5; break; // Prova
+                    case "3": tipoAula = 6; break; // G2
+                    case "4": tipoAula = 7; break; // Prova S
+                    case "6": tipoAula = 0; break; // Aula
+                    case "7": tipoAula = 9; break; // Trabalho
+                }
+                ddlAtividade.SelectedIndex = tipoAula;
+
+                // Marca a linha como alterada para que AtualizaTodaGrade a salve no BD
+                CheckBox cbChanged = (CheckBox)item.FindControl("cbChanged");
+                if (cbChanged != null)
+                    cbChanged.Checked = true;
+
+                cont++;
+                if (cont >= dt.Rows.Count)
+                    break;
+            }
+            //SalvarTodos();
+            AtualizaTodaGrade();
+            File.Delete(pathname);
+
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            string message = "Total: " + cont + " de " + dt.Rows.Count;
+            MessageBox(message);
+        }
+    }
+
+    protected void ImportarCSVOld()
+    {
+        if (csvUpload.HasFile)
+        {
+            string folderPath = "c:\\temp";
+//            string folderPath = Server.MapPath("~/AppData");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string pathname = folderPath + "\\" + Path.GetFileName(csvUpload.FileName);
+            Debug.WriteLine("Save pathname: "+pathname);
+            csvUpload.SaveAs(pathname);
+            
+            DataTable dt = ConvertCSVtoDataTable(pathname);
+            if(dt == null)
+            {
+                MessageBox("Formato de arquivo inválido (deve ser CSV do sistema de atas)");
+                return;
+            }
+
+            int cont = 0;
+            foreach (DataGridItem item in dgAulas.Items)
+            {
+                DataRow dr = dt.Rows[cont];
+
+                Label lblAux = (Label)item.FindControl("lblAula");
+                if (lblAux.Text == String.Empty) continue;
+
+                string corData = item.BackColor.Name;
+                //if (corData == "LightGray")
+                //    break;
+
+                if (corData == "Gold" || corData == "OrangeRed")
+                    continue;
+
+                TextBox txtDescricao = (TextBox)item.FindControl("txtDescricao");
+                txtDescricao.Text = (string) dr[3];
+                Debug.WriteLine(cont + ": " + txtDescricao.Text);
+
+                DropDownList ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
+                string atividade = (string) dr[2];
+                int tipoAula = 0;
+                switch (atividade)
+                {
+                    case "0": tipoAula = 0; break; // Aula
+                    case "2": tipoAula = 5; break; // Prova
+                    case "3": tipoAula = 6; break; // G2
+                    case "4": tipoAula = 7; break; // Prova S
+                    case "6": tipoAula = 0; break; // Aula
+                    case "7": tipoAula = 9; break; // Trabalho
+                }
+                ddlAtividade.SelectedIndex = tipoAula;
+                cont++;
+                if (cont >= dt.Rows.Count)
+                    break;
+            }
+            //SalvarTodos();
+            AtualizaTodaGrade();
+            File.Delete(pathname);
+
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            string message = "Total: " + cont + " de " + dt.Rows.Count;
+            MessageBox(message);
+        }
+    }
+    private void MessageBox(string message)
+    {
+        ScriptManager.RegisterStartupScript(this, GetType(), "alert",
+            "showBootstrapAlert('" + message.Replace("'", "\\'") + "');", true);
+    }
+
+    protected DataTable ConvertCSVtoDataTable(string strFilePath)
+    {
+        DataTable dt = new DataTable();
+        using (StreamReader sr = new StreamReader(strFilePath))
+        {
+            string[] headers = sr.ReadLine().Split(';');
+            if (headers[0] != "cdDisciplinaOrigem")
+                return null;
+            foreach (string header in headers)
+            {
+                dt.Columns.Add(header);
+            }
+            while (!sr.EndOfStream)
+            {
+                string[] rows = sr.ReadLine().Split(';');
+                DataRow dr = dt.NewRow();
+                for (int i = 0; i < headers.Length; i++)
+                {
+                    dr[i] = rows[i];
+                }
+                dt.Rows.Add(dr);
+            }
+        }
+        return dt;
+    }
     protected void ExportarCSV()
     {
         DataTable tabela = new DataTable();

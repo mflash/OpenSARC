@@ -439,6 +439,28 @@
                 }, 2000);
             });
         }
+
+        // Quando o usuário seleciona um arquivo, dispara o submit automaticamente
+        document.addEventListener('DOMContentLoaded', function () {
+            var fileInput = document.getElementById('ctl00_cphTitulo_csvUpload');
+            if (fileInput) {
+                fileInput.addEventListener('change', function () {
+                    if (this.files.length > 0) {
+                        document.getElementById('ctl00_cphTitulo_btnImportarCSVSubmit').click();
+                    }
+                });
+            }
+        });
+
+        // Alerta usando bootstrap
+        function showBootstrapAlert(message) {
+            var html = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'
+                + message
+                + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
+                + '</div>';
+            document.getElementById('alertContainer').innerHTML = html;
+        }
+
     </script>
 
     <asp:ScriptManager ID="ScriptManager1" runat="server" />
@@ -525,6 +547,27 @@
                         <!-- Separador visual -->
                         <div class="vr mx-1" style="height: 24px;"></div>
 
+                        <span class="text-muted fw-semibold me-1">
+                            <i class="bi bi-download me-1"></i>Importar:
+                        </span>
+
+                        <asp:Button ID="btnImportarCSV" runat="server"
+                            OnClick="btnImportarCSV_Click"
+                            ToolTip="Importa cronograma a partir do CSV do sistema de atas"
+                            CssClass="btn btn-sm btn-outline-secondary"
+                            Text="CSV/Atas" 
+                            OnClientClick="document.getElementById('ctl00_cphTitulo_csvUpload').click(); return false;" />
+
+                        <asp:FileUpload ID="csvUpload" runat="server" style="display: none"/>
+
+                        <%-- Botão oculto que dispara o postback completo após a seleção do ficheiro --%>
+                        <asp:Button ID="btnImportarCSVSubmit" runat="server"
+                            OnClick="btnImportarCSV_Click"
+                            style="display:none;" />
+
+                        <!-- Separador visual -->
+                        <div class="vr mx-1" style="height: 24px;"></div>
+
                         <!-- Botão Salvar -->
                         <asp:Button ID="btnSalvarTudo" runat="server"
                             CssClass="btn btn-primary btn-sm"
@@ -552,6 +595,8 @@
                 Text=" " />
 
             <asp:HiddenField ID="hdnRecursoSelecionado" runat="server" />
+
+            <div id="alertContainer"></div>
 
             <!-- ═══════════════════════════════════════
                  GRID DE AULAS
@@ -761,6 +806,8 @@
         </ContentTemplate>
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="dgAulas" EventName="SelectedIndexChanged" />
+            <asp:PostBackTrigger ControlID="btnImportarCSV" />
+            <asp:PostBackTrigger ControlID="btnImportarCSVSubmit" />
         </Triggers>
     </asp:UpdatePanel>
 

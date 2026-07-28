@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" 
+<%@ Page Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true" 
 CodeFile="Cadastro.aspx.cs" Inherits="CategoriaData_Cadastro" Title="Sistema de Alocação de Recursos - FACIN" %>
 
 <%@ Register Assembly="UNLV.IAP.WebControls.HtmlColorDropDown" Namespace="UNLV.IAP.WebControls"

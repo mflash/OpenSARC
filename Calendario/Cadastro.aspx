@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="Cadastro.aspx.cs" Inherits="Calendario_Cadastro" Title="Sistema de Alocação de Recursos - FACIN" %>
+<%@ Page Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true" CodeFile="Cadastro.aspx.cs" Inherits="Calendario_Cadastro" Title="Sistema de Alocação de Recursos - FACIN" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="controlToolkit" %>
 

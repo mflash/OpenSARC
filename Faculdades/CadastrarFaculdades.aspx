@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" 
+<%@ Page Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true" 
 CodeFile="CadastrarFaculdades.aspx.cs" Inherits="Faculdades_CadastrarFaculdades" 
 Title="Sistema de Alocação de Recursos - FACIN" %>
 

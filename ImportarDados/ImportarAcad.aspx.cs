@@ -283,6 +283,11 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
                 novos += "<span style=\"color: red\">ERRO: " + nomeprof + " (" + email + ") - " + nomedisc + "</span><br>";
                 continue;
             }
+            if (hora.Trim() == String.Empty)
+            {
+                novos += "<span style=\"color: red\">ERRO: " + nomeprof + " (" + email + ") - " + nomedisc + " - SEM HORÁRIO</span><br>";
+                continue;
+            }
             if (email.StartsWith("professornovo"))
             {
                 email = String.Format("professornovo{0}{1}@pucrs.br", nomeprof[0], nomeprof[nomeprof.Length-1]);

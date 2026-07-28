@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="AterarSenha.aspx.cs" Inherits="Docentes_AterarSenhaaspx" Title="Sistema de Alocação de Recursos Computacionais - FACIN" %>
+<%@ Page Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true" CodeFile="AterarSenha.aspx.cs" Inherits="Docentes_AterarSenhaaspx" Title="Sistema de Alocação de Recursos Computacionais - FACIN" %>
 
 <%@ Register Src="../Default/Aguarde.ascx" TagName="Aguarde" TagPrefix="uc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" Runat="Server">

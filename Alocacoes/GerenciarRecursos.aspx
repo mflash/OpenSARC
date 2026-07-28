@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="GerenciarRecursos.aspx.cs" Title="Gerenciar Recursos" Inherits="Alocacoes_GerenciarRecursos" %>
+<%@ Page Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true" CodeFile="GerenciarRecursos.aspx.cs" Title="Gerenciar Recursos" Inherits="Alocacoes_GerenciarRecursos" %>
 
 <%@ Import Namespace ="BusinessData.Util" %>
 

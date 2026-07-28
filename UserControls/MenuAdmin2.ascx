@@ -26,9 +26,6 @@
         <a href="../Docentes/AterarSenha.aspx" class="nav-link px-4 py-1">
             <i class="bi bi-key me-2"></i>Alterar senha do admin
         </a>
-        <a href="../Common/RelatorioDeAcessos.aspx" class="nav-link px-4 py-1">
-            <i class="bi bi-file-text me-2"></i>Relatório de Acessos
-        </a>
     </div>
 
     <!-- Calendários -->

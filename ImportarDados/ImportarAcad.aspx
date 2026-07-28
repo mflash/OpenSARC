@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="ImportarAcad.aspx.cs" Inherits="ImportarDados_ImportarAcad" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true" CodeFile="ImportarAcad.aspx.cs" Inherits="ImportarDados_ImportarAcad" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" Runat="Server">
     <p>

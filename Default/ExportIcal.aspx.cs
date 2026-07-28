@@ -165,7 +165,7 @@ public partial class Default_ExportIcal : System.Web.UI.Page
                         if (c.Id == data.Categoria.Id) { 
                             if (!c.DiaLetivo)
                             {
-                                dr["Descrição"] = c.Descricao + (aula.DescricaoAtividade != "Feriado" ? " (era " + aula.DescricaoAtividade + ")" : "");
+                                dr["Descrição"] = c.Descricao; // + (aula.DescricaoAtividade != "Feriado" ? " (era " + aula.DescricaoAtividade + ")" : "");
                                 dr["#"] = "";
                                 totalAulas--;
                                 diaLetivo = false;

@@ -341,8 +341,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                             {
 								e.Item.BackColor = c.Cor;
 								e.Item.Enabled = false;
-								lblCorDaData.Text = "True";                                
-                                txtDescricao.Text = c.Descricao + (txtDescricao.Text != "Feriado" ? " (era "+txtDescricao.Text+")" : "");
+								lblCorDaData.Text = "True";
+                                txtDescricao.Text = c.Descricao; // + (txtDescricao.Text != "Feriado" ? " (era "+txtDescricao.Text+")" : "");
                             }
 							else
                             {

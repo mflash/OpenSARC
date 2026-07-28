@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="ConsultaAcessos.aspx.cs" Inherits="Recursos_ConsultaAcessos" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true" CodeFile="ConsultaAcessos.aspx.cs" Inherits="Recursos_ConsultaAcessos" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" Runat="Server">
     <h3><asp:Label ID="lblSala" Text=""  runat ="server"></asp:Label></h3>

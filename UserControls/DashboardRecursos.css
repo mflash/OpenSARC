@@ -118,6 +118,12 @@
     transition: background-color 0.2s, opacity 0.2s;
 }
 
+/* Reduz espaçamento entre linhas da grade */
+.list-group-item.nomedisc {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
 #indicadorBusca {
     position: fixed;
     bottom: 1.5rem;

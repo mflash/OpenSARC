@@ -30,6 +30,18 @@
 .text-alternating {
     display: inline-block;
 }
+
+/* Reduz espaçamento entre linhas da grade */
+.list-group-item.nomedisc {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+/* Reduz margens laterais das colunas da grade */
+.schedule-col {
+    padding-left: 0rem;
+    padding-right: 0rem;
+}
 </style>
 
 <asp:Timer ID="Timer1" runat="server" Interval="30000" OnTick="Timer1_Tick" Enabled="true" />
@@ -160,7 +172,7 @@
             <asp:Label ID="lblDataHora" runat="server" CssClass="text-muted fw-semibold" style="font-size: 0.65rem" Visible="false"></asp:Label>
         </div>
 
-        <div class="container-fluid py-1" runat="server" id="container">
+        <div class="container-fluid py-1 px-0" runat="server" id="container">
             <!-- Conteúdo dinâmico gerado pelo code-behind -->
         </div>
     </ContentTemplate>

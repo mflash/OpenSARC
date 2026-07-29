@@ -75,7 +75,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         horariosTime = new List<TimeSpan>();
 
         if (!string.IsNullOrEmpty(ContainerCssClass))
-            container.Attributes["class"] = "container-fluid py-1 " + ContainerCssClass;
+            container.Attributes["class"] = "container-fluid py-1 px-0" + ContainerCssClass;
 
         if (Request.QueryString["datahora"] != null)
         {
@@ -223,6 +223,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
             pos--;
 
         int posAula = pos;
+        int posAulaProx = pos + 1;
 
         TimeSpan deltaNow = nowTime.Subtract(horariosTime[posAula]);
         TimeSpan deltaProx = nowTime;
@@ -232,21 +233,15 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
             deltaProx = nowTime.Subtract(horariosTime[posAula + 1]);
             Debug.WriteLine("deltaProx: " + deltaProx);
         }
+        else
+        {
+            posAulaProx--;
+        }
 
         List<Alocacao> filtradaAtual = ProcuraProximoHorario(listaAlocacoes, ref pos);
+        Debug.WriteLine("Atual: " + horarios[posAula]);
         List<Alocacao> filtradaProx = ProcuraProximoHorario(listaAlocacoes, ref pos);
-
-        if (filtradaAtual.Count == 0 && filtradaProx.Count == 0)
-        {
-            container.InnerHtml = @"
-        <div class='row'>
-            <div class='category'></div>
-            <div class='grid'>
-                <div class='block new-category'><span>Não há recursos alocados para hoje</span></div>
-            </div>
-        </div>";
-            return;
-        }
+        Debug.WriteLine("Prox : " + horarios[posAulaProx]);
 
         List<RecursoItem> listaRecursosAtual = new List<RecursoItem>();
         List<RecursoItem> listaRecursosProx = new List<RecursoItem>();
@@ -254,8 +249,8 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         Dictionary<string, RecursoItem> dicRecursosAtual = new Dictionary<string, RecursoItem>();
         Dictionary<string, RecursoItem> dicRecursosProx = new Dictionary<string, RecursoItem>();
 
-        string atual = filtradaAtual.Count > 0 ? filtradaAtual[0].Horario : "";
-        string prox  = filtradaProx.Count > 0 ? filtradaProx[0].Horario : "";
+        string atual = filtradaAtual.Count > 0 ? filtradaAtual[0].Horario : horarios[posAula];
+        string prox = filtradaProx.Count > 0 ? filtradaProx[0].Horario : horarios[posAulaProx];
         atual = diaSemNum + atual;
         prox = diaSemNum + prox;
 
@@ -269,21 +264,21 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
         foreach (List<Turma> turmasAux in new List<List<Turma>> { dicTurmas[atual], dicTurmas[prox] })
         {
-            foreach(Turma t in turmasAux)
+            foreach (Turma t in turmasAux)
             {
                 RecursoItem rec = new RecursoItem();
                 string sala = t.Sala;
-                if (sala.Contains("32/A"))
+                if (sala.StartsWith("32"))
                 {
                     sala = sala.Replace("32/A", "32");
                     rec.Predio = "32";
                 }
-                if(sala.Contains("15/A"))
+                if (sala.StartsWith("15"))
                 {
                     sala = sala.Replace("15/A", "15");
                     rec.Predio = "15";
                 }
-                if(sala.Contains("30/"))
+                if (sala.StartsWith("30/"))
                 {
                     string[] dados = sala.Split('/');
                     sala = dados[2];
@@ -297,7 +292,9 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 else
                     rec.Horario = prox.Substring(1);
                 rec.Abrev = sala;
-                rec.Tipo = 'L';
+                rec.Tipo = 'N';
+                if (rec.Predio == "15")
+                    rec.Tipo = 'A';
                 rec.Descricao = t.Disciplina.Nome + " (" + t.Numero.ToString() + ")";
                 rec.DescricaoCurta = getNomeCurtoDisciplina(t.Disciplina.Nome) + " (" + t.Numero.ToString() + ")";
                 rec.Responsavel = getNomeSobrenomeProfessor(t.Professor.Nome);
@@ -306,7 +303,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                     ? t.Professor.Curto
                     : getNomeCurtoProfessor(t.Professor.Nome);
                 rec.Status = StatusRecurso.Disponivel;
-                Debug.WriteLine(t.DataHora+ ": " + t.Numero + " - " + t.Disciplina.Nome + " - " + t.Professor.Nome + " - " + t.Sala);
+                Debug.WriteLine(t.DataHora + ": " + t.Numero + " - " + t.Disciplina.Nome + " - " + t.Professor.Nome + " - " + t.Sala);
 
                 if (turmasAux == dicTurmas[atual])
                 {
@@ -325,101 +322,113 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
             }
         }
 
-        if(!IgnoraReservas)
-        foreach (List<Alocacao> lista in new List<List<Alocacao>> { filtradaAtual, filtradaProx })
+        if (filtradaAtual.Count == 0 && filtradaProx.Count == 0 && dicTurmas[atual].Count == 0 && dicTurmas[prox].Count == 0)
         {
-            foreach (Alocacao aloc in lista)
+            container.InnerHtml = @"
+        <div class='row'>
+            <div class='category'></div>
+            <div class='grid'>
+                <div class='block new-category'><span>Não há recursos alocados para hoje</span></div>
+            </div>
+        </div>";
+            return;
+        }
+
+        if (!IgnoraReservas)
+            foreach (List<Alocacao> lista in new List<List<Alocacao>> { filtradaAtual, filtradaProx })
             {
-                RecursoItem rec = new RecursoItem();
-                if (aloc.Aula != null)
+                foreach (Alocacao aloc in lista)
                 {
-                    rec.Nome = aloc.Recurso.Descricao;
-                    rec.Horario = aloc.Horario;
-                    rec.Abrev = rec.AbrevPura = aloc.Recurso.Abrev;
-                    rec.Tipo = aloc.Recurso.Tipo;
-                    rec.Descricao = aloc.Aula.TurmaId.Disciplina.Nome + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
-                    rec.DescricaoCurta = getNomeCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
-                    rec.Responsavel = getNomeSobrenomeProfessor(aloc.Aula.TurmaId.Professor.Nome);
-                    rec.Matricula = aloc.Aula.TurmaId.Professor.Matricula;
-                    rec.ResponsavelCurto = aloc.Aula.TurmaId.Professor.Curto != null
-                        ? aloc.Aula.TurmaId.Professor.Curto
-                        : getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
-
-                    if (aloc.Aula.TurmaId.Notebook)
+                    RecursoItem rec = new RecursoItem();
+                    if (aloc.Aula != null)
                     {
-                        string sala = aloc.Aula.TurmaId.Sala.Replace("32/A/", "").Replace("15/A/", "");
-                        rec.Abrev = rec.Abrev + "/" + sala;
-                        rec.AbrevPura = sala;
-                        if (dicRecursos.ContainsKey(sala))
-                            rec.Nome = dicRecursos[sala];
-                        else
-                            Debug.WriteLine("ERRO: " + sala + " não encontrada");
-                    }
-                }
-                else if (aloc.Evento != null)
-                {
-                    rec.Nome = aloc.Recurso.Descricao;
-                    rec.Horario = aloc.Horario;
-                    rec.Abrev = rec.AbrevPura = aloc.Recurso.Abrev;
-                    rec.Tipo = aloc.Recurso.Tipo;
+                        rec.Nome = aloc.Recurso.Descricao;
+                        rec.Horario = aloc.Horario;
+                        rec.Abrev = rec.AbrevPura = aloc.Recurso.Abrev;
+                        rec.Tipo = aloc.Recurso.Tipo;
+                        rec.Descricao = aloc.Aula.TurmaId.Disciplina.Nome + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
+                        rec.DescricaoCurta = getNomeCurtoDisciplina(aloc.Aula.TurmaId.Disciplina.Nome) + " (" + aloc.Aula.TurmaId.Numero.ToString() + ")";
+                        rec.Responsavel = getNomeSobrenomeProfessor(aloc.Aula.TurmaId.Professor.Nome);
+                        rec.Matricula = aloc.Aula.TurmaId.Professor.Matricula;
+                        rec.ResponsavelCurto = aloc.Aula.TurmaId.Professor.Curto != null
+                            ? aloc.Aula.TurmaId.Professor.Curto
+                            : getNomeCurtoProfessor(aloc.Aula.TurmaId.Professor.Nome);
 
-                    rec.Descricao = aloc.Evento.Descricao;
-                    rec.DescricaoCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Evento.Titulo);
-
-                    rec.Responsavel = aloc.Evento.Responsavel.Trim();
-
-                    if (aloc.Evento.AutorId != null)
-                    {
-                        Professor pes = (Professor)professoresBO.GetPessoaById(aloc.Evento.AutorId.Id);
-                        if (pes != null)
-                        { // É professor
-                            Professor prof = pes as Professor;
-                            rec.Responsavel = getNomeSobrenomeProfessor(prof.Nome).Trim();
-                            rec.ResponsavelCurto = prof.Curto != null ? prof.Curto : getNomeCurtoProfessor(prof.Nome).Trim();
-                            rec.Matricula = prof.Matricula;
+                        if (aloc.Aula.TurmaId.Notebook)
+                        {
+                            string sala = aloc.Aula.TurmaId.Sala.Replace("32/A/", "").Replace("15/A/", "");
+                            rec.Abrev = rec.Abrev + "/" + sala;
+                            rec.AbrevPura = sala;
+                            if (dicRecursos.ContainsKey(sala))
+                                rec.Nome = dicRecursos[sala];
+                            else
+                                Debug.WriteLine("ERRO: " + sala + " não encontrada");
                         }
+                    }
+                    else if (aloc.Evento != null)
+                    {
+                        rec.Nome = aloc.Recurso.Descricao;
+                        rec.Horario = aloc.Horario;
+                        rec.Abrev = rec.AbrevPura = aloc.Recurso.Abrev;
+                        rec.Tipo = aloc.Recurso.Tipo;
+
+                        rec.Descricao = aloc.Evento.Descricao;
+                        rec.DescricaoCurta = getNomeMaisOuMenosCurtoDisciplina(aloc.Evento.Titulo);
+
+                        rec.Responsavel = aloc.Evento.Responsavel.Trim();
+
+                        if (aloc.Evento.AutorId != null)
+                        {
+                            Professor pes = (Professor)professoresBO.GetPessoaById(aloc.Evento.AutorId.Id);
+                            if (pes != null)
+                            { // É professor
+                                Professor prof = pes as Professor;
+                                rec.Responsavel = getNomeSobrenomeProfessor(prof.Nome).Trim();
+                                rec.ResponsavelCurto = prof.Curto != null ? prof.Curto : getNomeCurtoProfessor(prof.Nome).Trim();
+                                rec.Matricula = prof.Matricula;
+                            }
+                        }
+                        else
+                        {
+                            if (rec.Responsavel.ToLower().StartsWith("prof."))
+                                rec.Responsavel = aloc.Evento.Responsavel.Substring(5).Trim();
+                            if (rec.Responsavel.ToLower().StartsWith("profa."))
+                                rec.Responsavel = aloc.Evento.Responsavel.Substring(6).Trim();
+                            rec.ResponsavelCurto = getNomeCurtoProfessor(rec.Responsavel);
+                            rec.Responsavel = getNomeSobrenomeProfessor(rec.Responsavel).Trim();
+                        }
+                    }
+
+                    string stat = logDataDAO.GetUltimoStatus(rec.Nome);
+                    LogData latest = logDataDAO.FindLatestActivity(rec.Nome);
+                    rec.latest = null;
+                    if (stat.StartsWith("Retirado"))
+                    {
+                        rec.Status = StatusRecurso.Retirado;
+                        rec.latest = latest;
+                    }
+                    else if (stat.StartsWith("Disponível"))
+                        rec.Status = StatusRecurso.Disponivel;
+                    else
+                        rec.Status = StatusRecurso.SemInfo;
+
+                    if (lista == filtradaAtual)
+                    {
+                        Debug.WriteLine("Atual: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
+                        if (!dicRecursosAtual.ContainsKey(rec.AbrevPura))
+                            dicRecursosAtual.Add(rec.AbrevPura, rec);
+                        if (rec.Status == StatusRecurso.Retirado)
+                            recursosAlocadosAgora.Add(rec.AbrevPura);
                     }
                     else
                     {
-                        if (rec.Responsavel.ToLower().StartsWith("prof."))
-                            rec.Responsavel = aloc.Evento.Responsavel.Substring(5).Trim();
-                        if (rec.Responsavel.ToLower().StartsWith("profa."))
-                            rec.Responsavel = aloc.Evento.Responsavel.Substring(6).Trim();
-                        rec.ResponsavelCurto = getNomeCurtoProfessor(rec.Responsavel);
-                        rec.Responsavel = getNomeSobrenomeProfessor(rec.Responsavel).Trim();
+                        Debug.WriteLine("Prox: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
+                        if (!dicRecursosProx.ContainsKey(rec.AbrevPura))
+                            dicRecursosProx.Add(rec.AbrevPura, rec);
                     }
-                }
 
-                string stat = logDataDAO.GetUltimoStatus(rec.Nome);
-                LogData latest = logDataDAO.FindLatestActivity(rec.Nome);
-                rec.latest = null;
-                if (stat.StartsWith("Retirado"))
-                {
-                    rec.Status = StatusRecurso.Retirado;
-                    rec.latest = latest;
                 }
-                else if (stat.StartsWith("Disponível"))
-                    rec.Status = StatusRecurso.Disponivel;
-                else
-                    rec.Status = StatusRecurso.SemInfo;
-
-                if (lista == filtradaAtual)
-                {
-                    Debug.WriteLine("Atual: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
-                    if (!dicRecursosAtual.ContainsKey(rec.AbrevPura))
-                        dicRecursosAtual.Add(rec.AbrevPura, rec);
-                    if (rec.Status == StatusRecurso.Retirado)
-                        recursosAlocadosAgora.Add(rec.AbrevPura);
-                }
-                else
-                {
-                    Debug.WriteLine("Prox: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
-                    if (!dicRecursosProx.ContainsKey(rec.AbrevPura))
-                        dicRecursosProx.Add(rec.AbrevPura, rec);
-                }
-
             }
-        }
 
 
         if (ExibeRecursosRetirados)
@@ -674,7 +683,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 string predioHtml = !string.IsNullOrEmpty(ri.Predio)
                     ? string.Format("<span class=\"resource-predio badge bg-secondary\">{0}</span>", ri.Predio)
                     : "";
-//                block += string.Format("{0}<span class=\"badge {1} resource-tag {2}\">{3}</span>\n</div>\n</div>", predioHtml, destaque, corBadge, ri.Abrev);
+                //                block += string.Format("{0}<span class=\"badge {1} resource-tag {2}\">{3}</span>\n</div>\n</div>", predioHtml, destaque, corBadge, ri.Abrev);
                 block += string.Format("<i class=\"bi {0} resource-icon {1}\"></i>", recursoIcone, destaqueText);
                 block += string.Format("<span class=\"badge {1} resource-tag {2}\">{0}</span>\n</div>\n</div>", ri.Abrev, destaque, corBadge);
             }
@@ -683,7 +692,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
             block += "</div></div>";
         }
 
-        container.InnerHtml = string.Format("<div class=\"row g-4 justify-content-center\">{0}</div>", block);
+        container.InnerHtml = string.Format("<div class=\"row gx-0 gy-4 justify-content-center\">{0}</div>", block);
     }
 
     public string getNomeCurtoDisciplina(string nome)

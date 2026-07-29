@@ -42,7 +42,7 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
         TextInfo textInfo = new CultureInfo("pt-BR", false).TextInfo;
 
         words = textInfo.ToTitleCase(words.ToLower());
-        
+
         words = Regex.Replace(words, @" (D)([eao]|[ao]s) ", @" d$2 ");
         words = words.Replace(" Iv", " IV");
         words = words.Replace(" Iii", " III");
@@ -128,7 +128,7 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
         foreach (var hora in lista)
         {
             hora_s += dias[pos] + hora;
-            if (pos < dias.Length-1) pos++;
+            if (pos < dias.Length - 1) pos++;
         }
 
         horario = dias + " - " + hora_s;
@@ -177,7 +177,7 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
             wc.Encoding = System.Text.Encoding.UTF8;
             data = wc.DownloadString(url);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             output.InnerHtml = "Erro carregando dados: " + ex.Message;
             return;
@@ -185,18 +185,19 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
         string[] linhas = data.Split('\n');
 
         /**/
-        profsCadastrados = (List<Professor>) controleProfs.GetProfessores();
-        
+        profsCadastrados = (List<Professor>)controleProfs.GetProfessores();
+
         var cat32 = (from c in catDisBo.GetCategoriaDisciplinas()
-                   where c.Descricao == "Prática"
-                   select c).First();
+                     where c.Descricao == "Prática"
+                     select c).First();
 
         var cat30 = (from c in catDisBo.GetCategoriaDisciplinas()
                      where c.Descricao == "Teórica - Outras Unidades"
                      select c).First();
 
-        if(cat32 == null || cat30 == null) {
-            Response.Write("ERROR! Null category! "+cat32+" "+cat30);
+        if (cat32 == null || cat30 == null)
+        {
+            Response.Write("ERROR! Null category! " + cat32 + " " + cat30);
         }
 
         Calendario cal = (Calendario)(Session["Calendario"]);
@@ -209,23 +210,24 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
 
         // Popula o dicionário com todas as turmas já existentes no calendário
         string turmaAux = "";
-        try
+        foreach (Turma turma in turmasCadastradas)
         {
-            foreach (Turma turma in turmasCadastradas)
+            turmaAux = turma.ToString();
+            try
             {
-                turmaAux = turma.ToString();
                 turmasNovas.Add(turmaAux, turma);
             }
-        } catch (ArgumentException ex)
-        { 
-            Debug.WriteLine("Turma já existente no dicionário: " + ex.Message);
-            Debug.WriteLine(turmaAux);
+            catch (ArgumentException ex)
+            {
+                Debug.WriteLine("Turma já existente no dicionário: " + ex.Message);
+                Debug.WriteLine(turmaAux);
+            }
         }
 
 
-            // Todas as turmas são vinculadas ao curso "Escola Politécnica Importação", pois não há
-            // essa informação no CSV
-            Curso curso = null;
+        // Todas as turmas são vinculadas ao curso "Escola Politécnica Importação", pois não há
+        // essa informação no CSV
+        Curso curso = null;
 
         int totalDiscNovas = 0;
         int totalDiscNovasCal = 0;
@@ -236,19 +238,21 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
         string semprof = "";
         string novasdisc = "";
         string novasturmas = "";
+        string turmasAtualizadas = "";
 
         string novos_emails = "";
 
         output.InnerHtml += "<table><tr><th>Codcred</th><th>Disciplina</th><th>Turma</th><th>Horário</th><th>Sala</th><th>Professor</th></tr>";
-        
+
         bool first = true;
         bool simula = checkSimul.Checked;
 
         Dictionary<String, Curso> dicCursos = new Dictionary<string, Curso>();
-        foreach(var item in cursosBO.GetCursos())
+        foreach (var item in cursosBO.GetCursos())
             dicCursos.Add(item.Codigo, item);
 
-        foreach(var linha in linhas) {
+        foreach (var linha in linhas)
+        {
             if (first)
             {
                 first = false;
@@ -290,7 +294,7 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
             }
             if (email.StartsWith("professornovo"))
             {
-                email = String.Format("professornovo{0}{1}@pucrs.br", nomeprof[0], nomeprof[nomeprof.Length-1]);
+                email = String.Format("professornovo{0}{1}@pucrs.br", nomeprof[0], nomeprof[nomeprof.Length - 1]);
             }
             string matricula = dados[MATRICULA].Trim();
             if (matricula.StartsWith("0")) // matrícula antiga?
@@ -302,10 +306,10 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
             if (!sala.StartsWith(predio))
                 continue;
 
-            if(dados[SALA2].Trim() != "-")
-                sala += ", "+dados[SALA2].Trim();
-            if(dados[SALA3].Trim() != "-")
-                sala += ", "+dados[SALA3].Trim();
+            if (dados[SALA2].Trim() != "-")
+                sala += ", " + dados[SALA2].Trim();
+            if (dados[SALA3].Trim() != "-")
+                sala += ", " + dados[SALA3].Trim();
 
             try
             {
@@ -336,7 +340,7 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
                     novoProf = Professor.NewProfessor(matricula, nomeprof, email);
                     novos += "<span style=\"color: green\">Novo: " + novoProf.Nome + " (" + novoProf.Email + ")</span><br>";
                     novos_emails += novoProf.Email + ", ";
-                    if(!simula)
+                    if (!simula)
                         controleProfs.InsertPessoa(novoProf, "pergunta", novoProf.Matricula);
                     totalProfsNovos++;
                 }
@@ -351,7 +355,7 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
             else
                 novoProf = profs[x];
 
-            Disciplina disc = FindDisc(cod);            
+            Disciplina disc = FindDisc(cod);
             if (disc != null)
             {
                 // Disciplina já existe...
@@ -360,7 +364,7 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
                 if (!disciplinasInCalendario.Contains(disc))
                 {
                     // Insere apenas na tabela disciplinasincalendario 
-                    if(!simula)
+                    if (!simula)
                         controleDiscs.InsereDisciplinaInCalendario(disc, cal.Id);
                     totalDiscNovasCal++;
                 }
@@ -381,7 +385,7 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
                 {
                     // Disciplina nova, insere na tabela de disciplinas e
                     // disciplinasincalendario                    
-                    if(!simula)
+                    if (!simula)
                         controleDiscs.InsereDisciplina(disc);
                     novasdisc += String.Format("<br>Nova disciplina: {0}-{1:D2} {2}",
                         cod, cred, nomedisc);
@@ -393,12 +397,16 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
 
             // Adiciona turma (se ainda não existir no calendário)
             string style = "";
+            if (sala.StartsWith("32/A"))
+                sala = "32" + sala.Substring(4);
+            if (sala.StartsWith("15/A"))
+                sala = "15" + sala.Substring(4);
             if (novoProf != null)
             {
                 Turma novaTurma = Turma.NewTurma(turma, cal, disc, hora, novoProf, curso, sala);
                 if (!turmasNovas.ContainsKey(novaTurma.ToString()))
                 {
-                    if(!simula)
+                    if (!simula)
                         turmasBO.InsereTurma(novaTurma, cal);
                     novasturmas += String.Format("<br>Nova turma: {0}-{1:D2} {2} ({4}) {5} - {3}",
                         disc.Cod, disc.Cred, disc.Nome, novoProf.Nome, turma, hora);
@@ -406,9 +414,20 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
                 }
                 else
                 {
-                    if(!simula)
+                    Turma oldTurma = turmasNovas[novaTurma.ToString()];
+                    string updates = "";
+                    if (oldTurma.Sala != novaTurma.Sala)
+                        updates += "sala: " + oldTurma.Sala + " -> " + novaTurma.Sala + ", ";
+                    if (oldTurma.Professor.Matricula != novaTurma.Professor.Matricula)
+                        updates += "prof: " + oldTurma.Professor.Nome + " -> " + novaTurma.Professor.Nome + ", ";
+                    if (oldTurma.DataHora != novaTurma.DataHora)
+                        updates += "horário: " + oldTurma.DataHora + " -> " + novaTurma.DataHora + ", ";
+                    if (updates != String.Empty)
                     {
-                        turmasBO.UpdateTurma(novaTurma);
+                        turmasAtualizadas += String.Format("<br>Turma atualizada: {0}-{1:D2} {2} ({4}) {5} - {3}: {6}",
+                            disc.Cod, disc.Cred, disc.Nome, oldTurma.Professor.Nome, turma, oldTurma.DataHora, updates);
+                        if (!simula)
+                            turmasBO.UpdateTurma(novaTurma);
                     }
                 }
             }
@@ -423,6 +442,7 @@ public partial class ImportarDados_ImportarAcad : System.Web.UI.Page
         output.InnerHtml += "<br>" + novos;
         output.InnerHtml += "<br>" + novasdisc;
         output.InnerHtml += "<br>" + novasturmas;
+        output.InnerHtml += "<br>" + turmasAtualizadas;
         output.InnerHtml += "<br><br>Total disciplinas novas: " + totalDiscNovas;
         output.InnerHtml += "<br>Novas neste calendário: " + totalDiscNovasCal;
         output.InnerHtml += "<br>Total profs. novos: " + totalProfsNovos;

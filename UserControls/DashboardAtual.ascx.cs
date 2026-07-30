@@ -213,7 +213,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 {
                     ts = nowTime.Subtract(horariosTime[pos]);
                     Debug.WriteLine("Timedelta: " + ts);
-                    if (ts.TotalMinutes > 80)
+                    if (ts.TotalMinutes > 60)
                         pos++;
                     break;
                 }
@@ -239,9 +239,9 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         }
 
         List<Alocacao> filtradaAtual = ProcuraProximoHorario(listaAlocacoes, ref pos);
-        Debug.WriteLine("Atual: " + horarios[posAula]);
+        //Debug.WriteLine("Atual: " + horarios[posAula]);
         List<Alocacao> filtradaProx = ProcuraProximoHorario(listaAlocacoes, ref pos);
-        Debug.WriteLine("Prox : " + horarios[posAulaProx]);
+        //Debug.WriteLine("Prox : " + horarios[posAulaProx]);
 
         List<RecursoItem> listaRecursosAtual = new List<RecursoItem>();
         List<RecursoItem> listaRecursosProx = new List<RecursoItem>();
@@ -303,11 +303,11 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                     ? t.Professor.Curto
                     : getNomeCurtoProfessor(t.Professor.Nome);
                 rec.Status = StatusRecurso.Disponivel;
-                Debug.WriteLine(t.DataHora + ": " + t.Numero + " - " + t.Disciplina.Nome + " - " + t.Professor.Nome + " - " + t.Sala);
+                //Debug.WriteLine(t.DataHora + ": " + t.Numero + " - " + t.Disciplina.Nome + " - " + t.Professor.Nome + " - " + t.Sala);
 
                 if (turmasAux == dicTurmas[atual])
                 {
-                    Debug.WriteLine("Atual: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
+                    //Debug.WriteLine("Atual: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
                     if (!dicRecursosAtual.ContainsKey(rec.AbrevPura))
                         dicRecursosAtual.Add(rec.AbrevPura, rec);
                     if (rec.Status == StatusRecurso.Retirado)
@@ -315,7 +315,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 }
                 else
                 {
-                    Debug.WriteLine("Prox: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
+                    //Debug.WriteLine("Prox: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
                     if (!dicRecursosProx.ContainsKey(rec.AbrevPura))
                         dicRecursosProx.Add(rec.AbrevPura, rec);
                 }
@@ -414,7 +414,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
                     if (lista == filtradaAtual)
                     {
-                        Debug.WriteLine("Atual: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
+                        //Debug.WriteLine("Atual: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
                         if (!dicRecursosAtual.ContainsKey(rec.AbrevPura))
                             dicRecursosAtual.Add(rec.AbrevPura, rec);
                         if (rec.Status == StatusRecurso.Retirado)
@@ -422,7 +422,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                     }
                     else
                     {
-                        Debug.WriteLine("Prox: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
+                        //Debug.WriteLine("Prox: " + rec.AbrevPura + " - " + rec.Abrev + " - " + rec.Status);
                         if (!dicRecursosProx.ContainsKey(rec.AbrevPura))
                             dicRecursosProx.Add(rec.AbrevPura, rec);
                     }
@@ -549,9 +549,14 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
         listaRecursosAtual = GroupRecursos(listaRecursosAtual).OrderBy(ri => ri.ResponsavelCurto).ThenBy(ri => ri.Descricao).ToList();
 
-        if (apenasAtual || now.Hour >= 21)
+        int quebra = 13;
+        if(listaRecursosAtual.Count > quebra || now.Hour >= 21)
         {
-            int quebra = 12;
+            apenasAtual = true;
+        }
+
+        if (apenasAtual)
+        {
             if (listaRecursosAtual.Count > quebra)
             {
                 listaRecursosProx = listaRecursosAtual.GetRange(quebra, listaRecursosAtual.Count - quebra);
@@ -784,12 +789,15 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
     public string toCamelCase(string nome)
     {
+        if (nome == String.Empty)
+            return "";
         return nome[0] + nome.Substring(1).ToLower();
     }
 
     public string getNomeSobrenomeProfessor(string nome)
     {
         string[] nomes = nome.Split();
+        Debug.WriteLine("Nome professor: " + nome);
         if (nomes.Length == 1)
             return toCamelCase(nome);
         return toCamelCase(nomes[0]) + " " + toCamelCase(nomes[nomes.Length - 1]);

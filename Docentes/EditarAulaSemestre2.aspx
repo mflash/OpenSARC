@@ -613,7 +613,7 @@
 
                     <ItemStyle CssClass="align-middle text-center" />
                     <HeaderStyle CssClass="table-primary text-center fw-semibold" />
-                    <AlternatingItemStyle CssClass="table-light" />
+                    <AlternatingItemStyle CssClass="table-light align-middle text-center" />
 
                     <Columns>
 

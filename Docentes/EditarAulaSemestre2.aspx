@@ -102,59 +102,46 @@
 
             console.log("Carregando recursos...");
 
-            // Verifica se já foi carregado para evitar chamadas repetidas
+            // Already loaded — let the browser open natively with cached options
+            if (ddlsCarregados[ddl.id]) {
+                console.log("Recursos já carregados: ", ddl.id);
+                return;
+            }
+
+            // Already fetching — don't start another request
             if (ddlsCarregando[ddl.id]) {
                 console.log("Já carregando: ", ddl.id);
                 return;
             }
 
-            // Verifica se já tem itens além do placeholder
-            /*
-            if (ddl.options.length > 1) {
-                ddlsCarregados[ddl.id] = true;
-                console.log("ddl já com itens");
-                return;
-            }
-            */
-
-            // Dispara o postback com comando personalizado
-            //__doPostBack(ddl.id.replace(/_/g, '$'), 'CARREGAR_RECURSOS');
-            //ddlsCarregados[ddl.id] = true;
-
-            // Obtém a linha TR mais próxima
             var row = ddl.closest('tr');
-
             if (!row) {
                 console.error('Linha não encontrada para o dropdown:', ddl.id);
                 return;
             }
 
             var divDataHora = row.querySelector('div.text-muted.small');
-
             if (!divDataHora) {
                 console.error('Div de data/hora não encontrado');
                 return;
             }
 
             var notebook = document.getElementById('ctl00_cphTitulo_lblNotebook').innerHTML;
-            console.log(notebook);
-
             var textoCompleto = (divDataHora.innerText || divDataHora.textContent).trim();
-            //console.log('Texto completo:', textoCompleto);
             const partes = textoCompleto.split(' ');
             const data = partes[0];
             const hora = partes[partes.length - 1];
             console.log("Data: ", data, " Hora: ", hora, "Note: ", notebook);
 
-            // Mostra indicador de carregamento
-            //ddl.options[0].text = "Carregando...";
-            // Marca como carregando e desabilita
+            // Mark as loading but do NOT disable — disabling the <select> on mousedown
+            // cancels the native dropdown open in Firefox, and showPicker() on <select>
+            // is unsupported there so it cannot be recovered programmatically.
+            // The user will see "Carregando..." on the first click; the second click
+            // (after the fetch resolves) will open with the real options.
             ddlsCarregando[ddl.id] = true;
-            ddl.disabled = true;
             ddl.options.length = 0;
             ddl.options.add(new Option("Carregando...", ""));
 
-            // Chamada AJAX usando fetch
             fetch('EditarAulaSemestre2.aspx/ObterRecursosDisponiveis', {
                 method: 'POST',
                 headers: {
@@ -164,17 +151,12 @@
             })
                 .then(function (response) {
                     console.log("Response:", response);
-                    ddlsCarregados[ddl.id] = false;
                     return response.json();
                 })
                 .then(function (result) {
-                    // Limpa o dropdown
                     ddl.options.length = 0;
-
-                    // Adiciona opção padrão
                     ddl.options.add(new Option("-- Selecione um recurso --", ""));
 
-                    // Verifica se já existe um "Retirar notebook" alocado na linha
                     var row = ddl.closest('tr');
                     var temRetirarNotebook = false;
                     if (row) {
@@ -186,12 +168,11 @@
                         });
                     }
 
-                    // Adiciona os recursos retornados
                     var recursos = result.d || result;
                     if (recursos && recursos.length > 0) {
                         for (var i = 0; i < recursos.length; i++) {
                             if (temRetirarNotebook && recursos[i].Descricao.startsWith("Retirar")) {
-                                continue; // Já tem um "Retirar" alocado, não exibe novamente
+                                continue;
                             }
                             ddl.options.add(new Option(recursos[i].Descricao, recursos[i].Id));
                         }
@@ -199,37 +180,15 @@
                         ddl.options.add(new Option("Nenhum recurso disponível", ""));
                     }
 
-                    // Reabilita e marca como não carregado
-                    ddl.disabled = false;
                     ddlsCarregando[ddl.id] = false;
-
-                    // NOVO: Adiciona handler para salvar valor no HiddenField antes do postback
-                    ddl.addEventListener('change', function () {
-                        if (this.value) {
-                            var hdnField = document.getElementById('ctl00_cphTitulo_hdnRecursoSelecionado');
-                            console.log("hdnfield: ", hdnField);
-                            if (hdnField) {
-                                hdnField.value = this.value;
-                            }
-                        }
-                    });
-
-                    // Abre o dropdown automaticamente
-                    ddl.focus();
-                    if (ddl.showPicker) {
-                        try {
-                            ddl.showPicker();
-                        } catch (e) {
-                            ddl.click();
-                        }
-                    }
+                    ddlsCarregados[ddl.id] = true;
                 })
                 .catch(function (error) {
                     console.error("Erro ao carregar recursos:", error);
                     ddl.options.length = 0;
                     ddl.options.add(new Option("Erro ao carregar", ""));
-                    ddl.disabled = false;
                     ddlsCarregando[ddl.id] = false;
+                    // Do not set ddlsCarregados — allow retry on next mousedown
                 });
         }
 

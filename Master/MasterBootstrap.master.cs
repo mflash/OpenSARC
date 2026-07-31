@@ -102,7 +102,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             {
                 if (Session["AppState"] != null && ((AppState)Session["AppState"]) != AppState.Admin)
                 {
-                    Control menu = LoadControl("~/UserControls/MenuSecretario2.ascx");
+                    Control menu = LoadControl("~/UserControls/MenuSecretario.ascx");
                     phMenu.Controls.Add(menu);
                 }
             }

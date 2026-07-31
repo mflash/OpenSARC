@@ -428,6 +428,11 @@
             if (fileInput) {
                 fileInput.addEventListener('change', function () {
                     if (this.files.length > 0) {
+                        // Show the same progress overlay used by async postbacks
+                        var overlay = document.getElementById('modernProgressOverlay');
+                        var message = document.getElementById('modernProgressMessage');
+                        if (overlay) overlay.style.display = 'flex';
+                        if (message) message.style.display = 'block';
                         document.getElementById('ctl00_cphTitulo_btnImportarCSVSubmit').click();
                     }
                 });
@@ -705,7 +710,7 @@
                                 <asp:DropDownList ID="ddlDisponiveis"
                                     runat="server"
                                     CssClass="form-select form-select-sm"
-                                    AutoPostBack="True"
+                                    AutoPostBack="False"
                                     OnSelectedIndexChanged="ddlDisponiveis_SelectedIndexChanged"
                                     onchange="if(this.value) onChangeDDL(this);">
                                 </asp:DropDownList>

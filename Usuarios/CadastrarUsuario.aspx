@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="CadastrarUsuario.aspx.cs" Inherits="Usuarios_Default" Title="Cadastrar Evento" %>
+<%@ Page Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true" CodeFile="CadastrarUsuario.aspx.cs" Inherits="Usuarios_Default" Title="Cadastrar Evento" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" runat="Server">
     <div align = "left" class="ms-menutoolbar" style="width: 100%; height: 14px">

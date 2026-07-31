@@ -155,7 +155,7 @@
                     RememberMeText="Lembrar-me"
                     UserNameLabelText="Usuário:"
                     UserNameRequiredErrorMessage="*"
-                    DestinationPageUrl="~/Default/SelecionarCalendario2.aspx"
+                    DestinationPageUrl="~/Default/SelecionarCalendario.aspx"
                     OnLoginError="loginEntrada_LoginError"
                     TitleText=""
                     AccessKey="M"

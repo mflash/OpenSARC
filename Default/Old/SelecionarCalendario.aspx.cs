@@ -50,7 +50,7 @@ public partial class Default_SelecionarCalendario : System.Web.UI.Page
             AppState estadoAtual = (AppState)Session["AppState"];
             if (estadoAtual != AppState.Admin)
             {
-                Response.Redirect("~/Docentes/SelecionaTurma2.aspx");
+                Response.Redirect("~/Docentes/SelecionaTurma.aspx");
             }
             ScriptManager.RegisterClientScriptBlock(this,this.GetType(),"Alerta",@"alert('O sistema está bloqueado');",true);
         }

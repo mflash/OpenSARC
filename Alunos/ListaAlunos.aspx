@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="ListaAlunos.aspx.cs" Inherits="Alunos_ListaAlunos" Title="Untitled Page" %>
+<%@ Page Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true" CodeFile="ListaAlunos.aspx.cs" Inherits="Alunos_ListaAlunos" Title="Untitled Page" %>
 <%-- Add content controls here --%>
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="cphTitulo">
     <div align="left" class="ms-menutoolbar" style="width: 100%; height: 14px">

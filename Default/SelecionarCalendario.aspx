@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="~/Master/Master.master" 
+<%@ Page MasterPageFile="~/Master/MasterBootstrap.master" 
             Language="C#" 
             AutoEventWireup="true" 
             CodeFile="SelecionarCalendario.aspx.cs" 
@@ -9,7 +9,7 @@
 <%@ Register Src="../UserControls/SelecionaCalendario.ascx" TagName="SelecionaCalendario"
  TagPrefix="uc2" %>
 
-<%@ Register Src="../UserControls/MenuAdmin2.ascx"  
+<%@ Register Src="../UserControls/MenuAdmin.ascx"  
             TagName="MenuAdmin" 
             TagPrefix="uc1" %>
     <asp:Content ID="Content2" runat="server" ContentPlaceHolderID="cphTitulo">

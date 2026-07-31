@@ -49,7 +49,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                     calendar.CalendarioSelecionado += new EventHandler(calendar_CalendarioSelecionado);
                     ProfessoresBO controleProfessores = new ProfessoresBO();
                     TurmaBO turmaBO = new TurmaBO();
-                    Control menu = LoadControl("~/UserControls/MenuProfessor2.ascx");
+                    Control menu = LoadControl("~/UserControls/MenuProfessor.ascx");
                     Calendario cal = (Calendario)Session["Calendario"];
                     //MembershipUser user = Membership.GetUser();
                     Guid professorId = new Guid(user.ProviderUserKey.ToString());
@@ -58,9 +58,9 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                     AppState estado = (AppState)Session["AppState"];
                     string baseURL = "../Docentes/";
                     if (estado == AppState.Requisicoes)
-                        baseURL += "EditarAula2.aspx?GUID=";
+                        baseURL += "EditarAula.aspx?GUID=";
                     if (estado == AppState.AtivoSemestre)
-                        baseURL += "EditarAulaSemestre2.aspx?GUID=";
+                        baseURL += "EditarAulaSemestre.aspx?GUID=";
 
                     try
                     {
@@ -142,12 +142,12 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
 
     void calendar_CalendarioSelecionado(object sender, EventArgs e)
     {
-        Response.Redirect("../Docentes/SelecionaTurma2.aspx");
+        Response.Redirect("../Docentes/SelecionaTurma.aspx");
     }
 
     void calendar_CalendarioSelecionadoAdmin(object sender, EventArgs e)
     {
-        Response.Redirect("../Default/PaginaInicial2.aspx");
+        Response.Redirect("../Default/PaginaInicial.aspx");
     }
 
     protected void lsLogin_LoggedOut(object sender, EventArgs e)

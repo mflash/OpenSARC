@@ -1,15 +1,15 @@
 <%@ Page MasterPageFile="~/Master/Master.master" 
             Language="C#" 
             AutoEventWireup="true" 
-            CodeFile="SelecionarCalendario2.aspx.cs" 
+            CodeFile="SelecionarCalendario.aspx.cs" 
             Inherits="Default_SelecionarCalendario"
             Title="Sistema de Alocação de Recursos - FACIN"
              %>
 
-<%@ Register Src="../UserControls/SelecionaCalendario.ascx" TagName="SelecionaCalendario"
+<%@ Register Src="~/UserControls/SelecionaCalendario.ascx" TagName="SelecionaCalendario"
  TagPrefix="uc2" %>
 
-<%@ Register Src="../UserControls/MenuAdmin2.ascx"  
+<%@ Register Src="~/UserControls/MenuAdmin.ascx"  
             TagName="MenuAdmin" 
             TagPrefix="uc1" %>
     <asp:Content ID="Content2" runat="server" ContentPlaceHolderID="cphTitulo">

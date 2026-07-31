@@ -25,7 +25,7 @@ public partial class _Default : System.Web.UI.Page
                 Server.Transfer("~/Default/CadastrarAdmin.aspx");
 
             if (User.Identity.IsAuthenticated)
-                Server.Transfer("~/Default/PaginaInicial2.aspx");
+                Server.Transfer("~/Default/PaginaInicial.aspx");
         }
     }
 

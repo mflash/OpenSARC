@@ -44,7 +44,7 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
             {
                 if (Session["Calendario"] == null)
                 {
-                    Response.Redirect("../Default/SelecionarCalendario2.aspx");
+                    Response.Redirect("../Default/SelecionarCalendario.aspx");
                 }
                 if (Session["AppState"] != null && ((AppState)Session["AppState"]) == AppState.Admin)
                 {
@@ -158,7 +158,16 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
                         if (hoje.Day == item.Aniver.Day && hoje.Month == item.Aniver.Month)
                             party = "&#x1F389;";
 
-                        DateTime aniv = new DateTime(hoje.Year, item.Aniver.Month, item.Aniver.Day);
+                        DateTime aniv;
+                        try
+                        {
+                            aniv = new DateTime(hoje.Year, item.Aniver.Month, item.Aniver.Day);
+                            
+                        }
+                        catch (ArgumentOutOfRangeException ex)
+                        {
+                            aniv = new DateTime(hoje.Year, 3, 1);
+                        }
                         string shortDay = aniv.ToString("ddd", CultureInfo.GetCultureInfo("pt-BR"));
                         string diaMes = aniv.ToString("dd", CultureInfo.InvariantCulture);
 
@@ -177,7 +186,7 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
             {
                 if (Session["Calendario"] == null)
                 {
-                    Response.Redirect("../Default/SelecionarCalendario2.aspx");
+                    Response.Redirect("../Default/SelecionarCalendario.aspx");
                 }
 
                 VerificaTrocas();
@@ -220,32 +229,9 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
         Guid id = (Guid)grvListaTurmas.DataKeys[e.NewEditIndex].Value;
         AppState estado = (AppState)Session["AppState"];
         if (estado == AppState.Requisicoes)
-            Response.Redirect("~/Docentes/EditarAula2.aspx?GUID=" + id);
+            Response.Redirect("~/Docentes/EditarAula.aspx?GUID=" + id);
         if (estado == AppState.AtivoSemestre)
-            Response.Redirect("~/Docentes/EditarAulaSemestre2.aspx?GUID=" + id);
-    }
-
-    protected void grvListaTurmas_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        if (e.Row.RowType == DataControlRowType.DataRow)
-        {
-            // Obtém o ID da turma
-            Guid turmaId = (Guid)grvListaTurmas.DataKeys[e.Row.RowIndex].Value;
-            
-            // Encontra o HyperLink
-            HyperLink lnkDisciplina = (HyperLink)e.Row.FindControl("lnkDisciplina");
-            
-            if (lnkDisciplina != null)
-            {
-                // Define a URL baseada no estado da aplicação
-                AppState estado = (AppState)Session["AppState"];
-                
-                if (estado == AppState.Requisicoes)
-                    lnkDisciplina.NavigateUrl = "~/Docentes/EditarAula2.aspx?GUID=" + turmaId;
-                else if (estado == AppState.AtivoSemestre)
-                    lnkDisciplina.NavigateUrl = "~/Docentes/EditarAulaSemestre2.aspx?GUID=" + turmaId;
-            }
-        }
+            Response.Redirect("~/Docentes/EditarAulaSemestre.aspx?GUID=" + id);
     }
 
     protected void dgTroca_ItemDataBound(object sender, DataGridItemEventArgs e)
@@ -476,7 +462,7 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
         if (e.CommandName == "Horarios")
         {
             Label lblEventoId = (Label)e.Item.FindControl("lblEventoId");
-            Response.Redirect("~/Common/DetalhesEvento2.aspx?Evento=" + lblEventoId.Text);
+            Response.Redirect("~/Common/DetalhesEvento.aspx?Evento=" + lblEventoId.Text);
         }
     }
 
@@ -540,6 +526,6 @@ public partial class Docentes_SelecionaTurma : System.Web.UI.Page
 
         SmtpClient client = new SmtpClient();
         client.Send(email);
-		//Response.Redirect("SelecionaTurma2.aspx");
+		//Response.Redirect("SelecionaTurma.aspx");
 	}
 }

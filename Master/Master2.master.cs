@@ -47,7 +47,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
                 {
                     ProfessoresBO controleProfessores = new ProfessoresBO();
                     TurmaBO turmaBO = new TurmaBO();
-                    Control menu = LoadControl("~/UserControls/MenuProfessor2.ascx");
+                    Control menu = LoadControl("~/UserControls/MenuProfessor.ascx");
                     Calendario cal = (Calendario)Session["Calendario"];
                     //MembershipUser user = Membership.GetUser();
                     Guid professorId = new Guid(user.ProviderUserKey.ToString());

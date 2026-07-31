@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="DetalhesEvento.aspx.cs" Inherits="Secretarios_DetalhesEvento" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true" CodeFile="DetalhesEvento.aspx.cs" Inherits="Secretarios_DetalhesEvento" %>
 <%@ Import Namespace="BusinessData.Entities" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" Runat="Server">
     <div align = left class="ms-menutoolbar" style="width: 100%; height: 14px">

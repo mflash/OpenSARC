@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true"
+<%@ Page Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true"
  CodeFile="Erro.aspx.cs" Inherits="Erro" %>
 
 <%-- Add content controls here --%>

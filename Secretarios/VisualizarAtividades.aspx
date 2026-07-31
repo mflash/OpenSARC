@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="VisualizarAtividades.aspx.cs" Inherits="Secretarios_VisualizarAtividades" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true" CodeFile="VisualizarAtividades.aspx.cs" Inherits="Secretarios_VisualizarAtividades" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphTitulo" Runat="Server">
     Selecione as categorias para o relatório:

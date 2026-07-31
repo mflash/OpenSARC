@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Master/Master.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Alocacoes_Default" Title="Sistema de Alocação de Recursos - FACIN" %>
+<%@ Page Language="C#" MasterPageFile="~/Master/MasterBootstrap.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Alocacoes_Default" Title="Sistema de Alocação de Recursos - FACIN" %>
 
 <%@ Register Src="../Default/Aguarde.ascx" TagName="Aguarde" TagPrefix="uc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>

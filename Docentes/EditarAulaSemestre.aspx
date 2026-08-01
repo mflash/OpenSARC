@@ -712,6 +712,7 @@
                                     CssClass="form-select form-select-sm"
                                     AutoPostBack="False"
                                     OnSelectedIndexChanged="ddlDisponiveis_SelectedIndexChanged"
+                                    onmousedown="carregarRecursosDisponiveis(this);"
                                     onchange="if(this.value) onChangeDDL(this);">
                                 </asp:DropDownList>
                             </ItemTemplate>

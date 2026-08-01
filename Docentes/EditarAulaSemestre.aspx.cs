@@ -333,10 +333,11 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             ddlDisponiveis.Items.Clear();
             ddlDisponiveis.Items.Add(new ListItem("Selecione...", ""));
 
-            Stopwatch sw2 = Stopwatch.StartNew();
-            UpdateLivres(ddlDisponiveis, dataAtual, lblHora.Text);
-            sw2.Stop();
-            Debug.WriteLine("   updateLivres: " + sw2.ElapsedMilliseconds);
+            // UpdateLivres is now deferred to the client: the JS carregarRecursosDisponiveis
+            // function fetches available resources via a WebMethod only when the user
+            // first clicks the dropdown, eliminating N DB queries per grid bind.
+            // UpdateLivres is still called server-side in ddlDisponiveis_SelectedIndexChanged
+            // and butTransferir/butTrocar handlers where the updated list must be persisted.
 
             ddlAtividade.DataValueField = "Id";
             ddlAtividade.DataTextField = "Descricao";

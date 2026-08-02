@@ -401,7 +401,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             if (cont2++ < 10)
                 num = "0" + num;
             string call = "testAlert(this,'" + num + "')";
-            txtDescricao.Attributes.Add("onkeyup", call);
+            //txtDescricao.Attributes.Add("onkeyup", call);
 
             Color corFinal = cor;
 

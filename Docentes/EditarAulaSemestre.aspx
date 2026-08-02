@@ -79,7 +79,22 @@
         }
 
         function initAutoResize() {
-            var textareas = Array.prototype.slice.call(document.querySelectorAll('.auto-resize-textarea'));
+            //var textareas = Array.prototype.slice.call(document.querySelectorAll('.auto-resize-textarea'));
+            var textareas = document.querySelectorAll('.auto-resize-textarea');
+            var taArray = Array.prototype.slice.call(textareas);
+
+            taArray.forEach(function (ta) {
+                ta.style.height = 'auto';
+            });
+
+            var heights = taArray.map(function (ta) {
+                return ta.scrollHeight;
+            });
+
+            taArray.forEach(function (ta, i) {
+                ta.style.height = heights[i] + 'px';
+            });
+            /*
             // Read phase: collect all scrollHeights in one pass (single reflow).
             var heights = textareas.map(function (ta) {
                 ta.style.height = 'auto';
@@ -93,7 +108,38 @@
                     ta.addEventListener('input', function () { autoResize(this); });
                 }
             });
+            */
         }
+
+        document.addEventListener('input', function (e) {
+            if (e.target && e.target.classList.contains('auto-resize-textarea')) {
+                e.target.style.height = 'auto';
+                e.target.style.height = e.target.scrollHeight + 'px';
+            }
+        });
+
+        function debounce(func, wait) {
+            var timeout;
+            return function () {
+                var context = this, args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(function () {
+                    func.apply(context, args);
+                }, wait);
+            };
+        }
+
+        document.addEventListener('keyup', debounce(function (e) {
+            if (e.target && e.target.classList.contains('auto-resize-textarea')) {
+                // Extract row identifier index from element ID
+                var match = e.target.id.match(/_ctl(\d+)_txtDescricao/);
+                console.log("keyup: " + e.target.id);
+                if (match && match[1]) {
+                    console.log("match: " + match);
+                    testAlert(e.target, match[1]);
+                }
+            }
+        }, 300));
 
         // Executar ao carregar a página e após UpdatePanel refresh
         //Sys.WebForms.PageRequestManager.getInstance().add_endRequest(initAutoResize);
@@ -195,6 +241,54 @@
             }
         }
 
+
+        var deleteBtnTemplate = document.createElement('button');
+        deleteBtnTemplate.className = 'recurso-delete-btn';
+        deleteBtnTemplate.type = 'button';
+        deleteBtnTemplate.title = 'Liberar recurso';
+        deleteBtnTemplate.innerHTML = '<i class="bi bi-trash"></i>';
+
+
+        function setupRecursosMenu() {
+            var lists = document.querySelectorAll('.recursos-list-simple');
+            for (var i = 0; i < lists.length; i++) {
+                var items = lists[i].querySelectorAll('li');
+                for (var j = 0; j < items.length; j++) {
+                    if (!items[j].hasAttribute('data-btn-initialized')) {
+                        items[j].appendChild(deleteBtnTemplate.cloneNode(true));
+                        items[j].setAttribute('data-btn-initialized', 'true');
+                    }
+                }
+            }
+        }
+
+
+        document.addEventListener('click', function (e) {
+            var btn = e.target.closest('.recurso-delete-btn');
+            if (btn) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                var li = btn.closest('li');
+                var lista = li.closest('.recursos-list-simple');
+                var panel = lista.closest('[id*="pnRecursos"]');
+                if (!panel) return;
+
+                var butDeletar = panel.querySelector('.btn-action-delete');
+                var checkbox = li.querySelector('input[type="checkbox"]');
+
+                if (checkbox) {
+                    var allCb = lista.querySelectorAll('input[type="checkbox"]');
+                    for (var k = 0; k < allCb.length; k++) {
+                        allCb[k].checked = false;
+                    }
+                    checkbox.checked = true;
+                }
+                if (butDeletar) butDeletar.click();
+            }
+        });
+
+        /*
         function setupRecursosMenu() {
             document.querySelectorAll('.recursos-list-simple').forEach(function (lista) {
                 var panel = lista.closest('[id*="pnRecursos"]');
@@ -239,6 +333,7 @@
                 });
             });
         }
+        */
 
         // Pre-load all resource dropdowns on page load and after every UpdatePanel refresh,
         // so the first click is always instant.
@@ -404,15 +499,15 @@
                             OnClick="btnImportarCSV_Click"
                             ToolTip="Importa cronograma a partir do CSV do sistema de atas"
                             CssClass="btn btn-sm btn-outline-secondary"
-                            Text="CSV/Atas" 
+                            Text="CSV/Atas"
                             OnClientClick="document.getElementById('ctl00_cphTitulo_csvUpload').click(); return false;" />
 
-                        <asp:FileUpload ID="csvUpload" runat="server" style="display: none"/>
+                        <asp:FileUpload ID="csvUpload" runat="server" Style="display: none" />
 
                         <%-- Botão oculto que dispara o postback completo após a seleção do ficheiro --%>
                         <asp:Button ID="btnImportarCSVSubmit" runat="server"
                             OnClick="btnImportarCSV_Click"
-                            style="display:none;" />
+                            Style="display: none;" />
 
                         <!-- Separador visual -->
                         <div class="vr mx-1" style="height: 24px;"></div>

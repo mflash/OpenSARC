@@ -79,12 +79,19 @@
         }
 
         function initAutoResize() {
-            var textareas = document.querySelectorAll('.auto-resize-textarea');
-            textareas.forEach(function (textarea) {
-                autoResize(textarea);
-                textarea.addEventListener('input', function () {
-                    autoResize(this);
-                });
+            var textareas = Array.prototype.slice.call(document.querySelectorAll('.auto-resize-textarea'));
+            // Read phase: collect all scrollHeights in one pass (single reflow).
+            var heights = textareas.map(function (ta) {
+                ta.style.height = 'auto';
+                return ta.scrollHeight;
+            });
+            // Write phase: apply all heights without interleaving reads.
+            textareas.forEach(function (ta, i) {
+                ta.style.height = heights[i] + 'px';
+                if (!ta.hasAttribute('data-autoresize')) {
+                    ta.setAttribute('data-autoresize', 'true');
+                    ta.addEventListener('input', function () { autoResize(this); });
+                }
             });
         }
 
@@ -100,40 +107,28 @@
 
         function carregarRecursosDisponiveis(ddl) {
 
-            console.log("Carregando recursos...");
-
             // Already loaded — let the browser open natively with cached options
             if (ddlsCarregados[ddl.id]) {
-                console.log("Recursos já carregados: ", ddl.id);
                 return;
             }
 
             // Already fetching — don't start another request
             if (ddlsCarregando[ddl.id]) {
-                console.log("Já carregando: ", ddl.id);
                 return;
             }
 
             var row = ddl.closest('tr');
-            if (!row) {
-                console.error('Linha não encontrada para o dropdown:', ddl.id);
-                return;
-            }
+            if (!row) return;
 
             var divDataHora = row.querySelector('div.text-muted.small');
-            if (!divDataHora) {
-                console.error('Div de data/hora não encontrado');
-                return;
-            }
+            if (!divDataHora) return;
 
             var notebook = document.getElementById('ctl00_cphTitulo_lblNotebook').innerHTML;
             var textoCompleto = (divDataHora.innerText || divDataHora.textContent).trim();
             const partes = textoCompleto.split(' ');
             const data = partes[0];
             const hora = partes[partes.length - 1];
-            console.log("Data: ", data, " Hora: ", hora, "Note: ", notebook);
-
-            // Mark as loading but do NOT disable — disabling the <select> on mousedown
+            // Mark as loading
             // cancels the native dropdown open in Firefox, and showPicker() on <select>
             // is unsupported there so it cannot be recovered programmatically.
             // The user will see "Carregando..." on the first click; the second click
@@ -150,7 +145,6 @@
                 body: JSON.stringify({ data: data, hora: hora, note: notebook })
             })
                 .then(function (response) {
-                    console.log("Response:", response);
                     return response.json();
                 })
                 .then(function (result) {
@@ -184,7 +178,6 @@
                     ddlsCarregados[ddl.id] = true;
                 })
                 .catch(function (error) {
-                    console.error("Erro ao carregar recursos:", error);
                     ddl.options.length = 0;
                     ddl.options.add(new Option("Erro ao carregar", ""));
                     ddlsCarregando[ddl.id] = false;
@@ -195,7 +188,6 @@
         function onChangeDDL(ddl) {
             if (ddl.value) {
                 var hdnField = document.getElementById('ctl00_cphTitulo_hdnRecursoSelecionado');
-                console.log("hdnField: ", hdnField);
                 if (hdnField) {
                     hdnField.value = ddl.value;
                     __doPostBack(ddl.name, '');
@@ -247,136 +239,6 @@
                 });
             });
         }
-
-        // Configuração do menu dropdown para recursos
-        /*
-        function setupRecursosMenu() {
-            // Fecha todos os dropdowns ao clicar fora
-            document.addEventListener('click', function (e) {
-                if (!e.target.closest('.recursos-list-simple li')) {
-                    document.querySelectorAll('.recurso-dropdown').forEach(function (dropdown) {
-                        dropdown.classList.remove('show');
-                    });
-                }
-            });
-
-            document.querySelectorAll('.recursos-list-simple').forEach(function (lista) {
-                var panel = lista.closest('[id*="pnRecursos"]');
-                if (!panel) return;
-
-                var templateDiv = panel.querySelector('.recursos-buttons-template');
-                if (!templateDiv) return;
-
-                var butDeletar = templateDiv.querySelector('.btn-action-delete');
-                var butTransferir = templateDiv.querySelector('.btn-action-transfer');
-                var butTrocar = templateDiv.querySelector('.btn-action-swap');
-
-                if (!butDeletar || !butTransferir || !butTrocar) return;
-
-                // Para cada item da lista
-                lista.querySelectorAll('li').forEach(function (li, index) {
-                    var retirarNote = li.textContent.startsWith("Retirar");
-                    // Remove menu existente se houver
-                    var existingMenu = li.querySelector('.recurso-menu-btn');
-                    if (existingMenu) existingMenu.remove();
-                    var existingDropdown = li.querySelector('.recurso-dropdown');
-                    if (existingDropdown) existingDropdown.remove();
-
-                    // Cria botão de menu (⋮)
-                    var menuBtn = document.createElement('button');
-                    menuBtn.className = 'recurso-menu-btn';
-                    menuBtn.innerHTML = '⋮';
-                    menuBtn.type = 'button';
-                    menuBtn.title = 'Ações';
-
-                    // Cria dropdown menu
-                    var dropdown = document.createElement('div');
-                    dropdown.className = 'recurso-dropdown';
-
-                    // Opções do menu
-                    var opcoes = [
-                        {
-                            btn: butDeletar,
-                            icon: 'bi-trash',
-                            texto: 'Liberar recurso',
-                            classe: 'delete'
-                        },
-                        {
-                            btn: butTransferir,
-                            icon: 'bi-arrow-right-circle',
-                            texto: 'Transferir recurso',
-                            classe: 'transfer'
-                        },
-                        {
-                            btn: butTrocar,
-                            icon: 'bi-arrow-left-right',
-                            texto: 'Trocar recurso',
-                            classe: 'swap'
-                        }
-                    ];
-
-                    opcoes.forEach(function (opcao, idx) {
-                        var item = document.createElement('button');
-                        item.className = 'recurso-dropdown-item ' + opcao.classe;
-                        item.type = 'button';
-                        item.innerHTML = '<i class="bi ' + opcao.icon + '"></i><span>' + opcao.texto + '</span>';
-
-                        if (!retirarNote || retirarNote && idx == 0) {
-                            item.addEventListener('click', function (e) {
-                                e.preventDefault();
-                                e.stopPropagation();
-
-                                // Fecha o dropdown
-                                dropdown.classList.remove('show');
-
-                                // Marca o checkbox correspondente
-                                var checkbox = li.querySelector('input[type="checkbox"]');
-                                if (checkbox) {
-                                    // Desmarca todos primeiro
-                                    lista.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
-                                        cb.checked = false;
-                                    });
-                                    // Marca apenas este
-                                    checkbox.checked = true;
-                                }
-
-                                // Dispara o click no botão original
-                                opcao.btn.click();
-                            });
-
-                            dropdown.appendChild(item);
-
-                            // Adiciona separador entre Transferir e Trocar
-                            if (idx === 0 && !retirarNote) {
-                                var divider = document.createElement('div');
-                                divider.className = 'recurso-dropdown-divider';
-                                dropdown.appendChild(divider);
-                            }
-                        }
-                    });
-
-                    // Toggle dropdown ao clicar no botão
-                    menuBtn.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        // Fecha outros dropdowns
-                        document.querySelectorAll('.recurso-dropdown').forEach(function (d) {
-                            if (d !== dropdown) {
-                                d.classList.remove('show');
-                            }
-                        });
-
-                        // Toggle este dropdown
-                        dropdown.classList.toggle('show');
-                    });
-
-                    li.appendChild(menuBtn);
-                    li.appendChild(dropdown);
-                });
-            });
-        }
-        */
 
         // Pre-load all resource dropdowns on page load and after every UpdatePanel refresh,
         // so the first click is always instant.
@@ -712,7 +574,6 @@
                                     CssClass="form-select form-select-sm"
                                     AutoPostBack="False"
                                     OnSelectedIndexChanged="ddlDisponiveis_SelectedIndexChanged"
-                                    onmousedown="carregarRecursosDisponiveis(this);"
                                     onchange="if(this.value) onChangeDDL(this);">
                                 </asp:DropDownList>
                             </ItemTemplate>

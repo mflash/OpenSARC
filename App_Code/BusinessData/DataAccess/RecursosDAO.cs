@@ -190,16 +190,16 @@ namespace BusinessData.DataAccess
             {
                 using(IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
+                    // Fetch all blocked schedules in one query instead of one per resource.
+                    Dictionary<Guid, List<HorarioBloqueado>> todosHB = GetAllHorariosBloqueados();
+
                     while(leitor.Read())
                     {
                         Guid recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
-                        // Verifica se algum dos recursos alocados bloqueia este recurso
                         bool block = false;
                         foreach (Recurso alocado in alocados)
-                            // Em caso positivo, nao insere este na lista de disponiveis
                             if (alocado.Bloqueia1 == recursoId || alocado.Bloqueia2 == recursoId)
                             {
-                                //Debug.WriteLine("Bloqueado: " + recursoId + " por " + alocado.Descricao);
                                 block = true;
                                 break;
                             }
@@ -211,10 +211,11 @@ namespace BusinessData.DataAccess
                         aux.Categoria = catRec;
                         aux.Descricao = leitor.GetString(leitor.GetOrdinal("RecursoDescricao"));
                         aux.EstaDisponivel = leitor.GetBoolean(leitor.GetOrdinal("RecursoEstaDisponivel"));
-                        List<HorarioBloqueado> listaHB = this.GetHorarioBloqueadoByRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")));
-                        aux.HorariosBloqueados = listaHB;
+                        List<HorarioBloqueado> listaHB;
+                        todosHB.TryGetValue(recursoId, out listaHB);
+                        aux.HorariosBloqueados = listaHB ?? new List<HorarioBloqueado>();
                         aux.Abrev = leitor.GetString(leitor.GetOrdinal("Abrev")).Trim();
-                        aux.Id = recursoId; // leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
+                        aux.Id = recursoId;
                         aux.Vinculo = facul;
 
                         listaRecursos.Add(aux);
@@ -242,8 +243,10 @@ namespace BusinessData.DataAccess
                 FaculdadesDAO vinculosDAO = new FaculdadesDAO();
                 CategoriaRecursoDAO categoriarecursoDAO = new CategoriaRecursoDAO();
                 List<Recurso> listaAux = new List<Recurso>();
-                List<HorarioBloqueado> listaHB = new List<HorarioBloqueado>();
                 Guid recursoId;
+
+                // Fetch all blocked schedules in one query instead of one per resource.
+                Dictionary<Guid, List<HorarioBloqueado>> todosHB = GetAllHorariosBloqueados();
 
                 using (IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
@@ -253,12 +256,14 @@ namespace BusinessData.DataAccess
                         Guid block2 = new Guid();
                         if (leitor["Bloqueia1"].GetType() != typeof(DBNull))
                             block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
-                     
+
                         if (leitor["Bloqueia2"].GetType() != typeof(DBNull))
                             block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
-                        
+
                         recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
-                        listaHB = this.GetHorarioBloqueadoByRecurso(recursoId);
+                        List<HorarioBloqueado> listaHB;
+                        todosHB.TryGetValue(recursoId, out listaHB);
+                        listaHB = listaHB ?? new List<HorarioBloqueado>();
                         aux = Recurso.GetRecurso(leitor.GetGuid(leitor.GetOrdinal("RecursoId")),
                                                  leitor.GetString(leitor.GetOrdinal("Descricao")).Trim(),
                                                  leitor.GetString(leitor.GetOrdinal("Abrev")).Trim(),
@@ -342,30 +347,31 @@ namespace BusinessData.DataAccess
                 Recurso aux = null;
                 FaculdadesDAO faculDao = new FaculdadesDAO();
                 CategoriaRecursoDAO categoriaDao = new CategoriaRecursoDAO();
-                List<HorarioBloqueado> listaHB = new List<HorarioBloqueado>();
-               
+
+                // Fetch all blocked schedules in one query instead of one per resource.
+                Dictionary<Guid, List<HorarioBloqueado>> todosHB = GetAllHorariosBloqueados();
+
                 using (IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
-                    //Debug.WriteLine("Total de alocados:" + alocados.Count);
                     while (leitor.Read())
                     {
                         Guid recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
-                        // Verifica se algum dos recursos alocados bloqueia este recurso
                         bool block = false;
                         foreach (Recurso alocado in alocados)
-                            // Em caso positivo, nao insere este na lista de disponiveis
                             if (alocado.Bloqueia1 == recursoId || alocado.Bloqueia2 == recursoId)
                             {
-                                //Debug.WriteLine("Bloqueado: " + recursoId + " por " + alocado.Descricao);
                                 block = true;
                                 break;
                             }
                         if (block) continue;
 
-                        listaHB = this.GetHorarioBloqueadoByRecurso(recursoId);
+                        List<HorarioBloqueado> listaHB;
+                        todosHB.TryGetValue(recursoId, out listaHB);
+                        listaHB = listaHB ?? new List<HorarioBloqueado>();
+
                         Faculdade facul = faculDao.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("Vinculo")));
                         CategoriaRecurso categoria = categoriaDao.GetCategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaId")));
-                        
+
                         string descricao = leitor.GetString(leitor.GetOrdinal("Descricao"));
                         bool disponivel = leitor.GetBoolean(leitor.GetOrdinal("EstaDisponivel"));
                         string abrev = leitor.GetString(leitor.GetOrdinal("Abrev"));
@@ -378,7 +384,7 @@ namespace BusinessData.DataAccess
                         if (leitor["Bloqueia2"].GetType() != typeof(DBNull))
                             block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
 
-                        aux = Recurso.GetRecurso(recursoId, descricao, abrev, tipo, facul, categoria, disponivel,block1,block2,listaHB);
+                        aux = Recurso.GetRecurso(recursoId, descricao, abrev, tipo, facul, categoria, disponivel, block1, block2, listaHB);
                         resultado.Add(aux);
                     }
                 }
@@ -402,7 +408,9 @@ namespace BusinessData.DataAccess
                 Recurso aux = null;
                 FaculdadesDAO faculDao = new FaculdadesDAO();
                 CategoriaRecursoDAO categoriaDao = new CategoriaRecursoDAO();
-                List<HorarioBloqueado> listaHB = new List<HorarioBloqueado>();
+
+                // Fetch all blocked schedules in one query instead of one per resource.
+                Dictionary<Guid, List<HorarioBloqueado>> todosHB = GetAllHorariosBloqueados();
 
                 using (IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
@@ -410,7 +418,10 @@ namespace BusinessData.DataAccess
                     {
                         Guid recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
 
-                        listaHB = this.GetHorarioBloqueadoByRecurso(recursoId);
+                        List<HorarioBloqueado> listaHB;
+                        todosHB.TryGetValue(recursoId, out listaHB);
+                        listaHB = listaHB ?? new List<HorarioBloqueado>();
+
                         Faculdade facul = faculDao.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("Vinculo")));
                         CategoriaRecurso categoria = categoriaDao.GetCategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaId")));
 
@@ -419,7 +430,6 @@ namespace BusinessData.DataAccess
                         string abrev = leitor.GetString(leitor.GetOrdinal("Abrev"));
                         char tipo = leitor.GetString(leitor.GetOrdinal("Tipo"))[0];
 
-                        // TODO
                         Guid block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
                         Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
 
@@ -440,19 +450,23 @@ namespace BusinessData.DataAccess
             try
             {
                 DbCommand cmd = baseDados.GetStoredProcCommand("RecursosSelectAlocados");
-                
+
                 List<Recurso> resultado = new List<Recurso>();
                 Recurso aux = null;
                 FaculdadesDAO faculDao = new FaculdadesDAO();
                 CategoriaRecursoDAO categoriaDao = new CategoriaRecursoDAO();
-                List<HorarioBloqueado> listaHB = new List<HorarioBloqueado>();
+
+                // Fetch all blocked schedules in one query instead of one per resource.
+                Dictionary<Guid, List<HorarioBloqueado>> todosHB = GetAllHorariosBloqueados();
 
                 using (IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
                     while (leitor.Read())
                     {
                         Guid recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
-                        listaHB = this.GetHorarioBloqueadoByRecurso(recursoId);
+                        List<HorarioBloqueado> listaHB;
+                        todosHB.TryGetValue(recursoId, out listaHB);
+                        listaHB = listaHB ?? new List<HorarioBloqueado>();
                         Faculdade facul = faculDao.GetFaculdade(leitor.GetGuid(leitor.GetOrdinal("Vinculo")));
                         CategoriaRecurso categoria = categoriaDao.GetCategoriaRecurso(leitor.GetGuid(leitor.GetOrdinal("CategoriaId")));
                         string descricao = leitor.GetString(leitor.GetOrdinal("Descricao"));
@@ -460,7 +474,6 @@ namespace BusinessData.DataAccess
                         string abrev = leitor.GetString(leitor.GetOrdinal("Abrev"));
                         char tipo = leitor.GetString(leitor.GetOrdinal("Tipo"))[0];
 
-                        // TODO
                         Guid block1 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia1"));
                         Guid block2 = leitor.GetGuid(leitor.GetOrdinal("Bloqueia2"));
 
@@ -545,16 +558,14 @@ namespace BusinessData.DataAccess
             {
                 DbCommand cmd = baseDados.GetStoredProcCommand("HorarioBloqueadoGetByRecurso");
                 baseDados.AddInParameter(cmd, "@RecursoId", DbType.Guid, recursoId);
-            
+
                 HorarioBloqueado aux;
                 List<HorarioBloqueado> listaHB = new List<HorarioBloqueado>();
 
                 using (IDataReader leitor = baseDados.ExecuteReader(cmd))
                 {
-                    
                     while (leitor.Read())
                     {
-
                         aux = new HorarioBloqueado(leitor.GetString(leitor.GetOrdinal("HorarioInicio")),
                                                    leitor.GetString(leitor.GetOrdinal("HorarioFim")));
                         listaHB.Add(aux);
@@ -566,7 +577,44 @@ namespace BusinessData.DataAccess
             {
                 throw new DataAccessException(ErroMessages.GetErrorMessage(ex.Number), ex);
             }
-        
+        }
+
+        /// <summary>
+        /// Fetches all HorarioBloqueado rows in a single query and groups them by RecursoId.
+        /// Use this dictionary in place of per-resource calls to GetHorarioBloqueadoByRecurso
+        /// when building lists of multiple resources, to avoid N+1 database round-trips.
+        /// </summary>
+        public Dictionary<Guid, List<HorarioBloqueado>> GetAllHorariosBloqueados()
+        {
+            try
+            {
+                DbCommand cmd = baseDados.GetStoredProcCommand("HorarioBloqueadoGetAll");
+                Dictionary<Guid, List<HorarioBloqueado>> dict = new Dictionary<Guid, List<HorarioBloqueado>>();
+
+                using (IDataReader leitor = baseDados.ExecuteReader(cmd))
+                {
+                    while (leitor.Read())
+                    {
+                        Guid recursoId = leitor.GetGuid(leitor.GetOrdinal("RecursoId"));
+                        HorarioBloqueado hb = new HorarioBloqueado(
+                            leitor.GetString(leitor.GetOrdinal("HorarioInicio")),
+                            leitor.GetString(leitor.GetOrdinal("HorarioFim")));
+
+                        List<HorarioBloqueado> lista;
+                        if (!dict.TryGetValue(recursoId, out lista))
+                        {
+                            lista = new List<HorarioBloqueado>();
+                            dict[recursoId] = lista;
+                        }
+                        lista.Add(hb);
+                    }
+                }
+                return dict;
+            }
+            catch (SqlException ex)
+            {
+                throw new DataAccessException(ErroMessages.GetErrorMessage(ex.Number), ex);
+            }
         }
     }
 }

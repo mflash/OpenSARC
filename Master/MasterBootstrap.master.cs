@@ -38,7 +38,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             }
             if (Roles.IsUserInRole("Admin"))
             {
-                Control menu = LoadControl("~/UserControls/MenuAdmin2.ascx");
+                Control menu = LoadControl("~/UserControls/MenuAdmin.ascx");
                 calendar.CalendarioSelecionado += new EventHandler(calendar_CalendarioSelecionadoAdmin);
                 phMenu.Controls.Add(menu);
             }

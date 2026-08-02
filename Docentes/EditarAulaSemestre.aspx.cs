@@ -31,6 +31,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     List<Color> argb = new List<Color>();
     List<CategoriaData> listCData = new List<CategoriaData>();
     List<CategoriaAtividade> listaAtividades = new List<CategoriaAtividade>();
+    Dictionary<Guid, CategoriaAtividade> dicAtividades = new Dictionary<Guid, CategoriaAtividade>();
     RecursosBO recursosBO = new RecursosBO();
     Guid dummyGuid = new Guid();
     AlocacaoBO alocBO = new AlocacaoBO();
@@ -38,16 +39,45 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     private int cont = 1;  // contador de aulas (SEM feriados)
     private int cont2 = 2; // contador de aulas (incluindo feriados)
     bool facin = true;
+    // Pre-built lookups to replace O(N) linear scans in dgAulas_ItemDataBound.
+    Dictionary<DateTime, Data> dicCalDatas = new Dictionary<DateTime, Data>();
+    Dictionary<Guid, CategoriaData> dicCategDatas = new Dictionary<Guid, CategoriaData>();
 
     protected void Page_Load(object sender, EventArgs e)
     {
         try
         {
             Guid idturma = new Guid();
-            listCData = cdataBo.GetCategoriaDatas();
+
+            // Cache listCData in Session — special dates don't change during a session.
+            if (Session["listCData"] != null)
+                listCData = (List<CategoriaData>)Session["listCData"];
+            else
+            {
+                listCData = cdataBo.GetCategoriaDatas();
+                Session["listCData"] = listCData;
+            }
+
+            // Restore listaAtividades and rebuild dicAtividades from Session on every request
+            // so that AtualizaTodaGrade can do in-memory lookups on postbacks.
+            if (Session["listaAtividades"] != null)
+            {
+                listaAtividades = (List<CategoriaAtividade>)Session["listaAtividades"];
+                foreach (CategoriaAtividade ca in listaAtividades)
+                    dicAtividades[ca.Id] = ca;
+            }
 
             idturma = new Guid(Request.QueryString["GUID"]);
-            currentTurma = turmaBo.GetTurmaById(idturma);
+
+            // Cache currentTurma in Session keyed by turma ID — turma data doesn't change.
+            string turmaSessionKey = "currentTurma_" + idturma.ToString();
+            if (Session[turmaSessionKey] != null)
+                currentTurma = (Turma)Session[turmaSessionKey];
+            else
+            {
+                currentTurma = turmaBo.GetTurmaById(idturma);
+                Session[turmaSessionKey] = currentTurma;
+            }
             lblNotebook.Text = currentTurma.Notebook ? "S" : "N";
 
             // ========== NOVO: Intercepta o carregamento do dropdown ==========
@@ -93,7 +123,15 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     cal = (Calendario)Session["Calendario"];
 
                     CategoriaAtividadeBO cateBO = new CategoriaAtividadeBO();
-                    listaAtividades = cateBO.GetCategoriaAtividade();
+                    if (Session["listaAtividades"] != null)
+                    {
+                        listaAtividades = (List<CategoriaAtividade>)Session["listaAtividades"];
+                    }
+                    else
+                    {
+                        listaAtividades = cateBO.GetCategoriaAtividade();
+                        Session["listaAtividades"] = listaAtividades;
+                    }
                     AulaBO AulaBO = new AulaBO();
                     List<Aula> listaAulas = null;
                     try
@@ -170,6 +208,16 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     lblHoras.Text = "- Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + totalEfetivo
                         + " - <b>Previsão de horas para TDE: " + complementares + "</B>";
 
+                    // Build O(1) lookup dictionaries before the grid bind so that
+                    // dgAulas_ItemDataBound does not perform linear scans per row.
+                    dicCalDatas.Clear();
+                    foreach (Data d2 in cal.Datas)
+                        dicCalDatas[d2.Date] = d2;
+
+                    dicCategDatas.Clear();
+                    foreach (CategoriaData cd in listCData)
+                        dicCategDatas[cd.Id] = cd;
+
                     dgAulas.DataSource = listaAulas;
                     dgAulas.DataBind();
 
@@ -225,10 +273,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     protected Data VerificaData(DateTime dt)
     {
-        foreach (Data data in cal.Datas)
-            if (dt == data.Date)
-                return data;
-        return null;
+        Data result;
+        return dicCalDatas.TryGetValue(dt, out result) ? result : null;
     }
 
     protected void UpdateLivres(DropDownList ddlDisponiveis, DateTime dataAtual, String horario)
@@ -338,6 +384,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             // first clicks the dropdown, eliminating N DB queries per grid bind.
             // UpdateLivres is still called server-side in ddlDisponiveis_SelectedIndexChanged
             // and butTransferir/butTrocar handlers where the updated list must be persisted.
+            UpdateLivres(ddlDisponiveis, dataAtual, lblHora.Text);
 
             ddlAtividade.DataValueField = "Id";
             ddlAtividade.DataTextField = "Descricao";
@@ -367,41 +414,34 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 Data data = VerificaData(dataAtual);
                 if (data != null)
                 {
-                    foreach (CategoriaData c in listCData)
-                        if (c.Id == data.Categoria.Id)
+                    CategoriaData c;
+                    if (dicCategDatas.TryGetValue(data.Categoria.Id, out c))
+                    {
+                        if (!c.DiaLetivo)
                         {
-                            if (!c.DiaLetivo)
+                            corFinal = c.Cor;
+                            e.Item.Enabled = false;
+                            lblCorDaData.Text = "True";
+                            txtDescricao.Text = c.Descricao;
+                        }
+                        else
+                        {
+                            facin = (bool)Session["facin"];
+                            if (facin)
                             {
+                                lblDescData.Text = c.Descricao;
+                                txtDescricao.Text = c.Descricao;
                                 corFinal = c.Cor;
-                                e.Item.Enabled = false;
                                 lblCorDaData.Text = "True";
-                                txtDescricao.Text = c.Descricao; // + (txtDescricao.Text != "Feriado" ? " (era " + txtDescricao.Text + ")" : "");
                             }
                             else
                             {
-                                facin = (bool)Session["facin"];
-                                if (facin)
-                                {
-                                    lblDescData.Text = c.Descricao;
-                                    txtDescricao.Text = c.Descricao;// + " "+facin; // + " - " + txtDescricao.Text;
-                                                                    //txtDescricao.Text = txtDescricao.Text;
-                                    corFinal = c.Cor;
-                                    lblCorDaData.Text = "True";
-                                }
-                                else
-                                {
-                                    corFinal = c.Cor;
-                                    lblCorDaData.Text = "False";
-                                }
-                                lbl.Text = (cont++).ToString();
-                                break;
+                                corFinal = c.Cor;
+                                lblCorDaData.Text = "False";
                             }
-                            /*else
-                            {
-                                lblDescData.Text = c.Descricao;
-                                txtDescricao.Text = c.Descricao + "\n" + txtDescricao.Text;
-                            }*/
+                            lbl.Text = (cont++).ToString();
                         }
+                    }
                 }
                 else
                 {
@@ -535,14 +575,17 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Aula aula;
 
         Guid idturma = (Guid)Session["TurmaId"];
-        Turma turma = turmaBo.GetTurmaById(idturma);
+        string turmaSessionKey = "currentTurma_" + idturma.ToString();
+        Turma turma = Session[turmaSessionKey] != null
+            ? (Turma)Session[turmaSessionKey]
+            : turmaBo.GetTurmaById(idturma);
 
         int totalLinhas = 0;
         for (int i = 0; i < t.Count; i++)
         {
             cbChanged = (CheckBox)t[i].FindControl("cbChanged");
             butConfirm = (HtmlGenericControl)t[i].FindControl("butConfirm");
-            
+
             if (!cbChanged.Checked)
                 continue;
             cbChanged.Checked = false;
@@ -571,7 +614,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             descricao = aux.Substring(aux.IndexOf('\n') + 1);
 
             idcategoria = new Guid(ddlAtividade.SelectedValue);
-            categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
+            CategoriaAtividade categoriaAtiv;
+            dicAtividades.TryGetValue(idcategoria, out categoriaAtiv);
+            categoria = categoriaAtiv ?? categoriaBo.GetCategoriaAtividadeById(idcategoria);
 
             if (t[i].BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
             {
@@ -955,7 +1000,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         Guid idaula = new Guid(lblaulaId.Text);
         Guid idturma = (Guid)Session["TurmaId"];
-        Turma turma = turmaBo.GetTurmaById(idturma);
+        Turma turma = Session["currentTurma_" + idturma.ToString()] != null
+            ? (Turma)Session["currentTurma_" + idturma.ToString()]
+            : turmaBo.GetTurmaById(idturma);
 
         string hora = lblHora.Text;
         DateTime data = Convert.ToDateTime(lblData.Text);
@@ -964,7 +1011,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         string descricao = aux.Substring(aux.IndexOf('\n') + 1);
 
         Guid idcategoria = new Guid(ddlAtividade.SelectedValue);
-        CategoriaAtividade categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
+        CategoriaAtividade categoriaAtiv;
+        dicAtividades.TryGetValue(idcategoria, out categoriaAtiv);
+        CategoriaAtividade categoria = categoriaAtiv ?? categoriaBo.GetCategoriaAtividadeById(idcategoria);
 
         if (grid.BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
             grid.BackColor = categoria.Cor;

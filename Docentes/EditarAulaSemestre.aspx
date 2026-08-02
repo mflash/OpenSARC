@@ -24,12 +24,12 @@
 
         function setDirtyFlag() {
             needToConfirm = true;
-            var b = $get('ctl00_cphTitulo_btnSalvarTudo');
+            var b = document.getElementById('ctl00_cphTitulo_btnSalvarTudo');
             if (b) {
                 b.value = "Salvar Agora";
                 b.disabled = false;
             }
-            var b2 = $get('ctl00_cphTitulo_btnSalvarTudo2');
+            var b2 = document.getElementById('ctl00_cphTitulo_btnSalvarTudo2');
             if (b2) {
                 b2.value = "Salvar Agora";
                 b2.disabled = false;
@@ -129,6 +129,7 @@
             };
         }
 
+        /*
         document.addEventListener('keyup', debounce(function (e) {
             if (e.target && e.target.classList.contains('auto-resize-textarea')) {
                 // Extract row identifier index from element ID
@@ -138,6 +139,40 @@
                     console.log("match: " + match);
                     testAlert(e.target, match[1]);
                 }
+            }
+        }, 300));
+        */
+        document.addEventListener('keyup', debounce(function (e) {
+            if (e.target && e.target.classList.contains('auto-resize-textarea')) {
+                var txt = e.target;
+                txt.style.color = '#FF0000';
+
+                var row = txt.closest('tr');
+                if (row) {
+                    var cb = row.querySelector('input[type="checkbox"][id*="cbChanged"]');
+                    if (cb) cb.checked = true;
+
+                    var badge = row.querySelector('.confirm-badge');
+                    if (badge) {
+                        badge.classList.add('active');
+                        badge.classList.remove('saved');
+                        badge.title = 'Clique para salvar todas as alterações';
+
+                        if (!badge.hasAttribute('data-click-attached')) {
+                            badge.setAttribute('data-click-attached', 'true');
+                            badge.style.cursor = 'pointer';
+                            badge.addEventListener('click', function (evt) {
+                                evt.preventDefault();
+                                evt.stopPropagation();
+                                var btnSalvar = document.getElementById('ctl00_cphTitulo_btnSalvarTudo');
+                                if (btnSalvar && !btnSalvar.disabled) {
+                                    btnSalvar.click();
+                                }
+                            });
+                        }
+                    }
+                }
+                setDirtyFlag();
             }
         }, 300));
 
@@ -241,6 +276,112 @@
             }
         }
 
+        // Listener para chamada async à atualização apenas deste dropdown
+        /*
+        document.addEventListener('change', function(e) {
+            if (e.target && e.target.classList.contains('form-select')) {
+                const dropdown = e.target;
+                const selectedValue = dropdown.value;
+                const rowId = dropdown.id; 
+
+                if (!selectedValue) return;
+
+                dropdown.disabled = true;
+
+                fetch('EditarAulaSemestre.aspx/UpdateDropdownState', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    },
+                    body: JSON.stringify({ rowId: rowId, selectedValue: selectedValue })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    dropdown.disabled = false;
+                })
+                .catch(error => {
+                    dropdown.disabled = false;
+                    dropdown.style.border = "1px solid red";
+                });
+            }
+        });
+        */
+
+        document.addEventListener('change', function (e) {
+            if (!e.target || !e.target.classList.contains('form-select')) return;
+
+            var dropdown = e.target;
+            var selectedValue = dropdown.value;
+            if (!selectedValue) return;
+
+            var isAtividade = dropdown.id.indexOf('ddlAtividade') > -1;
+            var tipo = isAtividade ? 'atividade' : 'recurso';
+
+            var prefixMatch = dropdown.id.match(/(.*_ctl\d+_)/);
+            if (!prefixMatch) return;
+            var prefix = prefixMatch[1];
+
+            // Extract embedded data attributes
+            var aulaId = dropdown.getAttribute('data-aula-id');
+            var dataAula = dropdown.getAttribute('data-data');
+            var horaAula = dropdown.getAttribute('data-hora');
+
+            dropdown.disabled = true;
+
+            fetch('EditarAulaSemestre.aspx/UpdateDropdownState', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                body: JSON.stringify({
+                    tipo: tipo,
+                    aulaId: aulaId,
+                    selectedValue: selectedValue,
+                    dataString: dataAula,
+                    horario: horaAula
+                })
+            })
+                .then(function (response) { return response.json(); })
+                .then(function (data) {
+                    dropdown.disabled = false;
+
+                    if (data.d && data.d.status === 'success') {
+                        if (tipo === 'recurso') {
+                            var panel = document.getElementById(prefix + 'pnRecursos');
+                            var ul = panel.querySelector('.recursos-list-simple');
+
+                            if (!ul) {
+                                ul = document.createElement('ul');
+                                ul.className = 'recursos-list-simple';
+                                ul.id = prefix + 'cbRecursos';
+                                panel.insertBefore(ul, panel.querySelector('.recursos-buttons-template'));
+                            }
+
+                            var li = document.createElement('li');
+                            li.setAttribute('data-value', data.d.value);
+                            li.innerHTML = '<input type="checkbox" value="' + data.d.value + '"><label>' + data.d.text + '</label>';
+                            ul.appendChild(li);
+
+                            var template = panel.querySelector('.recursos-buttons-template');
+                            if (template) template.style.display = 'block';
+
+                            if (typeof setupRecursosMenu === 'function') setupRecursosMenu();
+                            dropdown.selectedIndex = 0;
+                        } else {
+                            var badge = document.getElementById(prefix + 'butConfirm');
+                            if (badge) {
+                                badge.classList.add('saved');
+                                badge.classList.remove('active');
+                                setTimeout(function () { badge.classList.remove('saved'); }, 2000);
+                            }
+                        }
+                    } else {
+                        dropdown.style.border = '1px solid red';
+                    }
+                })
+                .catch(function (error) {
+                    dropdown.disabled = false;
+                    dropdown.style.border = '1px solid red';
+                });
+        });
 
         var deleteBtnTemplate = document.createElement('button');
         deleteBtnTemplate.className = 'recurso-delete-btn';
@@ -262,30 +403,76 @@
             }
         }
 
-
         document.addEventListener('click', function (e) {
             var btn = e.target.closest('.recurso-delete-btn');
-            if (btn) {
-                e.preventDefault();
-                e.stopPropagation();
+            if (!btn) return;
 
-                var li = btn.closest('li');
-                var lista = li.closest('.recursos-list-simple');
-                var panel = lista.closest('[id*="pnRecursos"]');
-                if (!panel) return;
+            e.preventDefault();
+            e.stopPropagation();
 
-                var butDeletar = panel.querySelector('.btn-action-delete');
+            var li = btn.closest('li');
+            var lista = li.closest('.recursos-list-simple');
+            var panel = lista.closest('[id*="pnRecursos"]');
+
+            if (!li || !panel) return;
+
+            // Traverse to locate the ASP.NET injected span containing the attribute
+            var targetNode = li.hasAttribute('data-value') ? li : li.querySelector('[data-value]');
+            var recursoId = targetNode ? targetNode.getAttribute('data-value') : null;
+
+            // Fallback for dynamically injected nodes where value might be directly on the checkbox
+            if (!recursoId || recursoId === 'on') {
                 var checkbox = li.querySelector('input[type="checkbox"]');
-
-                if (checkbox) {
-                    var allCb = lista.querySelectorAll('input[type="checkbox"]');
-                    for (var k = 0; k < allCb.length; k++) {
-                        allCb[k].checked = false;
-                    }
-                    checkbox.checked = true;
+                if (checkbox && checkbox.value !== 'on') {
+                    recursoId = checkbox.value;
                 }
-                if (butDeletar) butDeletar.click();
             }
+            console.log("Recursoid: " + recursoId);
+
+            var prefixMatch = panel.id.match(/(.*_ctl\d+_)/);
+            if (!prefixMatch) return;
+            var prefix = prefixMatch[1];
+
+            // Read attributes from the adjacent initialized dropdown
+            var ddl = document.getElementById(prefix + 'ddlDisponiveis');
+            if (!ddl) return;
+
+            var aulaId = ddl.getAttribute('data-aula-id');
+            var dataAula = ddl.getAttribute('data-data');
+            var horaAula = ddl.getAttribute('data-hora');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="bi bi-hourglass"></i>';
+
+            fetch('EditarAulaSemestre.aspx/UpdateDropdownState', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                body: JSON.stringify({
+                    tipo: 'delete',
+                    aulaId: aulaId,
+                    selectedValue: recursoId,
+                    dataString: dataAula,
+                    horario: horaAula
+                })
+            })
+                .then(function (response) { return response.json(); })
+                .then(function (data) {
+                    if (data.d && data.d.status === 'success') {
+                        li.remove();
+
+                        if (lista.children.length === 0) {
+                            var template = panel.querySelector('.recursos-buttons-template');
+                            if (template) template.style.display = 'none';
+                        }
+                    } else {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="bi bi-trash text-danger"></i>';
+                    }
+                })
+                .catch(function (error) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-trash text-danger"></i>';
+                });
         });
 
         /*
@@ -335,6 +522,76 @@
         }
         */
 
+        // Tratamento do Salvar Todos — envia todas as alterações de uma vez, sem precisar clicar em cada badge individualmente
+        document.addEventListener('DOMContentLoaded', function () {
+            var btn1 = document.getElementById('ctl00_cphTitulo_btnSalvarTudo');
+            var btn2 = document.getElementById('ctl00_cphTitulo_btnSalvarTudo2');
+
+            function executeBulkSave(e) {
+                e.preventDefault();
+
+                var modifiedRows = document.querySelectorAll('.confirm-badge.active');
+                if (modifiedRows.length === 0) return;
+
+                var payload = [];
+
+                for (var i = 0; i < modifiedRows.length; i++) {
+                    var row = modifiedRows[i].closest('tr');
+                    var ddlAtividade = row.querySelector('select[id*="ddlAtividade"]');
+                    var txtDescricao = row.querySelector('.auto-resize-textarea');
+
+                    if (!ddlAtividade || !txtDescricao) continue;
+
+                    var rawText = txtDescricao.value;
+                    var splitIndex = rawText.indexOf('\n');
+                    var cleanDesc = splitIndex !== -1 ? rawText.substring(splitIndex + 1) : rawText;
+
+                    payload.push({
+                        AulaId: ddlAtividade.getAttribute('data-aula-id'),
+                        Data: ddlAtividade.getAttribute('data-data'),
+                        Hora: ddlAtividade.getAttribute('data-hora'),
+                        AtividadeId: ddlAtividade.value,
+                        Descricao: cleanDesc
+                    });
+                }
+
+                if (btn1) btn1.disabled = true;
+                if (btn2) btn2.disabled = true;
+
+                fetch('EditarAulaSemestre.aspx/SalvarAulas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                    body: JSON.stringify({ aulas: payload })
+                })
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) {
+                        if (data.d && data.d.status === 'success') {
+                            for (var j = 0; j < modifiedRows.length; j++) {
+                                var txtNode = modifiedRows[j].closest('tr').querySelector('.auto-resize-textarea');
+                                if (txtNode) txtNode.style.color = '';
+                            }
+
+                            if (typeof resetConfirmBadges === 'function') resetConfirmBadges();
+                            if (btn1) btn1.value = "Salvo";
+                            if (btn2) btn2.value = "Salvar Todos";
+                            if (typeof releaseDirtyFlag === 'function') releaseDirtyFlag();
+                        } else {
+                            showBootstrapAlert('Falha na sincronização: ' + (data.d ? data.d.message : 'Unknown error'));
+                            if (btn1) btn1.disabled = false;
+                            if (btn2) btn2.disabled = false;
+                        }
+                    })
+                    .catch(function (err) {
+                        showBootstrapAlert('Erro de rede.');
+                        if (btn1) btn1.disabled = false;
+                        if (btn2) btn2.disabled = false;
+                    });
+            }
+
+            if (btn1) btn1.addEventListener('click', executeBulkSave);
+            if (btn2) btn2.addEventListener('click', executeBulkSave);
+        });
+
         // Pre-load all resource dropdowns on page load and after every UpdatePanel refresh,
         // so the first click is always instant.
         function preCarregarTodosDropdowns() {
@@ -343,15 +600,6 @@
             });
         }
 
-        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-            initAutoResize();
-            setupRecursosMenu();
-            // After a postback the grid is re-rendered with new DOM elements,
-            // so the cache must be cleared to allow re-fetching.
-            ddlsCarregados = {};
-            ddlsCarregando = {};
-            //preCarregarTodosDropdowns();
-        });
         window.addEventListener('load', function () {
             initAutoResize();
             setupRecursosMenu();
@@ -406,21 +654,6 @@
         }
 
     </script>
-
-    <asp:ScriptManager ID="ScriptManager1" runat="server" />
-
-    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <Triggers>
-            <asp:PostBackTrigger ControlID="Button1" />
-            <asp:PostBackTrigger ControlID="Button2" />
-        </Triggers>
-        <ContentTemplate>
-
-            <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="UpdatePanel1">
-                <ProgressTemplate>
-                    <uc:ModernProgress ID="ModernProgress1" runat="server" />
-                </ProgressTemplate>
-            </asp:UpdateProgress>
 
             <!-- ═══════════════════════════════════════
                  TÍTULO + HORAS
@@ -516,7 +749,7 @@
                         <asp:Button ID="btnSalvarTudo" runat="server"
                             CssClass="btn btn-primary btn-sm"
                             Text="Salvo"
-                            OnClick="btnSalvarTudo_Click"
+                            UseSubmitBehavior="false"
                             Enabled="False" />
                     </div>
                 </div>
@@ -553,6 +786,7 @@
                     HorizontalAlign="Center"
                     OnItemDataBound="dgAulas_ItemDataBound"
                     DataKeyField="Id"
+                    EnableViewState="true"
                     CssClass="table table-bordered table-hover table-sm align-middle">
 
                     <ItemStyle CssClass="align-middle text-center" />
@@ -668,9 +902,9 @@
                                     runat="server"
                                     CssClass="form-select form-select-sm"
                                     AutoPostBack="False"
-                                    OnSelectedIndexChanged="ddlDisponiveis_SelectedIndexChanged"
-                                    onchange="if(this.value) onChangeDDL(this);">
+                                    OnSelectedIndexChanged="ddlDisponiveis_SelectedIndexChanged">
                                 </asp:DropDownList>
+                                <!--onchange="if(this.value) onChangeDDL(this);"-->
                             </ItemTemplate>
                             <EditItemTemplate>
                                 <asp:TextBox ID="TextBox7" runat="server" CssClass="form-control form-control-sm" />
@@ -742,17 +976,10 @@
                 <asp:Button ID="btnSalvarTudo2" runat="server"
                     CssClass="btn btn-primary btn-sm"
                     Text="Salvar Todos"
-                    OnClick="btnSalvarTudo_Click"
+                    UseSubmitBehavior="false"
                     Enabled="False" />
             </div>
 
-        </ContentTemplate>
-        <Triggers>
-            <asp:AsyncPostBackTrigger ControlID="dgAulas" EventName="SelectedIndexChanged" />
-            <asp:PostBackTrigger ControlID="btnImportarCSV" />
-            <asp:PostBackTrigger ControlID="btnImportarCSVSubmit" />
-        </Triggers>
-    </asp:UpdatePanel>
 
     <style>
         /* ═══════════════════════════════════════

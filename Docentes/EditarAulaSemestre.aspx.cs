@@ -280,7 +280,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     protected void UpdateLivres(DropDownList ddlDisponiveis, DateTime dataAtual, String horario)
     {
         List<Recurso> livres = recursosBO.GetRecursosDisponiveis(dataAtual, horario);
-//        List<Recurso> aloc = recursosBO.GetRecursosAlocados()
+        //        List<Recurso> aloc = recursosBO.GetRecursosAlocados()
         Recurso retirarNotebook = null;
         if (currentTurma.Notebook)
         {
@@ -332,6 +332,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         {
             var swDataBound = Stopwatch.StartNew();
             DropDownList ddlAtividade = (DropDownList)e.Item.FindControl("ddlAtividade");
+            DropDownList ddlDisponiveis = (DropDownList)e.Item.FindControl("ddlDisponiveis");
             Label lblData = (Label)e.Item.FindControl("lblData");
             TextBox txtDescricao = (TextBox)e.Item.FindControl("txtDescricao");
             Label lblDescData = (Label)e.Item.FindControl("lblDescData");
@@ -343,6 +344,15 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             Label lblAulaId = (Label)e.Item.FindControl("lblAulaId");
             Label lblAula = (Label)e.Item.FindControl("lblAula");
             Label lblHora = (Label)e.Item.FindControl("lblHora");
+
+            // Inject data attributes for client-side AJAX extraction
+            ddlAtividade.Attributes["data-aula-id"] = lblAulaId.Text;
+            ddlAtividade.Attributes["data-data"] = lblData.Text;
+            ddlAtividade.Attributes["data-hora"] = lblHora.Text;
+
+            ddlDisponiveis.Attributes["data-aula-id"] = lblAulaId.Text;
+            ddlDisponiveis.Attributes["data-data"] = lblData.Text;
+            ddlDisponiveis.Attributes["data-hora"] = lblHora.Text;
 
             //Panel pnRecursos = (Panel)e.Item.FindControl("pnRecursos");
             //HtmlTable tabRecursos = (HtmlTable)e.Item.FindControl("tabRecursos");
@@ -375,7 +385,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             //listCData = cdataBo.GetCategoriaDatas();
 
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
-            DropDownList ddlDisponiveis = (DropDownList)e.Item.FindControl("ddlDisponiveis");
             ddlDisponiveis.Items.Clear();
             ddlDisponiveis.Items.Add(new ListItem("Selecione...", ""));
 
@@ -497,13 +506,13 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     protected void butTransferir_Click(object sender, EventArgs e)
     {
         LinkButton but = (LinkButton)sender;
-    
+
         // Opção 1: Use NamingContainer (mais robusto)
         DataGridItem grid = (DataGridItem)but.NamingContainer;
-    
+
         // OU Opção 2: Corrija o número de Parents
         // DataGridItem grid = (DataGridItem)but.Parent.Parent.Parent;
-    
+
         Label lblData = (Label)grid.FindControl("lblData");
         Label lblHora = (Label)grid.FindControl("lblHora");
         Label lblaulaId = (Label)grid.FindControl("lblAulaId");
@@ -805,18 +814,18 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         if (csvUpload.HasFile)
         {
             string folderPath = "c:\\temp";
-//            string folderPath = Server.MapPath("~/AppData");
+            //            string folderPath = Server.MapPath("~/AppData");
             if (!Directory.Exists(folderPath))
             {
                 Directory.CreateDirectory(folderPath);
             }
 
             string pathname = folderPath + "\\" + Path.GetFileName(csvUpload.FileName);
-            Debug.WriteLine("Save pathname: "+pathname);
+            Debug.WriteLine("Save pathname: " + pathname);
             csvUpload.SaveAs(pathname);
-            
+
             DataTable dt = ConvertCSVtoDataTable(pathname);
-            if(dt == null)
+            if (dt == null)
             {
                 MessageBox("Formato de arquivo inválido (deve ser CSV do sistema de atas)");
                 return;
@@ -838,11 +847,11 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     continue;
 
                 TextBox txtDescricao = (TextBox)item.FindControl("txtDescricao");
-                txtDescricao.Text = (string) dr[3];
+                txtDescricao.Text = (string)dr[3];
                 Debug.WriteLine(cont + ": " + txtDescricao.Text);
 
                 DropDownList ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
-                string atividade = (string) dr[2];
+                string atividade = (string)dr[2];
                 int tipoAula = 0;
                 switch (atividade)
                 {
@@ -961,7 +970,12 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             butTransf.Visible = true;
             butTrocar.Visible = true;
             foreach (Recurso r in recAlocados)
-                cbRecursos.Items.Add(new ListItem(r.Descricao, r.Id.ToString()));
+            {
+                ListItem item = new ListItem(r.Descricao, r.Id.ToString());
+                // Force ASP.NET to render the value attribute
+                item.Attributes.Add("data-value", r.Id.ToString());
+                cbRecursos.Items.Add(item);
+            }
         }
         else
         {
@@ -1043,43 +1057,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         this.hdnRecursoSelecionado.Value = "";
         //this.AtualizaTodaGrade();
         //FIXME: tratar possíveis problemas de conexão com o servidor e solicitação de recurso indisponível.
-        /*
-        DropDownList ddlDisponiveis = (DropDownList)sender;
-        string recString = ddlDisponiveis.SelectedValue;
-
-        TableCell cell = (TableCell)ddlDisponiveis.Parent;
-        DataGridItem grid = (DataGridItem)cell.Parent;
-
-        string dataString = ((Label)grid.FindControl("lblData")).Text;
-        string horario = ((Label)grid.FindControl("lblHora")).Text;
-        string aulaString = ((Label)grid.FindControl("lblAulaId")).Text;
-
-        alocar(recString, dataString, horario, aulaString);
-
-        AtualizaComponentes(grid, dataString, horario, aulaString);
-
-        Dictionary<Guid, Tuple<Guid, Guid>> blocks = (Dictionary<Guid, Tuple<Guid, Guid>>)Session["blocks"];
-        Tuple<Guid, Guid> bloqueados = null;
-        Guid key = new Guid(ddlDisponiveis.SelectedValue);
-        // Remove recurso do dropdown de seleção
-        ddlDisponiveis.Items.Remove(ddlDisponiveis.Items.FindByValue(ddlDisponiveis.SelectedValue));
-
-        // Se esse recurso bloqueia algum(s) outro(s), retira do dropdown tambem
-        if (blocks.ContainsKey(key))
-        {
-            bloqueados = blocks[key];
-            if (bloqueados.Item1 != Guid.Empty)
-                ddlDisponiveis.Items.Remove(ddlDisponiveis.Items.FindByValue(bloqueados.Item1.ToString()));
-            if (bloqueados.Item2 != Guid.Empty)
-                ddlDisponiveis.Items.Remove(ddlDisponiveis.Items.FindByValue(bloqueados.Item2.ToString()));
-        }
-        ddlDisponiveis.SelectedIndex = 0;
-
-        // E atualiza o BD com as alteracoes na grade
-        AtualizaTodaGrade();
-        */
     }
-
 
     public void alocar(string recString, string dataString, string horario, string aulaString)
     {
@@ -1286,10 +1264,131 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         }
     }
 
+
+    /*
+    [System.Web.Services.WebMethod]
+    public static string UpdateDropdownState(string rowId, string selectedValue)
+    {
+        Debug.WriteLine("UpdateDropdownState: " + rowId + " - " + selectedValue);
+        // Execute database synchronization logic 
+        return "{\"status\":\"success\"}";
+    }
+    */
+
+
+    [System.Web.Services.WebMethod]
+    public static object UpdateDropdownState(string tipo, string aulaId, string selectedValue, string dataString, string horario)
+    {
+        try
+        {
+            Guid idAula = new Guid(aulaId);
+            Guid idSelected = new Guid(selectedValue);
+            DateTime data = Convert.ToDateTime(dataString);
+
+            if (tipo == "atividade")
+            {
+                AulaBO aulaBo = new AulaBO();
+                CategoriaAtividadeBO catBo = new CategoriaAtividadeBO();
+
+                Aula aula = aulaBo.GetAulaById(idAula);
+                CategoriaAtividade novaCategoria = catBo.GetCategoriaAtividadeById(idSelected);
+
+                aula.CategoriaAtividade = novaCategoria;
+                aulaBo.UpdateAula(aula);
+
+                return new { status = "success" };
+            }
+            else if (tipo == "recurso")
+            {
+                AulaBO aulaBo = new AulaBO();
+                RecursosBO recursosBO = new RecursosBO();
+                AlocacaoBO alocBO = new AlocacaoBO();
+
+                Aula aula = aulaBo.GetAulaById(idAula);
+                Recurso rec = recursosBO.GetRecursoById(idSelected);
+
+                Alocacao aloc = new Alocacao(rec, data, horario, aula, null);
+                alocBO.UpdateAlocacao(aloc);
+
+                return new { status = "success", text = rec.Descricao, value = rec.Id.ToString() };
+            }
+            else if (tipo == "delete")
+            {
+                RecursosBO recursosBO = new RecursosBO();
+                AlocacaoBO alocBO = new AlocacaoBO();
+
+                Recurso rec = recursosBO.GetRecursoById(idSelected);
+
+                // Releasing the resource sets the Aula to null
+                Alocacao aloc = new Alocacao(rec, data, horario, null, null);
+                alocBO.UpdateAlocacao(aloc);
+
+                return new { status = "success" };
+            }
+
+            return new { status = "error", message = "Invalid synchronization type." };
+        }
+        catch (Exception ex)
+        {
+            return new { status = "error", message = ex.Message };
+        }
+    }
+
+
     // Classe auxiliar para serialização JSON
     public class RecursoItem
     {
         public string Id { get; set; }
         public string Descricao { get; set; }
+    }
+
+    // DTO para atualização de todos os alterados (salvar todos)
+    public class AulaUpdateDTO
+    {
+        public string AulaId { get; set; }
+        public string Data { get; set; }
+        public string Hora { get; set; }
+        public string Descricao { get; set; }
+        public string AtividadeId { get; set; }
+    }
+
+    [System.Web.Services.WebMethod(EnableSession = true)]
+    public static object SalvarAulas(List<AulaUpdateDTO> aulas)
+    {
+        try
+        {
+            var session = System.Web.HttpContext.Current.Session;
+            if (session["TurmaId"] == null)
+                return new { status = "error", message = "Session expired." };
+
+            Guid idTurma = (Guid)session["TurmaId"];
+
+            TurmaBO turmaBo = new TurmaBO();
+            string turmaSessionKey = "currentTurma_" + idTurma.ToString();
+            Turma turma = session[turmaSessionKey] != null
+                ? (Turma)session[turmaSessionKey]
+                : turmaBo.GetTurmaById(idTurma);
+
+            AulaBO aulaBo = new AulaBO();
+            CategoriaAtividadeBO catBo = new CategoriaAtividadeBO();
+
+            foreach (var req in aulas)
+            {
+                Guid idAula = new Guid(req.AulaId);
+                Guid idCat = new Guid(req.AtividadeId);
+                DateTime dataAula = Convert.ToDateTime(req.Data);
+
+                CategoriaAtividade categoria = catBo.GetCategoriaAtividadeById(idCat);
+                Aula aula = Aula.GetAula(idAula, turma, req.Hora, dataAula, req.Descricao, categoria);
+
+                aulaBo.UpdateAula(aula);
+            }
+
+            return new { status = "success" };
+        }
+        catch (Exception ex)
+        {
+            return new { status = "error", message = ex.Message };
+        }
     }
 }

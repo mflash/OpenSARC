@@ -38,7 +38,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
             }
             if (Roles.IsUserInRole("Admin"))
             {
-                Control menu = LoadControl("~/UserControls/MenuAdmin2.ascx");
+                Control menu = LoadControl("~/UserControls/MenuAdmin.ascx");
                 phMenu.Controls.Add(menu);
             }
             else if (Roles.IsUserInRole("Professor"))
@@ -127,7 +127,7 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
 
     void calendar_CalendarioSelecionado(object sender, EventArgs e)
     {
-        Response.Redirect("../Default/PaginaInicial2.aspx");
+        Response.Redirect("../Default/PaginaInicial.aspx");
     }
     
     protected void lsLogin_LoggedOut(object sender, EventArgs e)

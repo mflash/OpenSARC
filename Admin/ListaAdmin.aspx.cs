@@ -66,6 +66,6 @@ public partial class Default_ListaAdmin : System.Web.UI.Page
     }
     protected void LinkButton1_Click(object sender, EventArgs e)
     {
-        Response.Redirect("~/Default/PaginaInicial2.aspx");
+        Response.Redirect("~/Default/PaginaInicial.aspx");
     }
 }

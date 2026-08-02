@@ -138,12 +138,12 @@ public partial class Master_MasterFacin : System.Web.UI.MasterPage
 
     void calendar_CalendarioSelecionado(object sender, EventArgs e)
     {
-        Response.Redirect("../Default/PaginaInicial2.aspx");
+        Response.Redirect("../Default/PaginaInicial.aspx");
     }
     
     protected void lsLogin_LoggedOut(object sender, EventArgs e)
     {
         Session.Clear();
-        Response.Redirect("~/Default/Default2.aspx");
+        Response.Redirect("~/Default/Default.aspx");
     }
 }

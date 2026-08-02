@@ -92,7 +92,7 @@ public partial class Pagina6 : System.Web.UI.Page
 
     protected void lbtnVoltar_Click(object sender, EventArgs e)
     {
-        Response.Redirect("~/Default/PaginaInicial2.aspx");
+        Response.Redirect("~/Default/PaginaInicial.aspx");
     }
 
     protected void lbCadastrarHorarios_Click(object sender, EventArgs e)

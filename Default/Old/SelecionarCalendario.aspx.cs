@@ -39,7 +39,7 @@ public partial class Default_SelecionarCalendario : System.Web.UI.Page
         
         if (User.IsInRole("admin"))
         {
-            Response.Redirect("~/Default/PaginaInicial2.aspx");
+            Response.Redirect("~/Default/PaginaInicial.aspx");
         }
         if (User.IsInRole("Secretario"))
         {

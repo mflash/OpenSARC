@@ -101,6 +101,6 @@ public partial class Professores_ImportarProfessores : System.Web.UI.Page
    
     protected void LinkButton1_Click(object sender, EventArgs e)
     {
-        Response.Redirect("~/Default/PaginaInicial2.aspx");
+        Response.Redirect("~/Default/PaginaInicial.aspx");
     }
 }

@@ -343,7 +343,7 @@ public partial class Eventos_Default : System.Web.UI.Page
 
     protected void lbtnVoltar_Click1(object sender, EventArgs e)
     {
-        Response.Redirect("~/Default/PaginaInicial2.aspx");
+        Response.Redirect("~/Default/PaginaInicial.aspx");
     }
 
     private void EnviarEmail(string pessoa, string descricaoEvento, DateTime data)

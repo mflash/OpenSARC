@@ -200,7 +200,7 @@ public partial class DetalhesEvento : System.Web.UI.Page
 
     protected void lbtnVoltar_Click(object sender, EventArgs e)
     {
-        Response.Redirect("~/Default/PaginaInicial2.aspx");
+        Response.Redirect("~/Default/PaginaInicial.aspx");
     }
 
     [WebMethod]

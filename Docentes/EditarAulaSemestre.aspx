@@ -427,7 +427,7 @@
                     recursoId = checkbox.value;
                 }
             }
-            console.log("Recursoid: " + recursoId);
+            //console.log("Recursoid: " + recursoId);
 
             var prefixMatch = panel.id.match(/(.*_ctl\d+_)/);
             if (!prefixMatch) return;

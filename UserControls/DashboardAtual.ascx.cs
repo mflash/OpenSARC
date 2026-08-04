@@ -111,23 +111,23 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         List<Alocacao> filtradaAtual = new List<Alocacao>();
 
         bool achei = false;
-        while (filtradaAtual.Count == 0)
-        {
-            if (pos > horarios.Count - 1)
-                break;
+        //while (filtradaAtual.Count == 0)
+        //{
+            //if (pos > horarios.Count - 1)
+            //    break;
             string horarioAtual = horarios[pos];
             foreach (Alocacao aloc in lista)
             {
-                if (aloc.Horario != horarioAtual && achei)
-                    break;
+                //if (aloc.Horario != horarioAtual && achei)
+                //    break;
                 if (aloc.Horario == horarioAtual)
                 {
                     filtradaAtual.Add(aloc);
-                    achei = true;
+                 //   achei = true;
                 }
             }
             pos++;
-        }
+        //}
         return filtradaAtual;
     }
 

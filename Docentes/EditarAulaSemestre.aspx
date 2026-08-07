@@ -24,17 +24,17 @@
             color: #ff0000;
         }
 
-    #ctl00_cphTitulo_btnSalvarTudo {
-        opacity: 0.5;
-        pointer-events: none;
-    }
+        #ctl00_cphTitulo_btnSalvarTudo {
+            opacity: 0.5;
+            pointer-events: none;
+        }
 
-    [id$="dgAulas"] tr[style] td,
-    [id$="dgAulas"] tr[style] th {
-        background-color: inherit !important;
-        --bs-table-bg: inherit !important;
-        --bs-table-accent-bg: inherit !important;
-    }
+        [id$="dgAulas"] tr[style] td,
+        [id$="dgAulas"] tr[style] th {
+            background-color: inherit !important;
+            --bs-table-bg: inherit !important;
+            --bs-table-accent-bg: inherit !important;
+        }
     </style>
 
     <script type="text/javascript" language="javascript">
@@ -80,7 +80,7 @@
             b = $get('ctl00_cphTitulo_btnSalvarTudo');
             b.value = "Salvo";
             b.style.opacity = '0.5';
-            b.style.pointEvents = none;
+            b.style.pointerEvents = null;
             needToConfirm = false;
         }
 
@@ -197,17 +197,17 @@
                 </span>
 
                 <asp:Button ID="btnImportarCSV" runat="server"
-                            ToolTip="Importa cronograma a partir do CSV do sistema de atas"
-                            CssClass="btn btn-sm btn-outline-secondary"
-                            Text="CSV/Atas"
-                            OnClientClick="document.getElementById('ctl00_cphTitulo_csvUpload').click(); return false;"/>
+                    ToolTip="Importa cronograma a partir do CSV do sistema de atas"
+                    CssClass="btn btn-sm btn-outline-secondary"
+                    Text="CSV/Atas"
+                    OnClientClick="document.getElementById('ctl00_cphTitulo_csvUpload').click(); return false;" />
 
-                        <asp:FileUpload ID="csvUpload" runat="server" Style="display: none" />
+                <asp:FileUpload ID="csvUpload" runat="server" Style="display: none" />
 
-                        <%-- Botão oculto que dispara o postback completo após a seleção do ficheiro --%>
+                <%-- Botão oculto que dispara o postback completo após a seleção do ficheiro --%>
                 <asp:Button ID="btnImportarCSVSubmit" runat="server"
-                            OnClick="btnImportarCSV_Click"
-                            Style="display: none;"/>
+                    OnClick="btnImportarCSV_Click"
+                    Style="display: none;" />
 
                 <!-- Separador visual -->
                 <div class="vr mx-1" style="height: 24px;"></div>
@@ -218,13 +218,13 @@
                     Text="Salvo"
                     UseSubmitBehavior="false"
                     OnClick="btnSalvarTudo_Click"
-                    accesskey="S"
+                    AccessKey="S"
                     Enabled="True" />
             </div>
         </div>
     </div>
 
-            <div id="alertContainer"></div>
+    <div id="alertContainer"></div>
 
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
@@ -343,27 +343,36 @@
                                 <asp:Label ID="lblRecursosAlocadosId" runat="server"></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateColumn>
+
                         <asp:TemplateColumn HeaderText="Recursos Selecionados" Visible="True">
                             <ItemTemplate>
                                 <asp:Panel ID="pnRecursos" runat="server">
-
-                                    <table id="tabRecursos" runat="server">
-                                        <tr>
-                                            <td>
-                                                <asp:CheckBoxList ID="cbRecursos" runat="server" CssClass="UserConfiguration">
-                                                </asp:CheckBoxList>
-                                            </td>
-                                            <td>
-                                                <asp:ImageButton ID="butDeletar" runat="server"
-                                                    ImageUrl="~/_layouts/images/CRIT_16.GIF" OnClick="butDeletar_Click" title="Liberar recurso" />
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <asp:Label ID="lblRecursosAlocados" runat="server"
-                                        Width="250px" Visible="false"></asp:Label>
+                                    <%-- Kept hidden: still used by ExportarHtml/CSV --%>
+                                    <asp:CheckBoxList ID="cbRecursos" runat="server" CssClass="UserConfiguration" Style="display: none">
+                                    </asp:CheckBoxList>
+                                    <%-- One badge + trash button per resource --%>
+                                    <asp:Repeater ID="rptRecursos" runat="server" OnItemCommand="rptRecursos_ItemCommand">
+                                        <ItemTemplate>
+                                            <div class="mb-1">
+                                                <span class="badge d-inline-flex align-items-center gap-1 py-2 px-3"
+                                                    style="background-color: #5a7baa; font-size: 0.95rem;">
+                                                    <%# Eval("Descricao") %>
+                                                    <asp:LinkButton runat="server"
+                                                        CommandName="Deletar"
+                                                        CommandArgument='<%# Eval("Id") %>'
+                                                        CssClass="text-white border-0 bg-transparent p-0 ms-1 lh-1"
+                                                        title="Liberar recurso">
+                                                        <i class="bi bi-trash3" style="font-size:0.9rem"></i>
+                                                    </asp:LinkButton>
+                                                </span>
+                                            </div>
+                                        </ItemTemplate>
+                                    </asp:Repeater>
+                                    <asp:Label ID="lblRecursosAlocados" runat="server" Width="250px" Visible="false"></asp:Label>
                                 </asp:Panel>
                             </ItemTemplate>
                         </asp:TemplateColumn>
+
                         <asp:TemplateColumn HeaderText="CorDaData" Visible="False">
                             <ItemTemplate>
                                 <asp:Label ID="lblCorDaData" runat="server"></asp:Label>

@@ -113,8 +113,8 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         bool achei = false;
         //while (filtradaAtual.Count == 0)
         //{
-            //if (pos > horarios.Count - 1)
-            //    break;
+            if (pos > horarios.Count - 1)
+                return filtradaAtual;
             string horarioAtual = horarios[pos];
             foreach (Alocacao aloc in lista)
             {
@@ -198,6 +198,9 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
             dicProfs.Add(prof.Matricula, prof);
         }
         List<Alocacao> listaAlocacoes = controladorAlocacoes.GetAlocacoesByDataFull(hoje, cal);
+        Dictionary<string, List<Alocacao>> dicAlocacoes = listaAlocacoes
+            .GroupBy(a => a.Horario)
+            .ToDictionary(g => g.Key, g => g.ToList());
 
         Dictionary<string, string> dicRecursos = new Dictionary<string, string>();
         recursosBO.GetRecursos().ForEach(r => dicRecursos[r.Abrev] = r.Descricao);
@@ -238,10 +241,17 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
             posAulaProx--;
         }
 
-        List<Alocacao> filtradaAtual = ProcuraProximoHorario(listaAlocacoes, ref pos);
+        List<Alocacao> filtradaAtual, filtradaProx;
+        dicAlocacoes.TryGetValue(horarios[posAula],out filtradaAtual);//ProcuraProximoHorario(listaAlocacoes, ref pos);
         //Debug.WriteLine("Atual: " + horarios[posAula]);
-        List<Alocacao> filtradaProx = ProcuraProximoHorario(listaAlocacoes, ref pos);
+        dicAlocacoes.TryGetValue(horarios[posAulaProx], out filtradaProx); //ProcuraProximoHorario(listaAlocacoes, ref pos);
         //Debug.WriteLine("Prox : " + horarios[posAulaProx]);
+
+        if (filtradaAtual == null)
+            filtradaAtual = new List<Alocacao>();
+
+        if (filtradaProx == null)
+            filtradaProx = new List<Alocacao>();
 
         List<RecursoItem> listaRecursosAtual = new List<RecursoItem>();
         List<RecursoItem> listaRecursosProx = new List<RecursoItem>();

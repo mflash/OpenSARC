@@ -1,4 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterBootstrap.master.cs" Inherits="Master_MasterFacin" %>
+
 <%@ Register Src="../UserControls/SelecionaCalendario.ascx" TagName="SelecionaCalendario" TagPrefix="uc3" %>
 <%@ Register Src="../UserControls/MenuProfessor.ascx" TagName="MenuProfessor" TagPrefix="uc2" %>
 <%@ Register Src="../UserControls/MenuAdmin.ascx" TagName="MenuAdmin" TagPrefix="uc1" %>
@@ -11,6 +12,27 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Open SARC</title>
+
+    <!-- GTM scroll capture neutralization -->
+    <script type="text/javascript">
+        // Neutralize property-level assignments
+        Object.defineProperty(window, 'onscrollend', { set: function () { }, get: function () { return null; } });
+        Object.defineProperty(document, 'onscrollend', { set: function () { }, get: function () { return null; } });
+
+        // Neutralize listener-level assignments on window
+        var defaultWinAdd = window.addEventListener;
+        window.addEventListener = function (type, listener, options) {
+            if (type === 'scrollend') return;
+            defaultWinAdd.call(this, type, listener, options);
+        };
+
+        // Neutralize listener-level assignments on document
+        var defaultDocAdd = document.addEventListener;
+        document.addEventListener = function (type, listener, options) {
+            if (type === 'scrollend') return;
+            defaultDocAdd.call(this, type, listener, options);
+        };
+    </script>
 
     <!-- Early connection hints for CDN origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -39,26 +61,28 @@
            Design Tokens
         ============================================= */
         :root {
-            --sarc-primary:       #2563eb;  /* azul moderno */
-            --sarc-primary-dark:  #1e40af;
+            --sarc-primary: #2563eb; /* azul moderno */
+            --sarc-primary-dark: #1e40af;
             --sarc-primary-light: #eff6ff;
-            --sarc-accent:        #0ea5e9;
-            --sarc-text:          #1e293b;
-            --sarc-text-muted:    #64748b;
-            --sarc-border:        #e2e8f0;
-            --sarc-bg:            #f1f5f9;
-            --sarc-sidebar-bg:    #1e293b;  /* sidebar escura */
-            --sarc-sidebar-text:  #cbd5e1;
+            --sarc-accent: #0ea5e9;
+            --sarc-text: #1e293b;
+            --sarc-text-muted: #64748b;
+            --sarc-border: #e2e8f0;
+            --sarc-bg: #f1f5f9;
+            --sarc-sidebar-bg: #1e293b; /* sidebar escura */
+            --sarc-sidebar-text: #cbd5e1;
             --sarc-sidebar-hover: #2563eb;
-            --sarc-topbar-bg:     #ffffff;
-            --sarc-radius:        0.5rem;
-            --sarc-shadow:        0 1px 4px rgba(0,0,0,0.08);
+            --sarc-topbar-bg: #ffffff;
+            --sarc-radius: 0.5rem;
+            --sarc-shadow: 0 1px 4px rgba(0,0,0,0.08);
         }
 
         /* =============================================
            Base
         ============================================= */
-        *, *::before, *::after { box-sizing: border-box; }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Inter', 'Segoe UI', sans-serif;
@@ -73,10 +97,10 @@
             text-decoration: none;
         }
 
-        a:hover {
-            color: var(--sarc-primary-dark);
-            text-decoration: underline;
-        }
+            a:hover {
+                color: var(--sarc-primary-dark);
+                text-decoration: underline;
+            }
 
         /* =============================================
            Topbar
@@ -96,17 +120,17 @@
             z-index: 100;
         }
 
-        .sarc-topbar .sarc-logo {
-            height: 34px;
-        }
+            .sarc-topbar .sarc-logo {
+                height: 34px;
+            }
 
-        .sarc-topbar .sarc-app-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 0.02em;
-            margin-left: 0.75rem;
-        }
+            .sarc-topbar .sarc-app-title {
+                font-size: 1.1rem;
+                font-weight: 700;
+                color: #fff;
+                letter-spacing: 0.02em;
+                margin-left: 0.75rem;
+            }
 
         /* Links e separadores na topbar */
         .sarc-topbar-link {
@@ -117,10 +141,10 @@
             transition: opacity 0.2s ease;
         }
 
-        .sarc-topbar-link:hover {
-            opacity: 0.85;
-            text-decoration: none !important;
-        }
+            .sarc-topbar-link:hover {
+                opacity: 0.85;
+                text-decoration: none !important;
+            }
 
         .sarc-topbar-separator {
             color: rgba(255,255,255,0.4);
@@ -143,12 +167,12 @@
             border-radius: 0.25rem;
         }
 
-        .sarc-topbar select:focus {
-            background-color: rgba(255,255,255,0.25);
-            color: #000000;
-            outline: none;
-            border-color: rgba(255,255,255,0.5);
-        }
+            .sarc-topbar select:focus {
+                background-color: rgba(255,255,255,0.25);
+                color: #000000;
+                outline: none;
+                border-color: rgba(255,255,255,0.5);
+            }
 
         /* =============================================
            Layout principal
@@ -177,26 +201,26 @@
             overflow-x: hidden;
         }
 
-        /* Estilização da scrollbar da sidebar */
-        .sarc-sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
+            /* Estilização da scrollbar da sidebar */
+            .sarc-sidebar::-webkit-scrollbar {
+                width: 6px;
+            }
 
-        .sarc-sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-        }
+            .sarc-sidebar::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+            }
 
-        .sarc-sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
-        }
+            .sarc-sidebar::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 3px;
+            }
 
-        .sarc-sidebar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
+                .sarc-sidebar::-webkit-scrollbar-thumb:hover {
+                    background: rgba(255, 255, 255, 0.3);
+                }
 
         .tiny-text {
-          font-size: 0.55rem;
+            font-size: 0.55rem;
         }
 
         /* links e controles dentro do menu herdam a cor da sidebar */
@@ -207,10 +231,10 @@
             font-size: 0.85rem;
         }
 
-        .sarc-sidebar a:hover {
-            color: #fff;
-            text-decoration: none;
-        }
+            .sarc-sidebar a:hover {
+                color: #fff;
+                text-decoration: none;
+            }
 
         /* =============================================
            Área de conteúdo
@@ -238,19 +262,19 @@
             color: var(--sarc-text-muted);
         }
 
-        .sarc-actionbar a {
-            color: var(--sarc-primary);
-            font-weight: 500;
-        }
+            .sarc-actionbar a {
+                color: var(--sarc-primary);
+                font-weight: 500;
+            }
 
-        .sarc-actionbar a:hover {
-            color: var(--sarc-primary-dark);
-        }
+                .sarc-actionbar a:hover {
+                    color: var(--sarc-primary-dark);
+                }
 
-        .sarc-actionbar .separator {
-            color: var(--sarc-border);
-            margin: 0 0.25rem;
-        }
+            .sarc-actionbar .separator {
+                color: var(--sarc-border);
+                margin: 0 0.25rem;
+            }
 
         /* =============================================
            Rodapé
@@ -272,24 +296,88 @@
         /* =============================================
            Picker styles — preservados
         ============================================= */
-        .picker-target-simple { height: 80px; overflow-y: auto; background-color: #fff; padding: 2px 8px; font-size: 83%; border-left: 1px solid #cce; margin-right: 1px; cursor: pointer; border-right: 1px solid #fff; border-top: 1px solid #fff; border-bottom: 1px solid #fff }
-        .picker-target-simple.focused { border: 1px solid #619ac9 }
-        .picker-target-simple .row { cursor: pointer; line-height: 150%; padding: 0px 0px 2px 0px }
-        .picker-target-simple .action { width: 6px; font-size: 9px; border: 1px solid #999; font-weight: bold; background-color: #fff; padding: 0px 4px 0px 4px; color: #555; margin-left: 5px }
-        .picker-target-simple .selected { background-color: #f0f0f0; border-bottom: 1px solid #fff }
-        .picker-target-simple .selected .line1 { font-weight: bold }
-        .picker-target-simple .active { background-color: #dbeafe; color: #1e40af; text-decoration: line-through; padding-left: 2px; margin-left: -2px; padding-right: 2px; margin-right: -2px }
-        .picker-target-simple .active .line2 { color: #93c5fd }
-        .picker-target-simple .preselect { background-color: #dbeafe; border: 1px solid #2563eb; padding-top: 2px }
-        .picker-target-simple .preselect .line1 { font-weight: bold }
-        .picker-target-simple .active .action, .picker-target-simple .preselect .action { background-color: #93c5fd; color: white }
+        .picker-target-simple {
+            height: 80px;
+            overflow-y: auto;
+            background-color: #fff;
+            padding: 2px 8px;
+            font-size: 83%;
+            border-left: 1px solid #cce;
+            margin-right: 1px;
+            cursor: pointer;
+            border-right: 1px solid #fff;
+            border-top: 1px solid #fff;
+            border-bottom: 1px solid #fff
+        }
+
+            .picker-target-simple.focused {
+                border: 1px solid #619ac9
+            }
+
+            .picker-target-simple .row {
+                cursor: pointer;
+                line-height: 150%;
+                padding: 0px 0px 2px 0px
+            }
+
+            .picker-target-simple .action {
+                width: 6px;
+                font-size: 9px;
+                border: 1px solid #999;
+                font-weight: bold;
+                background-color: #fff;
+                padding: 0px 4px 0px 4px;
+                color: #555;
+                margin-left: 5px
+            }
+
+            .picker-target-simple .selected {
+                background-color: #f0f0f0;
+                border-bottom: 1px solid #fff
+            }
+
+                .picker-target-simple .selected .line1 {
+                    font-weight: bold
+                }
+
+            .picker-target-simple .active {
+                background-color: #dbeafe;
+                color: #1e40af;
+                text-decoration: line-through;
+                padding-left: 2px;
+                margin-left: -2px;
+                padding-right: 2px;
+                margin-right: -2px
+            }
+
+                .picker-target-simple .active .line2 {
+                    color: #93c5fd
+                }
+
+            .picker-target-simple .preselect {
+                background-color: #dbeafe;
+                border: 1px solid #2563eb;
+                padding-top: 2px
+            }
+
+                .picker-target-simple .preselect .line1 {
+                    font-weight: bold
+                }
+
+                .picker-target-simple .active .action, .picker-target-simple .preselect .action {
+                    background-color: #93c5fd;
+                    color: white
+                }
 
         /* ═══════════════════════════════════════
            LOADING OVERLAY MODERNO
         ═══════════════════════════════════════ */
         #modernProgressOverlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(4px);
             z-index: 9998;
@@ -314,20 +402,32 @@
             min-width: 280px;
         }
 
-        .modern-spinner-container .spinner-border {
-            width: 3.5rem;
-            height: 3.5rem;
-            border-width: 0.35rem;
-        }
+            .modern-spinner-container .spinner-border {
+                width: 3.5rem;
+                height: 3.5rem;
+                border-width: 0.35rem;
+            }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to   { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translate(-50%, -45%); }
-            to   { opacity: 1; transform: translate(-50%, -50%); }
+            from {
+                opacity: 0;
+                transform: translate(-50%, -45%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
         }
     </style>
 </head>
@@ -348,7 +448,7 @@
                 <img alt="OpenSARC" src="../_layouts/logo/opensarc-logo.gif" />
                 <span class="sarc-app-title">OpenSARC</span>
             </div>
-            
+
             <!-- Calendário, usuário e ações movidos para cá -->
             <div class="ms-auto d-flex align-items-center gap-3">
                 <div class="d-flex align-items-center gap-2">
@@ -413,5 +513,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
     <!-- Tom Select -->
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js" defer></script>
+
+    <!-- GTM override -->
+    <script type="text/javascript">
+        var rootForm = document.forms['aspnetForm'] || document.forms[0];
+        if (rootForm) {
+            // Terminate event bubbling to defeat GTM document-level event delegation
+            rootForm.addEventListener('submit', function (e) {
+                e.stopPropagation();
+            }, false);
+
+            // Shadow GTM prototype hijacking while preserving PageRequestManager invocation
+            var pristineSubmit = document.createElement('form').submit;
+            rootForm.submit = pristineSubmit;
+        }
+    </script>
 </body>
 </html>

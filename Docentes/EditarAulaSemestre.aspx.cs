@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -36,7 +36,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     Calendario cal;
     private int cont = 1;  // contador de aulas (SEM feriados)
     private int cont2 = 2; // contador de aulas (incluindo feriados)
-	bool facin = true;
+    bool facin = true;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -49,10 +49,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             if (Session["AppState"] != null && ((AppState)Session["AppState"]) == AppState.Admin)
             {
-                Server.Transfer("~/Default/Erro.aspx?Erro=O sistema est· bloqueado.");
+                Server.Transfer("~/Default/Erro.aspx?Erro=O sistema est√° bloqueado.");
             }
             else if (Session["AppState"] != null && (AppState)Session["AppState"] != AppState.AtivoSemestre)
-                Server.Transfer("~/Default/Erro.aspx?Erro=O semestre ainda n„o foi iniciado.");
+                Server.Transfer("~/Default/Erro.aspx?Erro=O semestre ainda n√£o foi iniciado.");
             else
             {
                 if (Session["Calendario"] == null)
@@ -70,7 +70,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     }
                     catch (FormatException)
                     {
-                        Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inv·lido!");
+                        Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inv√°lido!");
                     }
 
                     Session["TurmaId"] = idturma;
@@ -86,16 +86,16 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     }
                     catch (Exception)
                     {
-                        Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inv·lido!");
+                        Response.Redirect("~/Default/Erro.aspx?Erro=Codigo de turma inv√°lido!");
                     }
                     Disciplina d = listaAulas[0].TurmaId.Disciplina;
-					CategoriaDisciplina cat = d.Categoria;
-					
-					// Mega gambiarra master extended++
-					// TODO: retirar assim que possÌvel!
-					if(cat.Descricao.IndexOf("Outras Unidades") != -1)
-							facin = false;
-					Session["facin"] = facin;
+                    CategoriaDisciplina cat = d.Categoria;
+
+                    // Mega gambiarra master extended++
+                    // TODO: retirar assim que poss√≠vel!
+                    if (cat.Descricao.IndexOf("Outras Unidades") != -1)
+                        facin = false;
+                    Session["facin"] = facin;
 
                     string laptop = "";
                     if (currentTurma.Notebook)
@@ -104,10 +104,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
                     int horasRelogioEsperadas = d.Cred * 15;
                     int durPeriodo = 45;
-/*                    if (listaAulas[0].Hora == "JK" || listaAulas[0].Hora == "LM" || listaAulas[0].Hora == "NP"
-                       || listaAulas[1].Hora == "JK" || listaAulas[1].Hora == "LM" || listaAulas[1].Hora == "NP"
-                       || listaAulas[1].Hora == "JK" || listaAulas[2].Hora == "LM" || listaAulas[2].Hora == "NP")
-                        durPeriodo = 45;*/
+                    /*                    if (listaAulas[0].Hora == "JK" || listaAulas[0].Hora == "LM" || listaAulas[0].Hora == "NP"
+                                           || listaAulas[1].Hora == "JK" || listaAulas[1].Hora == "LM" || listaAulas[1].Hora == "NP"
+                                           || listaAulas[1].Hora == "JK" || listaAulas[2].Hora == "LM" || listaAulas[2].Hora == "NP")
+                                            durPeriodo = 45;*/
 
                     int totalAulas = 0;
                     bool emG2 = false;
@@ -123,13 +123,13 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                             //Debug.WriteLine("EM G2");
                             emG2 = true;
                         }
-                        if (a.DescricaoAtividade.StartsWith("Feriado") || a.DescricaoAtividade.StartsWith("Suspens„o"))
+                        if (a.DescricaoAtividade.StartsWith("Feriado") || a.DescricaoAtividade.StartsWith("Suspens√£o"))
                             totalFeriados++;
                         if (a.CategoriaAtividade.Descricao == "Prova de G2")
                             haG2 = true;
-                        if (!a.DescricaoAtividade.StartsWith("Feriado") && !a.DescricaoAtividade.StartsWith("Suspens„o")
+                        if (!a.DescricaoAtividade.StartsWith("Feriado") && !a.DescricaoAtividade.StartsWith("Suspens√£o")
                             && a.CategoriaAtividade.Descricao != "Prova de G2" && !emG2)
-                            totalAulas++;                                                
+                            totalAulas++;
                     }
                     // Contando mais uma aula por causa da G2 que pulamos antes
                     //if(haG2)
@@ -137,22 +137,22 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     int totalEfetivo = totalAulas * 2 * durPeriodo / 60;
                     int complementares = horasRelogioEsperadas - totalEfetivo;
                     if (complementares < 0) complementares = 0;
-                    //lblHoras.Text = "DuraÁ„o do perÌodo: " + durPeriodo + " - Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + totalEfetivo
-                    //    + " - <b>Previs„o de horas extraclasse: " + (horasRelogioEsperadas - totalEfetivo) + "</B>";
-                    
-//                    int minutosEsperados = horasRelogioEsperadas * 60;
+                    //lblHoras.Text = "Dura√ß√£o do per√≠odo: " + durPeriodo + " - Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + totalEfetivo
+                    //    + " - <b>Previs√£o de horas extraclasse: " + (horasRelogioEsperadas - totalEfetivo) + "</B>";
+
+                    //                    int minutosEsperados = horasRelogioEsperadas * 60;
                     int minutosFeriado = durPeriodo * totalFeriados * 2;
-                    int minutosEsperados = durPeriodo * 2 * 18 * d.Cred/2;
+                    int minutosEsperados = durPeriodo * 2 * 18 * d.Cred / 2;
                     int horasMinistradas = (minutosEsperados - minutosFeriado) / 60;
                     int extraClasse = horasRelogioEsperadas - horasMinistradas;
                     Debug.WriteLine("Minutos feriado: " + minutosFeriado);
-                    Debug.WriteLine("Minutos esperados: " + minutosEsperados);                    
+                    Debug.WriteLine("Minutos esperados: " + minutosEsperados);
 
-                    //lblHoras.Text = "DuraÁ„o do perÌodo: " + durPeriodo + " - Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + horasMinistradas
-                    //    + " - <b>Previs„o de horas extraclasse: " + extraClasse + "</B>";
+                    //lblHoras.Text = "Dura√ß√£o do per√≠odo: " + durPeriodo + " - Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + horasMinistradas
+                    //    + " - <b>Previs√£o de horas extraclasse: " + extraClasse + "</B>";
 
                     lblHoras.Text = "- Horas esperadas: " + horasRelogioEsperadas + " - Horas efetivas: " + totalEfetivo
-                        + " - <b>Previs„o de horas para TDE: " + complementares + "</B>";
+                        + " - <b>Previs√£o de horas para TDE: " + complementares + "</B>";
 
                     dgAulas.DataSource = listaAulas;
                     dgAulas.DataBind();
@@ -161,7 +161,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     if (Session["blocks"] == null)
                     {
                         //BusinessData.BusinessLogic.RecursosBO recursosBO = new BusinessData.BusinessLogic.RecursosBO();
-                        // Monta dicion·rio com bloqueio de recursos devido a uso de outros
+                        // Monta dicion√°rio com bloqueio de recursos devido a uso de outros
                         Dictionary<Guid, BusinessData.Entities.Recurso> todos = new Dictionary<Guid, BusinessData.Entities.Recurso>();
                         Dictionary<Guid, Tuple<Guid, Guid>> blocks = new Dictionary<Guid, Tuple<Guid, Guid>>();
                         List<BusinessData.Entities.Recurso> listRec = recursosBO.GetRecursos();
@@ -180,13 +180,13 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
                     // Gera link para HTML
                     Link1.NavigateUrl = "~/Default/Export.aspx?id=" + idturma + "&ano=" + cal.Ano + "&sem=" + cal.Semestre;
-                    string navlink ="/Default/ExportIcal.aspx?id=" + idturma + "&ano=" + cal.Ano + "&sem=" + cal.Semestre;
+                    string navlink = "/Default/ExportIcal.aspx?id=" + idturma + "&ano=" + cal.Ano + "&sem=" + cal.Semestre;
                     Link2.NavigateUrl = "https://www.google.com/calendar/render?cid=" +
-                        Server.UrlEncode("http://"+Request.Url.Host+navlink);
+                        Server.UrlEncode("http://" + Request.Url.Host + navlink);
                     Link3.NavigateUrl = "webcal://" + Request.Url.Host + navlink;
                     Link4.NavigateUrl = "~" + navlink;
 
-                    // Monta dicion·rio com bloqueio de recursos devido a uso de outros
+                    // Monta dicion√°rio com bloqueio de recursos devido a uso de outros
                     // Movido para Global.asax (Application_Start)
                     //Dictionary<Guid, Tuple<Guid,Guid>> blocks = new Dictionary<Guid, Tuple<Guid,Guid>>();
                     //List<Recurso> listRec = recursosBO.GetRecursos();
@@ -209,7 +209,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     protected Data VerificaData(DateTime dt)
     {
-        foreach(Data data in cal.Datas)
+        foreach (Data data in cal.Datas)
             if (dt == data.Date)
                 return data;
         return null;
@@ -230,11 +230,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             Label lblAulaId = (Label)e.Item.FindControl("lblAulaId");
             Label lblAula = (Label)e.Item.FindControl("lblAula");
             Label lblHora = (Label)e.Item.FindControl("lblHora");
-			
-			Panel pnRecursos = (Panel)e.Item.FindControl("pnRecursos");
-            HtmlTable tabRecursos = (HtmlTable)e.Item.FindControl("tabRecursos");
-            int i = tabRecursos.Rows[0].Cells[0].Controls.Count;
-            CheckBoxList cbRecursos = (CheckBoxList)tabRecursos.Rows[0].Cells[0].Controls[1];
+
+            Panel pnRecursos = (Panel)e.Item.FindControl("pnRecursos");
+            CheckBoxList cbRecursos = (CheckBoxList)e.Item.FindControl("cbRecursos");
 
             ImageButton butDel = (ImageButton)e.Item.FindControl("butDeletar");
             ImageButton butTransf = (ImageButton)e.Item.FindControl("butTransferir");
@@ -242,13 +240,13 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             //CheckBoxList cbRecursos = (CheckBoxList) tabRecursos.FindControl("cbRecursos");
 
-			//Label tmp2 = new Label();
-			//tmp2.Text = "boo";
-			//pnRecursos.Controls.Add(tmp2);
-			//Label tmp3 = new Label();
-			//tmp3.Text = "boo2";
-			//pnRecursos.Controls.Add(tmp3);
-			//pnRecursos.BackColor = Color.Red;
+            //Label tmp2 = new Label();
+            //tmp2.Text = "boo";
+            //pnRecursos.Controls.Add(tmp2);
+            //Label tmp3 = new Label();
+            //tmp3.Text = "boo2";
+            //pnRecursos.Controls.Add(tmp3);
+            //pnRecursos.BackColor = Color.Red;
             Color cor = argb[0];
 
             //txtDescricao.Attributes.Add("onkeyup", "setDirtyFlag()");
@@ -263,51 +261,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             DateTime dataAtual = Convert.ToDateTime(lblData.Text);
 
-            List<Recurso> livres = recursosBO.GetRecursosDisponiveis(dataAtual, lblHora.Text);
-            Recurso retirarNotebook = null;
-            if (currentTurma.Notebook)
-            {
-                List<Recurso> livres2 = new List<Recurso>();
-                foreach (var item in livres)
-                {
-                    if (item.Tipo != 'L' && item.Tipo != 'D' && !item.Descricao.StartsWith("LAPRO"))
-                        livres2.Add(item);
-                    if (item.Descricao.StartsWith("Retirar"))
-                        retirarNotebook = item;
-                }
-                livres = livres2;
-            }
-            else
-            {
-                List<Recurso> livres2 = new List<Recurso>();
-                foreach (var item in livres)
-                {
-                    if (item.Descricao.StartsWith("Retirar"))
-                        continue;
-                    if (item.Abrev.Trim().Equals("301") || item.Abrev.Trim().Equals("310") || item.Abrev.Trim().Equals("410"))
-                        continue;
-                    livres2.Add(item);
-                }
-                //livres.Remove(livres.Find(delegate (Recurso r)
-                //{
-                //    return r.Descricao == "Retirar notebook";
-                //}
-                //));
-                livres = livres2;
-            }
-
-            livres.Sort();
-            Recurso dummy = new Recurso();
-            dummy.Descricao = "Selecionar...";
-            dummy.Id = dummyGuid;
-            livres.Insert(0, dummy);
-            if (currentTurma.Notebook && retirarNotebook != null)
-                livres.Insert(1, retirarNotebook);
             DropDownList ddlDisponiveis = (DropDownList)e.Item.FindControl("ddlDisponiveis");
-            ddlDisponiveis.DataValueField = "Id";
-            ddlDisponiveis.DataTextField = "Descricao";
-            ddlDisponiveis.DataSource = livres;
-            ddlDisponiveis.DataBind();
+            AtualizaDisponiveis(ddlDisponiveis, dataAtual, lblHora.Text);
 
             ddlAtividade.DataValueField = "Id";
             ddlAtividade.DataTextField = "Descricao";
@@ -319,7 +274,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             //Data data = null;
             //verifica as datas para pintar as linhas
 
-            // Associa a chamada da funÁao Javascript para setar a dirty flag + trocar cor                    
+            // Associa a chamada da fun√ßao Javascript para setar a dirty flag + trocar cor                    
             string num = cont2.ToString();
             if (cont2++ < 10)
                 num = "0" + num;
@@ -337,30 +292,32 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 {
                     foreach (CategoriaData c in listCData)
                         if (c.Id == data.Categoria.Id)
-                        {                      
+                        {
                             if (!c.DiaLetivo)
                             {
-								e.Item.BackColor = c.Cor;
-								e.Item.Enabled = false;
-								lblCorDaData.Text = "True";
+                                e.Item.BackColor = c.Cor;
+                                e.Item.Enabled = false;
+                                lblCorDaData.Text = "True";
                                 txtDescricao.Text = c.Descricao; // + (txtDescricao.Text != "Feriado" ? " (era "+txtDescricao.Text+")" : "");
                             }
-							else
+                            else
                             {
-								facin = (bool) Session["facin"];
-								if(facin) {
-									lblDescData.Text = c.Descricao;
-									txtDescricao.Text = c.Descricao;// + " "+facin; // + " - " + txtDescricao.Text;
-									//txtDescricao.Text = txtDescricao.Text;
-									e.Item.BackColor = c.Cor;
-									lblCorDaData.Text = "True";
-								}
-								else {
-								    e.Item.BackColor = cor;								
-									lblCorDaData.Text = "False";
-								}
-								lbl.Text = (cont++).ToString();
-								break;
+                                facin = (bool)Session["facin"];
+                                if (facin)
+                                {
+                                    lblDescData.Text = c.Descricao;
+                                    txtDescricao.Text = c.Descricao;// + " "+facin; // + " - " + txtDescricao.Text;
+                                                                    //txtDescricao.Text = txtDescricao.Text;
+                                    e.Item.BackColor = c.Cor;
+                                    lblCorDaData.Text = "True";
+                                }
+                                else
+                                {
+                                    e.Item.BackColor = cor;
+                                    lblCorDaData.Text = "False";
+                                }
+                                lbl.Text = (cont++).ToString();
+                                break;
                             }
                             /*else
                             {
@@ -374,7 +331,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                     e.Item.BackColor = cor;
                     lblCorDaData.Text = "False";
                     lbl.Text = (cont++).ToString();
-                    // Associa a chamada da funÁao Javascript para setar a dirty flag + trocar cor                    
+                    // Associa a chamada da fun√ßao Javascript para setar a dirty flag + trocar cor                    
                     /*string num = cont.ToString();
                     if (cont < 10)
                         num = "0" + num;
@@ -395,6 +352,58 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     }
 
+    protected void AtualizaDisponiveis(DropDownList ddlDisponiveis, DateTime dataAtual, string horario)
+    {
+        List<Recurso> livres = recursosBO.GetRecursosDisponiveis(dataAtual, horario);
+        Recurso retirarNotebook = null;
+        // Todas as turmas com notebook
+        //if (currentTurma.Notebook)
+        //{
+            List<Recurso> livres2 = new List<Recurso>();
+            foreach (var item in livres)
+            {
+                if (item.Tipo != 'L' && item.Tipo != 'D' && item.Tipo != 'H' && !item.Descricao.StartsWith("LAPRO"))
+                    livres2.Add(item);
+                if (item.Descricao.StartsWith("Retirar"))
+                    retirarNotebook = item;
+            }
+            livres = livres2;
+        //}
+        /*
+        else
+        {
+            List<Recurso> livres2 = new List<Recurso>();
+            foreach (var item in livres)
+            {
+                if (item.Descricao.StartsWith("Retirar"))
+                    continue;
+                if (item.Abrev.Trim().Equals("301") || item.Abrev.Trim().Equals("310") || item.Abrev.Trim().Equals("410"))
+                    continue;
+                livres2.Add(item);
+            }
+            //livres.Remove(livres.Find(delegate (Recurso r)
+            //{
+            //    return r.Descricao == "Retirar notebook";
+            //}
+            //));
+            livres = livres2;
+        }
+        */
+
+        livres.Sort();
+        Recurso dummy = new Recurso();
+        dummy.Descricao = "Selecionar...";
+        dummy.Id = dummyGuid;
+        livres.Insert(0, dummy);
+        //if (currentTurma.Notebook && retirarNotebook != null)
+        if (retirarNotebook != null)
+            livres.Insert(1, retirarNotebook);
+        ddlDisponiveis.DataValueField = "Id";
+        ddlDisponiveis.DataTextField = "Descricao";
+        ddlDisponiveis.DataSource = livres;
+        ddlDisponiveis.DataBind();
+    }
+
     protected void btnExportarHTML_Click(object sender, EventArgs e)
     {
         AtualizaTodaGrade();
@@ -406,62 +415,62 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         AtualizaTodaGrade();
         ExportarCSV();
     }
-	
-	protected void butTransferir_Click(object sender, EventArgs e)
-	{
-		ImageButton but = (ImageButton) sender;
-		DataGridItem grid = (DataGridItem) but.Parent.Parent.Parent.Parent.Parent.Parent;
-		
-		Label lblData = (Label) grid.FindControl("lblData");
-        Label lblHora = (Label) grid.FindControl("lblHora");
-		Label lblaulaId = (Label) grid.FindControl("lblAulaId");
-		
-		// Salva a grade antes de selecionar os recursos
-		//AtualizaTodaGrade();
-		List<string> recursos = new List<string>();
-		CheckBoxList cbRecursos = (CheckBoxList) grid.FindControl("cbRecursos");
-		foreach(ListItem rec in cbRecursos.Items)
-			recursos.Add(rec.Value);
-		Session["RecursosIds"] = recursos;
-		
-		// abre a popup de trocar recursos
+
+    protected void butTransferir_Click(object sender, EventArgs e)
+    {
+        ImageButton but = (ImageButton)sender;
+        DataGridItem grid = (DataGridItem)but.Parent.Parent.Parent.Parent.Parent.Parent;
+
+        Label lblData = (Label)grid.FindControl("lblData");
+        Label lblHora = (Label)grid.FindControl("lblHora");
+        Label lblaulaId = (Label)grid.FindControl("lblAulaId");
+
+        // Salva a grade antes de selecionar os recursos
+        //AtualizaTodaGrade();
+        List<string> recursos = new List<string>();
+        CheckBoxList cbRecursos = (CheckBoxList)grid.FindControl("cbRecursos");
+        foreach (ListItem rec in cbRecursos.Items)
+            recursos.Add(rec.Value);
+        Session["RecursosIds"] = recursos;
+
+        // abre a popup de trocar recursos
         Session["DataAula"] = lblData.Text;
         Session["Horario"] = lblHora.Text;
         string id = lblaulaId.Text;
         ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
             @"popitup('TransferirRecurso.aspx?AulaId=" + id + "',400,300);", true);
-	}
-	
-	protected void butTrocar_Click(object sender, EventArgs e)
-	{
-		ImageButton but = (ImageButton) sender;
-		DataGridItem grid = (DataGridItem) but.Parent.Parent.Parent.Parent.Parent.Parent;
-		
-		Label lblData = (Label) grid.FindControl("lblData");
-		Label lblHora = (Label) grid.FindControl("lblHora");
-		Label lblaulaId = (Label) grid.FindControl("lblAulaId");
-		
-		List<string> recursos = new List<string>();
-		CheckBoxList cbRecursos = (CheckBoxList) grid.FindControl("cbRecursos");
-		foreach(ListItem rec in cbRecursos.Items)
-			recursos.Add(rec.Value);			
+    }
+
+    protected void butTrocar_Click(object sender, EventArgs e)
+    {
+        ImageButton but = (ImageButton)sender;
+        DataGridItem grid = (DataGridItem)but.Parent.Parent.Parent.Parent.Parent.Parent;
+
+        Label lblData = (Label)grid.FindControl("lblData");
+        Label lblHora = (Label)grid.FindControl("lblHora");
+        Label lblaulaId = (Label)grid.FindControl("lblAulaId");
+
+        List<string> recursos = new List<string>();
+        CheckBoxList cbRecursos = (CheckBoxList)grid.FindControl("cbRecursos");
+        foreach (ListItem rec in cbRecursos.Items)
+            recursos.Add(rec.Value);
         Session["RecursosIds"] = recursos;
-	
+
         // abre a popup de transferir recursos
         Session["DataAula"] = lblData.Text;
         Session["Horario"] = lblHora.Text;
         string id = lblaulaId.Text;
         ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
             @"popitup('TrocarRecurso.aspx?AulaId=" + id + "',350,300);",
-                true);   
+                true);
 
-		// Salva a grade antes de selecionar os recursos
-		AtualizaTodaGrade();		
+        // Salva a grade antes de selecionar os recursos
+        AtualizaTodaGrade();
     }
 
-	// Salva o conteudo das linhas alteradas no BD	
-	private void AtualizaTodaGrade(bool saveAll=false)
-	{
+    // Salva o conteudo das linhas alteradas no BD	
+    private void AtualizaTodaGrade(bool saveAll = false)
+    {
         DataGridItemCollection t = dgAulas.Items;
         Label lblAulaId;
         Label lblAula;
@@ -472,7 +481,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Label lblDescData;
         DropDownList ddlAtividade;
         CheckBox cbChanged;
-		ImageButton butConfirm;
+        ImageButton butConfirm;
         string hora;
         string aux;
         string descricao;
@@ -485,30 +494,30 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Guid idturma = (Guid)Session["TurmaId"];
         Turma turma = turmaBo.GetTurmaById(idturma);
 
-		int totalLinhas = 0;
+        int totalLinhas = 0;
         for (int i = 0; i < t.Count; i++)
         {
             cbChanged = (CheckBox)t[i].FindControl("cbChanged");
-			butConfirm = (ImageButton) t[i].FindControl("butConfirm");			
-            // Se a linha n„o foi modificada, pula ela			
-			
-			// NAO FUNCIONA!
-			//if(butConfirm.ImageUrl == "~/_layouts/images/STARgray.gif")
-			//	continue;
-			
+            butConfirm = (ImageButton)t[i].FindControl("butConfirm");
+            // Se a linha n√£o foi modificada, pula ela			
+
+            // NAO FUNCIONA!
+            //if(butConfirm.ImageUrl == "~/_layouts/images/STARgray.gif")
+            //	continue;
+
             if (!cbChanged.Checked && !saveAll)
                 continue;
             cbChanged.Checked = false;
-			
-			// NAO FUNCIONA!
-			//if (!butConfirm.Enabled)
-			//	continue;
-			
-			butConfirm.Enabled = false;
-			butConfirm.ImageUrl = "~/_layouts/images/STARgray.gif";
-			
-			totalLinhas++;
-            
+
+            // NAO FUNCIONA!
+            //if (!butConfirm.Enabled)
+            //	continue;
+
+            butConfirm.Enabled = false;
+            butConfirm.ImageUrl = "~/_layouts/images/STARgray.gif";
+
+            totalLinhas++;
+
             lblAulaId = (Label)t[i].FindControl("lblAulaId");
             lblAula = (Label)t[i].FindControl("lblAula");
             lblData = (Label)t[i].FindControl("lblData");
@@ -538,7 +547,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             if (t[i].BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
                 t[i].BackColor = categoria.Cor;
 
-            //FIXME: n„o deveria atualizar apenas descricao e categoria??
+            //FIXME: n√£o deveria atualizar apenas descricao e categoria??
             aula = Aula.GetAula(idaula, turma, hora, data, descricao, categoria);
 
             aulaBo.UpdateAula(aula);
@@ -548,24 +557,24 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 ? descricao
                 : descDataText + "\n" + descricao;
             //txtDescricao.Text = lblDescData.Text + "\n" + descricao;
-        }	
-        lblResultado.Text = "AlteraÁ„o realizada com sucesso ("+totalLinhas.ToString()+" linhas)";
+        }
+        lblResultado.Text = "Altera√ß√£o realizada com sucesso (" + totalLinhas.ToString() + " linhas)";
 
-        // TODO: alterar nome do bot„o.
-		btnSalvarTudo.Text = "Salvo";
-		//btnSalvarTudo.Enabled = false;
+        // TODO: alterar nome do bot√£o.
+        btnSalvarTudo.Text = "Salvo";
+        //btnSalvarTudo.Enabled = false;
         //Button salvar = (Button)sender;
         //salvar.Text = "Salvo";
         //salvar.Enabled = false;
 
         ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
                 @"releaseDirtyFlag();", true);
-	}
-	
+    }
+
     // Salva os dados de todas as aulas modificadas
     protected void btnSalvarTudo_Click(object sender, EventArgs e)
     {
-		AtualizaTodaGrade();
+        AtualizaTodaGrade();
     }
 
     protected void ExportarHtml()
@@ -597,18 +606,18 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
             lblAux = (Label)item.FindControl("lblHora");
             dr["Hora"] = lblAux.Text;
-/*
-            lblAux = (Label)item.FindControl("lblData2");
-            dr["Data Hora"] = lblAux.Text; 
-            
-            lblAux = (Label)item.FindControl("lblDia2");
-            dr["Data Hora"] += " "+ lblAux.Text;
+            /*
+                        lblAux = (Label)item.FindControl("lblData2");
+                        dr["Data Hora"] = lblAux.Text; 
 
-            lblAux = (Label)item.FindControl("lblHora");
-            dr["Data Hora"] += lblAux.Text;
-            */
+                        lblAux = (Label)item.FindControl("lblDia2");
+                        dr["Data Hora"] += " "+ lblAux.Text;
+
+                        lblAux = (Label)item.FindControl("lblHora");
+                        dr["Data Hora"] += lblAux.Text;
+                        */
             txtDescricao = (TextBox)item.FindControl("txtDescricao");
-            dr["DescriÁ„o"] = txtDescricao.Text;
+            dr["Descri√ß√£o"] = txtDescricao.Text;
 
             ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
             dr["Atividade"] = ddlAtividade.SelectedItem.Text;
@@ -658,7 +667,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             dr["Hora"] = lblAux.Text;
 
             txtDescricao = (TextBox)item.FindControl("txtDescricao");
-            dr["DescriÁ„o"] = txtDescricao.Text;
+            dr["Descri√ß√£o"] = txtDescricao.Text;
 
             ddlAtividade = (DropDownList)item.FindControl("ddlAtividade");
             dr["Atividade"] = ddlAtividade.SelectedItem.Text;
@@ -670,14 +679,13 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Response.Redirect("DownloadCSV2.aspx");
     }
 
-    // Atualiza o dropdownlist de seleÁ„o de recursos e o checkbox list dos selecionados,
+    // Atualiza o dropdownlist de sele√ß√£o de recursos e o checkbox list dos selecionados,
     // para uma determinada linha da tabela
     private void AtualizaComponentes(DataGridItem grid, String dataString, String horario, String aulaString)
     {
         CheckBoxList cbRecursos = (CheckBoxList)grid.FindControl("cbRecursos");
-        ImageButton butDel = (ImageButton)grid.FindControl("butDeletar");
-        ImageButton butTransf = (ImageButton)grid.FindControl("butTransferir");
-        ImageButton butTrocar = (ImageButton)grid.FindControl("butTrocar");
+        //ImageButton butDel = (ImageButton)grid.FindControl("butDeletar");
+        Repeater rptRecursos = (Repeater)grid.FindControl("rptRecursos");
 
         DateTime data = Convert.ToDateTime(dataString);
 
@@ -685,49 +693,67 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         List<Recurso> recAlocados = alocBO.GetRecursoAlocadoByAula(data, horario, new Guid(aulaString));
 
         cbRecursos.Items.Clear();
-        if (recAlocados.Count != 0)
-        {
-            // Habilita botıes
-            butDel.Visible = true;
-            //butTransf.Visible = true;
-            //butTrocar.Visible = true;
-            foreach (Recurso r in recAlocados)
-                cbRecursos.Items.Add(new ListItem(r.Descricao, r.Id.ToString()));
-        }
-        else
-        {
-            // Desabilita botıes
-            butDel.Visible = false;
-            ////butTransf.Visible = false;
-            //butTrocar.Visible = false;
-        }
+        // Keep cbRecursos in sync for ExportarHtml/CSV
+        cbRecursos.Items.Clear();
+        foreach (Recurso r in recAlocados)
+            cbRecursos.Items.Add(new ListItem(r.Descricao, r.Id.ToString()));
+
+        // Bind Repeater for display
+        rptRecursos.DataSource = recAlocados;
+        rptRecursos.DataBind();
+    }
+
+    protected void rptRecursos_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        if (e.CommandName != "Deletar") return;
+
+        Repeater rpt = (Repeater)source;
+        // rpt ‚Üí Panel ‚Üí TableCell ‚Üí DataGridItem
+        DataGridItem grid = (DataGridItem)rpt.Parent.Parent.Parent;
+
+        string dataString = ((Label)grid.FindControl("lblData")).Text;
+        DateTime data = Convert.ToDateTime(dataString);
+        string horario = ((Label)grid.FindControl("lblHora")).Text;
+        string aulaString = ((Label)grid.FindControl("lblAulaId")).Text;
+
+        Guid recId = new Guid(e.CommandArgument.ToString());
+        Recurso rec = recursosBO.GetRecursoById(recId);
+        Alocacao aloc = new Alocacao(rec, data, horario, null, null);
+        alocBO.UpdateAlocacao(aloc);
+
+        // Rebuild the resource list and available dropdown
+        AtualizaComponentes(grid, dataString, horario, aulaString);
+
+        DropDownList ddlDisponiveis = (DropDownList)grid.FindControl("ddlDisponiveis");
+        AtualizaDisponiveis(ddlDisponiveis, data, horario);
+        AtualizaTodaGrade();
     }
 
     // Callback do dropdownlist de atividade: troca o tipo de atividade (aula, prova, etc)
-	protected void ddlAtividade_SelectedIndexChanged(object sender, EventArgs e)
-	{
+    protected void ddlAtividade_SelectedIndexChanged(object sender, EventArgs e)
+    {
         DropDownList ddlAtividade = (DropDownList)sender;
-//        TableCell cell = (TableCell)ddlDisponiveis.Parent;
+        //        TableCell cell = (TableCell)ddlDisponiveis.Parent;
         DataGridItem grid = (DataGridItem)ddlAtividade.Parent.Parent;
-		ImageButton butConfirm = (ImageButton) grid.FindControl("butConfirm");
-		CheckBox cbChanged = (CheckBox) grid.FindControl("cbChanged");
-		cbChanged.Checked = true; // marca para alteracao
-		butConfirm.Enabled = true;		
-		AtualizaTodaGrade();
-	}
-	
-	// Atualiza uma unica linha da grade (sem uso no momento)
-	private void AtualizaLinhaGrade(DataGridItem grid)
-	{
+        ImageButton butConfirm = (ImageButton)grid.FindControl("butConfirm");
+        CheckBox cbChanged = (CheckBox)grid.FindControl("cbChanged");
+        cbChanged.Checked = true; // marca para alteracao
+        butConfirm.Enabled = true;
+        AtualizaTodaGrade();
+    }
+
+    // Atualiza uma unica linha da grade (sem uso no momento)
+    private void AtualizaLinhaGrade(DataGridItem grid)
+    {
         // Obtem os dados digitados nesta linha
-        Label lblData = (Label) grid.FindControl("lblData");
-        Label lblHora = (Label) grid.FindControl("lblHora");
-        TextBox txtDescricao = (TextBox) grid.FindControl("txtDescricao");
-        DropDownList ddlAtividade = (DropDownList) grid.FindControl("ddlAtividade");
-        Label lblCorDaData = (Label) grid.FindControl("lblCorDaData");
-        Label lblDescData = (Label) grid.FindControl("lblDescData");
-        Label lblaulaId = (Label) grid.FindControl("lblAulaId");
-        Label lblRecursosAlocadosId = (Label) grid.FindControl("lblRecursosAlocadosId");
+        Label lblData = (Label)grid.FindControl("lblData");
+        Label lblHora = (Label)grid.FindControl("lblHora");
+        TextBox txtDescricao = (TextBox)grid.FindControl("txtDescricao");
+        DropDownList ddlAtividade = (DropDownList)grid.FindControl("ddlAtividade");
+        Label lblCorDaData = (Label)grid.FindControl("lblCorDaData");
+        Label lblDescData = (Label)grid.FindControl("lblDescData");
+        Label lblaulaId = (Label)grid.FindControl("lblAulaId");
+        Label lblRecursosAlocadosId = (Label)grid.FindControl("lblRecursosAlocadosId");
 
         Guid idaula = new Guid(lblaulaId.Text);
         Guid idturma = (Guid)Session["TurmaId"];
@@ -751,12 +777,12 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         txtDescricao.Text = lblDescData.Text + "\n" + descricao;
 
-	}
-	
-    // Callback do dropdownlist de seleÁ„o: aloca um recurso e atualiza os componentes na tela
+    }
+
+    // Callback do dropdownlist de sele√ß√£o: aloca um recurso e atualiza os componentes na tela
     protected void ddlDisponiveis_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //FIXME: tratar possÌveis problemas de conex„o com o servidor e solicitaÁ„o de recurso indisponÌvel.
+        //FIXME: tratar poss√≠veis problemas de conex√£o com o servidor e solicita√ß√£o de recurso indispon√≠vel.
         DropDownList ddlDisponiveis = (DropDownList)sender;
         string recString = ddlDisponiveis.SelectedValue;
 
@@ -774,7 +800,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Dictionary<Guid, Tuple<Guid, Guid>> blocks = (Dictionary<Guid, Tuple<Guid, Guid>>)Session["blocks"];
         Tuple<Guid, Guid> bloqueados = null;
         Guid key = new Guid(ddlDisponiveis.SelectedValue);
-        // Remove recurso do dropdown de seleÁ„o
+        // Remove recurso do dropdown de sele√ß√£o
         ddlDisponiveis.Items.Remove(ddlDisponiveis.Items.FindByValue(ddlDisponiveis.SelectedValue));
 
         // Se esse recurso bloqueia algum(s) outro(s), retira do dropdown tambem
@@ -787,9 +813,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 ddlDisponiveis.Items.Remove(ddlDisponiveis.Items.FindByValue(bloqueados.Item2.ToString()));
         }
         ddlDisponiveis.SelectedIndex = 0;
-				
-		// E atualiza o BD com as alteracoes na grade
-		AtualizaTodaGrade();
+
+        // E atualiza o BD com as alteracoes na grade
+        AtualizaTodaGrade();
     }
 
 
@@ -799,8 +825,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Guid aulaId = new Guid(aulaString);
         DateTime data = Convert.ToDateTime(dataString);
 
-        //FIXME: pode ocorrer um problema se outro usu·rio selecionar o recurso antes...
-        Aula aula = aulaBo.GetAulaById(aulaId);        
+        //FIXME: pode ocorrer um problema se outro usu√°rio selecionar o recurso antes...
+        Aula aula = aulaBo.GetAulaById(aulaId);
 
         Recurso rec = recursosBO.GetRecursoById(recId);
         System.Diagnostics.Debug.WriteLine("Alocando: " + rec.Descricao);
@@ -809,7 +835,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         /* Nao e' mais necessario: o DAO foi alterado para verificar isso (GetRecursosDisponiveis)
          *
-        // Verifica se algum outro recurso depende deste, em caso positivo aloca tambÈm
+        // Verifica se algum outro recurso depende deste, em caso positivo aloca tamb√©m
         Dictionary<Guid, Tuple<Guid, Guid>> blocks = (Dictionary<Guid, Tuple<Guid, Guid>>) Session["blocks"];
         Tuple<Guid, Guid> bloqueados = blocks[recId];
         if(bloqueados.Item1 != Guid.Empty)
@@ -833,9 +859,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     protected void butDeletar_Click(object sender, ImageClickEventArgs e)
     {
         ImageButton butDel = (ImageButton)sender;
-        
-        // O checkbox list est· dentro da cÈlula da tabela...
-        HtmlTableCell cell = (HtmlTableCell) butDel.Parent;
+
+        // O checkbox list est√° dentro da c√©lula da tabela...
+        HtmlTableCell cell = (HtmlTableCell)butDel.Parent;
         CheckBoxList cbList = (CheckBoxList)cell.FindControl("cbRecursos");
 
         // Para chegar no DataGridItem correspondente... bleargh!
@@ -850,10 +876,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Guid aulaId = new Guid(aulaString);
         Aula aula = aulaBo.GetAulaById(aulaId);
 
-        // Varre o checkbox list do fim para o inÌcio,
+        // Varre o checkbox list do fim para o in√≠cio,
         // e remove todos os recursos selecionados (da tela e do BD)
         List<Recurso> listaRecLib = new List<Recurso>();
-        for(int r=cbList.Items.Count-1; r>=0; r--)
+        for (int r = cbList.Items.Count - 1; r >= 0; r--)
         {
             ListItem recurso = cbList.Items[r];
             if (recurso.Selected)
@@ -863,8 +889,8 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 Alocacao aloc = new Alocacao(rec, data, horario, null, null);
                 alocBO.UpdateAlocacao(aloc);
                 cbList.Items.RemoveAt(r);
-                // TODO: melhorar isso - sÛ envia email se forem recursos com a palavra "lab" em algum lugar
-                if(rec.Categoria.Descricao.ToLower().Contains("lab"))
+                // TODO: melhorar isso - s√≥ envia email se forem recursos com a palavra "lab" em algum lugar
+                if (rec.Categoria.Descricao.ToLower().Contains("lab"))
                     listaRecLib.Add(rec);
             }
         }
@@ -873,7 +899,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         ImageButton butTransf = (ImageButton)grid.FindControl("butTransferir");
         ImageButton butTrocar = (ImageButton)grid.FindControl("butTrocar");
 
-        // Se nenhum restou, esconde botıes
+        // Se nenhum restou, esconde bot√µes
         if (cbList.Items.Count == 0)
         {
             butDel.Visible = false;
@@ -881,7 +907,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             //butTrocar.Visible = false;
         }
 
-        // Recria o dropdownlist de recursos disponÌveis
+        // Recria o dropdownlist de recursos dispon√≠veis
         //ddlDisponiveis.Items.Clear();
         List<Recurso> livres = recursosBO.GetRecursosDisponiveis(data, horario);
         livres.Sort();
@@ -889,26 +915,26 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         dummy.Descricao = "Selecionar...";
         dummy.Id = dummyGuid;
         livres.Insert(0, dummy);
-        
+
         ddlDisponiveis.DataValueField = "Id";
         ddlDisponiveis.DataTextField = "Descricao";
         ddlDisponiveis.DataSource = livres;
         ddlDisponiveis.DataBind();
-		
-		AtualizaTodaGrade();
+
+        AtualizaTodaGrade();
         //if(listaRecLib.Count > 0)
         //    EnviarEmailLiberacao("professores@inf.pucrs.br", listaRecLib, data, horario);
     }
 
-    private void EnviarEmailLiberacao(string pessoa, List<Recurso> liberados , DateTime data, String horario)
+    private void EnviarEmailLiberacao(string pessoa, List<Recurso> liberados, DateTime data, String horario)
     {
-//        string para = ConfigurationManager.AppSettings["MailMessageSecretaria"];
+        //        string para = ConfigurationManager.AppSettings["MailMessageSecretaria"];
         string from = ConfigurationManager.AppSettings["MailMessageFrom"];
         MailMessage email = new MailMessage(from, pessoa);
-        email.Subject = "OpenSARC: LiberaÁ„o de recurso(s) no dia " + data.ToShortDateString() + ", hor·rio " + horario;
-        email.Body = "Sistema de AlocaÁ„o de Recursos Computacionais - FACIN \n\n" +
+        email.Subject = "OpenSARC: Libera√ß√£o de recurso(s) no dia " + data.ToShortDateString() + ", hor√°rio " + horario;
+        email.Body = "Sistema de Aloca√ß√£o de Recursos Computacionais - FACIN \n\n" +
                "Um ou mais recursos foram liberados por " + Membership.GetUser().Email + "." +
-               "\nDia: " + data.ToShortDateString() + ", hor·rio " + horario + "\n" +
+               "\nDia: " + data.ToShortDateString() + ", hor√°rio " + horario + "\n" +
                "\nRecurso(s):";
         foreach (Recurso r in liberados)
         {
@@ -941,7 +967,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             DataTable dt = ConvertCSVtoDataTable(pathname);
             if (dt == null)
             {
-                MessageBox("Formato de arquivo inv·lido (deve ser CSV do sistema de atas)");
+                MessageBox("Formato de arquivo inv√°lido (deve ser CSV do sistema de atas)");
                 return;
             }
 

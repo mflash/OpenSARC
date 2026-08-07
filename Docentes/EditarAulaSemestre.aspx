@@ -3,6 +3,7 @@
 
 <%@ Register Src="~/Default/Aguarde.ascx" TagName="Aguarde" TagPrefix="uc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<%@ Register Src="../UserControls/ModernProgress.ascx" TagName="ModernProgress" TagPrefix="uc" %>
 <%@ Import Namespace="BusinessData.Util" %>
 <%-- Add content controls here --%>
 <asp:Content ID="Content2" runat="server" ContentPlaceHolderID="cphTitulo">
@@ -107,10 +108,12 @@
                 fileInput.addEventListener('change', function () {
                     if (this.files.length > 0) {
                         // Show the same progress overlay used by async postbacks
-                        var overlay = document.getElementById('modernProgressOverlay');
-                        var message = document.getElementById('modernProgressMessage');
-                        if (overlay) overlay.style.display = 'flex';
-                        if (message) message.style.display = 'block';
+                        var progress = document.getElementById('ctl00_cphTitulo_UpdateProgress');
+                        if (progress) progress.style.display = 'block';
+                        //var overlay = document.getElementById('modernProgressOverlay');
+                        //var message = document.getElementById('modernProgressMessage');
+                        //if (overlay) overlay.style.display = 'flex';
+                        //if (message) message.style.display = 'block';
                         document.getElementById('ctl00_cphTitulo_btnImportarCSVSubmit').click();
                     }
                 });
@@ -226,17 +229,14 @@
 
     <div id="alertContainer"></div>
 
-    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>
-            <div align="left">
-                <asp:UpdateProgress ID="UpdateProgress2" runat="server">
+                <asp:UpdateProgress ID="UpdateProgress" runat="server">
                     <ProgressTemplate>
-                        <div id="progressBackgroundFilter"></div>
-                        <div id="processMessage">
-                            <uc1:Aguarde ID="Aguarde1" runat="server" />
+                        <uc:ModernProgress ID="modernProgress" runat="server" />
                     </ProgressTemplate>
                 </asp:UpdateProgress>
-            </div>
+
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
             <asp:Label ID="lblResultado" runat="server" CssClass="altert alert-info d-inline-block py-1 px-2 small" Text="" Visible="true">
             </asp:Label>
             <asp:CheckBox ID="chbAutoSave" runat="server" CssClass="ms-toolbar" Text="Auto Save"

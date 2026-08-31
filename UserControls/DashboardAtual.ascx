@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: center;
     width: auto;
-    height: 35px;
+    height: 30px;
     padding: 0 8px;
     border-radius: 0.375rem;
     background-color: transparent;
@@ -33,10 +33,20 @@
 
 /* Reduz espaçamento entre linhas da grade */
 .list-group-item.nomedisc {
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+    padding-top: 0.15rem;
+    padding-bottom: 0.15rem;
 }
 
+.schedule-header {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-weight: 700;
+    font-size: medium;
+}
 /* Reduz margens laterais das colunas da grade */
 .schedule-col {
     padding-left: 0rem;

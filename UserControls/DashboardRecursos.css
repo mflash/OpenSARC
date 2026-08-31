@@ -10,7 +10,10 @@
 .schedule-header {
     background-color: #f8f9fa;
     border-bottom: 2px solid #dee2e6;
-    padding: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     font-weight: 700;
     font-size: medium;
 }
@@ -38,7 +41,7 @@
     justify-content: center;
     font-weight: 600;
     font-family: sans-serif;
-    min-width: 9vw;
+    min-width: 8vw;
 }
 
 .badge-active {
@@ -255,12 +258,13 @@
 
 @media (max-width: 1024px) {
     .nomedisc {
-        font-size: 0.9rem !important;
+        font-size: 0.8rem !important;
     }
 
     .resource-tag {
-        font-size: 1.5rem !important;
+        font-size: 1.2rem !important;
         padding: 0.25rem 0.5rem !important;
+        min-width: 9vw;
     }
 
     .resource-icon {
@@ -274,7 +278,7 @@
 
 @media (max-width: 500px) {
     .nomedisc {
-        font-size: 1rem !important;
+        font-size: 0.8rem !important;
     }
 }
 

@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
 using Calendario = BusinessData.Entities.Calendario;
 using Recurso = BusinessData.Entities.Recurso;
 
@@ -20,6 +21,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
     public string ContainerCssClass { get; set; } // padding padrão para o container, pode ser sobrescrito ao usar o controle
     public bool ExibeRecursosRetirados { get; set; } // flag para exibir os recursos retirados neste momento (usada no painel de retiradas)
+    public bool PainelConsulta { get; set; } // flag para exibir apenas o painel de consulta
     public bool IgnoraReservas { get; set; } // flag para não exibir as reservas de lab (não são mais usadas) no dashboard
 
     private List<string> horarios;
@@ -103,7 +105,10 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
     protected void Timer1_Tick(object sender, EventArgs e)
     {
-        VisualizarAlocacoesData();
+        if (PainelConsulta)
+            VisualizarPainelConsulta();
+        else
+            VisualizarAlocacoesData();
     }
 
     private List<Alocacao> ProcuraProximoHorario(List<Alocacao> lista, ref int pos)
@@ -113,20 +118,20 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         bool achei = false;
         //while (filtradaAtual.Count == 0)
         //{
-            if (pos > horarios.Count - 1)
-                return filtradaAtual;
-            string horarioAtual = horarios[pos];
-            foreach (Alocacao aloc in lista)
+        if (pos > horarios.Count - 1)
+            return filtradaAtual;
+        string horarioAtual = horarios[pos];
+        foreach (Alocacao aloc in lista)
+        {
+            //if (aloc.Horario != horarioAtual && achei)
+            //    break;
+            if (aloc.Horario == horarioAtual)
             {
-                //if (aloc.Horario != horarioAtual && achei)
-                //    break;
-                if (aloc.Horario == horarioAtual)
-                {
-                    filtradaAtual.Add(aloc);
-                 //   achei = true;
-                }
+                filtradaAtual.Add(aloc);
+                //   achei = true;
             }
-            pos++;
+        }
+        pos++;
         //}
         return filtradaAtual;
     }
@@ -154,6 +159,132 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
             grupos.Add(base_);
         }
         return grupos; // TODO: corrigir agrupamento - por enquanto retorna a lista original
+    }
+
+    private void VisualizarPainelConsulta()
+    {
+        var recursosBO = new RecursosBO();
+        var professoresBO = new ProfessoresBO();
+
+        var dicProfs = professoresBO.GetProfessores()
+            .GroupBy(p => p.Matricula)
+            .ToDictionary(g => g.Key, g => g.First());
+
+        var retiradas = new List<Tuple<Recurso, LogData>>();
+        var devolucoes = new List<Tuple<Recurso, LogData>>();
+
+        foreach (var recurso in recursosBO.GetRecursos().OrderBy(r => r.Abrev).ToList())
+        {
+            if (!recurso.EstaDisponivel)
+                continue;
+
+            var latest = logDataDAO.FindLatestActivity(recurso.Descricao);
+
+            if (latest == null)
+                continue;
+
+            if (string.Equals(latest.Acao, "RETIRADA", StringComparison.OrdinalIgnoreCase))
+                retiradas.Add(Tuple.Create(recurso, latest));
+            else if (string.Equals(latest.Acao, "ENTREGA", StringComparison.OrdinalIgnoreCase))
+                devolucoes.Add(Tuple.Create(recurso, latest));
+        }
+
+        //retiradas = retiradas.OrderByDescending(x => x.Item2.Horario).ToList();
+        //devolucoes = devolucoes.OrderByDescending(x => x.Item2.Horario).ToList();
+
+        var html = new System.Text.StringBuilder();
+        html.Append("<div class='row gx-0 gy-4 justify-content-center'>");
+
+        AppendConsultaCard(html, "RECURSOS RETIRADOS", retiradas, true, dicProfs);
+        AppendConsultaCard(html, "RECURSOS DEVOLVIDOS", devolucoes, false, dicProfs);
+
+        html.Append("</div>");
+
+        container.InnerHtml = html.ToString();
+    }
+
+    private void AppendConsultaCard(
+        System.Text.StringBuilder html,
+        string titulo,
+        List<Tuple<Recurso, LogData>> itens,
+        bool ehRetirada,
+        Dictionary<string, Professor> dicProfs)
+    {
+        html.Append("<div class='col-12 col-lg-6 schedule-col'>");
+        html.Append("<div class='card shadow-sm schedule-card'>");
+        string textStyle = "text-primary";
+        if (ehRetirada)
+            textStyle = "text-danger";
+        html.AppendFormat("<div class='schedule-header {0}'>{1}</div>", textStyle, titulo);
+        html.Append("<div class='list-group list-group-flush'>");
+
+        if (itens.Count == 0)
+        {
+            html.Append("<div class='list-group-item text-muted'>");
+            html.Append(ehRetirada ? "Nenhum recurso retirado no momento." : "Nenhum recurso devolvido no momento.");
+            html.Append("</div>");
+            html.Append("</div>");
+            html.Append("</div>");
+            html.Append("</div>");
+            return;
+        }
+
+        foreach (var item in itens)
+        {
+            var recurso = item.Item1;
+            var latest = item.Item2;
+
+            string nomeResponsavel = latest.Usuario;
+
+            if (!string.IsNullOrWhiteSpace(latest.Matricula) &&
+                dicProfs.ContainsKey(latest.Matricula))
+            {
+                nomeResponsavel = getNomeSobrenomeProfessor(dicProfs[latest.Matricula].Nome);
+            }
+            else if (!string.IsNullOrWhiteSpace(latest.Usuario))
+            {
+                nomeResponsavel = getNomeSobrenomeProfessor(latest.Usuario);
+            }
+
+            if (string.IsNullOrWhiteSpace(nomeResponsavel))
+                nomeResponsavel = "Usuário desconhecido";
+
+            string horario = latest.Horario.ToString("dd/MM/yyyy HH:mm");
+
+            string recursoIcone = "bi-laptop";
+            switch (recurso.Tipo)
+            {
+                case 'A': recursoIcone = "bi-easel2"; break;
+                case 'H': recursoIcone = "bi-hdmi"; break;
+                case 'K': recursoIcone = "bi-display"; break;
+                case 'L':
+                case 'D':
+                    recursoIcone = "bi-pc-display"; break;
+                case 'N':
+                    recursoIcone = "bi-laptop"; break;
+                case 'S':
+                    recursoIcone = "bi-speaker"; break;
+            }
+
+            html.Append("<div class='list-group-item d-flex justify-content-between align-items-center nomedisc'>");
+            html.Append("<div class='d-flex align-items-center'>");
+            html.AppendFormat("<i class='bi {0} me-2 text-secondary'></i>", recursoIcone);
+            html.AppendFormat("<span class='fw-semibold'>{0}</span>", Server.HtmlEncode(recurso.Descricao));
+            html.Append("</div>");
+
+                //"<span class='badge bg-light text-dark border rounded-pill user-initials' style='white-space:nowrap; font-size:0.72rem; padding:0.35rem 0.55rem;'>{0}</span>",
+            html.Append("<div class='resource-container d-flex align-items-center gap-2'>");
+            html.AppendFormat(
+                "<span class='user-initials' style='white-space:nowrap; font-size:0.72rem; padding:0.35rem 0.55rem;'>{0}</span>",
+                Server.HtmlEncode(nomeResponsavel));
+            html.AppendFormat("<span class='small text-muted'>{0}</span>", Server.HtmlEncode(horario));
+            html.Append("</div>");
+            html.Append("</div>");
+        }
+
+        html.Append("</div>");
+        html.Append("</div>");
+        html.Append("</div>");
     }
 
     private void VisualizarAlocacoesData()
@@ -242,7 +373,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
         }
 
         List<Alocacao> filtradaAtual, filtradaProx;
-        dicAlocacoes.TryGetValue(horarios[posAula],out filtradaAtual);//ProcuraProximoHorario(listaAlocacoes, ref pos);
+        dicAlocacoes.TryGetValue(horarios[posAula], out filtradaAtual);//ProcuraProximoHorario(listaAlocacoes, ref pos);
         //Debug.WriteLine("Atual: " + horarios[posAula]);
         dicAlocacoes.TryGetValue(horarios[posAulaProx], out filtradaProx); //ProcuraProximoHorario(listaAlocacoes, ref pos);
         //Debug.WriteLine("Prox : " + horarios[posAulaProx]);
@@ -280,19 +411,21 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 string sala = t.Sala;
                 if (sala.StartsWith("32"))
                 {
-                    sala = sala.Replace("32/A", "32");
-                    rec.Predio = "32";
+                    sala = sala.Replace("32/", "");
+                    rec.Predio = "";
                 }
                 if (sala.StartsWith("15"))
                 {
-                    sala = sala.Replace("15/A", "15");
-                    rec.Predio = "15";
+                    sala = sala.Replace("15/", "");
+                    rec.Predio = "";
+                    continue;
                 }
                 if (sala.StartsWith("30/"))
                 {
                     string[] dados = sala.Split('/');
                     sala = dados[2];
                     rec.Predio = dados[0] + "/" + dados[1];
+                    continue;
                 }
                 rec.Abrev = sala;
                 rec.AbrevPura = sala;
@@ -305,6 +438,8 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 rec.Tipo = 'N';
                 if (rec.Predio == "15")
                     rec.Tipo = 'A';
+                if (t.Disciplina.Nome.Contains("(120 Horas)"))
+                    t.Disciplina.Nome = t.Disciplina.Nome.Replace("(120 Horas)", "").Trim();
                 rec.Descricao = t.Disciplina.Nome + " (" + t.Numero.ToString() + ")";
                 rec.DescricaoCurta = getNomeCurtoDisciplina(t.Disciplina.Nome) + " (" + t.Numero.ToString() + ")";
                 rec.Responsavel = getNomeSobrenomeProfessor(t.Professor.Nome);
@@ -366,9 +501,9 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
                         if (aloc.Aula.TurmaId.Notebook)
                         {
-                            string sala = aloc.Aula.TurmaId.Sala.Replace("32/A/", "").Replace("15/A/", "");
+                            string sala = aloc.Aula.TurmaId.Sala.Replace("32/", "").Replace("15/", "");
                             rec.Abrev = rec.Abrev + "/" + sala;
-                            rec.AbrevPura = sala;
+                            rec.AbrevPura = rec.Abrev;
                             if (dicRecursos.ContainsKey(sala))
                                 rec.Nome = dicRecursos[sala];
                             else
@@ -456,99 +591,38 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                 LogData latest = retiradas[key].Item2;
                 RecursoItem rec = null;
 
-                /*
-                // Verifica se já existe uma reserva para a mesma dupla de salas
-                if ((r.Abrev == "309" || r.Abrev == "312") && dicRecursosAtual.ContainsKey("309/312"))
+                // Reserva 309/312: Michael
+                // Michael: retirou 309
+                // Agustini: retirou 312
+                // Agustini sem reserva
+
+                rec = new RecursoItem();
+                rec.Nome = r.Descricao;
+                rec.Abrev = rec.AbrevPura = r.Abrev;
+                rec.Tipo = r.Tipo;
+
+                string horarioRetirada = latest.Horario.ToString(@"dd/MM HH:mm");
+                if (latest.Horario.Day == hoje.Day)
+                    horarioRetirada = latest.Horario.ToString(@"HH:mm");
+                string responsCurto = getNomeCurtoProfessor(latest.Usuario);
+                if (latest.TipoUsuario == "P")
                 {
-                    string user309 = retiradas["309"].Item2.Matricula;
-                    string user312 = retiradas["312"].Item2.Matricula;
-                    string user309312 = dicRecursosAtual["309/312"].Matricula;
-                    Debug.WriteLine("Sala 309: " + user309 + " - Sala 312: " + user312);
-                    Debug.WriteLine("309/312: " + user309312);
-                    if (user309 != null && user309 == user309312)
+                    if (latest.Matricula != null)
                     {
-                        // Copia dos dados da 309/312 para o recursoItem da 309
-                        rec = new RecursoItem();
-                        rec.latest = retiradas["309"].Item2;
-                        rec.Abrev = rec.AbrevPura = "309";
-                        rec.Status = StatusRecurso.Retirado;
-                        rec.Tipo = 'L';
-                        rec.Responsavel = dicRecursosAtual["309/312"].Responsavel;
-                        rec.ResponsavelCurto = dicRecursosAtual["309/312"].Responsavel;
-                        rec.Matricula = user309;
-                        rec.Descricao = dicRecursosAtual["309/312"].Descricao;
-                        rec.DescricaoCurta = dicRecursosAtual["309/312"].DescricaoCurta;
-                        string horarioRetir = retiradas["309"].Item2.Horario.ToString(@"dd/MM HH:mm");
-                        if (latest.Horario.Day == hoje.Day)
-                            horarioRetir = rec.latest.Horario.ToString(@"HH:mm");
-                        rec.Horario = horarioRetir;
-                        rec.Nome = "Laboratório - 309";
-                        // Remove a 309/312 da lista
-                        dicRecursosAtual.Remove("309/312");
-                    }
-                    if (user312 != null && user312 == user309312)
-                    {
-                        // Copia dos dados da 309/312 para o recursoItem da 312
-                        rec = new RecursoItem();
-                        rec.latest = retiradas["312"].Item2;
-                        rec.Abrev = rec.AbrevPura = "312";
-                        rec.Status = StatusRecurso.Retirado;
-                        rec.Tipo = 'L';
-                        rec.Responsavel = dicRecursosAtual["309/312"].Responsavel;
-                        rec.ResponsavelCurto = dicRecursosAtual["309/312"].Responsavel;
-                        rec.Matricula = user312;
-                        rec.Descricao = dicRecursosAtual["309/312"].Descricao;
-                        rec.DescricaoCurta = dicRecursosAtual["309/312"].DescricaoCurta;
-                        string horarioRetir = retiradas["309"].Item2.Horario.ToString(@"dd/MM HH:mm");
-                        if (latest.Horario.Day == hoje.Day)
-                            horarioRetir = rec.latest.Horario.ToString(@"HH:mm");
-                        rec.Horario = horarioRetir;
-                        rec.Nome = "Laboratório - 312";
-                        dicRecursosAtual.Add(rec.AbrevPura, rec);
-                        // Remove a 309/312 da lista
-                        dicRecursosAtual.Remove("309/312");
+                        if (dicProfs.ContainsKey(latest.Matricula))
+                            responsCurto = dicProfs[latest.Matricula].Curto;
                     }
                 }
-                if ((r.Abrev == "409" || r.Abrev == "412") && dicRecursosAtual.ContainsKey("409/412"))
-                {
-
-                }
-                */
-                //else if(r.Abrev != "309" && r.Abrev != "312" && r.Abrev != "409" && r.Abrev != "412")
-                {
-                    // Reserva 309/312: Michael
-                    // Michael: retirou 309
-                    // Agustini: retirou 312
-                    // Agustini sem reserva
-
-                    rec = new RecursoItem();
-                    rec.Nome = r.Descricao;
-                    rec.Abrev = rec.AbrevPura = r.Abrev;
-                    rec.Tipo = r.Tipo;
-
-                    string horarioRetirada = latest.Horario.ToString(@"dd/MM HH:mm");
-                    if (latest.Horario.Day == hoje.Day)
-                        horarioRetirada = latest.Horario.ToString(@"HH:mm");
-                    string responsCurto = getNomeCurtoProfessor(latest.Usuario);
-                    if (latest.TipoUsuario == "P")
-                    {
-                        if (latest.Matricula != null)
-                        {
-                            if (dicProfs.ContainsKey(latest.Matricula))
-                                responsCurto = dicProfs[latest.Matricula].Curto;
-                        }
-                    }
-                    rec.ResponsavelCurto = responsCurto;
-                    rec.Responsavel = responsCurto;
-                    rec.DescricaoCurta = "Retirado: " + responsCurto + " - " + horarioRetirada;
-                    rec.Descricao = "RETIRADA";
-                    rec.Horario = horarioRetirada;
-                    //rec.ResponsavelAtualCurto = "&#9888; Desconhecido";
-                    rec.Status = StatusRecurso.Retirado;
-                    rec.latest = latest;
-                    //if (!dicRecursosAtual.ContainsKey(rec.AbrevPura))
-                    dicRecursosAtual[rec.AbrevPura] = rec;
-                }
+                rec.ResponsavelCurto = responsCurto;
+                rec.Responsavel = responsCurto;
+                rec.DescricaoCurta = "Com: " + responsCurto + " - " + horarioRetirada;
+                rec.Descricao = "RETIRADA";
+                rec.Horario = horarioRetirada;
+                //rec.ResponsavelAtualCurto = "&#9888; Desconhecido";
+                rec.Status = StatusRecurso.Retirado;
+                rec.latest = latest;
+                //if (!dicRecursosAtual.ContainsKey(rec.AbrevPura))
+                dicRecursosAtual[rec.AbrevPura] = rec;
             }
         }
 
@@ -559,8 +633,8 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
         listaRecursosAtual = GroupRecursos(listaRecursosAtual).OrderBy(ri => ri.ResponsavelCurto).ThenBy(ri => ri.Descricao).ToList();
 
-        int quebra = 13;
-        if(listaRecursosAtual.Count > quebra || now.Hour >= 21)
+        int quebra = 16;
+        if (listaRecursosAtual.Count > quebra || now.Hour >= 21)
         {
             apenasAtual = true;
         }
@@ -671,7 +745,7 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
                         string horarioRetirada = ri.latest.Horario.ToString(@"dd/MM HH:mm");
                         if (ri.latest.Horario.Day == now.Day)
                             horarioRetirada = ri.latest.Horario.ToString(@"HH:mm");
-                        responsavelRetirada = "Retirado: " + ri.ResponsavelCurto + " - " + horarioRetirada;
+                        responsavelRetirada = "Com: " + ri.ResponsavelCurto + " - " + horarioRetirada;
                         //responsavelRetirada = "Retirado: " + horarioRetirada;
                     }
                     block += string.Format(
@@ -832,6 +906,9 @@ public partial class UserControls_DashboardAtual : System.Web.UI.UserControl
 
     public void Refresh()
     {
-        VisualizarAlocacoesData();
+        if (PainelConsulta)
+            VisualizarPainelConsulta();
+        else
+            VisualizarAlocacoesData();
     }
 }

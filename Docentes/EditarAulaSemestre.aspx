@@ -95,10 +95,44 @@
         // Alerta usando bootstrap
         function showBootstrapAlert(message) {
             var html = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'
-                + message
+                + message.replace(/\n/g, '<br/>')
                 + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
                 + '</div>';
-            document.getElementById('alertContainer').innerHTML = html;
+            var container = document.getElementById('alertContainer');
+            if (container) container.innerHTML = html;
+        }
+
+        function hideAllProgress() {
+            // UpdateProgress wrapper
+            var up = document.querySelector('[id$="UpdateProgress"]');
+            if (up) up.style.display = 'none';
+
+            // Modern overlay pieces
+            var overlay = document.getElementById('modernProgressOverlay');
+            var msg = document.getElementById('modernProgressMessage');
+            if (overlay) overlay.style.display = 'none';
+            if (msg) msg.style.display = 'none';
+        }
+
+        var pendingServerAlert = null;
+
+        function queueServerAlert(message) {
+            pendingServerAlert = message;
+        }
+
+        // Works for every async postback
+        function wirePageRequestManager() {
+            if (!window.Sys || !Sys.WebForms || !Sys.WebForms.PageRequestManager) return;
+
+            var prm = Sys.WebForms.PageRequestManager.getInstance();
+            prm.add_endRequest(function () {
+                hideAllProgress();
+
+                if (pendingServerAlert) {
+                    showBootstrapAlert(pendingServerAlert);
+                    pendingServerAlert = null;
+                }
+            });
         }
 
         // Quando o usuário seleciona um arquivo, dispara o submit automaticamente
@@ -119,6 +153,20 @@
                 });
             }
         });
+
+        function hideProgressAndShowAlert(message) {
+            // Hide custom modern overlay
+            var overlay = document.getElementById('modernProgressOverlay');
+            var msg = document.getElementById('modernProgressMessage');
+            if (overlay) overlay.style.display = 'none';
+            if (msg) msg.style.display = 'none';
+
+            // Hide UpdateProgress container (WebForms-generated id)
+            var up = document.querySelector('[id$="UpdateProgress"]');
+            if (up) up.style.display = 'none';
+
+            showBootstrapAlert(message);
+        }
 
 
     </script>

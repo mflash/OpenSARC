@@ -17,6 +17,7 @@ public partial class _Painel : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        this.Title = "OpenSARC - Consulta";
         if (!IsPostBack)
         {
             CarregaUsuariosRecursos();

@@ -16,6 +16,9 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Microsoft.Practices.ObjectBuilder2;
 using System.IO;
+using System.Web.Configuration;
+using System.Net.Configuration;
+using System.Net.Sockets;
 
 
 public partial class Docentes_EditarAula : System.Web.UI.Page
@@ -359,15 +362,15 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         // Todas as turmas com notebook
         //if (currentTurma.Notebook)
         //{
-            List<Recurso> livres2 = new List<Recurso>();
-            foreach (var item in livres)
-            {
-                if (item.Tipo != 'L' && item.Tipo != 'D' && item.Tipo != 'H' && !item.Descricao.StartsWith("LAPRO"))
-                    livres2.Add(item);
-                if (item.Descricao.StartsWith("Retirar"))
-                    retirarNotebook = item;
-            }
-            livres = livres2;
+        List<Recurso> livres2 = new List<Recurso>();
+        foreach (var item in livres)
+        {
+            if (item.Tipo != 'L' && item.Tipo != 'D' && item.Tipo != 'H' && !item.Descricao.StartsWith("LAPRO"))
+                livres2.Add(item);
+            if (item.Descricao.StartsWith("Retirar"))
+                retirarNotebook = item;
+        }
+        livres = livres2;
         //}
         /*
         else
@@ -469,107 +472,92 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
     }
 
     // Salva o conteudo das linhas alteradas no BD	
-    private void AtualizaTodaGrade(bool saveAll = false)
+    private void AtualizaTodaGrade(bool saveAll = false, bool showSuccessMessage = true)
+{
+    DataGridItemCollection t = dgAulas.Items;
+    Label lblAulaId;
+    Label lblAula;
+    Label lblData;
+    Label lblHora;
+    Label lblCorDaData;
+    TextBox txtDescricao;
+    Label lblDescData;
+    DropDownList ddlAtividade;
+    CheckBox cbChanged;
+    ImageButton butConfirm;
+    string hora;
+    string aux;
+    string descricao;
+    DateTime data;
+    Guid idcategoria;
+    Guid idaula;
+    CategoriaAtividade categoria;
+    Aula aula;
+
+    Guid idturma = (Guid)Session["TurmaId"];
+    Turma turma = turmaBo.GetTurmaById(idturma);
+
+    int totalLinhas = 0;
+    for (int i = 0; i < t.Count; i++)
     {
-        DataGridItemCollection t = dgAulas.Items;
-        Label lblAulaId;
-        Label lblAula;
-        Label lblData;
-        Label lblHora;
-        Label lblCorDaData;
-        TextBox txtDescricao;
-        Label lblDescData;
-        DropDownList ddlAtividade;
-        CheckBox cbChanged;
-        ImageButton butConfirm;
-        string hora;
-        string aux;
-        string descricao;
-        DateTime data;
-        Guid idcategoria;
-        Guid idaula;
-        CategoriaAtividade categoria;
-        Aula aula;
+        cbChanged = (CheckBox)t[i].FindControl("cbChanged");
+        butConfirm = (ImageButton)t[i].FindControl("butConfirm");
 
-        Guid idturma = (Guid)Session["TurmaId"];
-        Turma turma = turmaBo.GetTurmaById(idturma);
+        if (!cbChanged.Checked && !saveAll)
+            continue;
+        cbChanged.Checked = false;
 
-        int totalLinhas = 0;
-        for (int i = 0; i < t.Count; i++)
-        {
-            cbChanged = (CheckBox)t[i].FindControl("cbChanged");
-            butConfirm = (ImageButton)t[i].FindControl("butConfirm");
-            // Se a linha não foi modificada, pula ela			
+        butConfirm.Enabled = false;
+        butConfirm.ImageUrl = "~/_layouts/images/STARgray.gif";
 
-            // NAO FUNCIONA!
-            //if(butConfirm.ImageUrl == "~/_layouts/images/STARgray.gif")
-            //	continue;
+        totalLinhas++;
 
-            if (!cbChanged.Checked && !saveAll)
-                continue;
-            cbChanged.Checked = false;
+        lblAulaId = (Label)t[i].FindControl("lblAulaId");
+        lblAula = (Label)t[i].FindControl("lblAula");
+        lblData = (Label)t[i].FindControl("lblData");
+        lblHora = (Label)t[i].FindControl("lblHora");
+        txtDescricao = (TextBox)t[i].FindControl("txtDescricao");
+        ddlAtividade = (DropDownList)t[i].FindControl("ddlAtividade");
+        lblCorDaData = (Label)t[i].FindControl("lblCorDaData");
+        lblDescData = (Label)t[i].FindControl("lblDescData");
 
-            // NAO FUNCIONA!
-            //if (!butConfirm.Enabled)
-            //	continue;
+        idaula = new Guid(lblAulaId.Text);
+        hora = lblHora.Text;
+        data = Convert.ToDateTime(lblData.Text);
+        aux = txtDescricao.Text;
 
-            butConfirm.Enabled = false;
-            butConfirm.ImageUrl = "~/_layouts/images/STARgray.gif";
+        string descDataText = lblDescData.Text;
+        // Only strip the prefix if it is actually present
+        if (!string.IsNullOrEmpty(descDataText) && aux.StartsWith(descDataText))
+            descricao = aux.Substring(descDataText.Length).TrimStart('\n');
+        else
+            descricao = aux;
 
-            totalLinhas++;
+        idcategoria = new Guid(ddlAtividade.SelectedValue);
+        categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
 
-            lblAulaId = (Label)t[i].FindControl("lblAulaId");
-            lblAula = (Label)t[i].FindControl("lblAula");
-            lblData = (Label)t[i].FindControl("lblData");
-            lblHora = (Label)t[i].FindControl("lblHora");
-            txtDescricao = (TextBox)t[i].FindControl("txtDescricao");
-            ddlAtividade = (DropDownList)t[i].FindControl("ddlAtividade");
-            lblCorDaData = (Label)t[i].FindControl("lblCorDaData");
-            lblDescData = (Label)t[i].FindControl("lblDescData");
+        if (t[i].BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
+            t[i].BackColor = categoria.Cor;
 
-            idaula = new Guid(lblAulaId.Text);
-            hora = lblHora.Text;
-            data = Convert.ToDateTime(lblData.Text);
-            aux = txtDescricao.Text;
+        aula = Aula.GetAula(idaula, turma, hora, data, descricao, categoria);
+        aulaBo.UpdateAula(aula);
 
-            string descDataText = lblDescData.Text;
-            // Only strip the prefix if it is actually present
-            if (!string.IsNullOrEmpty(descDataText) && aux.StartsWith(descDataText))
-                descricao = aux.Substring(descDataText.Length).TrimStart('\n');
-            else
-                descricao = aux;
-
-            //descricao = aux.Substring(aux.IndexOf('\n') + 1);
-
-            idcategoria = new Guid(ddlAtividade.SelectedValue);
-            categoria = categoriaBo.GetCategoriaAtividadeById(idcategoria);
-
-            if (t[i].BackColor != Color.LightGray && lblCorDaData.Text.Equals("False"))
-                t[i].BackColor = categoria.Cor;
-
-            //FIXME: não deveria atualizar apenas descricao e categoria??
-            aula = Aula.GetAula(idaula, turma, hora, data, descricao, categoria);
-
-            aulaBo.UpdateAula(aula);
-
-            // Re-display with prefix only if there is one
-            txtDescricao.Text = string.IsNullOrEmpty(descDataText)
-                ? descricao
-                : descDataText + "\n" + descricao;
-            //txtDescricao.Text = lblDescData.Text + "\n" + descricao;
-        }
-        lblResultado.Text = "Alteração realizada com sucesso (" + totalLinhas.ToString() + " linhas)";
-
-        // TODO: alterar nome do botão.
-        btnSalvarTudo.Text = "Salvo";
-        //btnSalvarTudo.Enabled = false;
-        //Button salvar = (Button)sender;
-        //salvar.Text = "Salvo";
-        //salvar.Enabled = false;
-
-        ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick",
-                @"releaseDirtyFlag();", true);
+        // Re-display with prefix only if there is one
+        txtDescricao.Text = string.IsNullOrEmpty(descDataText)
+            ? descricao
+            : descDataText + "\n" + descricao;
+        //txtDescricao.Text = lblDescData.Text + "\n" + descricao;
     }
+    if (showSuccessMessage)
+    {
+        lblResultado.CssClass = "alert alert-info d-inline-block py-1 px-2 small";
+        lblResultado.Text = "Alteração realizada com sucesso (" + totalLinhas.ToString() + " linhas)";
+        lblResultado.Visible = true;
+    }
+
+    btnSalvarTudo.Text = "Salvo";
+    ScriptManager.RegisterClientScriptBlock(this, GetType(), "OnClick", @"releaseDirtyFlag();", true);
+}
 
     // Salva os dados de todas as aulas modificadas
     protected void btnSalvarTudo_Click(object sender, EventArgs e)
@@ -705,6 +693,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
     protected void rptRecursos_ItemCommand(object source, RepeaterCommandEventArgs e)
     {
+        bool enviarEmail = false;
         if (e.CommandName != "Deletar") return;
 
         Repeater rpt = (Repeater)source;
@@ -715,9 +704,15 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         DateTime data = Convert.ToDateTime(dataString);
         string horario = ((Label)grid.FindControl("lblHora")).Text;
         string aulaString = ((Label)grid.FindControl("lblAulaId")).Text;
+        string descricaoAula = ((TextBox)grid.FindControl("txtDescricao")).Text;
 
         Guid recId = new Guid(e.CommandArgument.ToString());
         Recurso rec = recursosBO.GetRecursoById(recId);
+        if (rec.Tipo == 'P')
+        {
+            enviarEmail = true;
+        }
+
         Alocacao aloc = new Alocacao(rec, data, horario, null, null);
         alocBO.UpdateAlocacao(aloc);
 
@@ -726,7 +721,12 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         DropDownList ddlDisponiveis = (DropDownList)grid.FindControl("ddlDisponiveis");
         AtualizaDisponiveis(ddlDisponiveis, data, horario);
-        AtualizaTodaGrade();
+        AtualizaTodaGrade(false, false);
+
+        if (enviarEmail)
+        {
+            EnviarEmails(false, rec, data, horario, descricaoAula);
+        }
     }
 
     // Callback do dropdownlist de atividade: troca o tipo de atividade (aula, prova, etc)
@@ -815,7 +815,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         ddlDisponiveis.SelectedIndex = 0;
 
         // E atualiza o BD com as alteracoes na grade
-        AtualizaTodaGrade();
+        AtualizaTodaGrade(false, false);
     }
 
 
@@ -833,26 +833,10 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         Alocacao aloc = new Alocacao(rec, data, horario, aula, null);
         alocBO.UpdateAlocacao(aloc);
 
-        /* Nao e' mais necessario: o DAO foi alterado para verificar isso (GetRecursosDisponiveis)
-         *
-        // Verifica se algum outro recurso depende deste, em caso positivo aloca também
-        Dictionary<Guid, Tuple<Guid, Guid>> blocks = (Dictionary<Guid, Tuple<Guid, Guid>>) Session["blocks"];
-        Tuple<Guid, Guid> bloqueados = blocks[recId];
-        if(bloqueados.Item1 != Guid.Empty)
+        if (rec.Tipo == 'P')
         {
-            rec = recursosBO.GetRecursoById(bloqueados.Item1);
-            System.Diagnostics.Debug.WriteLine("Bloq. dependente: " + rec.Descricao);
-            aloc = new Alocacao(rec, data, horario, aula, null);
-            alocBO.UpdateAlocacao(aloc);            
+            EnviarEmails(true, rec, data, horario, aula.DescricaoAtividade);
         }
-        if (bloqueados.Item2 != Guid.Empty)
-        {
-            rec = recursosBO.GetRecursoById(bloqueados.Item2);
-            System.Diagnostics.Debug.WriteLine("Bloq. dependente: " + rec.Descricao);
-            aloc = new Alocacao(rec, data, horario, aula, null);
-            alocBO.UpdateAlocacao(aloc);            
-        }
-         */
     }
 
     // Deleta o(s) recurso(s) selecionado(s)
@@ -878,6 +862,7 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
 
         // Varre o checkbox list do fim para o início,
         // e remove todos os recursos selecionados (da tela e do BD)
+        //bool enviarEmail = false;
         List<Recurso> listaRecLib = new List<Recurso>();
         for (int r = cbList.Items.Count - 1; r >= 0; r--)
         {
@@ -889,6 +874,9 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
                 Alocacao aloc = new Alocacao(rec, data, horario, null, null);
                 alocBO.UpdateAlocacao(aloc);
                 cbList.Items.RemoveAt(r);
+                //if(rec.Tipo == 'P') {  // sala de aula para prova?
+                //    enviarEmail = true;
+                //}
                 // TODO: melhorar isso - só envia email se forem recursos com a palavra "lab" em algum lugar
                 if (rec.Categoria.Descricao.ToLower().Contains("lab"))
                     listaRecLib.Add(rec);
@@ -921,27 +909,145 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
         ddlDisponiveis.DataSource = livres;
         ddlDisponiveis.DataBind();
 
-        AtualizaTodaGrade();
-        //if(listaRecLib.Count > 0)
-        //    EnviarEmailLiberacao("professores@inf.pucrs.br", listaRecLib, data, horario);
+        AtualizaTodaGrade(false, false);
+        //if(enviarEmail && listaRecLib.Count > 0)
+        //    EnviarEmail(false, listaRecLib[0], data, horario);
     }
 
-    private void EnviarEmailLiberacao(string pessoa, List<Recurso> liberados, DateTime data, String horario)
+    private void ShowError(string message)
     {
-        //        string para = ConfigurationManager.AppSettings["MailMessageSecretaria"];
-        string from = ConfigurationManager.AppSettings["MailMessageFrom"];
-        MailMessage email = new MailMessage(from, pessoa);
-        email.Subject = "OpenSARC: Liberação de recurso(s) no dia " + data.ToShortDateString() + ", horário " + horario;
-        email.Body = "Sistema de Alocação de Recursos Computacionais - FACIN \n\n" +
-               "Um ou mais recursos foram liberados por " + Membership.GetUser().Email + "." +
-               "\nDia: " + data.ToShortDateString() + ", horário " + horario + "\n" +
-               "\nRecurso(s):";
-        foreach (Recurso r in liberados)
+        lblResultado.CssClass = "alert alert-danger d-inline-block py-1 px-2 small";
+        lblResultado.Text = Server.HtmlEncode(message ?? "Erro desconhecido.");
+        lblResultado.Visible = true;
+    }
+
+    private bool IsSmtpReachable(out string erro)
+    {
+        erro = null;
+
+        SmtpSection smtpSection = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
+        if (smtpSection == null || smtpSection.Network == null || string.IsNullOrWhiteSpace(smtpSection.Network.Host))
         {
-            email.Body += "\n" + r.Descricao;
+            erro = "Configuração SMTP ausente em web.config.";
+            return false;
         }
-        SmtpClient client = new SmtpClient();
-        client.Send(email);
+
+        string host = smtpSection.Network.Host;
+        int port = smtpSection.Network.Port > 0 ? smtpSection.Network.Port : 25;
+
+        try
+        {
+            using (TcpClient tcp = new TcpClient())
+            {
+                IAsyncResult ar = tcp.BeginConnect(host, port, null, null);
+                bool ok = ar.AsyncWaitHandle.WaitOne(3000);
+                if (!ok || !tcp.Connected)
+                {
+                    erro = "Não foi possível conectar ao servidor SMTP " + host + ":" + port + " (timeout de 3s).";
+                    return false;
+                }
+
+                tcp.EndConnect(ar);
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            erro = "Falha ao conectar no SMTP: " + ex.Message;
+            return false;
+        }
+    }
+
+    private void EnviarEmails(bool modo, Recurso recurso, DateTime data, String horario, string descricaoAula)
+    {
+        string secretariaEmail = ConfigurationManager.AppSettings["MailMessageSecretaria"];
+        string userEmail = Membership.GetUser().Email;
+
+        List<string> erros = new List<string>();
+        string erro;
+
+        if (!EnviarEmail(modo, secretariaEmail, recurso, data, horario, descricaoAula, out erro))
+            erros.Add("Secretaria (" + secretariaEmail + "): " + erro);
+
+        System.Threading.Thread.Sleep(1000);
+
+        if (!EnviarEmail(modo, userEmail, recurso, data, horario, descricaoAula, out erro))
+            erros.Add("Usuário (" + userEmail + "): " + erro);
+
+        if (erros.Count > 0)
+        {
+            string mensagem = "Falha ao enviar e-mail: " + string.Join(" | ", erros);
+            ShowError(mensagem);
+            MessageBox(mensagem);
+        }
+        else
+        {
+            string texto = "do cancelamento";
+            if (modo)
+                texto = "da reserva";
+            ShowError("Email de confirmação "+texto+" enviado à secretaria e " + userEmail);
+        }
+    }
+
+    private bool EnviarEmail(bool modo, String to, Recurso recurso, DateTime data, String horario, string descricaoAula, out string erro)
+    {
+        erro = null;
+
+        if (string.IsNullOrWhiteSpace(to))
+        {
+            erro = "Destinatário vazio.";
+            return false;
+        }
+
+        if (!IsSmtpReachable(out erro))
+            return false;
+
+        try
+        {
+            string from = ConfigurationManager.AppSettings["MailMessageFrom"];
+            MailMessage email = new MailMessage(from, to);
+
+            string textoSubject = "Cancelamento";
+            string textoCorpo = "liberada";
+            if (modo)
+            {
+                textoSubject = "Solicitação";
+                textoCorpo = "reservada";
+            }
+
+            email.Subject = "OpenSARC: " + textoSubject + " de reserva de sala no dia " + data.ToShortDateString() + ", horário " + horario;
+            email.Body = "Sistema de Alocação de Recursos Computacionais - EP \n\n" +
+                         "A " + recurso.Descricao + " foi " + textoCorpo + " por " + Membership.GetUser().Email + "." +
+                         "\nDia: " + data.ToShortDateString() + ", horário " + horario + "\n" +
+                         "\nAtividade: " + (string.IsNullOrWhiteSpace(descricaoAula) ? "(não informada)" : descricaoAula);
+
+            SmtpClient client = new SmtpClient();
+            client.Timeout = 15000;
+            client.Send(email);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            erro = ex.Message;
+            if (ex.InnerException != null)
+                erro += " | Inner: " + ex.InnerException.Message;
+
+            Debug.WriteLine("Erro ao enviar e-mail para " + to + ": " + ex);
+            return false;
+        }
+    }
+
+    private void MessageBox(string message)
+    {
+        string safeMessage = System.Web.HttpUtility.JavaScriptStringEncode(message ?? string.Empty);
+
+        ScriptManager.RegisterStartupScript(
+            UpdatePanel1,
+            UpdatePanel1.GetType(),
+            "alert_" + Guid.NewGuid().ToString("N"),
+            "queueServerAlert('" + safeMessage + "');",
+            true);
     }
 
     protected void btnImportarCSV_Click(object sender, EventArgs e)
@@ -1015,11 +1121,6 @@ public partial class Docentes_EditarAula : System.Web.UI.Page
             string message = "Total: " + cont + " de " + dt.Rows.Count;
             MessageBox(message);
         }
-    }
-    private void MessageBox(string message)
-    {
-        ScriptManager.RegisterStartupScript(this, GetType(), "alert",
-            "showBootstrapAlert('" + message.Replace("'", "\\'") + "');", true);
     }
 
     protected DataTable ConvertCSVtoDataTable(string strFilePath)

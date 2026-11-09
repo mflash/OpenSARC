@@ -9,43 +9,59 @@ using BusinessData.Entities;
 
 public partial class DetalhesEvento : System.Web.UI.Page
 {
+    protected void Page_Init(object sender, EventArgs e)
+    {
+        BindGrid();
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Request.QueryString["Evento"] != null)
-        {
-            try
-            {
-                Guid idEvento = new Guid(Request.QueryString["Evento"]);
-                HorariosEventoBO heBO = new HorariosEventoBO();
-                try
-                {
-                    EventoBO gerenciadorEventos = new EventoBO();
-                    Evento evento = gerenciadorEventos.GetEventoById(idEvento);
-                    lblTituloEvento.Text = evento.Titulo;
+        if (IsPostBack)
+            return;
 
-                    List<HorariosEvento> horariosEvento = heBO.GetHorariosEventosByIdDetalhados(idEvento);
-                    horariosEvento.Sort();
-                    dgHorariosEvento.DataSource = horariosEvento;
-                    dgHorariosEvento.DataBind();
-                }
-                catch (Exception ex)
-                {
-                    Response.Redirect("~/Default/Erro.aspx?Erro=Erro ao listar horários: " + ex.Message);
-                }
-            }
-            catch (ArgumentNullException)
-            {
-                Response.Redirect("~/Default/Erro.aspx?Erro=Evento Inválido.");
-            }
-            catch (FormatException)
-            {
-                Response.Redirect("~/Default/Erro.aspx?Erro=Evento Inválido.");
-            }
-            catch (OverflowException)
-            {
-                Response.Redirect("~/Default/Erro.aspx?Erro=Evento Inválido.");
-            }
+        if (Request.QueryString["Evento"] == null)
+            return;
+
+        try
+        {
+            Guid idEvento = new Guid(Request.QueryString["Evento"]);
+            EventoBO gerenciadorEventos = new EventoBO();
+            Evento evento = gerenciadorEventos.GetEventoById(idEvento);
+            lblTituloEvento.Text = evento.Titulo;
         }
+        catch (ArgumentNullException)
+        {
+            Response.Redirect("~/Default/Erro.aspx?Erro=Evento Inválido.");
+        }
+        catch (FormatException)
+        {
+            Response.Redirect("~/Default/Erro.aspx?Erro=Evento Inválido.");
+        }
+        catch (OverflowException)
+        {
+            Response.Redirect("~/Default/Erro.aspx?Erro=Evento Inválido.");
+        }
+        catch (Exception ex)
+        {
+            Response.Redirect(
+                "~/Default/Erro.aspx?Erro=Erro ao listar horários: " + ex.Message);
+        }
+    }
+
+    private void BindGrid()
+    {
+        if (Request.QueryString["Evento"] == null)
+            return;
+
+        Guid idEvento = new Guid(Request.QueryString["Evento"]);
+        HorariosEventoBO heBO = new HorariosEventoBO();
+
+        List<HorariosEvento> horariosEvento =
+            heBO.GetHorariosEventosByIdDetalhados(idEvento);
+
+        horariosEvento.Sort();
+        dgHorariosEvento.DataSource = horariosEvento;
+        dgHorariosEvento.DataBind();
     }
 
     protected void dgHorariosEvento_ItemDataBound(object sender, DataGridItemEventArgs e)
@@ -79,27 +95,52 @@ public partial class DetalhesEvento : System.Web.UI.Page
 
         // garante que o DDL tenha ao menos um item e seja renderizado/clicável
         DropDownList ddl = (DropDownList)e.Item.FindControl("ddlDisponiveis");
-        if (ddl != null && ddl.Items.Count == 0)
+
+        if (ddl != null)
+        {
+            ddl.Items.Clear();
             ddl.Items.Add(new ListItem("-- Selecione um recurso --", ""));
+
+            string valorSelecionado = Request.Form[ddl.UniqueID];
+
+            if (!string.IsNullOrEmpty(valorSelecionado))
+            {
+                ddl.Items.Add(new ListItem(string.Empty, valorSelecionado));
+                ddl.SelectedValue = valorSelecionado;
+            }
+        }
     }
 
     protected void ddlDisponiveis_SelectedIndexChanged(object sender, EventArgs e)
     {
         DropDownList ddl = (DropDownList)sender;
-        if (string.IsNullOrEmpty(ddl.SelectedValue)) return;
-
         DataGridItem item = (DataGridItem)ddl.NamingContainer;
+
+        string valorSelecionado = Request.Form[ddl.UniqueID];
+
+        if (string.IsNullOrEmpty(valorSelecionado))
+            valorSelecionado = hdnRecursoSelecionado.Value;
+
+        Guid recursoId;
+
+        if (!Guid.TryParse(valorSelecionado, out recursoId))
+        {
+            lblResultado.Text = "Nenhum recurso foi selecionado.";
+            lblResultado.CssClass =
+                "d-block mb-3 fw-semibold text-danger";
+            return;
+        }
+
         Label lblEventoId = (Label)item.FindControl("lblEventoId");
         Label lblData = (Label)item.FindControl("lblData");
         Label lblHorario = (Label)item.FindControl("lblHorario");
 
-        Guid recursoId = new Guid(ddl.SelectedValue);
-        DateTime data = Convert.ToDateTime(lblData.Text);
-        string horario = lblHorario.Text;
-        Guid eventoId = new Guid(lblEventoId.Text);
-
         try
         {
+            DateTime data = Convert.ToDateTime(lblData.Text);
+            string horario = lblHorario.Text;
+            Guid eventoId = new Guid(lblEventoId.Text);
+
             RecursosBO recBO = new RecursosBO();
             Recurso recurso = recBO.GetRecursoById(recursoId);
 
@@ -107,16 +148,20 @@ public partial class DetalhesEvento : System.Web.UI.Page
             Evento evento = eventoBO.GetEventoById(eventoId);
 
             AlocacaoBO alocBO = new AlocacaoBO();
-            Alocacao alocacao = Alocacao.newAlocacao(recurso, data, horario, null, evento);
-            alocBO.InsereAlocacao(alocacao);
+            Alocacao alocacao =
+                Alocacao.newAlocacao(recurso, data, horario, null, evento);
+
+            alocBO.UpdateAlocacao(alocacao);
 
             lblResultado.Text = "Recurso alocado com sucesso.";
-            lblResultado.CssClass = "d-block mb-3 fw-semibold text-success";
+            lblResultado.CssClass =
+                "d-block mb-3 fw-semibold text-success";
         }
         catch (Exception ex)
         {
             lblResultado.Text = "Erro ao alocar recurso: " + ex.Message;
-            lblResultado.CssClass = "d-block mb-3 fw-semibold text-danger";
+            lblResultado.CssClass =
+                "d-block mb-3 fw-semibold text-danger";
         }
 
         RebindGrid();
@@ -124,33 +169,66 @@ public partial class DetalhesEvento : System.Web.UI.Page
 
     protected void butDeletar_Click(object sender, EventArgs e)
     {
-        DataGridItem item = (DataGridItem)((LinkButton)sender).NamingContainer;
+        DataGridItem item =
+            (DataGridItem)((LinkButton)sender).NamingContainer;
+
         Label lblData = (Label)item.FindControl("lblData");
         Label lblHorario = (Label)item.FindControl("lblHorario");
-        CheckBoxList cbRecursos = (CheckBoxList)item.FindControl("cbRecursos");
+        CheckBoxList cbRecursos =
+            (CheckBoxList)item.FindControl("cbRecursos");
 
-        string recursoIdStr = null;
-        foreach (ListItem li in cbRecursos.Items)
-            if (li.Selected) { recursoIdStr = li.Value; break; }
+        string recursoIdStr =
+            Request.Form[hdnRecursoSelecionado.UniqueID];
 
-        if (string.IsNullOrEmpty(recursoIdStr)) return;
+        Guid recursoId;
 
-        DateTime data = Convert.ToDateTime(lblData.Text);
-        string horario = lblHorario.Text;
+        if (!Guid.TryParse(recursoIdStr, out recursoId))
+        {
+            recursoId = Guid.Empty;
+
+            foreach (ListItem recursoItem in cbRecursos.Items)
+            {
+                if (recursoItem.Selected &&
+                    Guid.TryParse(recursoItem.Value, out recursoId))
+                {
+                    break;
+                }
+            }
+        }
+
+        if (recursoId == Guid.Empty)
+        {
+            lblResultado.Text =
+                "O recurso selecionado possui um identificador inválido.";
+            lblResultado.CssClass =
+                "d-block mb-3 fw-semibold text-danger";
+            return;
+        }
 
         try
         {
+            DateTime data = Convert.ToDateTime(lblData.Text);
+            string horario = lblHorario.Text;
+
+            RecursosBO recursosBO = new RecursosBO();
+            Recurso recurso = recursosBO.GetRecursoById(recursoId);
+
+            Alocacao alocacao =
+                new Alocacao(recurso, data, horario, null, null);
+
             AlocacaoBO alocBO = new AlocacaoBO();
-            Alocacao alocacao = alocBO.GetAlocacao(new Guid(recursoIdStr), data, horario);
-            alocBO.DeletaAlocacao(alocacao);
+            alocBO.UpdateAlocacao(alocacao);
 
             lblResultado.Text = "Recurso liberado com sucesso.";
-            lblResultado.CssClass = "d-block mb-3 fw-semibold text-success";
+            lblResultado.CssClass =
+                "d-block mb-3 fw-semibold text-success";
         }
         catch (Exception ex)
         {
-            lblResultado.Text = "Erro ao liberar recurso: " + ex.Message;
-            lblResultado.CssClass = "d-block mb-3 fw-semibold text-danger";
+            lblResultado.Text =
+                "Erro ao liberar recurso: " + ex.Message;
+            lblResultado.CssClass =
+                "d-block mb-3 fw-semibold text-danger";
         }
 
         RebindGrid();
@@ -219,17 +297,13 @@ public partial class DetalhesEvento : System.Web.UI.Page
 
     private void RebindGrid()
     {
-        if (Request.QueryString["Evento"] == null) return;
+        BindGrid();
 
-        try
-        {
-            Guid idEvento = new Guid(Request.QueryString["Evento"]);
-            HorariosEventoBO heBO = new HorariosEventoBO();
-            List<HorariosEvento> horariosEvento = heBO.GetHorariosEventosByIdDetalhados(idEvento);
-            horariosEvento.Sort();
-            dgHorariosEvento.DataSource = horariosEvento;
-            dgHorariosEvento.DataBind();
-        }
-        catch { /* silently ignore rebind errors */ }
+        ScriptManager.RegisterStartupScript(
+            UpdatePanel1,
+            UpdatePanel1.GetType(),
+            "carregarRecursosDepoisDoRebind",
+            "setTimeout(carregarTodosOsRecursos, 100);",
+            true);
     }
 }
